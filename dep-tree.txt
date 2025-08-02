@@ -1,11 +1,0 @@
-Downloading from central: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.pom
-Progress (1): 2.7 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.pom (2.7 kB at 21 kB/s)
-Downloading from central: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.5/slf4j-parent-1.7.5.pom
-Progress (1): 2.8/12 kBProgress (1): 5.5/12 kBProgress (1): 8.3/12 kBProgress (1): 11/12 kB Progress (1): 12 kB                      Downloaded from central: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.5/slf4j-parent-1.7.5.pom (12 kB at 303 kB/s)
-[INFO] |  |  +- org.slf4j:jcl-over-slf4j:jar:2.0.17:compile
-[INFO] |  |  +- org.apache.logging.log4j:log4j-slf4j2-impl:jar:2.24.3:compile
-[INFO] |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.24.3:compile
-[INFO] |  \- org.slf4j:jul-to-slf4j:jar:2.0.17:compile
-[INFO] |  +- org.neo4j:neo4j-slf4j-provider:jar:5.26.5:compile
-[INFO] |  +- org.slf4j:slf4j-simple:jar:2.0.17:compile
-[INFO] +- org.slf4j:slf4j-api:jar:2.0.17:compile

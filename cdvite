@@ -1,4 +1,4 @@
 #!/bin/sh
-export PROJ_HOME=E:/springtutorial/cimathformulas
+export PROJ_HOME=C:/Users/javau/dev/projects/sb-j2ee/sboot-rest-mformula-orig
 echo "go to reactivite proj from $PROJ_HOME/src/main/webapp/reactivite "
 cd $PROJ_HOME/src/main/webapp/reactivite

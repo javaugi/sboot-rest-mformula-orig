@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jinvindia</groupId>
-    <artifactId>jinvidia-saas-carloner</artifactId>
+    <groupId>com.sisllc.jvidia</groupId>
+    <artifactId>sboot-rest-mformula-o</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>jinvidia-saas-carloner</name>
+    <name>sboot-rest-mformula-o</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
