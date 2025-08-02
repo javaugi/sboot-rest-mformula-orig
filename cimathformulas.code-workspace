@@ -1,0 +1,17 @@
+{
+    "folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../spring-5-mvc-jpa-repo"
+		},
+		{
+			"path": "../spring-petclinic-vaadin-flow"
+		}
+	],
+    "settings": {
+        "java.compile.nullAnalysis.mode": "automatic",
+        "workbench.colorTheme": "Default High Contrast Light"
+    }
+}

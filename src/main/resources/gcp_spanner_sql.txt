@@ -1,0 +1,270 @@
+Data type list
+Name                Summary
+
+Array type          An ordered list of zero or more elements of non-array values. 
+                        SQL type name: ARRAY
+Boolean type        A value that can be either TRUE or FALSE. 
+                        SQL type name: BOOL, SQL aliases: BOOLEAN
+Bytes type          Variable-length binary data. 
+                        SQL type name: BYTES
+Date type           A Gregorian calendar date, independent of time zone.    
+                        SQL type name: DATE
+Enum type           Named type that enumerates a list of possible values. 
+                        SQL type name: ENUM
+Graph element type  An element in a property graph. 
+                        SQL type name: GRAPH_ELEMENT
+                        Graph path type	A path in a property graph.
+                        SQL type name: GRAPH_PATH
+Interval type       A duration of time, without referring to any specific point in time.
+                        SQL type name: INTERVAL
+JSON type           Represents JSON, a lightweight data-interchange format.
+                        SQL type name: JSON
+Numeric types       A numeric value. Several types are supported.
+
+                        A 64-bit integer.
+                        SQL type name: INT64
+
+                        A decimal value with precision of 38 digits.
+                        SQL type name: NUMERIC
+
+                        An approximate single precision numeric value.
+                        SQL type name: FLOAT32
+
+                        An approximate double precision numeric value.
+                        SQL type name: FLOAT64
+Protocol buffer type A protocol buffer.
+                        SQL type name: PROTO
+String type         Variable-length character data.
+                        SQL type name: STRING
+Struct type         Container of ordered fields.
+                        SQL type name: STRUCT
+Timestamp type      A timestamp value represents an absolute point in time, independent of any time zone or convention such as daylight saving time (DST).
+                        SQL type name: TIMESTAMP
+                        
+
+
+CREATE TABLE Prescriptions (
+    PatientId STRING(MAX) NOT NULL,
+    PrescriptionId STRING(MAX) NOT NULL,
+    Medication STRING(MAX),
+    type ENUM NOT NULL CHECK (type IN ('C', 'B', 'A'))
+    -- Partition key for even distribution
+        PRIMARY KEY (PatientId, PrescriptionId)
+) INTERLEAVE IN PARENT Patients;
+
+CREATE TABLE Singers (
+  SingerId    INT64 NOT NULL,
+  FirstName   STRING(1024),
+  LastName    STRING(1024),
+  BirthDate   DATE,
+  Status      STRING(1024),
+  LastUpdated TIMESTAMP,
+  SingerInfo  googlesql.example.SingerInfo,
+  AlbumInfo   googlesql.example.Album,
+) PRIMARY KEY(SingerId);
+;
+
+CREATE TABLE AlbumInfo (
+  SingerId        INT64 NOT NULL,
+  AlbumId         INT64 NOT NULL,
+  AlbumTitle      STRING(MAX),
+  MarketingBudget INT64,
+) PRIMARY KEY(SingerId, AlbumId),
+  INTERLEAVE IN PARENT Singers ON DELETE CASCADE;
+
+CREATE TABLE Songs (
+  SingerId  INT64 NOT NULL,
+  AlbumId   INT64 NOT NULL,
+  TrackId   INT64 NOT NULL,
+  SongName  STRING(MAX),
+  Duration  INT64,
+  SongGenre STRING(25),
+) PRIMARY KEY(SingerId, AlbumId, TrackId),
+  INTERLEAVE IN PARENT AlbumInfo ON DELETE CASCADE;
+
+CREATE TABLE Concerts (
+  VenueId      INT64 NOT NULL,
+  SingerId     INT64 NOT NULL,
+  ConcertDate  DATE NOT NULL,
+  BeginTime    TIMESTAMP,
+  EndTime      TIMESTAMP,
+  TicketPrices ARRAY<INT64>,
+) PRIMARY KEY(VenueId, SingerId, ConcertDate);
+
+CREATE TABLE AckworthSingers (
+  SingerId   INT64 NOT NULL,
+  FirstName  STRING(1024),
+  LastName   STRING(1024),
+  BirthDate  DATE,
+) PRIMARY KEY(SingerId);
+
+CREATE TABLE Fans (
+  FanId     STRING(36) DEFAULT (GENERATE_UUID()),
+  FirstName STRING(1024),
+  LastName  STRING(1024),
+) PRIMARY KEY(FanId);
+
+
+Definitions for protocol buffers used in examples
+
+
+package googlesql.example;
+
+message SingerInfo {
+  optional string    nationality = 1;
+  repeated Residence residence   = 2;
+
+  message Residence {
+    required int64  start_year   = 1;
+    optional int64  end_year     = 2;
+    optional string city         = 3;
+    optional string country      = 4;
+  }
+}
+
+message Album {
+  optional string title = 1;
+  optional int64 tracks = 2;
+  repeated string comments = 3;
+  repeated Song song = 4;
+
+  message Song {
+    optional string songtitle = 1;
+    optional int64 length = 2;
+    repeated Chart chart = 3;
+
+    message Chart {
+      optional string chartname = 1;
+      optional int64 rank = 2;
+    }
+  }
+} 
+
+
+Data type properties
+When storing and querying data, it's helpful to keep the following data type properties in mind:
+
+
+Valid column types
+All data types are valid column types, except for:
+
+STRUCT
+INTERVAL
+Valid key column types
+All data types are valid key column types for primary keys, foreign keys, and secondary indexes, except for:
+
+FLOAT32
+ARRAY
+JSON
+STRUCT
+Storage size for data types
+Each data type includes 8 bytes of storage overhead, in addition to the following values:
+
+ARRAY: The sum of the size of its elements.
+BOOL: 1 byte.
+BYTES: The number of bytes.
+DATE: 4 bytes.
+FLOAT32: 4 bytes.
+FLOAT64: 8 bytes.
+INT64: 8 bytes.
+JSON: The number of bytes in UTF-8 encoding of the JSON-formatted string equivalent after canonicalization.
+NUMERIC: A function of both the precision and scale of the value being stored. The value 0 is stored as 1 byte. The storage size for all other values varies between 6 and 22 bytes.
+STRING: The number of bytes in its UTF-8 encoding.
+STRUCT: The sum of its parts.
+TIMESTAMP: 12 bytes.
+Nullable data types
+For nullable data types, NULL is a valid value. Currently, all existing data types are nullable.
+
+Orderable data types
+Expressions of orderable data types can be used in an ORDER BY clause. Applies to all data types except for:
+
+ARRAY
+PROTO
+STRUCT
+JSON
+GRAPH_ELEMENT
+GRAPH_PATH
+Ordering NULLs
+In the context of the ORDER BY clause, NULLs are the minimum possible value; that is, NULLs appear first in ASC sorts and last in DESC sorts.
+
+To learn more about using ASC and DESC, see the ORDER BY clause.
+
+Ordering floating points
+Floating point values are sorted in this order, from least to greatest:
+
+NULL
+NaN — All NaN values are considered equal when sorting.
+-inf
+Negative numbers
+0 or -0 — All zero values are considered equal when sorting.
+Positive numbers
++inf
+Groupable data types
+Can generally appear in an expression following GROUP BY and DISTINCT. All data types are supported except for:
+
+PROTO
+JSON
+ARRAY
+STRUCT
+GRAPH_PATH
+Grouping with floating point types
+Groupable floating point types can appear in an expression following GROUP BY and DISTINCT.
+
+Special floating point values are grouped in the following way, including both grouping done by a GROUP BY clause and grouping done by the DISTINCT keyword:
+
+NULL
+NaN — All NaN values are considered equal when grouping.
+-inf
+0 or -0 — All zero values are considered equal when grouping.
++inf
+Comparable data types
+Values of the same comparable data type can be compared to each other. All data types are supported except for:
+
+PROTO
+JSON
+Notes:
+
+Equality comparisons for array data types are supported as long as the element types are the same, and the element types are comparable. Less than and greater than comparisons aren't supported.
+Equality comparisons for structs are supported field by field, in field order. Field names are ignored. Less than and greater than comparisons aren't supported.
+All types that support comparisons can be used in a JOIN condition. See JOIN Types for an explanation of join conditions.
+Array type
+Name	Description
+ARRAY	Ordered list of zero or more elements of any non-array type.
+An array is an ordered list of zero or more elements of non-array values. Elements in an array must share the same type.
+
+Arrays of arrays aren't allowed. Queries that would produce an array of arrays return an error. Instead, a struct must be inserted between the arrays using the SELECT AS STRUCT construct.
+
+To learn more about the literal representation of an array type, see Array literals.
+
+To learn more about using arrays in GoogleSQL, see Work with arrays.
+
+NULLs and the array type
+An empty array and a NULL array are two distinct values. Arrays can contain NULL elements.
+
+Declaring an array type
+
+
+ARRAY<T>
+Array types are declared using the angle brackets (< and >). The type of the elements of an array can be arbitrarily complex with the exception that an array can't directly contain another array.
+
+Examples
+
+Type Declaration	Meaning
+ARRAY<INT64>	Simple array of 64-bit integers.
+ARRAY<STRUCT<INT64, INT64>>	An array of structs, each of which contains two 64-bit integers.
+ARRAY<ARRAY<INT64>>
+(not supported)	This is an invalid type declaration which is included here just in case you came looking for how to create a multi-level array. Arrays can't contain arrays directly. Instead see the next example.
+ARRAY<STRUCT<ARRAY<INT64>>>	An array of arrays of 64-bit integers. Notice that there is a struct between the two arrays because arrays can't hold other arrays directly.
+Constructing an array
+You can construct an array using array literals or array functions.
+
+Using array literals
+You can build an array literal in GoogleSQL using brackets ([ and ]). Each element in an array is separated by a comma.
+
+
+
+SELECT [1, 2, 3] AS numbers;
+
+SELECT ["apple", "pear", "orange"] AS fruit;
+
+SELECT [true, false, true] AS booleans;

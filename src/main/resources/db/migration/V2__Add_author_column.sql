@@ -1,0 +1,1 @@
+ALTER TABLE books ADD COLUMN author VARCHAR(255);

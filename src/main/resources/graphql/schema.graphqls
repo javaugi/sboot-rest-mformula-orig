@@ -1,0 +1,30 @@
+type Query {
+    allUsers: [GraphUser]
+    userById(id: ID!): GraphUser
+    
+    bookById(id: ID!): GraphBook
+    authorById(id: ID!): GraphAuthor
+}
+
+type Mutation {
+    addAuthor(id: ID!, firstName: String!, lastName: String!): addAuthor!
+}
+
+type GraphUser {
+    id: ID!
+    name: String!
+    email: String!
+}
+
+type GraphBook {
+    id: ID!
+    name: String!
+    pageCount: Int
+    author: GraphAuthor!
+}
+
+type GraphAuthor {
+    id: ID!
+    firstName: String!
+    lastName: String!
+}

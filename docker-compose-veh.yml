@@ -1,0 +1,65 @@
+#
+# Save this as docker-compose.yml and run docker-compose up -d.
+#
+
+version: '3'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.6.1
+    hostname: broker
+    container_name: broker
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    depends_on:
+      - zookeeper
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.6.1
+    hostname: schema-registry
+    container_name: schema-registry
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    depends_on:
+      - broker
+      
+# How to Run
+#     Start Docker Compose: Navigate to the directory containing docker-compose.yml and run docker-compose up -d. This will start Kafka and Schema Registry.
+# Compile and Package (Maven):
+#     Open a terminal in your Java project's root directory.
+#     Run mvn clean install to compile the code and package it into a JAR. This will also generate Java classes from your .avsc files if you included 
+#         the avro-maven-plugin. For this example, we are using GenericRecord, so generating specific classes is not strictly necessary but a good practice 
+#         for larger projects.
+# Run Producer:
+#     Execute the producer: java -jar target/vehicle-kafka-app-1.0-SNAPSHOT-jar-with-dependencies.jar (replace vehicle-kafka-app-1.0-SNAPSHOT-jar-with-dependencies.jar 
+#         with your actual JAR name if it differs).
+#     You should see output indicating messages being sent (both V1 and V2 events).
+# Run Consumer:
+# Open a separate terminal.
+#     Execute the consumer: java -jar target/vehicle-kafka-app-1.0-SNAPSHOT-jar-with-dependencies.jar com.example.inventory.consumer.VehicleConsumer
+# You should see the consumer receiving and printing the vehicle events. Notice how it handles the color field gracefully, printing "Color=N/A (or null)" for 
+#     V1 events and the actual color for V2 events.
+# This setup provides a robust foundation for building a fully compatible Kafka-based vehicle inventory management system with evolving schemas.

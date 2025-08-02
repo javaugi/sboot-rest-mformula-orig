@@ -1,0 +1,35 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: payment-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      stripePayment:
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        slidingWindowSize: 10
+  retry:
+    instances:
+      kafkaPublish:
+        maxAttempts: 3
+        waitDuration: 1s
+
+payment:
+  providers:
+    stripe:
+      api-key: ${STRIPE_API_KEY}
+      timeout-ms: 5000
+    paypal:
+      client-id: ${PAYPAL_CLIENT_ID}
+      secret: ${PAYPAL_SECRET}        

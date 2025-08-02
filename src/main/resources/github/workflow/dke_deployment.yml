@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pharmacy-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pharmacy
+  template:
+    spec:
+      containers:
+      - name: pharmacy
+        image: gcr.io/cvs-project/pharmacy-service:latest
+        ports:
+        - containerPort: 8080      

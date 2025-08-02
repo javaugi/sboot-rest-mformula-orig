@@ -1,0 +1,10 @@
+{
+  "US": {
+    "overtime": { "threshold": 40, "rate": 1.5 },
+    "tax": { "federal": 0.22, "state": 0.05 }
+  },
+  "EU": {
+    "overtime": { "threshold": 35, "rate": 1.25 },
+    "tax": { "vat": 0.20 }
+  }
+}

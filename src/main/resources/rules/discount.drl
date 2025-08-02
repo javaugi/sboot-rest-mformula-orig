@@ -1,0 +1,11 @@
+package rules;
+
+import com.example.Customer;
+
+rule "Apply 10% discount for VIPs"
+when
+    $c : Customer(type == "VIP", totalPurchase > 1000)
+then
+    System.out.println("Applying 10% discount for " + $c.getName());
+    $c.setDiscount(0.10);
+end

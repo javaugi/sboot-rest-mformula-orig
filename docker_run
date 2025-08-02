@@ -1,0 +1,10 @@
+#!/bin/sh
+echo "Running: mvn clean package"
+mvn --version
+mvn clean package
+reset
+echo "Updating MANIFEST.MF: jar ufm target/jinvidia-saas-carloner.jar src/main/webapp/META-INF/MANIFEST.MF"
+jar ufm target/jinvidia-saas-carloner.jar src/main/webapp/META-INF/MANIFEST.MF
+echo "Running docker-compose up --build"
+docker-compose up --build
+

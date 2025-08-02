@@ -1,0 +1,27 @@
+adyen:
+  api-key: ${ADYEN_API_KEY}
+  merchant-account: ${ADYEN_MERCHANT_ACCOUNT}
+  environment: test # or live
+  endpoint: https://checkout-test.adyen.com/v69
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: payment-service
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      adyenPayment:
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+  retry:
+    instances:
+      adyenRetry:
+        maxAttempts: 3
+        waitDuration: 1s

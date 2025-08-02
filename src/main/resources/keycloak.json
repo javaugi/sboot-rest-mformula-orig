@@ -1,0 +1,6 @@
+{
+  "providers": ["jpa", "js"],
+  "managementPort": 9000,
+  "httpPort": 8081,
+  "hostname": "localhost"
+}

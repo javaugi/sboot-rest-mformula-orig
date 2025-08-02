@@ -1,0 +1,11 @@
+name: Deploy to GKE
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: mvn package
+    - uses: google-github-actions/setup-gcloud@v0
+    - run: gcloud container clusters get-credentials cvs-cluster --region us-east1
+    - run: kubectl apply -f k8s/deployment.yaml
