@@ -4,25 +4,31 @@
  */
 package com.spring5.service;
 
+import com.spring5.dto.PatientDto;
 import com.spring5.entity.Assessment;
 import com.spring5.entity.Patient;
 import com.spring5.repository.PatientRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- *
- * @author javaugi
- */
-@org.springframework.stereotype.Service
+@RequiredArgsConstructor
+@Service
 public class PatientService {
-    
-    
-    @Autowired 
-    private PatientRepository patientRepository;
+
+    private final PatientRepository patientRepository;
+    private final PatientMapper mapper;
+
+    public PatientDto getPatient(Long id) {
+        return mapper.toDto(patientRepository.findById(id).orElseThrow());
+    }
+
+    public void savePatient(PatientDto dto) {
+        Patient entity = mapper.toEntity(dto);
+        patientRepository.save(entity);
+    }
 
     public Patient save(Patient patient) {
         return patientRepository.save(patient);

@@ -33,6 +33,7 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.server.WebFilter;
 
 /**
  *
@@ -84,6 +85,7 @@ public class SecurityConfig {
 
         //return http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class).build();
         http.addFilter(regionFilter);
+        //http.addFilter(new JwtAuthenticationFilter(authenticationManager()));
         return http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 
@@ -104,12 +106,20 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://localhost:8080"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+        configuration.setAllowedOrigins(Arrays.asList("https://localhost:8080", "https://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public WebFilter corsFilter() {
+        return (exchange, chain) -> {
+            exchange.getResponse().getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
+            return chain.filter(exchange);
+        };
     }
 
     @Bean
@@ -149,6 +159,13 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
+    /*
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12); // Strength factor 12-31
+    }
+     */
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

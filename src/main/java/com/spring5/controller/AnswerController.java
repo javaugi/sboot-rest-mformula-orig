@@ -5,8 +5,10 @@
 package com.spring5.controller;
 
 import com.spring5.entity.Answer;
+import com.spring5.repository.AnswerRepository;
 import com.spring5.service.AnswerService;
 import com.spring5.service.AssessmentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -18,24 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-/**
- *
- * @author javaugi
- */
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {
     private final AnswerService answerService;
     private final AssessmentService assessmentService;
-
-    public AnswerController(AnswerService answerService, AssessmentService assessmentService) {
-        this.answerService = answerService;
-        this.assessmentService = assessmentService;
-    }
+    private final AnswerRepository answerRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<Answer>> getAnswerById(@PathVariable Long id) {
-        Answer answer = answerService.findById(id);
+        Answer answer; //answerService.findById(id);
+        answer = answerRepository.findById(id).orElse(null);
         if (answer == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Answer not found");
         }

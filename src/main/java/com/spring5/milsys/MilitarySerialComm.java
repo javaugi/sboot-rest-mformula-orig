@@ -4,6 +4,7 @@
  */
 package com.spring5.milsys;
 
+import com.spring5.validatorex.DefenseSystemException;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;

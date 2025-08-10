@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.spring5.service;
+package com.spring5.security;
 
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @author javaugi
  */
 @Service
-public class SecureService {
+public class ExampleSecureService {
     @PreAuthorize("hasRole('ADMIN')")
     public String adminOnlyMethod() {
         return "Only accessible by users with ADMIN role";

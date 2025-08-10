@@ -217,7 +217,7 @@
                 <exclusion>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
-                </exclusion>                
+                </exclusion>                                          
             </exclusions>              
         </dependency>        
         <dependency>
@@ -822,6 +822,12 @@
             <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.5.Final</version>
+          </dependency>        
+        
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -1581,11 +1587,13 @@
             <groupId>com.github.victools</groupId>
             <artifactId>jsonschema-module-jackson</artifactId>
             <version>4.38.0</version>
-        </dependency>
+        </dependency> 
+        <!--
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        -->
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -1832,7 +1840,13 @@
             <artifactId>selenium-java</artifactId>
             <scope>test</scope>
         </dependency>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
+        </dependency>    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
     </dependencies>
 
     <build>
@@ -1883,6 +1897,15 @@
                         <arg>-Xlint:-unchecked</arg>
                         <arg>-Xlint:-deprecation</arg>
                     </compilerArgs>
+                    <!--
+                    <annotationProcessorPaths>
+                      <path>
+                        <groupId>org.mapstruct</groupId>
+                        <artifactId>mapstruct-processor</artifactId>
+                        <version>1.5.5.Final</version>
+                      </path>
+                    </annotationProcessorPaths>
+                    -->                        
                 </configuration>
             </plugin>
             <plugin>

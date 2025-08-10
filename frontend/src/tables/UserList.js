@@ -20,10 +20,18 @@ const UserList = () => {
   }, []);
 
   return (
-    <div>
-      <button onClick={logout}>Logout</button>
-      {/* Render users */}
-    </div>
+    <main role="main">
+      <h1>Users</h1>
+      <ul>
+        {users.map(user => (
+          <li key={user.id}>{user.name} - {user.email}</li>
+        ))}
+      </ul>
+      <div>
+        <button onClick={logout}>Logout</button>
+        {/* Render users */}
+      </div>
+    </main>      
   );
 };
 

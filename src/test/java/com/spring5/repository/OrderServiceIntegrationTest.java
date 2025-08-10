@@ -8,7 +8,7 @@ import com.spring5.audit.AuditOrder;
 import com.spring5.audit.OrderRequest;
 import com.spring5.audit.OrderService;
 //import com.spring5.rediscache.idempotency.OrderRequest;
-import com.spring5.validator.PaymentException;
+import com.spring5.validatorex.PaymentException;
 import javax.transaction.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;

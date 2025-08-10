@@ -6,7 +6,7 @@ package com.spring5.rediscache.proactivecachepopu;
 
 import static com.spring5.rediscache.proactivecachepopu.InventoryEvent.EventType.RESERVATION;
 import com.spring5.repository.InventoryRepository;
-import com.spring5.validator.InventoryException;
+import com.spring5.validatorex.InventoryException;
 import static jakarta.persistence.GenerationType.UUID;
 import java.util.Map;
 import lombok.AllArgsConstructor;

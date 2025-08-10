@@ -2,22 +2,30 @@ package com.spring5.service;
 
 import com.spring5.dao.UserDao;
 import com.spring5.entity.User;
+import com.spring5.repository.UserRepository;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImp extends UserServiceAbstractImp {
 
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
+    private final UserRepository repo;
+    private final PasswordEncoder encoder;
+
+    @Transactional
+    public User register(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repo.save(user);
+    }
 
     @Transactional
     @Override

@@ -2,6 +2,7 @@ package com.spring5.entity;
 
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Getter
 @Setter
@@ -47,7 +51,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
     private String email;
     private String name;
@@ -65,4 +71,22 @@ public class User {
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)  // Makes sense here
     @JoinColumn(name = "preferences_id")
     private UserPreferences preferences;
+
+    @PrePersist  // Hash before saving to DB
+    @PreUpdate   // Re-hash if password changes
+    public void hashPassword() {
+        if (password != null && !password.startsWith("$2a$")) { // Skip if already hashed
+            this.password = hash(password);
+        }
+    }
+
+    // Helper method (or inject a Spring Bean)
+    private static String hash(String plainText) {
+        return BCrypt.hashpw(plainText, BCrypt.gensalt(12));
+    }
+
+    // Verify password (for login)
+    public boolean verifyPassword(String rawPassword) {
+        return BCrypt.checkpw(rawPassword, this.password);
+    }
 }

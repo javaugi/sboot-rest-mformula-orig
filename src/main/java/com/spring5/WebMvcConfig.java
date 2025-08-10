@@ -71,7 +71,7 @@ This dependency includes everything needed to expose API documentation through S
 
 @Configuration
 @EnableWebMvc
-//http://localhost:8088/swagger-ui/index.html 
+//http://localhost:8080/swagger-ui/index.html
 //-- @Param("category") is required in the Repository for swagger-ui to work
 // io.swagger.core.v3 upgrade required
 public class WebMvcConfig implements WebMvcConfigurer {

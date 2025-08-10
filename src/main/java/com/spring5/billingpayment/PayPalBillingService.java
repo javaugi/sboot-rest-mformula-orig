@@ -4,6 +4,7 @@
  */
 package com.spring5.billingpayment;
 
+import com.spring5.validatorex.BillingException;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
