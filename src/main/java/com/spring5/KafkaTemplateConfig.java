@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -111,7 +112,7 @@ public class KafkaTemplateConfig extends KafkaBaseConfig {
     }
     
     
-    /* If you want Spring to create topics automatically at startup:
+    //* If you want Spring to create topics automatically at startup:
     @Bean
     public NewTopic auditEventsTopic() {
         return new NewTopic("audit-events", 3, (short) 1); // topicName, partitions, replicationFactor

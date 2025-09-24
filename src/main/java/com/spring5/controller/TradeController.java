@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,7 +77,7 @@ public class TradeController {
     
 
     @PutMapping("/update-trade")
-    public ResponseEntity<Trade> updateTrade(org.springframework.http.RequestEntity<Trade> request) {
+    public ResponseEntity<Trade> updateTrade(RequestEntity<Trade> request) {
         Trade trade = tradeService.updateTrade(request.getBody());
         if (trade != null) {
             return ResponseEntity.ok(trade);

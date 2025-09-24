@@ -4,9 +4,10 @@
  */
 package com.spring5.entity;
 
+import com.spring5.utils.converters.EncryptedStringConverter;
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
-import java.time.LocalDate;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,12 +43,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "PATIENT")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@EntityListeners(PatientEntityListener.class) // Listener to handle encryption
 public class Patient implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
+    Long version;
+
     private String name;
+
+    @Convert(converter = EncryptedStringConverter.class) // JPA Attribute Converter
+    private String ssn; // Social Security Number - PII/PHI
     
     @NotBlank(message = "First name is required")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")

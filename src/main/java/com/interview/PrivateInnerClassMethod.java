@@ -4,36 +4,29 @@
  */
 package com.interview;
 
-import com.interview.hackerrank.Student;
+import com.interview.hrank.Student;
 import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 /*
-1×× Informational
-
-2×× Success
-
-3×× Redirection
-
-4×× Client Error * 400 Bad Request * 401 Unauthorized ... * 405 Method Not Allowed ...
-
-5×× Server Error * 500 Internal Server Error * 501 Not Implemented * 502 Bad Gateway ...
+    1×× Informational
+    2×× Success
+    3×× Redirection
+    4×× Client Error * 400 Bad Request * 401 Unauthorized ... * 405 Method Not Allowed ...
+    5×× Server Error * 500 Internal Server Error * 501 Not Implemented * 502 Bad Gateway ...
 
 In other words, each major number (200, 400, 500, etc.) is a CATEGORY. You can "refine" the error code by choosing a specific error within the "category".
 
 To your original question:
-
-If the Client request is "bad" (for example, illegal username/password), then return a 4xx.
-
-If the Server somehow fails (for example, you can't read the database), then return a 5xx.
-
-The "official" list of HTTP error codes is RFC 7231:
-*/
+    If the Client request is "bad" (for example, illegal username/password), then return a 4xx.
+    If the Server somehow fails (for example, you can't read the database), then return a 5xx.
+    The "official" list of HTTP error codes is RFC 7231:
+ */
 
 public class PrivateInnerClassMethod {
 
     public static void main(String[] args) throws Exception {
-        //runMain1();
+        runMain1();
         printStudentMethods();
     }//end of main
 

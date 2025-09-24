@@ -61,8 +61,8 @@ public class PatientApiController {
     @GetMapping("/{id}")
     public ResponseEntity<PatientResource> getPatientById(@PathVariable Long id) {
         return patientRepository.findById(id)
-                .map(patient -> {
-                    PatientResource resource = new PatientResource(patient);
+            .map(patient -> {
+                PatientResource resource = new PatientResource(patient);
                     resource.add(entityLinks.linkToItemResource(Patient.class, id).withSelfRel());
                     resource.add(entityLinks.linkToCollectionResource(Patient.class).withRel("all-patients"));
                     return ResponseEntity.ok(resource);

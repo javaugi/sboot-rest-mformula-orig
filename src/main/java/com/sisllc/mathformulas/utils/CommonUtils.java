@@ -7,7 +7,7 @@
  */
 
 package com.sisllc.mathformulas.utils;
-import com.abc.utils.AddressPoBoxVO;
+import com.interview.common.utils.AddressPoBoxVO;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;

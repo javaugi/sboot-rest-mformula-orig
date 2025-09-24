@@ -29,7 +29,7 @@ public class JsonSchemaValidatorFactory {
             this.schema.validate(new JSONObject(payload));
             return true;
         } catch(JSONException ex) {
-            log.error("Error validateJsonPaylaod schema {} payload {}", schema, payload);
+            log.error("Error validateJsonPaylaod schema {} payload {}", schema, payload, ex);
         }
         
         return false;

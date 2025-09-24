@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+      http://www.liquibase.org/xml/ns/pro
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+
+    <changeSet id="003-1" author="your.name">
+        <comment>Create the performance_goals table</comment>
+        
+        <createTable tableName="performance_goals">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="employee_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="review_cycle_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="goal_title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="goal_description" type="TEXT"/>
+            <column name="target_date" type="date"/>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="progress_notes" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="003-2" author="your.name">
+        <comment>Add foreign key constraints for performance_goals table</comment>
+        
+        <addForeignKeyConstraint
+                baseTableName="performance_goals"
+                baseColumnNames="employee_id"
+                referencedTableName="employee" <!-- Assuming an 'employee' table exists -->
+                referencedColumnNames="id"
+                constraintName="fk_performance_goals_employee_id"
+                onDelete="CASCADE"/>
+                
+        <addForeignKeyConstraint
+                baseTableName="performance_goals"
+                baseColumnNames="review_cycle_id"
+                referencedTableName="review_cycle" <!-- Assuming a 'review_cycle' table exists -->
+                referencedColumnNames="id"
+                constraintName="fk_performance_goals_review_cycle_id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="003-3" author="your.name">
+        <comment>Create indexes on performance_goals foreign keys and status</comment>
+        
+        <createIndex indexName="idx_performance_goals_employee_id"
+                     tableName="performance_goals">
+            <column name="employee_id"/>
+        </createIndex>
+        
+        <createIndex indexName="idx_performance_goals_review_cycle_id"
+                     tableName="performance_goals">
+            <column name="review_cycle_id"/>
+        </createIndex>
+        
+        <createIndex indexName="idx_performance_goals_status"
+                     tableName="performance_goals">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

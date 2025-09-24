@@ -4,9 +4,11 @@
  */
 package com.interview.gmprep;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,8 +21,9 @@ public class PaintShopScheduling {
         int[] carSequence = {1, 4, 2, 7, 5, 9, 3, 6};
         int cleanTime = 2;
 
-        log.info("          minColorSwitches {}", m.minColorSwitches(carSequence, cleanTime));
-        log.info("Optimized minColorSwitches {}", m.minColorSwitchesOptimized(carSequence, cleanTime));
+        log.info("1          minColorSwitches {}", m.minColorSwitches(carSequence, cleanTime));
+        log.info("2 Optimized minColorSwitches {}", m.minColorSwitchesOptimized(carSequence, cleanTime));
+        log.info("3     minColorSwitchesStream {}", m.minColorSwitchesStream(carSequence, cleanTime));
     }
 
     /*
@@ -38,6 +41,19 @@ public class PaintShopScheduling {
             }
         }
         return (switches - 1) * cleanTime;
+    }
+
+    public int minColorSwitchesStream(int[] carSequence, int cleanTime) {
+        final AtomicInteger lastColor = new AtomicInteger(-1);
+        final AtomicInteger switches = new AtomicInteger(0);
+        Arrays.stream(carSequence).forEach(e -> {
+            if (e != lastColor.get()) {
+                switches.getAndIncrement();
+                lastColor.set(e);
+            }
+        });
+
+        return switches.decrementAndGet() * cleanTime;
     }
 
     /*

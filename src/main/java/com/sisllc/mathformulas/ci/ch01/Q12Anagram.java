@@ -1,28 +1,67 @@
 package com.sisllc.mathformulas.ci.ch01;
 
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- *
- *
- * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
- */
+@Slf4j
 public class Q12Anagram {
 
-    private static final Logger log = LoggerFactory.getLogger(Q12Anagram.class);
+    public static void main(String[] args) {
+        String[][] pairs = {{"apple", "papel"}, {"carrot", "tarroc"}, {"hello", "llloh"}};
+        for (String[] pair : pairs) {
+            String word1 = pair[0];
+            String word2 = pair[1];
+            boolean anagram = permutation(word1, word2);
+            System.out.println("1..." + word1 + ", " + word2 + ": " + anagram);
+            System.out.println(anagram(word1, word2));
+
+            System.out.println("2..." + word1 + ", " + word2 + ": " + isAnagramSimplified(word1, word2));
+            System.out.println("3..." + word1 + ", " + word2 + ": " + isAnagramSimplified2(word1, word2));
+        }
+    }
 
     public static String sort(String s) {
+        String s1 = "jlfjfgg";
+        s1 = s1.toLowerCase().chars()
+            .sorted()
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
+
         char[] content = s.toCharArray();
-        java.util.Arrays.sort(content);
+        Arrays.sort(content);
         return new String(content);
     }
 
     public static boolean permutation(String s, String t) {
         return sort(s).equals(sort(t));
+    }
+
+    public static boolean isAnagramSimplified(String s1, String s2) {
+        s1 = s1.replaceAll("\\s", "");
+        s2 = s2.replaceAll("\\s", "");
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+
+        char[] s1Array = s1.toLowerCase().toCharArray();
+        char[] s2Array = s2.toLowerCase().toCharArray();
+        //Sorting both character array
+        Arrays.sort(s1Array);
+        Arrays.sort(s2Array);
+        return Arrays.equals(s1Array, s2Array);
+    }
+
+    public static boolean isAnagramSimplified2(String s1, String s2) {
+        s1 = s1.toLowerCase().chars()
+            .sorted()
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
+        s2 = s2.toLowerCase().chars()
+            .sorted()
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
+
+        return Arrays.equals(s1.toCharArray(), s2.toCharArray());
     }
 
     public static boolean anagram(String s, String t) {
@@ -55,17 +94,6 @@ public class Q12Anagram {
             }
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        String[][] pairs = {{"apple", "papel"}, {"carrot", "tarroc"}, {"hello", "llloh"}};
-        for (String[] pair : pairs) {
-            String word1 = pair[0];
-            String word2 = pair[1];
-            boolean anagram = permutation(word1, word2);
-            System.out.println(word1 + ", " + word2 + ": " + anagram);
-            System.out.println(anagram(word1, word2));
-        }
     }
 
     public static boolean isAnagram(String input1, String input2) {

@@ -4,7 +4,7 @@
  */
 package com.spring5.repository;
 
-import com.abc.utils.IterableToList;
+import com.interview.common.utils.IterableToList;
 import com.spring5.dao.UserDao;
 import com.spring5.entity.User;
 import com.spring5.service.UserServiceImp;

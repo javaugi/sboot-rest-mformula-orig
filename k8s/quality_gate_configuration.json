@@ -1,0 +1,39 @@
+{
+  "name": "Spring Boot Quality Gate",
+  "conditions": [
+    {
+      "metric": "new_bugs",
+      "operator": "GREATER_THAN",
+      "error": "0",
+      "period": 1
+    },
+    {
+      "metric": "vulnerabilities",
+      "operator": "GREATER_THAN", 
+      "error": "0",
+      "period": 1
+    },
+    {
+      "metric": "code_smells",
+      "operator": "GREATER_THAN",
+      "error": "10",
+      "period": 1
+    },
+    {
+      "metric": "coverage",
+      "operator": "LESS_THAN",
+      "error": "80.0"
+    },
+    {
+      "metric": "duplicated_lines_density", 
+      "operator": "GREATER_THAN",
+      "error": "3.0"
+    },
+    {
+      "metric": "ncloc",
+      "operator": "GREATER_THAN",
+      "warning": "10000",
+      "error": "50000"
+    }
+  ]
+}

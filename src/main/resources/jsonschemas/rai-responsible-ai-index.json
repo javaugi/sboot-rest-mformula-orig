@@ -1,0 +1,21 @@
+{
+  "modelId": "string",
+  "operation": "string",
+  "version": "string",
+  "timestamp": "ISO8601",
+  "scores": {
+    "transparency": 0.0,
+    "fairness": 0.0,
+    "privacy": 0.0,
+    "robustness": 0.0,
+    "regulatoryAlignment": 0.0
+  },
+  "compositeScore": 0.0,
+  "explainabilityLinks": ["url"],
+  "evaluationNotes": "string",
+  "evaluator": "string",
+  "dataUsed": {
+    "trainPeriod": "YYYY-MM-DD to YYYY-MM-DD",
+    "dataSources": ["sourceA","sourceB"]
+  }
+}

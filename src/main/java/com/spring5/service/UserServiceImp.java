@@ -27,6 +27,11 @@ public class UserServiceImp extends UserServiceAbstractImp {
         return repo.save(user);
     }
 
+    @Override
+    public boolean validateUserExists(Long id) {
+        return repo.findById(id).isPresent();
+    }
+
     @Transactional
     @Override
     public void save(User user) {

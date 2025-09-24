@@ -4,7 +4,7 @@
  */
 package com.interview;
 
-import com.interview.hackerrank.GenericPrint;
+import com.interview.hrank.GenericPrint;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -185,11 +185,17 @@ Sample Output
                 .forEach(e -> doPrint.print(e));
         
         input = Arrays.copyOfRange(orig, 0, orig.length);
-        System.out.println("\n sortPrint Descending BigDecimal array ...");
+        System.out.println("\n sortPrint Descending BigDecimal array input=" + Arrays.toString(input));
         Arrays.stream(input)
                 .sorted((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)))
                 .forEach(e -> doPrint.print(e));
         
+        input = Arrays.copyOfRange(orig, 0, orig.length);
+        System.out.println("\n sortPrint Descending BigDecimal array input=" + Arrays.toString(input));
+        Arrays.stream(input)
+            .sorted((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)))
+            .forEach(e -> System.out.print("        " + e));
+
         input = Arrays.copyOfRange(orig, 0, orig.length);
         System.out.println("\n sortPrint Ascending String array ...");
         Arrays.stream(input)

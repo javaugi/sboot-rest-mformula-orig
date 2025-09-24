@@ -1,6 +1,7 @@
 package com.sisllc.mathformulas.ci.ch01;
 
 import com.sisllc.mathformulas.ci.lib.AssortedMethods;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,5 +47,10 @@ public class Q14CharArrayToString {
         }
         replaceSpaces(arr, str.length());
         System.out.println("\"" + AssortedMethods.charArrayToString(arr) + "\"");
+        System.out.println("charArrayToString " + charArrayToString(arr) + ", original arr=" + Arrays.toString(arr));
+    }
+
+    public static String charArrayToString(char[] arr) {
+        return new String(arr);
     }
 }

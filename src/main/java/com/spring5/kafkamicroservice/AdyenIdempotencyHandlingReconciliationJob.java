@@ -27,7 +27,7 @@ public class AdyenIdempotencyHandlingReconciliationJob {
 
     @KafkaListener(topics = "payment.requests")
     public void processPayment(@Payload AdyenPaymentRequest request,
-            @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String paymentId) {
+        @Header(KafkaHeaders.RECEIVED_KEY) String paymentId) {
 
         if (paymentRepository.existsByIdAndStatusNot(paymentId, AdyenPaymentStatus.PENDING)) {
             log.info("Duplicate payment request {}", paymentId);

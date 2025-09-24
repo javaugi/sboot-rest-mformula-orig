@@ -20,12 +20,11 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.backoff.FixedBackOff;
-import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 
 @Configuration
 @Slf4j
@@ -65,20 +64,22 @@ public class KafkaTuningConfig extends KafkaBaseConfig {
         factory.getContainerProperties().setPollTimeout(3000); // 3 seconds
         return factory;
     }
-    
+
+    @Bean
+    public DefaultErrorHandler errorHandler() {
+        return new DefaultErrorHandler(new FixedBackOff(0L, 1L)); // Example with FixedBackOff
+    }
+
     @Primary
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactoryRetry() {
+    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactoryRetry(DefaultErrorHandler errorHandler) {
         ConcurrentKafkaListenerContainerFactory<String, String> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(concurrency);
 
         // Configure error handler
-        factory.setErrorHandler(new SeekToCurrentErrorHandler(
-                new DeadLetterPublishingRecoverer(kafkaTemplate),
-                new FixedBackOff(1000L, 2L) // 1 second interval, 2 attempts
-        ));
+        factory.setCommonErrorHandler(errorHandler);
 
         // Configure retry template
         RetryTemplate retryTemplate = new RetryTemplate();
@@ -89,7 +90,7 @@ public class KafkaTuningConfig extends KafkaBaseConfig {
         retryTemplate.setBackOffPolicy(backOffPolicy);
         retryTemplate.setRetryPolicy(new SimpleRetryPolicy(3));
 
-        factory.setRetryTemplate(retryTemplate);
+        factory.setReplyTemplate(kafkaTemplate);
 
         return factory;
     }

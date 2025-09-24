@@ -6,6 +6,7 @@ package com.interview;
 
 import java.util.*;
 import static java.util.Map.entry;
+import lombok.extern.slf4j.Slf4j;
 
 /*
 Explanation:
@@ -22,6 +23,7 @@ Key Points:
     Edge Cases: Handles empty strings (returns true) and strings with only closing parentheses (returns false).
     This solution efficiently checks for balanced parentheses using the LIFO principle of stacks.
 */
+@Slf4j
 public class BalancedParentheses {
     public static void main(String[] args) {
         /*
@@ -32,14 +34,20 @@ public class BalancedParentheses {
             System.out.println(isBalanced(input));
         }
         // */
-        
+
         System.out.println("1 isBalanced ...");
-        List<String> inputs = Arrays.asList( "{}()","({()})", "{}(","[])", "b[]a");
-        for (String input: inputs) {
+        List<String> inputs = Arrays.asList("{}()", "({()})", "{}(", "[])", "b[]a");
+        for (String input : inputs) {
             String value = (isBalanced(input) ? "true": "false");
-            System.out.println(value);
+            String value2 = (isBalanced2(input) ? "true" : "false");
+            String value3 = (isBalancedParentheses(input) ? "true" : "false");
+            log.debug("input={}     bal 1?={}   bal 2?={}   bal 3?={}", input, value, value2, value3);
         }
-        
+
+        if (true) {
+            return;
+        }
+
         System.out.println("2 isBalanced ...");
         for (String input: inputs) {
             String value = (isBalanced2(input) ? "true": "false");
@@ -67,14 +75,37 @@ public class BalancedParentheses {
                 if (stack.isEmpty()) return false;
                 
                 char top = stack.pop();
+                if ((c == '}' && top != '{')
+                    || (c == ']' && top != '[')
+                    || (c == ')' && top != '(')) {
+                    return false;
+                }
+
+                /*
                 if (!((c == '}' && top == '{') || 
                       (c == ']' && top == '[') || 
                       (c == ')' && top == '('))) {
                     return false;
                 }
+                // */
             }
         }
         
+        return stack.isEmpty();
+    }
+
+    public static boolean isBalancedParentheses(String s) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : s.toCharArray()) {
+            if (c == '{' || c == '[' || c == '(') {
+                stack.push(c);
+            } else if (stack.isEmpty() || stack.pop() != c) {
+                //stack.pop() must be = c to be balanced
+                return false;
+            }
+        }
+
         return stack.isEmpty();
     }
     
@@ -90,14 +121,13 @@ public class BalancedParentheses {
                 }
                 
                 char top = stack.pop();     
-                if ( charOutOfBalance(c, top)) {
+                if (charOutOfBalance2(c, top)) {
                     return false;
                 }
             }
             
         }
-        
-        
+
         return stack.isEmpty();
     }
 
@@ -106,6 +136,11 @@ public class BalancedParentheses {
                 || (c == ')' && top == '('));
     }
     
+    private static boolean charOutOfBalance2(char c, char top) {
+        return (c == '}' && top != '{') || (c == ']' && top != '[')
+            || (c == ')' && top != '(');
+    }
+
     public static boolean isValidParentheses(String s) {
         Stack<Character> stack = new Stack<>();
         for (char c : s.toCharArray()) {

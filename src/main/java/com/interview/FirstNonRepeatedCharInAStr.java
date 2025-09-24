@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FirstNonRepeatedCharInAStr {
+
     public static void main(String[] args) {
         FirstNonRepeatedCharInAStr main = new FirstNonRepeatedCharInAStr();
         String ex = "aaaaa";
@@ -29,67 +30,65 @@ public class FirstNonRepeatedCharInAStr {
         log.info("\n 4. print non repeatable char FROM " + ex);
         printNonRepeatableChar(ex);
     }
-    
-   
+
     private static char findFirstNonRepeatableChar(String s) {
-        return s.chars().mapToObj(c -> (char)c)
-                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
-                .entrySet().stream().filter(entry -> entry.getValue() == 1)
-                .map(m -> m.getKey())
-                .findFirst()
-                .orElseThrow();
+        return s.chars().mapToObj(c -> (char) c)
+            .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+            .entrySet().stream().filter(entry -> entry.getValue() == 1)
+            .map(m -> m.getKey())
+            .findFirst()
+            .orElseThrow();
     }
-    
+
     private static long findTotalNonRepeatableChars(String s) {
-        return s.chars().mapToObj(c -> (char)c)
-                .collect(Collectors.groupingBy(Function.identity(), HashMap::new, Collectors.counting()))
-                .entrySet().stream().filter(entry -> entry.getValue() == 1)
-                .map(m -> m.getKey())
-                .count();
+        return s.chars().mapToObj(c -> (char) c)
+            .collect(Collectors.groupingBy(Function.identity(), HashMap::new, Collectors.counting()))
+            .entrySet().stream().filter(entry -> entry.getValue() == 1)
+            .map(m -> m.getKey())
+            .count();
     }
-    
+
     private static void printNonRepeatableChar(String s) {
-        s.chars().mapToObj(c -> (char)c)
-                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
-                .entrySet().stream().filter(entry -> entry.getValue() == 1)
-                .map(m -> m.getKey())
-                .forEach(e -> System.out.print(" " + e));
+        s.chars().mapToObj(c -> (char) c)
+            .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+            .entrySet().stream().filter(entry -> entry.getValue() == 1)
+            .map(m -> m.getKey())
+            .forEach(e -> System.out.print(" " + e));
     }
-        
 
     // Find the first non-repeated character in a string using Java Streams
     public static char firstNonRepeatedChar(String s) {
-        try{
+        try {
             return s.chars()
-                    .mapToObj(c -> (char) c)
-                    .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
-                    .entrySet().stream()
-                    .filter(entry -> entry.getValue() == 1)
-                    .map(Map.Entry::getKey)
-                    .findFirst().orElse((char)0);
-        }catch(Exception e) {
+                .mapToObj(c -> (char) c).collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue() == 1)
+                .map(Map.Entry::getKey)
+                .findFirst().orElse((char) 0);
+        } catch (Exception e) {
             log.error("Error {}", s, e);
         }
-        
+
         return 0;
     }
 
     // Find the first non-repeated character in a string using Java Streams
     public static char firstMinRepeatedChars(String s) {
         return s.chars()
-                .mapToObj(c -> (char) c)
-                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
-                .entrySet().stream()
-                .min(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).get();
+            .mapToObj(c -> (char) c)
+            .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+            .entrySet().stream()
+            .min(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey).get();
     }
+
     // Find the first non-repeated character in a string using Java Streams
     public static char firstMaxRepeatedChars(String s) {
         return s.chars()
-                .mapToObj(c -> (char) c)
-                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
-                .entrySet().stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).get();
+            .mapToObj(c -> (char) c)
+            .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+            .entrySet().stream()
+            .max(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey).get();
     }
 }

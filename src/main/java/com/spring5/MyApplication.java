@@ -4,6 +4,7 @@
  */
 package com.spring5;
 
+import com.spring5.config.ExternalApiProperties;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import com.spring5.graphql.Neo4jPersonRepository;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.scheduling.annotation.EnableAsync;
 //import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 //import org.springframework.boot.autoconfigure.security.oauth2.server.servlet.OAuth2AuthorizationServerAutoConfiguration;
 //import org.springframework.security.oauth2.config.annotation.web.configuration.OAuth2ClientConfiguration;
@@ -46,6 +49,8 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 @ComponentScan(basePackages = {MyApplication.PACKAGES_TO_SCAN})
 @EnableJpaRepositories(basePackages = {MyApplication.PACKAGES_TO_SCAN})
 @ConfigurationProperties
+@EnableConfigurationProperties(ExternalApiProperties.class)
+@EnableAsync
 public class MyApplication {
 
     protected static final String PACKAGES_TO_SCAN = "com.spring5";

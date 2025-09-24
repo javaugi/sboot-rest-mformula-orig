@@ -1,0 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.spring5.repository;
+
+import com.spring5.dto.ProjectDTO;
+import com.spring5.empbilpayroll.EmployeeProject;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProjectRepository extends JpaRepository<EmployeeProject, Long> {
+
+    public List<ProjectDTO> findAllProjects();
+}

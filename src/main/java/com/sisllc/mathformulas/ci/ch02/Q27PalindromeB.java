@@ -61,4 +61,12 @@ public class Q27PalindromeB {
         System.out.println(head.printForward());
         System.out.println(isPalindrome(head));
     }
+
+    public static boolean isPalindromSimplified(String s1) {
+        return s1.equalsIgnoreCase(s1.transform(s -> new StringBuilder(s).reverse().toString()));
+    }
+
+    public static boolean isPalindromSimplified2(String s1) {
+        return s1.equalsIgnoreCase(new StringBuilder(s1).reverse().toString());
+    }
 }

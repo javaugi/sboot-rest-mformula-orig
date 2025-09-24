@@ -1,5 +1,6 @@
 package com.sisllc.mathformulas.ci.ch01;
 
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,5 +45,15 @@ public class Q12Anagram2 {
             boolean anagram = permutation(word1, word2);
             System.out.println(word1 + ", " + word2 + ": " + anagram);
         }
+    }
+
+    public static boolean permutation2(String s, String t) {
+        return sortString(s).equals(sortString(t));
+    }
+
+    public static String sortString(String s) {
+        char[] arr = s.toCharArray();
+        Arrays.sort(arr);
+        return new String(arr);
     }
 }

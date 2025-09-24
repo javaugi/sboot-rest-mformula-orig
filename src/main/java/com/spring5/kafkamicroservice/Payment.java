@@ -45,5 +45,6 @@ public class Payment {
     
     private String paymentDetails;
     private boolean success;
+    private String userId;
 
 }

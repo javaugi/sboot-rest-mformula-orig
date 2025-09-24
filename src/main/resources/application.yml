@@ -59,6 +59,13 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: tx-
+      properties:
+        enable.idempotence: true
+        acks: all
+        retries: 3
+#Exactly-Once Processing Implementation: enable.idempotence: true
+#Kafka supports at-least-once delivery by default and can be configured for exactly-once processing in certain workflows.
     consumer:
       group-id: my-kafka-consumer-group
       auto-offset-reset: earliest
@@ -70,6 +77,7 @@ spring:
         spring.json.trusted.packages: "*"
     listener:
       ack-mode: MANUAL_IMMEDIATE
+      concurrency: 3
     properties:        
       request.timeout.ms: 3000         # Short request timeout (3 sec)
       retry.backoff.ms: 1000           # Wait between retries (1 sec)
@@ -86,6 +94,7 @@ spring:
 ---
 spring:
   security:
+    pseudonym-key: ${PSEUDONYM_KEY:default_key}
     oauth2:
       resourceserver:
         jwt:
@@ -195,3 +204,15 @@ spring:
                 redis-rate-limiter.burstCapacity: 200
                 redis-rate-limiter.requestedTokens: 1
                 key-resolver: "#{@vehicleKeyResolver}"
+---
+spring:
+  # Example Cosmos properties (if using azure-spring-data-cosmos)
+  azure:
+    cosmos:
+      uri: ${COSMOS_URI:}
+      key: ${COSMOS_KEY:}
+      database: eventsdb
+eventhub:
+  conn: ${EVENTHUB_CONN:}        # Event Hubs connection string
+  hubName: ${EVENTHUB_NAME:}     # Event hub name
+  consumerGroup: ${CONSUMER_GROUP:$Default}

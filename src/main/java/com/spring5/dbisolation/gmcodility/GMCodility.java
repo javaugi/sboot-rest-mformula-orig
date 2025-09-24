@@ -4,7 +4,7 @@
  */
 package com.spring5.dbisolation.gmcodility;
 
-import com.fibonacci.FibonacciCalc;
+import com.interview.common.fibonaccci.FibonacciCalc;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;

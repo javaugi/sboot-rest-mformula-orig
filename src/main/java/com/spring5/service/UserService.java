@@ -35,4 +35,6 @@ public interface UserService {
     public Iterable<User> findAll(Sort sort);
 
     public Page<User> findAll(Pageable pageable);
+
+    public boolean validateUserExists(Long id);
 }

@@ -10,9 +10,9 @@ package com.mycompany.davidlee;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mycompany.davidlee.api.Receipt;
-import com.mycompany.davidlee.impl.ItemImpl;
-import com.mycompany.davidlee.impl.ReceiptImpl;
+import com.interview.shoppingcart.api.Receipt;
+import com.interview.shoppingcart.api.impl.ItemImpl;
+import com.interview.shoppingcart.api.impl.ReceiptImpl;
 import org.junit.Before;
 
 /**

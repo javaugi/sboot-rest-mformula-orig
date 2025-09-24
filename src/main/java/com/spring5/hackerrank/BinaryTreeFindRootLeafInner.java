@@ -46,9 +46,11 @@ public class BinaryTreeFindRootLeafInner implements CommandLineRunner{
     
     private static String getQuery() {
         String q = " select b.N, "
-            + "         case when b.P is null then 'Root' "
-            + "             when b.N in (select distinct b0.P from BST b0 where b0.P is not null) then 'Inner' "
-            + "             else 'Leaf' "
+            + "         case when b.P is null "
+            + "                 then 'Root' "
+            + "              when b.N in (select distinct b0.P from BST b0 where b0.P is not null) "
+            + "                 then 'Inner' "
+            + "              else 'Leaf' "
             + "         end as p  "
             + "     from BST b "
             + "     order by b.N ";

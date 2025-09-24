@@ -41,7 +41,7 @@ public class AdyenPaymentConsumerService {
     
     @KafkaListener(topics = "payments")
     @Transactional
-    public void processPayment(@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key, 
+    public void processPayment(@Header(KafkaHeaders.RECEIVED_KEY) String key,
         AdyenPaymentRequest request) {
 
         if (paymentRepository.existsByIdempotencyKey(key)) {

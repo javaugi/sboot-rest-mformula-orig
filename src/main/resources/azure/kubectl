@@ -1,0 +1,8 @@
+kubectl apply -f cosmos-config.yaml
+kubectl apply -f cosmos-secret.yaml
+kubectl apply -f deployment.yaml
+
+#Check values:
+
+kubectl get configmap cosmos-config -o yaml
+kubectl get secret cosmos-secret -o yaml

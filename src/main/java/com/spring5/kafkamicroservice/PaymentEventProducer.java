@@ -25,8 +25,7 @@ public class PaymentEventProducer {
     
     @Retry(name = "kafkaPublish", fallbackMethod = "publishFailed")
     public void publishPaymentRequest(PaymentRequestEvent event) {
-        CompletableFuture<SendResult<String, PaymentRequestEvent>> future = 
-            kafkaTemplate.send(PAYMENT_REQUESTS_TOPIC, event.paymentId(), event).completable();
+        CompletableFuture<SendResult<String, PaymentRequestEvent>> future = kafkaTemplate.send(PAYMENT_REQUESTS_TOPIC, event.paymentId(), event);
         
         future.thenAccept(result -> log.info("Published payment request {}", event.paymentId()))
             .exceptionally(ex -> {

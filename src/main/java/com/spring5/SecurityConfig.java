@@ -58,8 +58,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/nurses/**").hasAnyRole("NURSE", "PHYSICIAN", "ADMIN")
                 .requestMatchers("/api/physicians/**").hasAnyRole("PHYSICIAN", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/patients/**").hasRole("PHARMACIST")
-                //.mvcMatchers("/user/**", "/profile/**").hasRole("USER") 
+            .requestMatchers("/api/patients/**").hasRole("PHARMACIST")
+            .requestMatchers("/api/ai-governance/**").hasRole("ADMIN")
+            .requestMatchers("/api/loyalty/**").hasAnyRole("PATIENT", "ADMIN")
+            //.mvcMatchers("/user/**", "/profile/**").hasRole("USER")
                 //.regexMatchers("/api/v[0-9]+/.*", "/public/.*").permitAll()
                 .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
@@ -107,8 +109,10 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://localhost:8080", "https://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

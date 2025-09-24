@@ -1,0 +1,30 @@
+livenessProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10
+---
+readinessProbe:
+  httpGet:
+    path: /actuator/health/readiness
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10
+---
+#curl http://localhost:8080/actuator/health/liveness
+#curl http://localhost:8080/actuator/health/readiness
+---
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true   # Enables liveness and readiness probes
+#This automatically creates:
+#/actuator/health/liveness
+#/actuator/health/readiness
+---

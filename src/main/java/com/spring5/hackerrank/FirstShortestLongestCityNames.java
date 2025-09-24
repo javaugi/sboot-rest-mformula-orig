@@ -4,26 +4,100 @@
  */
 package com.spring5.hackerrank;
 
-import static com.abc.utils.RegexConstant.REGEX_CSV_FULL;
+import static com.interview.common.utils.RegexConstant.REGEX_CSV_FULL;
 import com.spring5.MyApplication;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-/**
- *
- * @author javaugi
- */
+@Slf4j
 public class FirstShortestLongestCityNames {
-    private static final Logger log = LoggerFactory.getLogger(FirstShortestLongestCityNames.class);
 
     public static void main(String[] args) {
         //testDataPopulation();        
-        doQueryFromFileData(args);
+        //doQueryFromFileData(args);
+        shortestLongestNames();
+    }
+
+    public static void w1MinMaxShortestLongestCityNames() {
+        String[] strArr = {"Lansing", "Detroit", "Bloomfield Hills", "Novi"};
+
+        // Find shortest city name
+        Optional<String> shortest = Arrays.stream(strArr)
+            .min(Comparator.comparingInt(String::length));
+
+        // Find longest city name
+        Optional<String> longest = Arrays.stream(strArr)
+            .max(Comparator.comparingInt(String::length));
+
+        System.out.println("Shortest: " + shortest.orElse("No cities"));
+        System.out.println("Longest: " + longest.orElse("No cities"));
+    }
+
+    public static void w1ReduceShortestLongestCityNames() {
+        String[] strArr = {"Lansing", "Detroit", "Bloomfield Hills", "Novi"};
+
+        // Find shortest using reduce
+        Optional<String> shortest = Arrays.stream(strArr)
+            .reduce((s1, s2) -> s1.length() <= s2.length() ? s1 : s2);
+
+        // Find longest using reduce
+        Optional<String> longest = Arrays.stream(strArr)
+            .reduce((s1, s2) -> s1.length() >= s2.length() ? s1 : s2);
+
+        System.out.println("Shortest: " + shortest.orElse("No cities"));
+        System.out.println("Longest: " + longest.orElse("No cities"));
+    }
+
+    public static void w3ShortestLongestCityNames() {
+        String[] strArr = {"Lansing", "Detroit", "Bloomfield Hills", "Novi"};
+
+        // Custom collector to find both min and max
+        String[] result = Arrays.stream(strArr)
+            .collect(() -> new String[2], // [min, max]
+                (arr, city) -> {
+                    if (arr[0] == null || city.length() < arr[0].length()) {
+                        arr[0] = city; // shortest
+                    }
+                    if (arr[1] == null || city.length() > arr[1].length()) {
+                        arr[1] = city; // longest
+                    }
+                },
+                (arr1, arr2) -> {
+                    // Combine results from parallel streams
+                    if (arr2[0] != null && (arr1[0] == null || arr2[0].length() < arr1[0].length())) {
+                        arr1[0] = arr2[0];
+                    }
+                    if (arr2[1] != null && (arr1[1] == null || arr2[1].length() > arr1[1].length())) {
+                        arr1[1] = arr2[1];
+                    }
+                });
+
+        System.out.println("Shortest: " + (result[0] != null ? result[0] : "No cities"));
+        System.out.println("Longest: " + (result[1] != null ? result[1] : "No cities"));
+    }
+
+    public static void w4CollTeeingShortestLongestCityNames() {
+        String[] strArr = {"Lansing", "Detroit", "Bloomfield Hills", "Novi"};
+
+        String[] result = Arrays.stream(strArr)
+            .collect(Collectors.teeing(
+                Collectors.minBy(Comparator.comparingInt(String::length)),
+                Collectors.maxBy(Comparator.comparingInt(String::length)),
+                (min, max) -> new String[]{
+                    min.orElse("No cities"),
+                    max.orElse("No cities")
+                }
+            ));
+
+        System.out.println("Shortest: " + result[0]);
+        System.out.println("Longest: " + result[1]);
     }
 
     private static void testDataPopulation() {
@@ -37,6 +111,24 @@ public class FirstShortestLongestCityNames {
                 System.out.println("2 token=" + str);
             }
         }
+    }
+
+    private static void shortestLongestNames() {
+        String[] strArr = {"Lansing", "Detroit", "Bloomfield Hills", "Novi"};
+        log.debug("Shortest {} Longest {}",
+            Arrays.stream(strArr).mapToInt(String::length).min().toString(),
+            Arrays.stream(strArr).mapToInt(String::length).max().getAsInt());
+
+        // Find shortest city name
+        Optional<String> shortest = Arrays.stream(strArr)
+            .min(Comparator.comparingInt(String::length));
+
+        // Find longest city name
+        Optional<String> longest = Arrays.stream(strArr)
+            .max(Comparator.comparingInt(String::length));
+
+        System.out.println("Shortest: " + shortest.orElse("No cities"));
+        System.out.println("Longest: " + longest.orElse("No cities"));
     }
 
     private static void doQueryFromFileData(String[] args) throws BeansException {

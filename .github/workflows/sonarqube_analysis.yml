@@ -1,0 +1,43 @@
+#CI/CD Integration (GitHub Actions Example)
+name: SonarQube Analysis
+on:
+  workflow_dispatch: # Manual trigger only and Commented out the following push trigger to auto deployment when new code is pushed
+  #workflow_dispatch:
+  # push:
+  #   branches: [ "main" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Run tests with coverage
+      run: mwn clean test jacoco:report
+      
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v3
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      with:
+        args: >
+          -Dsonar.projectKey=my-spring-boot-app
+          -Dsonar.qualitygate.wait=true

@@ -10,11 +10,11 @@ package com.mycompany.davidlee;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mycompany.davidlee.api.Inventory;
-import com.mycompany.davidlee.api.Item.Category;
-import com.mycompany.davidlee.impl.InventoryImpl;
-import com.mycompany.davidlee.impl.ItemImpl;
-import com.mycompany.davidlee.impl.WeightItem;
+import com.interview.shoppingcart.api.Inventory;
+import com.interview.shoppingcart.api.Item.Category;
+import com.interview.shoppingcart.api.impl.InventoryImpl;
+import com.interview.shoppingcart.api.impl.ItemImpl;
+import com.interview.shoppingcart.api.impl.WeightItem;
 import com.spring5.ProjectTest;
 import org.junit.Before;
 

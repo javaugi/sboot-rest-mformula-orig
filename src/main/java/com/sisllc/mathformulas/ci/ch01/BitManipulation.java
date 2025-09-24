@@ -5,8 +5,9 @@ public class BitManipulation {
     public static void main(String[] args) {
         int[] numbers = {2, 3, 4, 5, 6, 7, 8, 128, Integer.MIN_VALUE};
         for (int i = 0; i < numbers.length; i++) {
-            System.out.println(Integer.toBinaryString(numbers[i]));
-            System.out.println(Integer.bitCount(numbers[i]));
+            System.out.println("Value=" + numbers[i]);
+            System.out.println("BinaryString=" + Integer.toBinaryString(numbers[i]));
+            System.out.println("BitCount=" + Integer.bitCount(numbers[i]));
             System.out.println("number=" + numbers[i] + "\n -is power of two?=" + isPowerOfTwo(numbers[i])
                     + "\n -is power of two?=" + isPowerOfTwo2(numbers[i])
                     + "\n -is power of two?=" + isPowerOfTwo3(numbers[i])

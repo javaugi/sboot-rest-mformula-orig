@@ -1,0 +1,14 @@
+charts/
+  medicaid-app/
+    Chart.yaml
+    templates/
+      deployment.yaml
+      service.yaml
+      hpa.yaml
+      ingress.yaml
+      configmap.yml
+      secret.yml (only placeholders; real secrets via KeyVault)
+    values.yaml
+    values-dev.yaml
+    values-staging.yaml
+    values-prod.yaml

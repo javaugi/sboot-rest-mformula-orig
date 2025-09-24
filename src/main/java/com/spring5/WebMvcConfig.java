@@ -172,7 +172,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/**").addResourceLocations("classpath:/angularclient/").setCachePeriod(0);        
         registry.addResourceHandler("/**").addResourceLocations("classpath:/angularclient/public/").setCachePeriod(0);        
-        
+
+        //Configuring Caching for Static Assets
+        //Spring Boot serves static resources from src/main/resources/static by default.
+        registry.addResourceHandler("/**")
+            .addResourceLocations("classpath:/static/")
+            .setCachePeriod(3600) // in seconds -> 1 hour
+            .setCacheControl(org.springframework.http.CacheControl.maxAge(30, java.util.concurrent.TimeUnit.DAYS));
+        //alternatively spring.web.resources.cache.cachecontrol.max-age=30
     }
 
     @Controller

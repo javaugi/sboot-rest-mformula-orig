@@ -1,0 +1,18 @@
+
+image:
+  repository: myregistry.azurecr.io/medicaid-app
+  tag: "1.2.3"           # immutable tag by CI pipeline
+spring:
+  profile: prod
+resources:
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+  limits:
+    cpu: "2000m"
+    memory: "2Gi"
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 65

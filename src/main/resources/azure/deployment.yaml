@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flight-app
+  template:
+    metadata:
+      labels:
+        app: flight-app
+    spec:
+      containers:
+      - name: flight-app
+        image: myregistry/flight-app:latest
+        env:
+        - name: COSMOS_URI
+          valueFrom:
+            configMapKeyRef:
+              name: cosmos-config
+              key: COSMOS_URI
+        - name: COSMOS_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: cosmos-config
+              key: COSMOS_DATABASE
+        - name: COSMOS_CONTAINER
+          valueFrom:
+            configMapKeyRef:
+              name: cosmos-config
+              key: COSMOS_CONTAINER
+        - name: COSMOS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cosmos-secret
+              key: COSMOS_KEY
+

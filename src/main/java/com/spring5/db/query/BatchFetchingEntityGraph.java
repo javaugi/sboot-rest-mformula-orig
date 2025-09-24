@@ -6,7 +6,7 @@ package com.spring5.db.query;
 
 import com.spring5.empbilpayroll.Department;
 import com.spring5.empbilpayroll.Employee;
-import com.spring5.empbilpayroll.Project;
+import com.spring5.empbilpayroll.EmployeeProject;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -125,7 +125,7 @@ public class BatchFetchingEntityGraph {
         // Create entity graph dynamically
         EntityGraph<Employee> dynamicGraph = entityManager.createEntityGraph(Employee.class);
         dynamicGraph.addAttributeNodes("department");
-        Subgraph<Project> projectSubgraph = dynamicGraph.addSubgraph("projects");
+        Subgraph<EmployeeProject> projectSubgraph = dynamicGraph.addSubgraph("projects");
         projectSubgraph.addAttributeNodes("tasks");
 
         // Use in query

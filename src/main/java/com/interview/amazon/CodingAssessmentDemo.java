@@ -16,7 +16,7 @@ public class CodingAssessmentDemo {
     private static final CodingAssessmentDemo main = new CodingAssessmentDemo();
 
     public static void main(String[] args) {
-        main.run1();
+        //main.run1();
         main.run2();
     }
     
@@ -36,12 +36,24 @@ public class CodingAssessmentDemo {
         for (String[] row : roomInvites) {
             processInvitees(memInviteCntMap, row[2]);
         }
-        
+
+        System.out.print("1 run2() printing \n");
         printMap(memInviteCntMap);
+        System.out.print("1 done run2() printing \n");
+
+        String[][] roomInvites2 = chatRoomInfo();
+        Map<String, Integer> memInviteCntMap2 = new HashMap<>();
+        for (String[] row : roomInvites2) {
+            processInvitees2(memInviteCntMap2, row[2]);
+        }
+        System.out.print("2 run2() printing \n");
+        printMap(memInviteCntMap2);
+        System.out.print("2 done run2() printing \n");
+
     }
     
     private void initMap(Map<String, Integer> memInviteCntMap, String[] members) {
-        for (String mem: members) {
+        for (String mem : members) {
             if (memInviteCntMap.get(mem) == null) {
                 memInviteCntMap.put(mem, 0);
             }
@@ -56,6 +68,7 @@ public class CodingAssessmentDemo {
                 increaseOneToAll(memInviteCntMap);
                 break;
             } else {
+                //memInviteCntMap.put(inviteeId, memInviteCntMap.getOrDefault(inviteeId, 0) + 1);
                 if (memInviteCntMap.get(inviteeId) == null) {
                     memInviteCntMap.put(inviteeId, 1);
                 } else {
@@ -66,7 +79,21 @@ public class CodingAssessmentDemo {
             }
         }
     }
-    
+
+    private void processInvitees2(Map<String, Integer> memInviteCntMap, String inviteesArr) {
+        String[] invitees = inviteesArr.split(",");
+        for (String inviteeId : invitees) {
+            inviteeId = inviteeId.trim();
+            if ("ALL".equalsIgnoreCase(inviteeId)) {
+                //memInviteCntMap.keySet().stream().forEach(e -> e.setValue(1 + e.getValue()));
+                increaseOneToAll(memInviteCntMap);
+                //break;
+            } else {
+                memInviteCntMap.put(inviteeId, memInviteCntMap.getOrDefault(inviteeId, 0) + 1);
+            }
+        }
+    }
+
     private void increaseOneToAll(Map<String, Integer> memInviteCntMap) {
         //memInviteCntMap.entrySet().stream().forEach(e -> e.setValue(1 + e.getValue()));
                 

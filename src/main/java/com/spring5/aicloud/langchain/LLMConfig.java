@@ -17,11 +17,10 @@ AI Overview
 LLMs (Large Language Models) are powerful deep learning models that can generate human-like text, while LangChain is a framework that simplifies the development of applications powered by LLMs. Think of LLMs as the engine and LangChain as the toolbox for building vehicles that use that engine. 
 In simpler terms: 
 LLMs:
-.
-The brains. They can understand and generate text, but they need a way to interact with the world and other tools.
+. The brains. They can understand and generate text, but they need a way to interact with the world and other tools.
+
 LangChain:
-.
-The interface and toolkit. It provides the infrastructure and tools to connect LLMs with other systems, data sources, and applications. 
+. The interface and toolkit. It provides the infrastructure and tools to connect LLMs with other systems, data sources, and applications.
 Here's a more detailed comparison: 
 Feature
 LLM

@@ -7,7 +7,7 @@
  */
 package com.sisllc.mathformulas.utils;
 
-import com.abc.utils.OpenCsvNpiValidation;
+import com.interview.common.utils.OpenCsvNpiValidation;
 import com.spring5.ProjectTest;
 import org.junit.Assert;
 import org.junit.Test;

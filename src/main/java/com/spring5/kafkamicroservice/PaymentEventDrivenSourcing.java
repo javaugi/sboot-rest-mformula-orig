@@ -20,8 +20,7 @@ public class PaymentEventDrivenSourcing {
     private final PaymentRepository paymentRepository;
     
     @KafkaListener(topics = "payment-requests")
-    public void processPaymentRequest(@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key, 
-                                   PaymentRequestEvent event) {
+    public void processPaymentRequest(@Header(KafkaHeaders.RECEIVED_KEY) String key, PaymentRequestEvent event) {
         if (paymentRepository.existsById(key)) {
             log.info("Duplicate payment request {}", key);
             return;

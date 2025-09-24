@@ -11,15 +11,25 @@ import { UserService } from '../service/user.service';
 })
 export class UserListComponent implements OnInit {
 
-  users: User[];
+  //users: User[];
+  //names: string[];
+  
+  users: any[] = [];
+  names: any[] = [];
 
   constructor(private userService: UserService) {
   }
 
   ngOnInit() {
-    this.userService.findAll().subscribe(data => {
-      this.users = data;
-    });
-  }
+    this.userService.findAll()
+        .subscribe(data => {this.users = data;});
+    
+
+    this.userService.getUsers()
+        .pipe(
+            map(users => users.map(u => u.name.toUpperCase()))
+        )
+        .subscribe(names => this.names = names);    
+    }
 
 }

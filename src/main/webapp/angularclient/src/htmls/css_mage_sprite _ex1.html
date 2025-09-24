@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Image Sprite Example</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .sprite-explanation {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .sprite-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .sprite-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 200px;
+            transition: transform 0.3s ease;
+        }
+        
+        .sprite-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .sprite {
+            display: inline-block;
+            background-image: url('https://i.postimg.cc/8P0vVk2H/social-media-sprite.png');
+            background-repeat: no-repeat;
+            height: 64px;
+            width: 64px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .sprite:hover {
+            transform: scale(1.1);
+        }
+        
+        .facebook {
+            background-position: 0 0;
+        }
+        
+        .twitter {
+            background-position: -64px 0;
+        }
+        
+        .instagram {
+            background-position: -128px 0;
+        }
+        
+        .youtube {
+            background-position: -192px 0;
+        }
+        
+        .linkedin {
+            background-position: -256px 0;
+        }
+        
+        .pinterest {
+            background-position: -320px 0;
+        }
+        
+        .sprite-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        button {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .code-example {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+        
+        pre {
+            font-family: 'Courier New', monospace;
+            color: #f8f8f2;
+            line-height: 1.5;
+        }
+        
+        .comment {
+            color: #75715e;
+        }
+        
+        .selector {
+            color: #a6e22e;
+        }
+        
+        .property {
+            color: #66d9ef;
+        }
+        
+        .value {
+            color: #ae81ff;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSS Image Sprite Example</h1>
+            <p class="subtitle">Multiple images in one file with CSS controls</p>
+        </header>
+        
+        <div class="sprite-explanation">
+            <p>An image sprite is a collection of images put into a single image file. Using CSS, we can control which part of the image is displayed. This technique reduces the number of server requests, making websites load faster.</p>
+        </div>
+        
+        <div class="sprite-container">
+            <div class="sprite-item">
+                <div class="sprite facebook" id="facebook"></div>
+                <h3>Facebook</h3>
+                <div class="sprite-controls">
+                    <button onclick="moveSprite('facebook', 'up')">↑</button>
+                    <button onclick="moveSprite('facebook', 'down')">↓</button>
+                </div>
+            </div>
+            
+            <div class="sprite-item">
+                <div class="sprite twitter" id="twitter"></div>
+                <h3>Twitter</h3>
+                <div class="sprite-controls">
+                    <button onclick="moveSprite('twitter', 'up')">↑</button>
+                    <button onclick="moveSprite('twitter', 'down')">↓</button>
+                </div>
+            </div>
+            
+            <div class="sprite-item">
+                <div class="sprite instagram" id="instagram"></div>
+                <h3>Instagram</h3>
+                <div class="sprite-controls">
+                    <button onclick="moveSprite('instagram', 'up')">↑</button>
+                    <button onclick="moveSprite('instagram', 'down')">↓</button>
+                </div>
+            </div>
+            
+            <div class="sprite-item">
+                <div class="sprite youtube" id="youtube"></div>
+                <h3>YouTube</h3>
+                <div class="sprite-controls">
+                    <button onclick="moveSprite('youtube', 'up')">↑</button>
+                    <button onclick="moveSprite('youtube', 'down')">↓</button>
+                </div>
+            </div>
+            
+            <div class="sprite-item">
+                <div class="sprite linkedin" id="linkedin"></div>
+                <h3>LinkedIn</h3>
+                <div class="sprite-controls">
+                    <button onclick="moveSprite('linkedin', 'up')">↑</button>
+                    <button onclick="moveSprite('linkedin', 'down')">↓</button>
+                </div>
+            </div>
+            
+            <div class="sprite-item">
+                <div class="sprite pinterest" id="pinterest"></div>
+                <h3>Pinterest</h3>
+                <div class="sprite-controls">
+                    <button onclick="moveSprite('pinterest', 'up')">↑</button>
+                    <button onclick="moveSprite('pinterest', 'down')">↓</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="code-example">
+            <h3>How it works - CSS Code:</h3>
+            <pre>
+<span class="comment">/* The sprite image contains all icons */</span>
+<span class="selector">.sprite</span> {
+    <span class="property">background-image</span>: <span class="value">url('sprite.png')</span>;
+    <span class="property">background-repeat</span>: <span class="value">no-repeat</span>;
+    <span class="property">height</span>: <span class="value">64px</span>;
+    <span class="property">width</span>: <span class="value">64px</span>;
+}
+
+<span class="comment">/* Each icon is positioned using background-position */</span>
+<span class="selector">.facebook</span> {
+    <span class="property">background-position</span>: <span class="value">0 0</span>;
+}
+
+<span class="selector">.twitter</span> {
+    <span class="property">background-position</span>: <span class="value">-64px 0</span>;
+}
+
+<span class="selector">.instagram</span> {
+    <span class="property">background-position</span>: <span class="value">-128px 0</span>;
+}
+            </pre>
+        </div>
+        
+        <footer>
+            <p>Created with CSS Sprites | Try hovering over the icons or using the controls!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple JavaScript to demonstrate sprite control
+        function moveSprite(spriteId, direction) {
+            const sprite = document.getElementById(spriteId);
+            const currentPosition = sprite.offsetTop;
+            
+            if (direction === 'up') {
+                sprite.style.marginTop = (parseInt(sprite.style.marginTop || 0) - 10) + 'px';
+            } else {
+                sprite.style.marginTop = (parseInt(sprite.style.marginTop || 0) + 10) + 'px';
+            }
+        }
+    </script>
+</body>
+</html> 
+<!--
+How the Image Sprite Works
+This example demonstrates:
+    Single Image File: All social media icons are combined into one sprite image
+    CSS Positioning: Each icon is displayed by adjusting the background-position property
+    Interactive Controls: Buttons to move sprites up and down (demonstrating CSS control)
+    Hover Effects: Sprites scale up when hovered over
+    The sprite image contains multiple icons arranged horizontally. CSS selects which icon to display by moving the background image 
+        so only the desired portion is visible within the element.
+-->

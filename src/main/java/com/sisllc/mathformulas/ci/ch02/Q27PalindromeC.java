@@ -7,6 +7,7 @@ public class Q27PalindromeC {
     public static void main(String[] args) {
         String[] words = {"12321", "Anna", "Madam", "Are we not drawn onward to new era",
             "A man, a plan, a cat, a ham, a yak, a yam, a hat, a canal-Panama!"};
+        /*
         for (String word : words) {
             //word = word.replaceAll("[^a-zA-Z]", "").toLowerCase().replaceAll(" ", "");
             word = word.replaceAll("\\W", "").toLowerCase();
@@ -19,7 +20,23 @@ public class Q27PalindromeC {
         Q27PalindromeC palindrome = new Q27PalindromeC();
         palindrome.runExample();
         palindrome.numberOfDigits(123454321);
+        // */
+
+        String[] words2 = {"12321", "Anna", "Madam"};
+        for (String word : words2) {
+            System.out.println(word + ":? " + isPalindromSimplified(word) + "-? " + isPalindromSimplified2(word));
+        }
+
     }
+
+    public static boolean isPalindromSimplified(String s1) {
+        return s1.equalsIgnoreCase(s1.transform(s -> new StringBuilder(s).reverse().toString()));
+    }
+
+    public static boolean isPalindromSimplified2(String s1) {
+        return s1.equalsIgnoreCase(new StringBuilder(s1).reverse().toString());
+    }
+
 
     void numberOfDigits(int num) {
         System.out.println("The number " + num + " lenght=" + String.valueOf(num).length());

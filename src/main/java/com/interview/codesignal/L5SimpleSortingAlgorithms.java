@@ -84,14 +84,22 @@ public class L5SimpleSortingAlgorithms {
 
         System.out.println("\nOriginal array: ");
         printArray(arr);
-        
+
         System.out.println("\n Sorting array: high=" + (arr.length - 1));
         quickSort(arr);
         //quickSort(arr, 0, arr.length - 1);
 
         System.out.println("\nSorted array: ");
         printArray(arr);
-        
+
+        System.out.println("\n\n new same as the previous Original array: ");
+        int[] arr1 = {10, 7, 8, 9, 1, 5};
+        printArray(arr1);
+        arr1 = Arrays.stream(arr1).sorted().toArray();
+        System.out.println("\n new same as the previous  Sorted array: ");
+        printArray(arr1);
+        System.out.println("\n Done printing new same as the previous  Sorted array: ");
+
         int[] arr2 = {10, 7, 8, 9, 1, 5, 3};
         System.out.println("\nO= Original array: " + Arrays.toString(arr2));
         Arrays.sort(arr2);

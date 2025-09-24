@@ -1,0 +1,27 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: event-processor
+  # Example Cosmos properties (if using azure-spring-data-cosmos)
+  azure:
+    cosmos:
+      uri: ${COSMOS_URI:}
+      key: ${COSMOS_KEY:}
+      database: eventsdb
+
+eventhub:
+  conn: ${EVENTHUB_CONN:}        # Event Hubs connection string
+  hubName: ${EVENTHUB_NAME:}     # Event hub name
+  consumerGroup: ${CONSUMER_GROUP:$Default}
+
+logging:
+  level:
+    com.example: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+

@@ -5,9 +5,9 @@
  */
 package com.sisllc.mathformulas.utils;
 
-import com.abc.utils.DomainUtils;
-import static com.abc.utils.DomainUtils.extractUsPhoneExtension;
-import com.abc.utils.PhoneNumberExtensionVO;
+import com.interview.common.utils.DomainUtils;
+import static com.interview.common.utils.DomainUtils.extractUsPhoneExtension;
+import com.interview.common.utils.PhoneNumberExtensionVO;
 import com.spring5.ProjectTest;
 import java.util.ArrayList;
 import java.util.HashMap;

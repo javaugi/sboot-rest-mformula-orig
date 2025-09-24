@@ -1,0 +1,59 @@
+# spring-boot-java-quality-profile.yml
+name: "Spring Boot Java Quality Profile"
+language: "java"
+parent: "Sonar way"  # Start with the default profile
+
+rules:
+  # Critical Security Rules
+  - key: "java:S3649"
+    priority: "CRITICAL"  # SQL Injection
+    parameters:
+      message: "Use parameterized queries or JPA to prevent SQL injection"
+  
+  - key: "java:S5323" 
+    priority: "CRITICAL"  # LDAP Injection
+    parameters:
+      message: "Sanitize LDAP queries"
+
+  # Spring-Specific Rules
+  - key: "java:S6813"
+    priority: "MAJOR"  # Spring @Controller should use @RequestMapping
+    parameters:
+      message: "Use @RequestMapping at class level for consistency"
+
+  - key: "java:S3750"
+    priority: "MAJOR"  # @Transactional method visibility
+    parameters:
+      message: "@Transactional should be on public methods only"
+
+  # Code Quality Rules
+  - key: "java:S106"
+    priority: "MINOR"  # System.out.println usage
+    parameters:
+      message: "Use logger instead of System.out"
+
+  - key: "java:S1172"
+    priority: "MINOR"  # Unused method parameters
+    parameters:
+      message: "Remove unused parameters or annotate with @SuppressWarnings"
+
+  # Performance Rules
+  - key: "java:S1643"
+    priority: "MAJOR"  # String concatenation in loops
+    parameters:
+      message: "Use StringBuilder for string concatenation in loops"
+
+  - key: "java:S2864"
+    priority: "MAJOR"  # Iterator next() in loops
+    parameters:
+      message: "Check hasNext() before calling next()"
+
+exclusions:
+  files:
+    - "**/test/**/*.java"
+    - "**/generated/**/*.java"
+    - "**/target/**/*.java"
+    - "**/configuration/**/*.java"  # Config classes might have many @Bean methods
+  
+  rules:
+    - "java:S125"  # Exclude commented code rule for documentation purposes

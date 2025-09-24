@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Design Breakpoints</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #4b6cb7;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #4b6cb7;
+        }
+        
+        .breakpoints {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 1023px) {
+            .breakpoints {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .breakpoint {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .breakpoint.mobile {
+            border-top: 5px solid #e74c3c;
+        }
+        
+        .breakpoint.tablet {
+            border-top: 5px solid #3498db;
+        }
+        
+        .breakpoint.desktop {
+            border-top: 5px solid #2ecc71;
+        }
+        
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .mobile .icon {
+            color: #e74c3c;
+        }
+        
+        .tablet .icon {
+            color: #3498db;
+        }
+        
+        .desktop .icon {
+            color: #2ecc71;
+        }
+        
+        h3 {
+            color: #4b6cb7;
+            margin-bottom: 15px;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            line-height: 1.5;
+        }
+        
+        .comment {
+            color: #75715e;
+        }
+        
+        .selector {
+            color: #66d9ef;
+        }
+        
+        .property {
+            color: #a6e22e;
+        }
+        
+        .value {
+            color: #ae81ff;
+        }
+        
+        .demo {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .device-indicator {
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .device-mobile {
+            background: #ffece8;
+            color: #e74c3c;
+            display: none;
+        }
+        
+        .device-tablet {
+            background: #e8f4ff;
+            color: #3498db;
+            display: none;
+        }
+        
+        .device-desktop {
+            background: #e8f8ef;
+            color: #2ecc71;
+            display: none;
+        }
+        
+        .grid-container {
+            display: grid;
+            gap: 15px;
+            padding: 10px;
+        }
+        
+        .grid-item {
+            background: #4b6cb7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        /* Mobile First Approach - Default styles for mobile */
+        .grid-container {
+            grid-template-columns: 1fr;
+        }
+        
+        /* Tablet */
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr 1fr;
+                padding: 20px;
+            }
+            
+            .device-mobile {
+                display: none;
+            }
+            
+            .device-tablet {
+                display: block;
+            }
+            
+            .device-desktop {
+                display: none;
+            }
+        }
+        
+        /* Desktop */
+        @media (min-width: 1024px) {
+            .grid-container {
+                grid-template-columns: 1fr 1fr 1fr;
+                max-width: 1200px;
+                margin: 0 auto;
+                gap: 20px;
+            }
+            
+            .device-mobile {
+                display: none;
+            }
+            
+            .device-tablet {
+                display: none;
+            }
+            
+            .device-desktop {
+                display: block;
+            }
+        }
+        
+        /* For mobile specifically */
+        @media (max-width: 767px) {
+            .device-mobile {
+                display: block;
+            }
+            
+            .device-tablet {
+                display: none;
+            }
+            
+            .device-desktop {
+                display: none;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #4b6cb7;
+            color: white;
+            margin-top: 30px;
+        }
+        
+        .current-width {
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Responsive Design Breakpoints</h1>
+            <p class="subtitle">How to distinguish between mobile, tablet, and desktop</p>
+        </header>
+        
+        <div class="content">
+            <div class="explanation">
+                <h2>Understanding Responsive Breakpoints</h2>
+                <p>Responsive design uses CSS media queries to adapt layout to different screen sizes. The mobile-first approach means we start with styles for mobile devices, then add styles for larger screens.</p>
+                
+                <div class="code-block">
+                    <span class="comment">/* Mobile First Approach - Base styles */</span><br>
+                    <span class="selector">.container</span> {<br>
+                    &nbsp;&nbsp;<span class="property">padding</span>: <span class="value">10px</span>;<br>
+                    }<br>
+                    <br>
+                    <span class="comment">/* Tablet - 768px and up */</span><br>
+                    @<span class="selector">media</span> (<span class="property">min-width</span>: <span class="value">768px</span>) {<br>
+                    &nbsp;&nbsp;<span class="selector">.container</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">padding</span>: <span class="value">20px</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">display</span>: <span class="value">grid</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">grid-template-columns</span>: <span class="value">1fr 1fr</span>;<br>
+                    &nbsp;&nbsp;}<br>
+                    }<br>
+                    <br>
+                    <span class="comment">/* Desktop - 1024px and up */</span><br>
+                    @<span class="selector">media</span> (<span class="property">min-width</span>: <span class="value">1024px</span>) {<br>
+                    &nbsp;&nbsp;<span class="selector">.container</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">grid-template-columns</span>: <span class="value">1fr 1fr 1fr</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">max-width</span>: <span class="value">1200px</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">margin</span>: <span class="value">0 auto</span>;<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+            </div>
+            
+            <div class="breakpoints">
+                <div class="breakpoint mobile">
+                    <div class="icon">📱</div>
+                    <h3>Mobile Devices</h3>
+                    <p>Screen width < 768px</p>
+                    <p>Default styles apply to mobile devices. These are our base styles without any media queries.</p>
+                </div>
+                
+                <div class="breakpoint tablet">
+                    <div class="icon">📊</div>
+                    <h3>Tablet Devices</h3>
+                    <p>Screen width ≥ 768px</p>
+                    <p>Styles inside <code>@media (min-width: 768px)</code> apply to tablets and larger devices.</p>
+                </div>
+                
+                <div class="breakpoint desktop">
+                    <div class="icon">💻</div>
+                    <h3>Desktop Devices</h3>
+                    <p>Screen width ≥ 1024px</p>
+                    <p>Styles inside <code>@media (min-width: 1024px)</code> apply to desktops and larger devices.</p>
+                </div>
+            </div>
+            
+            <div class="demo">
+                <h2>Interactive Demo</h2>
+                <p>Resize your browser window to see how the layout changes at different breakpoints:</p>
+                
+                <div class="device-indicator device-mobile">
+                    Mobile View (less than 768px)
+                </div>
+                
+                <div class="device-indicator device-tablet">
+                    Tablet View (768px to 1023px)
+                </div>
+                
+                <div class="device-indicator device-desktop">
+                    Desktop View (1024px and up)
+                </div>
+                
+                <div class="grid-container">
+                    <div class="grid-item">Item 1</div>
+                    <div class="grid-item">Item 2</div>
+                    <div class="grid-item">Item 3</div>
+                    <div class="grid-item">Item 4</div>
+                    <div class="grid-item">Item 5</div>
+                    <div class="grid-item">Item 6</div>
+                </div>
+                
+                <p class="current-width" id="current-width">Current width: <span id="width-value">0</span>px</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Responsive Design Breakpoints Explanation | Created with HTML and CSS</p>
+        </footer>
+    </div>
+
+    <script>
+        // Update current width display
+        function updateWidth() {
+            const width = window.innerWidth;
+            document.getElementById('width-value').textContent = width;
+            
+            // Update the indicator
+            const mobileIndicator = document.querySelector('.device-mobile');
+            const tabletIndicator = document.querySelector('.device-tablet');
+            const desktopIndicator = document.querySelector('.device-desktop');
+            
+            if (width < 768) {
+                mobileIndicator.style.display = 'block';
+                tabletIndicator.style.display = 'none';
+                desktopIndicator.style.display = 'none';
+            } else if (width >= 768 && width < 1024) {
+                mobileIndicator.style.display = 'none';
+                tabletIndicator.style.display = 'block';
+                desktopIndicator.style.display = 'none';
+            } else {
+                mobileIndicator.style.display = 'none';
+                tabletIndicator.style.display = 'none';
+                desktopIndicator.style.display = 'block';
+            }
+        }
+        
+        // Initial call
+        updateWidth();
+        
+        // Update on resize
+        window.addEventListener('resize', updateWidth);
+    </script>
+</body>
+</html>
+
+<!--
+How the Responsive Breakpoints Work
+This example demonstrates the mobile-first approach with three main breakpoints:
+
+    Mobile Devices (< 768px)
+        Default styles without media queries
+        Single column layout
+        Smaller padding
+    Tablet Devices (≥ 768px)
+        Applied via @media (min-width: 768px)
+        Two-column grid layout
+        Increased padding
+    Desktop Devices (≥ 1024px)
+        Applied via @media (min-width: 1024px)
+        Three-column grid layout
+        Maximum width constraint
+        Centered container
+
+The example includes a visual indicator that changes based on the current viewport size, allowing you to see exactly which breakpoint is active 
+    as you resize your browser window.
+This approach ensures that your website will look good and function well on all device sizes, from the smallest mobile phones to large desktop 
+    monitors.
+-->

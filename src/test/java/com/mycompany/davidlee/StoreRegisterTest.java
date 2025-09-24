@@ -11,12 +11,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mycompany.davidlee.api.Receipt;
-import com.mycompany.davidlee.api.ShoppingCart;
-import com.mycompany.davidlee.api.StoreRegister;
-import com.mycompany.davidlee.impl.ItemImpl;
-import com.mycompany.davidlee.impl.ShoppingCartImpl;
-import com.mycompany.davidlee.impl.StoreRegisterImpl;
+import com.interview.shoppingcart.api.Receipt;
+import com.interview.shoppingcart.api.ShoppingCart;
+import com.interview.shoppingcart.api.StoreRegister;
+import com.interview.shoppingcart.api.impl.ItemImpl;
+import com.interview.shoppingcart.api.impl.ShoppingCartImpl;
+import com.interview.shoppingcart.api.impl.StoreRegisterImpl;
 import com.spring5.ProjectTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

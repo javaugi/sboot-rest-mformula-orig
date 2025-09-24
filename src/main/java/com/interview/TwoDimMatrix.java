@@ -17,6 +17,8 @@ public class TwoDimMatrix {
 
     private static final TwoDimMatrix main = new TwoDimMatrix();
 
+    static final String[][] playtimes = {{"Song1", "5.35"}, {"Song1", "1.35"}, {"Song1", "4.35"}, {"Song1", "4.35"}, {"Song1", "5.35"}, {"Song1", "2.35"}};
+
     public static void main(String[] args) {
         //main.run1();
         main.run2();

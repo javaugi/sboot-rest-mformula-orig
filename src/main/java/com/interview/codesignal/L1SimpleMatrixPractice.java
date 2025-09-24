@@ -118,7 +118,7 @@ public class L1SimpleMatrixPractice {
         return new IndexVO(row, col);
     }    
 
-        public static IndexVO searchMatrixNew3(int[][] matrix, int target) {
+    public static IndexVO searchMatrixNew3(int[][] matrix, int target) {
         int row = 0;
         int col = 0;        
         boolean found = false;
