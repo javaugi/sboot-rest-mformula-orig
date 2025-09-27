@@ -4,10 +4,10 @@
  */
 package com.spring5.misc.wmart;
 
-import com.spring5.dbisolation.wmart.OrderController;
+import com.spring5.dbisolation.wmart.WmOrderController;
 import com.spring5.dbisolation.wmart.OrderDto;
 import com.spring5.dbisolation.wmart.CreateOrderRequest;
-import com.spring5.dbisolation.wmart.OrderService;
+import com.spring5.dbisolation.wmart.WmOrderService;
 import java.math.BigDecimal;
 import org.junit.Test;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,13 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(OrderController.class)
+@WebMvcTest(WmOrderController.class)
 class OrderControllerTest {
 
     @Autowired
     MockMvc mockMvc;
     @MockitoBean
-    OrderService orderService;
+    WmOrderService orderService;
 
     @Test
     public void createOrder_returnsOk() throws Exception {

@@ -4,6 +4,7 @@
  */
 package com.spring5.entity;
 
+import com.spring5.aicloud.genaihealthcare.cccr.Claim;
 import com.spring5.utils.converters.EncryptedStringConverter;
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
@@ -51,6 +52,8 @@ public class Patient implements java.io.Serializable {
 
     Long version;
 
+    private String memberId;
+
     private String name;
 
     @Convert(converter = EncryptedStringConverter.class) // JPA Attribute Converter
@@ -81,5 +84,12 @@ public class Patient implements java.io.Serializable {
     
     //@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Appointment.class)
-    private List<Appointment> appointments;    
+    private List<Appointment> appointments;
+
+    private Claim claim;
+
+    private String planType; // Medicare, Commercial, ACA
+
+    @OneToMany(mappedBy = "patient")
+    private List<Claim> claims;
 }

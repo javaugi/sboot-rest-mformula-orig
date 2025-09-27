@@ -13,11 +13,11 @@ public class EnrollmentService {
 
     private final LLMClient llm;
     private final ConsentService consentService;
-    private final AuditService auditService;
+    private final HcareAuditService auditService;
     private final EnrollmentRepository repo;
     private final ResponsibleAIIndexService raiService;
 
-    public EnrollmentService(LLMClient llm, ConsentService consentService, AuditService auditService,
+    public EnrollmentService(LLMClient llm, ConsentService consentService, HcareAuditService auditService,
         EnrollmentRepository repo, ResponsibleAIIndexService raiService) {
         this.llm = llm;
         this.consentService = consentService;

@@ -1,0 +1,57 @@
+<div class="form-container">
+  <h2>Add New Claim</h2>
+  <form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Patient ID</mat-label>
+        <input matInput formControlName="patientId" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Encounter ID</mat-label>
+        <input matInput formControlName="encounterId" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Claim Type</mat-label>
+        <mat-select formControlName="claimType" required>
+          <mat-option value="Professional">Professional</mat-option>
+          <mat-option value="Facility">Facility</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Provider</mat-label>
+        <input matInput formControlName="provider" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Service Date</mat-label>
+        <input matInput [matDatepicker]="servicePicker" formControlName="serviceDate" required>
+        <mat-datepicker-toggle matSuffix [for]="servicePicker"></mat-datepicker-toggle>
+        <mat-datepicker #servicePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Submitted Date</mat-label>
+        <input matInput [matDatepicker]="submitPicker" formControlName="submittedDate" required>
+        <mat-datepicker-toggle matSuffix [for]="submitPicker"></mat-datepicker-toggle>
+        <mat-datepicker #submitPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Amount ($)</mat-label>
+      <input matInput type="number" formControlName="amount" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" 
+            [disabled]="!claimForm.valid" class="submit-btn">
+      Add Claim
+    </button>
+  </form>
+</div>

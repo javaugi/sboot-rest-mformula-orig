@@ -8,7 +8,7 @@ package com.spring5.aicloud.genaihealthcare;
  *
  * @author javau
  */
-public class GenaiHealthcareReadme {
+public class GenAiHealthcareReadme {
 
 }
 /*

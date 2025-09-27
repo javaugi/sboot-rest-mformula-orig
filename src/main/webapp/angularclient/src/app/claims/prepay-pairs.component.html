@@ -1,0 +1,50 @@
+<div class="pairs-container">
+  <div class="header">
+    <h2>Prepay-Eligible Claim Pairs</h2>
+    <button mat-raised-button color="primary" (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+
+  <div *ngIf="eligiblePairs.length === 0" class="no-pairs">
+    <p>No prepay-eligible pairs found.</p>
+    <p>Add Professional and Facility claims for the same patient and encounter within 30 days.</p>
+  </div>
+
+  <mat-card *ngFor="let pair of eligiblePairs" class="pair-card">
+    <mat-card-header>
+      <mat-card-title>
+        Prepay-Eligible Pair ({{ pair.daysBetween }} days apart)
+      </mat-card-title>
+      <mat-card-subtitle>
+        Patient: {{ pair.patientId }} | Encounter: {{ pair.encounterId }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="claims-grid">
+        <div class="claim professional">
+          <h3>Professional Claim</h3>
+          <p><strong>ID:</strong> {{ pair.professionalClaim.id }}</p>
+          <p><strong>Provider:</strong> {{ pair.professionalClaim.provider }}</p>
+          <p><strong>Service Date:</strong> {{ pair.professionalClaim.serviceDate | date }}</p>
+          <p><strong>Amount:</strong> ${{ pair.professionalClaim.amount }}</p>
+        </div>
+
+        <div class="claim facility">
+          <h3>Facility Claim</h3>
+          <p><strong>ID:</strong> {{ pair.facilityClaim.id }}</p>
+          <p><strong>Provider:</strong> {{ pair.facilityClaim.provider }}</p>
+          <p><strong>Service Date:</strong> {{ pair.facilityClaim.serviceDate | date }}</p>
+          <p><strong>Amount:</strong> ${{ pair.facilityClaim.amount }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button color="primary">Review</button>
+      <button mat-button color="accent">Approve Prepay</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
  *
  * @author javaugi
  */
-@Service
+//@Service
 public class AlgoTradeR2dbcService {
     
     private final AlgoTradeR2dbcRepository algoTradeRepository;

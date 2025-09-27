@@ -6,11 +6,25 @@ package com.spring5.controller;
 
 import com.spring5.dao.LoginRequest;
 import com.spring5.dao.LoginResponse;
+import com.spring5.dto.UserDtoMapper;
+import com.spring5.dto.auth.ApiKeyLoginRequest;
+import com.spring5.dto.auth.AuthResponse;
+import com.spring5.dto.auth.InternalLoginRequest;
+import com.spring5.dto.auth.RefreshTokenRequest;
+import com.spring5.dto.auth.TokenInfo;
+import com.spring5.entity.auth.ApiClient;
+import com.spring5.entity.auth.ExternalUser;
+import com.spring5.entity.auth.InternalUser;
+import com.spring5.service.auth.AuthService;
+import com.spring5.utils.JwtTokenProvider;
 import com.spring5.utils.JwtUtils;
+import jakarta.validation.Valid;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -18,22 +32,38 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+/*
+This architecture provides:
+    Separate authentication flows for internal and external users
+    JWT-based stateless authentication
+    OAuth2 integration for social logins
+    API key support for external integrations
+    Role-based access control
+    Redis-based token management
+    Angular guards and interceptors for frontend security
+    Spring Cloud Gateway for centralized security
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
+@Validated
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
     JwtUtils jwtUtils;
-    @Autowired
     private ReactiveAuthenticationManager authenticationManager;
+    private final AuthService authService;
+    private final JwtTokenProvider tokenProvider;
     
     @GetMapping("/me")
     public Mono<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
@@ -75,6 +105,95 @@ public class AuthController {
             return Mono.just(ResponseEntity.ok("Logged out successfully"));
         })
         .switchIfEmpty(Mono.just(ResponseEntity.ok("Logged out (no active session)")));
+    }
+
+    // Internal user login
+    @PostMapping("/internal/login")
+    public ResponseEntity<AuthResponse> internalLogin(@Valid @RequestBody InternalLoginRequest request) {
+        InternalUser user = authService.authenticateInternalUser(request.getUsername(), request.getPassword());
+        String token = tokenProvider.generateToken(user.getEmail(), user.getRole().toString(), "INTERNAL");
+        String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
+
+        return ResponseEntity.ok(AuthResponse.builder()
+            .accessToken(token)
+            .refreshToken(refreshToken)
+            .tokenType("Bearer")
+            .user(mapToUserDto(user))
+            .build());
+    }
+
+    // External OAuth2 login initiation
+    @GetMapping("/external/{provider}")
+    public ResponseEntity<Void> initiateExternalLogin(@PathVariable String provider) {
+        String redirectUrl = authService.getOAuth2RedirectUrl(provider);
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .header(HttpHeaders.LOCATION, redirectUrl)
+            .build();
+    }
+
+    // OAuth2 callback
+    @GetMapping("/external/{provider}/callback")
+    public ResponseEntity<AuthResponse> handleOAuth2Callback(
+        @PathVariable String provider,
+        @RequestParam String code) {
+
+        ExternalUser user = authService.authenticateExternalUser(provider, code);
+        String token = tokenProvider.generateToken(user.getEmail(), "USER", "EXTERNAL");
+        String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
+
+        return ResponseEntity.ok(AuthResponse.builder()
+            .accessToken(token)
+            .refreshToken(refreshToken)
+            .tokenType("Bearer")
+            .user(mapToUserDto(user))
+            .build());
+    }
+
+    // API Key authentication
+    @PostMapping("/external/apikey")
+    public ResponseEntity<AuthResponse> apiKeyLogin(@Valid @RequestBody ApiKeyLoginRequest request) {
+        ApiClient client = authService.authenticateApiClient(request.getApiKey());
+        String token = tokenProvider.generateToken(client.getClientId(), "API_CLIENT", "EXTERNAL");
+
+        return ResponseEntity.ok(AuthResponse.builder()
+            .accessToken(token)
+            .tokenType("Bearer")
+            .user(mapToUserDto(client))
+            .build());
+    }
+
+    // Token refresh
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+        try {
+            String email = tokenProvider.validateRefreshToken(request.getRefreshToken());
+            TokenInfo tokenInfo = tokenProvider.getTokenInfoFromRefreshToken(request.getRefreshToken());
+
+            String newAccessToken = tokenProvider.generateToken(email, tokenInfo.getRole(), tokenInfo.getUserType());
+            String newRefreshToken = tokenProvider.generateRefreshToken(email);
+
+            return ResponseEntity.ok(AuthResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .tokenType("Bearer")
+                .build());
+        } catch (Exception ex) {
+
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    private UserDtoMapper mapToUserDto(Object user) {
+        // Map different user types to common DTO
+        UserDtoMapper userMapper = UserDtoMapper.builder().build();
+        if (user instanceof InternalUser) {
+            BeanUtils.copyProperties(((InternalUser) user), userMapper);
+        } else if (user instanceof ExternalUser) {
+            BeanUtils.copyProperties(((ExternalUser) user), userMapper);
+        } else if (user instanceof ApiClient) {
+            BeanUtils.copyProperties(((ApiClient) user), userMapper);
+        }
+        return userMapper;
     }
 }
 

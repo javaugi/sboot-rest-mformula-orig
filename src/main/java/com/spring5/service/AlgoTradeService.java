@@ -50,6 +50,7 @@ import io.github.resilience4j.retry.Retry;
 import java.util.function.Supplier;
 import io.github.resilience4j.decorators.Decorators;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -164,7 +165,7 @@ public class AlgoTradeService {
             .collect(Collectors.toList());
     }
 
-    private AlgoTrade getTradeExternal(Long id) {
+    public AlgoTrade getTradeExternal(Long id) {
         try {
             /*
             String url = "https://api.external.com/trades/" + tradeId;
@@ -405,7 +406,7 @@ public class AlgoTradeService {
     @Builder(toBuilder = true)
     @NoArgsConstructor
     @AllArgsConstructor
-    static class TradeRequest {
+    public static class TradeRequest {
 
         Long tradeId;
     }
@@ -440,7 +441,7 @@ public class AlgoTradeService {
             .map(future -> {
                 try {
                     return future.get(5, java.util.concurrent.TimeUnit.SECONDS); // Timeout protection
-                } catch (Exception e) {
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
                     log.error("Error fetching trade: {}", e.getMessage());
                     return null;
                 }

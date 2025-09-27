@@ -1,0 +1,83 @@
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  padding: 20px;
+}
+
+.left-panel {
+  flex: 1;
+  max-width: 400px;
+}
+
+.right-panel {
+  flex: 2;
+}
+
+.form-container {
+  padding: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.submit-btn {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.pairs-container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.no-pairs {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.pair-card {
+  margin-bottom: 20px;
+}
+
+.claims-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.claim {
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.claim.professional {
+  background-color: #e8f5e8;
+  border-left: 4px solid #4caf50;
+}
+
+.claim.facility {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+}

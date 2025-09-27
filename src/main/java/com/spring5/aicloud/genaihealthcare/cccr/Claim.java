@@ -10,12 +10,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
+import com.spring5.entity.Patient;
 
 @Data
 @Builder(toBuilder = true)
@@ -31,26 +34,34 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(nullable = false, unique = true)
-    public String externalId; // external system claim id => supports idempotency
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Patient patient;
 
-    @Column(nullable = false)
+    @Column(name = "patient_id", nullable = false)
     public String patientId;
 
-    @Column(nullable = false)
+    @Column(name = "external_id", nullable = false, unique = true)
+    public String externalId; // external system claim id => supports idempotency
+
+    @Column(name = "claim_date", nullable = false)
     public LocalDate claimDate;
 
+    @Column(name = "encounter_id")
     public String encounterId; // optional: ties professional & facility claims
     public Instant receivedAt;
 
-    public LocalDate reviewDate;
+    private String diagnosisCode; // ICD-10 codes
+    private String procedureCode;
+    private String providerNpi;
+    public ClaimType claimType;
 
+    public Double billedAmount;
     public ClaimStatus status;
 
     public boolean prePay;
     public boolean outpatient;
 
-    public ClaimType claimType;
     public ReviewType reviewType;
     public ProcessingStage processingStage;
 
@@ -58,6 +69,6 @@ public class Claim {
     public LocalDateTime hospitalSubmitTime;
     public LocalDateTime serviceDate;
     public LocalDateTime SubmitTime;
+    public LocalDate reviewDate;
 
-    public Double BilledAmount;
 }

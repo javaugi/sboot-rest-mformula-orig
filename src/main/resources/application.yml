@@ -216,3 +216,49 @@ eventhub:
   conn: ${EVENTHUB_CONN:}        # Event Hubs connection string
   hubName: ${EVENTHUB_NAME:}     # Event hub name
   consumerGroup: ${CONSUMER_GROUP:$Default}
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        # External API routes
+        - id: external-auth
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/external/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+        
+        # Internal API routes  
+        - id: internal-auth
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/internal/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+        
+        # Dashboard service
+        - id: dashboard-service
+          uri: lb://dashboard-service
+          predicates:
+            - Path=/api/dashboard/**
+          filters:
+            - name: JwtAuthenticationFilter
+            
+        # API Key routes for external data exchange
+        - id: external-api
+          uri: lb://data-service
+          predicates:
+            - Path=/api/v1/data/**
+          filters:
+            - name: ApiKeyAuthenticationFilter
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

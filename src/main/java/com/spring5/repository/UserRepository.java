@@ -33,4 +33,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByUsername(@Param("username") String username);
     
     boolean existsByEmail(@Param("email") String email);
+
+    List<User> findByStatus(String status);
 }

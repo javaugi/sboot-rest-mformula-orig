@@ -15,7 +15,7 @@ public class SagaChoreographyOrderService {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
     @Autowired
-    private OrderRepository orderRepository;
+    private WmOrderRepository orderRepository;
 
     public void createOrder(Order order) {
         // 1. Save order in DB as PENDING

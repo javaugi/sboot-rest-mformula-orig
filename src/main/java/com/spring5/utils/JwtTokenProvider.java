@@ -4,6 +4,8 @@
  */
 package com.spring5.utils;
 
+import com.spring5.dto.auth.TokenInfo;
+import com.spring5.validatorex.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,16 +26,71 @@ public class JwtTokenProvider {
     public String getUsernameFromJWT(String jwt) {
         return extractUsername(jwt);
     }
-    
-    public boolean validateToken(String jwt) {
-        return true;
-    }
 
     @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration}")
     private long expiration;
+
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${app.jwt.expiration}")
+    private long jwtExpiration;
+
+    @Value("${app.jwt.refresh-expiration}")
+    private long refreshExpiration;
+
+    public String generateToken(String username, String role, String userType) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+
+        return Jwts.builder()
+            .subject(username)
+            .claim("role", role)
+            .claim("userType", userType)
+            .issuedAt(now)
+            .expiration(expiryDate)
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact();
+    }
+
+    public String generateRefreshToken(String username) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + refreshExpiration);
+
+        return Jwts.builder()
+            .setSubject(username)
+            .setIssuedAt(now)
+            .setExpiration(expiryDate)
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            //Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public String getUsernameFromToken(String token) {
+        return extractUsername(token);
+    }
+
+    public String validateRefreshToken(String refreshToken) throws Exception {
+        if (!validateToken(refreshToken)) {
+            throw new InvalidTokenException("Invalid refresh token");
+        }
+        return getUsernameFromToken(refreshToken);
+    }
+
+    public TokenInfo getTokenInfoFromRefreshToken(String refrehToekn) {
+        return TokenInfo.builder().role(refrehToekn).build();
+    }
 
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);

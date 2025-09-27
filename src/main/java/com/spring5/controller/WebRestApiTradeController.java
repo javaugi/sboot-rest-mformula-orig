@@ -4,7 +4,6 @@
  */
 package com.spring5.controller;
 
-import com.google.common.collect.Lists;
 import com.spring5.entity.AlgoTrade;
 import com.spring5.service.AlgoTradeR2dbcService;
 import com.spring5.service.AlgoTradeService;
@@ -16,25 +15,15 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -103,7 +92,7 @@ For partial updates, use:
  */
 @Slf4j
 @AllArgsConstructor
-@RestController
+//@RestController
 @RequestMapping("/web/apirest")
 public class WebRestApiTradeController {
 

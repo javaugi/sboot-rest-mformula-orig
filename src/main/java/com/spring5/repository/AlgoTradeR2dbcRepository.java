@@ -10,10 +10,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
-@Repository
+//@Repository
 public interface AlgoTradeR2dbcRepository extends R2dbcRepository<AlgoTrade, Long> {
 
     @Query("SELECT t FROM AlgoTrade t JOIN FETCH t.userAccount ua JOIN FETCH ua.user u WHERE u.email=(:email)")

@@ -14,21 +14,18 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-@Getter
-@Setter
-@ToString
-@Builder
+@Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -59,6 +56,8 @@ public class User {
     private String name;
     private String lastName;
     private String firstName;
+    private String status;
+    private LocalDateTime createdAt;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Role.class)
     private Set<Role> roles;
