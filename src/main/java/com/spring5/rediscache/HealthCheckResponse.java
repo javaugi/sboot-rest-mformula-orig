@@ -13,7 +13,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -23,10 +22,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HealthCheckResponse {
+
     String id;
     String status;
     Map<String, Object> value;
-    
-    
-    
 }

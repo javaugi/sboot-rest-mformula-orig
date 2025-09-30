@@ -18,7 +18,7 @@ public class CaesarCipher {
 
         System.out.println("2 Starting CaesarCipher Original text: " + text);
         runX(text, shift);
-        //scanner();
+        // scanner();
         System.out.println("3 Starting CaesarCipher Original text: " + text);
         runX2(text, shift);
         cipher(text, shift);
@@ -28,37 +28,68 @@ public class CaesarCipher {
         SimpleROT13Impl(text);
     }
 
+    public static String encryptImpX(String text, int shift) {
+        StringBuilder result = new StringBuilder();
+
+        for (char ch : text.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                char base = Character.isLowerCase(ch) ? 'a' : 'A';
+                ch = (char) (((ch - base + shift) % 26) + base);
+            }
+            result.append(ch);
+        }
+
+        return result.toString();
+    }
+
+    public static String encryptImpX2(String text, int shift) {
+        return text.chars()
+                .map(
+                        c -> {
+                            if (Character.isLetter(c)) {
+                                char base = Character.isUpperCase(c) ? 'A' : 'a';
+                                return (char) ((c - base + shift) % 26) + base;
+                            }
+                            return c;
+                        })
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
     public static void cipher(String text, int shift) {
         log.info("cipher Original text:{} shift:{} ", text, shift);
-        String encrypted = text.chars()
-            .map(c -> {
-            if (!Character.isLetter(c)) {
-                    return c;
-                } else if (Character.isUpperCase(c)) {
-                    return (c + shift - 'A') % 26 + 'A';
-                } else {
-                    return (c + shift - 'a') % 26 + 'a';
-                }
-            }).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
+        String encrypted
+                = text.chars()
+                        .map(
+                                c -> {
+                                    if (!Character.isLetter(c)) {
+                                        return c;
+                                    } else if (Character.isUpperCase(c)) {
+                                        return (c + shift - 'A') % 26 + 'A';
+                                    } else {
+                                        return (c + shift - 'a') % 26 + 'a';
+                                    }
+                                })
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
         log.info("cipher Encrypted:{} ", encrypted);
     }
 
     public static void SimpleROT13Impl(String text) {
-        //String text = "hello";
-        String rot13 = text.chars()
-            .map(c -> {
-                if (c >= 'a' && c <= 'z') {
-                    return (c - 'a' + 13) % 26 + 'a';
-                } else if (c >= 'A' && c <= 'Z') {
-                    return (c - 'A' + 13) % 26 + 'A';
-                }
-                return c;
-            })
-            .collect(StringBuilder::new,
-                StringBuilder::appendCodePoint,
-                StringBuilder::append)
-            .toString();
+        // String text = "hello";
+        String rot13
+                = text.chars()
+                        .map(
+                                c -> {
+                                    if (c >= 'a' && c <= 'z') {
+                                        return (c - 'a' + 13) % 26 + 'a';
+                                    } else if (c >= 'A' && c <= 'Z') {
+                                        return (c - 'A' + 13) % 26 + 'A';
+                                    }
+                                    return c;
+                                })
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
         System.out.println("SimpleROT13Impl:" + rot13); // uryyb
     }
 
@@ -109,7 +140,7 @@ public class CaesarCipher {
 
         char shiftBaseChar = findShiftBaseChar(c);
         char rtnC = (char) (((c - shiftBaseChar + shift) % 26) + shiftBaseChar);
-        //System.out.println("original c=" + c + "-shiftBaseChar=" + shiftBaseChar + "-rtnC=" + rtnC);
+        // System.out.println("original c=" + c + "-shiftBaseChar=" + shiftBaseChar + "-rtnC=" + rtnC);
         return rtnC;
     }
 
@@ -232,5 +263,4 @@ public class CaesarCipher {
             System.out.println("Shift " + shift + ": " + decrypted);
         }
     }
-
 }

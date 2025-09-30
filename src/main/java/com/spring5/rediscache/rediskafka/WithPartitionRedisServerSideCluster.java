@@ -4,7 +4,6 @@
  */
 package com.spring5.rediscache.rediskafka;
 
-
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import redis.clients.jedis.JedisCluster;
 
 @Service
 public class WithPartitionRedisServerSideCluster {
+
     public void setup() {
         Set<HostAndPort> clusterNodes = new HashSet<>();
         clusterNodes.add(new HostAndPort("redis1.example.com", 6379));
@@ -23,6 +23,6 @@ public class WithPartitionRedisServerSideCluster {
 
         // Automatically routes to correct shard
         jedisCluster.set("order:123", "order_data");
-        String value = jedisCluster.get("order:123");        
+        String value = jedisCluster.get("order:123");
     }
 }

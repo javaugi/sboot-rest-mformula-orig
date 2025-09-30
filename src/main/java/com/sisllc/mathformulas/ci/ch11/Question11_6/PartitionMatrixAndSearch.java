@@ -4,7 +4,8 @@ import com.sisllc.mathformulas.ci.lib.AssortedMethods;
 
 public class PartitionMatrixAndSearch {
 
-    public static Coordinate partitionAndSearch(int[][] matrix, Coordinate origin, Coordinate dest, Coordinate pivot, int elem) {
+    public static Coordinate partitionAndSearch(
+            int[][] matrix, Coordinate origin, Coordinate dest, Coordinate pivot, int elem) {
         Coordinate lowerLeftOrigin = new Coordinate(pivot.row, origin.column);
         Coordinate lowerLeftDest = new Coordinate(dest.row, pivot.column - 1);
         Coordinate upperRightOrigin = new Coordinate(origin.row, pivot.column);
@@ -28,7 +29,7 @@ public class PartitionMatrixAndSearch {
         }
 
         /* Set start to start of diagonal and end to the end of the diagonal. Since
-		 * the grid may not be square, the end of the diagonal may not equal dest.
+     * the grid may not be square, the end of the diagonal may not equal dest.
          */
         Coordinate start = (Coordinate) origin.clone();
         int diagDist = Math.min(dest.row - origin.row, dest.column - origin.column);
@@ -58,11 +59,13 @@ public class PartitionMatrixAndSearch {
     }
 
     public static void main(String[] args) {
-        int[][] matrix = {{15, 30, 50, 70, 73},
-        {35, 40, 100, 102, 120},
-        {36, 42, 105, 110, 125},
-        {46, 51, 106, 111, 130},
-        {48, 55, 109, 140, 150}};
+        int[][] matrix = {
+            {15, 30, 50, 70, 73},
+            {35, 40, 100, 102, 120},
+            {36, 42, 105, 110, 125},
+            {46, 51, 106, 111, 130},
+            {48, 55, 109, 140, 150}
+        };
 
         AssortedMethods.printMatrix(matrix);
         int m = matrix.length;
@@ -79,5 +82,4 @@ public class PartitionMatrixAndSearch {
         }
         System.out.println("Found " + count + " unique elements.");
     }
-
 }

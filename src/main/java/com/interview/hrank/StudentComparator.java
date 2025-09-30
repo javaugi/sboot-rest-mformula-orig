@@ -7,10 +7,10 @@ package com.interview.hrank;
 import java.util.Comparator;
 
 /**
- *
  * @author javaugi
  */
 public class StudentComparator implements Comparator<Student> {
+
     @Override
     public int compare(Student s1, Student s2) {
         if (s1.getCGPA() != s2.getCGPA()) {
@@ -20,5 +20,5 @@ public class StudentComparator implements Comparator<Student> {
             return s1.getName().compareTo(s2.getName()); // Alphabetical order
         }
         return Integer.compare(s1.getID(), s2.getID()); // Lower ID first
-    }    
+    }
 }

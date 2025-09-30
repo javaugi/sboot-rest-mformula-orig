@@ -9,18 +9,17 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 
 /**
- *
  * @author javaugi
  */
 public class AllowedValuesValidator implements ConstraintValidator<AllowedValues, String> {
-    
+
     private String[] allowedValues;
-    
+
     @Override
     public void initialize(AllowedValues constraintAnnotation) {
         this.allowedValues = constraintAnnotation.value();
     }
-    
+
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {

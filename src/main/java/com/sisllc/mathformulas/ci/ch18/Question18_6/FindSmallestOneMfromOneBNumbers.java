@@ -126,5 +126,4 @@ public class FindSmallestOneMfromOneBNumbers {
         }
         System.out.println("Completed " + count + " runs.");
     }
-
 }

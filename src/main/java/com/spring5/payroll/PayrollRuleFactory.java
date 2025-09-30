@@ -4,18 +4,16 @@
  */
 package com.spring5.payroll;
 
-//import com.spring5.jpapagination.Region;
-
+// import com.spring5.jpapagination.Region;
 import com.spring5.empbilpayroll.Region;
 import static com.spring5.empbilpayroll.Region.EU;
 
-//import static java.util.Locale.US;
-
+// import static java.util.Locale.US;
 /**
- *
  * @author javaugi
  */
 public class PayrollRuleFactory {
+
     public static PayrollRuleStrategy getRule(Region region) {
         switch (region) {
             case US -> {
@@ -24,7 +22,8 @@ public class PayrollRuleFactory {
             case EU -> {
                 return new EUPayrollRule();
             }
-            default -> throw new IllegalArgumentException("Unsupported region");
+            default ->
+                throw new IllegalArgumentException("Unsupported region");
         }
-    }    
+    }
 }

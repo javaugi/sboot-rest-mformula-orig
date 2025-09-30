@@ -10,10 +10,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.models.PartitionKey;
-//import com.azure.data.cosmos.ConsistencyLevel;
-//import com.azure.data.cosmos.CosmosClientBuilder;
-//import com.azure.data.cosmos.CosmosContainer;
-//import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,15 +33,17 @@ public class FlightEventController {
     private final FlightEventService flightService;
 
     @Bean
-    public CosmosClient cosmosClient(@Value("${azure.cosmos.uri}") String uri,
-        @Value("${azure.cosmos.key}") String key,
-        @Value("${azure.cosmos.preferredRegion:}") String preferredRegion) {
+    public CosmosClient cosmosClient(
+            @Value("${azure.cosmos.uri}") String uri,
+            @Value("${azure.cosmos.key}") String key,
+            @Value("${azure.cosmos.preferredRegion:}") String preferredRegion) {
 
-        CosmosClientBuilder builder = new CosmosClientBuilder()
-            .endpoint(uri)
-            .key(key)
-            .consistencyLevel(ConsistencyLevel.SESSION) // balanced
-            .contentResponseOnWriteEnabled(true);        // get RU charge on writes
+        CosmosClientBuilder builder
+                = new CosmosClientBuilder()
+                        .endpoint(uri)
+                        .key(key)
+                        .consistencyLevel(ConsistencyLevel.SESSION) // balanced
+                        .contentResponseOnWriteEnabled(true); // get RU charge on writes
 
         // Direct mode recommended for performance
         builder.directMode(); // default config; optionally configure connectionPool size, idle timeout
@@ -57,9 +55,10 @@ public class FlightEventController {
     }
 
     @Bean
-    public CosmosContainer cosmosContainer(CosmosClient client,
-        @Value("${azure.cosmos.database}") String db,
-        @Value("${azure.cosmos.container}") String container) {
+    public CosmosContainer cosmosContainer(
+            CosmosClient client,
+            @Value("${azure.cosmos.database}") String db,
+            @Value("${azure.cosmos.container}") String container) {
         CosmosDatabase database = client.getDatabase(db);
         return database.getContainer(container);
     }
@@ -67,13 +66,14 @@ public class FlightEventController {
     // BAD: Blocks the thread, killing scalability
     public FlightEvent getFlightEventBad(String id, String partitionKey) {
         return container.readItem(id, new PartitionKey(partitionKey), FlightEvent.class).getItem();
-        //.block(); // BLOCKING CALL!
+        // .block(); // BLOCKING CALL!
     }
 
     // GOOD: Returns the reactive type for non-blocking handling
     public Mono<FlightEvent> getFlightEvent(String id, String partitionKey) {
-        return Mono.just(container.readItem(id, new PartitionKey(partitionKey), FlightEvent.class).getItem());
-        //.map(itemResponse -> itemResponse.getItem());
+        return Mono.just(
+                container.readItem(id, new PartitionKey(partitionKey), FlightEvent.class).getItem());
+        // .map(itemResponse -> itemResponse.getItem());
     }
 
     // This Mono can be seamlessly integrated into a Spring WebFlux endpoint

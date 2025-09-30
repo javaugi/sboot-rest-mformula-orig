@@ -8,8 +8,6 @@
 package com.patterns.misc.jdinjection;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -20,5 +18,4 @@ public class SMSServiceInjector implements MessageServiceInjector {
     public Consumer getConsumer() {
         return new ConsumerConstructorInjection(new SMSServiceImpl());
     }
-
 }

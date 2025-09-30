@@ -3,7 +3,11 @@ package com.sisllc.mathformulas.ci.ch09;
 public class Q97PrintScreen {
 
     public enum Color {
-        Black, White, Red, Yellow, Green
+        Black,
+        White,
+        Red,
+        Yellow,
+        Green
     }
 
     public static String PrintColor(Color c) {
@@ -72,5 +76,4 @@ public class Q97PrintScreen {
         System.out.println();
         PrintScreen(screen);
     }
-
 }

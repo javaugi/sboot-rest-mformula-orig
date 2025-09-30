@@ -24,5 +24,4 @@ public class Q37Main {
             System.out.println(animals.dequeueAny().name());
         }
     }
-
 }

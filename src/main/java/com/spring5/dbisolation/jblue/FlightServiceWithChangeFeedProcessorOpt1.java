@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class FlightServiceWithChangeFeedProcessorOpt1 {
+
     private final CosmosAsyncClient cosmosAsyncClient;
     private volatile boolean changeFeedRunning = false;
 
@@ -34,28 +35,28 @@ public class FlightServiceWithChangeFeedProcessorOpt1 {
         CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
         CosmosAsyncContainer container = database.getContainer("flightEvents");
 
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            //.createForProcessingFromBeginning(CosmosChangeFeedStartFrom.BEGINNING);
-            .createForProcessingFromBeginning(FeedRange.forFullRange());
+        CosmosChangeFeedRequestOptions options
+                = CosmosChangeFeedRequestOptions
+                        // .createForProcessingFromBeginning(CosmosChangeFeedStartFrom.BEGINNING);
+                        .createForProcessingFromBeginning(FeedRange.forFullRange());
 
-        CosmosPagedFlux<FeedResponse> changeFeedFlux = container
-            .queryChangeFeed(options, FeedResponse.class);
+        CosmosPagedFlux<FeedResponse> changeFeedFlux
+                = container.queryChangeFeed(options, FeedResponse.class);
 
         changeFeedFlux.subscribe(
-            feedResponse -> {
-                //for (FlightEvent event : feedResponse.getResults()) {
-                //    processFlightEvent(event);
-                // }
-            },
-            error -> {
-                System.err.println("Change feed error: " + error.getMessage());
-                changeFeedRunning = false;
-            },
-            () -> {
-                System.out.println("Change feed completed");
-                changeFeedRunning = false;
-            }
-        );
+                feedResponse -> {
+                    // for (FlightEvent event : feedResponse.getResults()) {
+                    //    processFlightEvent(event);
+                    // }
+                },
+                error -> {
+                    System.err.println("Change feed error: " + error.getMessage());
+                    changeFeedRunning = false;
+                },
+                () -> {
+                    System.out.println("Change feed completed");
+                    changeFeedRunning = false;
+                });
     }
 
     private void processFlightEvent(FlightEvent event) {

@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 public class OpenAIResponse {
+
     private String id;
     private String object;
     private long created;
@@ -18,6 +19,7 @@ public class OpenAIResponse {
 
     @Data
     public static class Choice {
+
         private Message message;
         private int index;
         private String finish_reason;
@@ -25,7 +27,8 @@ public class OpenAIResponse {
 
     @Data
     public static class Message {
+
         private String role;
         private String content;
-    }    
+    }
 }

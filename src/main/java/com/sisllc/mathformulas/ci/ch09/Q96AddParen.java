@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Q96AddParen {
 
-    public static void addParen(ArrayList<String> list, int leftRem, int rightRem, char[] str, int count) {
+    public static void addParen(
+            ArrayList<String> list, int leftRem, int rightRem, char[] str, int count) {
         if (leftRem < 0 || rightRem < leftRem) {
             return; // invalid state
         }
@@ -38,5 +39,4 @@ public class Q96AddParen {
         }
         System.out.println(list.size());
     }
-
 }

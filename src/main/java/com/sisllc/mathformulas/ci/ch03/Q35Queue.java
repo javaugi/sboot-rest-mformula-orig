@@ -21,7 +21,7 @@ public class Q35Queue<T> {
     }
 
     /* Move elements from stackNewest into stackOldest. This is usually done so that we can
-	 * do operations on stackOldest.
+   * do operations on stackOldest.
      */
     private void shiftStacks() {
         if (stackOldest.isEmpty()) {

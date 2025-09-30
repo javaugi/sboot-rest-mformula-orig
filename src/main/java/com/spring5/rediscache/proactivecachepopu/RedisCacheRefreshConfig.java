@@ -29,35 +29,35 @@ Production Considerations
     Backup: Configure Redis persistence appropriately
     Partitioning: Consider how to partition your data if needed
     Error Handling: Implement proper error handling for Redis operations
-This implementation provides a robust solution for both idempotency in your REST API and ordered 
+This implementation provides a robust solution for both idempotency in your REST API and ordered
     processing of Kafka messages using Redis as the coordination layer.
-*/
-
+ */
 @Configuration
 public class RedisCacheRefreshConfig extends RedisBaseConfig {
+
     /* Key components
-    1. Redis Configuration                          - RediConfig
-    2. Redis-backed Idempotency Service             - RedibackedIdempotencyService
-    3. Updated Idempotency Filter with Redis        - RedibackedIdempotencyFilter
-    4. Kafka Event Ordering with Redis              - KafkaOrderedConsumer 
-    5. Processing Out-of-Order Events               - ScheduledOutOfOrderEventProcessor
-    6. Kafka Producer with Sequence Tracking        - KafkaOrderedProducerWithSequenceTracking
-    */
-    
+  1. Redis Configuration                          - RediConfig
+  2. Redis-backed Idempotency Service             - RedibackedIdempotencyService
+  3. Updated Idempotency Filter with Redis        - RedibackedIdempotencyFilter
+  4. Kafka Event Ordering with Redis              - KafkaOrderedConsumer
+  5. Processing Out-of-Order Events               - ScheduledOutOfOrderEventProcessor
+  6. Kafka Producer with Sequence Tracking        - KafkaOrderedProducerWithSequenceTracking
+     */
+
     public static final String REDIS_TPL_PRODUCT = "REDIS_TPL_PRODUCT";
 
     @Bean(name = REDIS_TPL_PRODUCT)
     public RedisTemplate<String, Product> redisObjTemplate() {
         RedisTemplate<String, Product> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory());        
+        template.setConnectionFactory(redisConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
-        
-        Jackson2JsonRedisSerializer<Product> serializer =
-                new Jackson2JsonRedisSerializer<>(Product.class);
+
+        Jackson2JsonRedisSerializer<Product> serializer
+                = new Jackson2JsonRedisSerializer<>(Product.class);
         template.setValueSerializer(serializer);
         return template;
     }
-    
+
     @Bean
     public RedisCacheManager usCacheManager(RedisConnectionFactory usFactory) {
         return RedisCacheManager.builder(usFactory).build();
@@ -66,18 +66,18 @@ public class RedisCacheRefreshConfig extends RedisBaseConfig {
     @Bean
     public RedisCacheManager euCacheManager(RedisConnectionFactory euFactory) {
         return RedisCacheManager.builder(euFactory).build();
-    }    
-    
+    }
+
     @Bean("regionKeyGenerator")
     public KeyGenerator regionKeyGenerator() {
-        //return (target, method, params) -> {
+        // return (target, method, params) -> {
         return (target, method, params) -> {
             String region = CacheRegionContextHolder.getCurrentRegion(); // e.g., from ThreadLocal
             return region + ":" + Arrays.toString(params);
         };
-    }    
+    }
     //           return Objects.hash(method, Arrays.deepHashCode(params));
-} 
+}
 
 /*
 Integrating Redis Cache with Kafka for Idempotency and Event Ordering
@@ -165,16 +165,16 @@ public class IdempotencyFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, 
-                                  HttpServletResponse response, 
-                                  FilterChain filterChain) 
+    protected void doFilterInternal(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  FilterChain filterChain)
         throws ServletException, IOException {
-        
-        if ("POST".equalsIgnoreCase(request.getMethod()) || 
+
+        if ("POST".equalsIgnoreCase(request.getMethod()) ||
             "PUT".equalsIgnoreCase(request.getMethod())) {
-            
+
             String idempotencyKey = request.getHeader(IDEMPOTENCY_KEY_HEADER);
-            
+
             if (idempotencyKey != null && !idempotencyKey.isEmpty()) {
                 if (idempotencyService.isDuplicate(idempotencyKey)) {
                     Object cachedResponse = idempotencyService.getResponse(idempotencyKey);
@@ -182,19 +182,19 @@ public class IdempotencyFilter extends OncePerRequestFilter {
                     response.getWriter().write(cachedResponse.toString());
                     return;
                 }
-                
-                ContentCachingResponseWrapper responseWrapper = 
+
+                ContentCachingResponseWrapper responseWrapper =
                     new ContentCachingResponseWrapper(response);
-                
+
                 try {
                     filterChain.doFilter(request, responseWrapper);
-                    
-                    if (responseWrapper.getStatus() >= 200 && 
+
+                    if (responseWrapper.getStatus() >= 200 &&
                         responseWrapper.getStatus() < 300) {
                         String responseBody = responseWrapper.toString();
                         idempotencyService.storeResponse(idempotencyKey, responseBody);
                     }
-                    
+
                     responseWrapper.copyBodyToResponse();
                 } finally {
                     responseWrapper.copyBodyToResponse();
@@ -202,7 +202,7 @@ public class IdempotencyFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        
+
         filterChain.doFilter(request, response);
     }
 }
@@ -227,22 +227,22 @@ public class KafkaOrderedConsumer {
     @KafkaListener(topics = "ordered-events")
     public void processOrderedEvent(OrderedEvent event) {
         String sequenceKey = SEQUENCE_PREFIX + event.getEntityId();
-        
+
         // Get last processed sequence number from Redis
         Long lastSequence = redisTemplate.opsForValue().get(sequenceKey);
         lastSequence = lastSequence == null ? 0L : lastSequence;
-        
+
         // Check if this event is in order
         if (event.getSequenceNumber() == lastSequence + 1) {
             // Process the event
             processEvent(event);
-            
+
             // Update the sequence number in Redis
             redisTemplate.opsForValue().set(sequenceKey, event.getSequenceNumber());
         } else if (event.getSequenceNumber() > lastSequence + 1) {
             // Store in Redis for later processing (out-of-order)
             redisTemplate.opsForList().rightPush(
-                "kafka:out-of-order:" + event.getEntityId(), 
+                "kafka:out-of-order:" + event.getEntityId(),
                 event
             );
         }
@@ -266,7 +266,7 @@ public class OutOfOrderEventProcessor {
     private final RedisTemplate<String, Object> redisTemplate;
     private final KafkaOrderedConsumer eventConsumer;
 
-    public OutOfOrderEventProcessor(RedisTemplate<String, Object> redisTemplate, 
+    public OutOfOrderEventProcessor(RedisTemplate<String, Object> redisTemplate,
                                   KafkaOrderedConsumer eventConsumer) {
         this.redisTemplate = redisTemplate;
         this.eventConsumer = eventConsumer;
@@ -276,21 +276,21 @@ public class OutOfOrderEventProcessor {
     public void processOutOfOrderEvents() {
         // Get all entity IDs with out-of-order events
         Set<String> entityKeys = redisTemplate.keys("kafka:out-of-order:*");
-        
+
         for (String key : entityKeys) {
             String entityId = key.substring("kafka:out-of-order:".length());
             String sequenceKey = "kafka:sequence:" + entityId;
-            
+
             Long lastSequence = redisTemplate.opsForValue().get(sequenceKey);
             lastSequence = lastSequence == null ? 0L : lastSequence;
-            
+
             // Peek at the next event without removing it
             OrderedEvent nextEvent = (OrderedEvent) redisTemplate.opsForList().index(key, 0);
-            
+
             if (nextEvent != null && nextEvent.getSequenceNumber() == lastSequence + 1) {
                 // Process the event
                 eventConsumer.processOrderedEvent(nextEvent);
-                
+
                 // Remove the processed event
                 redisTemplate.opsForList().leftPop(key);
             }
@@ -320,11 +320,11 @@ public class KafkaOrderedProducer {
         // Get and increment sequence number atomically
         String sequenceKey = "kafka:producer:sequence:" + entityId;
         Long sequenceNumber = redisTemplate.opsForValue().increment(sequenceKey);
-        
+
         // Set the sequence number in the event
         event.setSequenceNumber(sequenceNumber);
         event.setEntityId(entityId);
-        
+
         // Send to Kafka with entityId as key to ensure ordering
         kafkaTemplate.send("ordered-events", entityId, event);
     }
@@ -339,7 +339,7 @@ public class OrderedEvent {
 
     // Constructors, getters, and setters
     public OrderedEvent() {}
-    
+
     public OrderedEvent(String entityId, long sequenceNumber, String eventType, Map<String, Object> payload) {
         this.entityId = entityId;
         this.sequenceNumber = sequenceNumber;
@@ -370,4 +370,4 @@ Production Considerations
     Partitioning: Consider how to partition your data if needed
     Error Handling: Implement proper error handling for Redis operations
 This implementation provides a robust solution for both idempotency in your REST API and ordered processing of Kafka messages using Redis as the coordination layer.
-*/
+ */

@@ -4,14 +4,12 @@
  */
 package com.spring5.aicloud.genaihealthcare.hapifhir;
 
-import ca.uhn.fhir.parser.IParser;
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.parser.IParser;
 import lombok.RequiredArgsConstructor;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-//import org.springframework.core.io.Resource;
-//import org.hl7.fhir.r4.model.Resource;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,7 +30,7 @@ public class FhirIngestController {
         IBaseResource res = parser.parseResource(fhirJson);
 
         // Minimal validation: resource type allowed?
-        String resourceType = res.fhirType();//.getResourceType().name();
+        String resourceType = res.fhirType(); // .getResourceType().name();
 
         // Forward raw FHIR to Kafka (in prod, add schema, provenance, redaction)
         kafka.send("raw-fhir-events", resourceType, fhirJson);
@@ -46,7 +44,7 @@ public class FhirIngestController {
 
         try {
             // Minimal validation: resource type allowed?
-            String resourceType = res.fhirType();//.getResourceType().name();
+            String resourceType = res.fhirType(); // .getResourceType().name();
             boolean isValid = fhirValidationService.validate();
         } catch (Exception ex) {
 

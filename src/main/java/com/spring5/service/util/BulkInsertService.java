@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BulkInsertService {
 
-    public void bulkInsertEntities(EntityManager entityManager, List<Customer> entities, int batchSize) {
+    public void bulkInsertEntities(
+            EntityManager entityManager, List<Customer> entities, int batchSize) {
         EntityTransaction transaction = entityManager.getTransaction();
         try (entityManager) {
             transaction.begin();

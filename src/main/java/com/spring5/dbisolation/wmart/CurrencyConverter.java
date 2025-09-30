@@ -10,8 +10,9 @@ import java.util.Map;
 
 public class CurrencyConverter {
 
-    //return value Map<transId, Amount> from all the transactions and the exchange rates
-    public Map<String, Double> convertTransactions(List<String> transactions, List<String> exchangeRates) {
+    // return value Map<transId, Amount> from all the transactions and the exchange rates
+    public Map<String, Double> convertTransactions(
+            List<String> transactions, List<String> exchangeRates) {
         // Step 1: Parse exchange rates into a map for efficient lookup.
         // Key: Currency (e.g., "EUR"), Value: Conversion factor to USD.
         Map<String, Double> ratesMap = getRateMap(exchangeRates);

@@ -24,7 +24,8 @@ import org.springframework.http.HttpRequest;
 @Provider("UserService")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Disabled("Temporarily disabled for CICD - Method createUserPact does not conform required method signature 'public au.com.dius.pact.core.model.V4Pact xxx(PactBuilder builder)")
+@Disabled(
+        "Temporarily disabled for CICD - Method createUserPact does not conform required method signature 'public au.com.dius.pact.core.model.V4Pact xxx(PactBuilder builder)")
 public class UserServiceProviderPactTest {
 
     public static final String PROVIDER_NAME = "UserService";
@@ -39,21 +40,22 @@ public class UserServiceProviderPactTest {
 
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
-    void testTemplate(Pact pact, Interaction interaction, HttpRequest request,
-        PactVerificationContext context) {
+    void testTemplate(
+            Pact pact, Interaction interaction, HttpRequest request, PactVerificationContext context) {
         context.verifyInteraction();
     }
 
     @State("User with ID 1 exists")
     void userWithId1Exists() {
         // Setup: Create a user with ID 1 in the database
-        User user = User.builder()
-            .id(1L)
-            .name("John Doe")
-            .email("john.doe@example.com")
-            .status("ACTIVE")
-            .createdAt(LocalDateTime.of(2023, 1, 1, 10, 0, 0))
-            .build();
+        User user
+                = User.builder()
+                        .id(1L)
+                        .name("John Doe")
+                        .email("john.doe@example.com")
+                        .status("ACTIVE")
+                        .createdAt(LocalDateTime.of(2023, 1, 1, 10, 0, 0))
+                        .build();
 
         // Save to test database (using @MockBean or test data setup)
         // userRepository.save(user);
@@ -62,19 +64,21 @@ public class UserServiceProviderPactTest {
     @State("Users with status ACTIVE exist")
     void usersWithStatusActiveExist() {
         // Setup: Create active users in the database
-        User user1 = User.builder()
-            .id(1L)
-            .name("John Doe")
-            .email("john.doe@example.com")
-            .status("ACTIVE")
-            .build();
+        User user1
+                = User.builder()
+                        .id(1L)
+                        .name("John Doe")
+                        .email("john.doe@example.com")
+                        .status("ACTIVE")
+                        .build();
 
-        User user2 = User.builder()
-            .id(2L)
-            .name("Jane Smith")
-            .email("jane.smith@example.com")
-            .status("ACTIVE")
-            .build();
+        User user2
+                = User.builder()
+                        .id(2L)
+                        .name("Jane Smith")
+                        .email("jane.smith@example.com")
+                        .status("ACTIVE")
+                        .build();
 
         // Save to test database
         // userRepository.saveAll(List.of(user1, user2));

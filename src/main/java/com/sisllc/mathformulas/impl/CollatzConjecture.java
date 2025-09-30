@@ -1,17 +1,15 @@
 package com.sisllc.mathformulas.impl;
 
 /**
- *
  * @author david
- *
+ * <p>
  * The Collatz conjecture is a conjecture in mathematics named after Lothar
  * Collatz
- *
+ * <p>
  * Take any natural number n. If n is even, divide it by 2 to get n / 2. If n is
  * odd, multiply it by 3 and add 1 to obtain 3n + 1. Repeat the process
  * indefinitely. The conjecture is that no matter what number you start with,
  * you will always eventually reach 1.
- *
  */
 public class CollatzConjecture {
 

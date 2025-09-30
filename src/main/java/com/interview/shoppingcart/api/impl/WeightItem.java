@@ -8,8 +8,6 @@
 package com.interview.shoppingcart.api.impl;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -41,5 +39,4 @@ public class WeightItem extends ItemImpl {
     public void setPricePerPound(double pricePerPound) {
         this.pricePerPound = pricePerPound;
     }
-
 }

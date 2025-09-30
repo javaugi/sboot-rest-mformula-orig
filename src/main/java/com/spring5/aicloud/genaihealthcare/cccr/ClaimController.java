@@ -4,10 +4,9 @@
  */
 package com.spring5.aicloud.genaihealthcare.cccr;
 
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/claims")

@@ -5,7 +5,6 @@
 package com.spring5.misc.wmart;
 
 import com.spring5.dbisolation.wmart.OrderProcessor;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +12,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @SpringBootTest
-@EmbeddedKafka(partitions = 1, topics = {"order-events"})
+@EmbeddedKafka(
+        partitions = 1,
+        topics = {"order-events"})
 public class OrderServiceIntegrationTest {
 
     @Autowired
@@ -25,7 +26,7 @@ public class OrderServiceIntegrationTest {
     void setUp() {
     }
 
-    //@Test
+    // @Test
     public void testProcessOrder() throws Exception {
         kafkaTemplate.send("order-events", "store1", "{...json...}");
         // wait + assert DB row created

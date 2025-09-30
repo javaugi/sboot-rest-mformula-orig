@@ -23,15 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author javaugi
  */
 @RestController
 @RequestMapping("/apisec/patients")
 public class PatientApiSecController {
+
     @Autowired
     private PatientRepository patientRepository;
-    
+
     @Autowired
     private MedicalHistoryRepository medicalHistoryRepository;
 
@@ -59,8 +59,8 @@ public class PatientApiSecController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content for successful deletion
         } else {
             ResponseEntity.notFound().build();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
+            return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
         }
     }
-    
 }

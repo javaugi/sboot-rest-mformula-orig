@@ -7,10 +7,10 @@ package com.spring5.audit;
 /*
 Designing a scalable, HIPAA-compliant auditing microservice for healthcare requires careful attention to security, performance, and regulatory requirements. Below is a detailed architecture and implementation approach:
 
-*/
+ */
 public class HippaAuditMain {
-    
 }
+
 /*
 1. Key Requirements
 HIPAA Compliance
@@ -157,11 +157,11 @@ Audit Query API (HIPAA-Compliant)
     Cold Storage	AWS S3 + Glacier
     Alerting            Prometheus + Grafana
     Encryption          AWS KMS / HashiCorp Vault
-    
+
 Final Notes
     Testing: Simulate load with JMeter (10K events/sec).
     Backup: Daily snapshots of Elasticsearch to S3.
     Cost Optimization: Move logs >1 year to Glacier.
 
 This design balances scalability, compliance, and real-time usability while meeting HIPAA requirements. Would you like a sample Terraform script for deploying this on AWS?
-*/
+ */

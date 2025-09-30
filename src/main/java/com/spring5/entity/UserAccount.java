@@ -26,7 +26,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -48,11 +47,15 @@ public class UserAccount {
     private AccountType accountType;
     private BigDecimal cashBalance;
     private BigDecimal accountBalance;
-    
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    
-    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Trade.class)
-    private Set<Trade> trades;    
+
+    @OneToMany(
+            mappedBy = "userAccount",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            targetEntity = Trade.class)
+    private Set<Trade> trades;
 }

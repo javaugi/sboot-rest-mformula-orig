@@ -14,6 +14,7 @@ public class PrescriptionQueue {
 
     // Represents a single prescription order
     public static class PrescriptionOrder {
+
         private final String orderId;
         private final String patientId;
         private final boolean isStat; // STAT orders are highest priority
@@ -26,28 +27,51 @@ public class PrescriptionQueue {
             this.fillByDate = fillByDate;
         }
 
-        public String getOrderId() { return orderId; }
-        public String getPatientId() { return patientId; }
-        public boolean isStat() { return isStat; }
-        public long getFillByDate() { return fillByDate; }
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public String getPatientId() {
+            return patientId;
+        }
+
+        public boolean isStat() {
+            return isStat;
+        }
+
+        public long getFillByDate() {
+            return fillByDate;
+        }
 
         @Override
         public String toString() {
-            return "PrescriptionOrder{" +
-                   "orderId='" + orderId + '\'' +
-                   ", patientId='" + patientId + '\'' +
-                   ", isStat=" + isStat +
-                   ", fillByDate=" + fillByDate +
-                   '}';
+            return "PrescriptionOrder{"
+                    + "orderId='"
+                    + orderId
+                    + '\''
+                    + ", patientId='"
+                    + patientId
+                    + '\''
+                    + ", isStat="
+                    + isStat
+                    + ", fillByDate="
+                    + fillByDate
+                    + '}';
         }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             PrescriptionOrder that = (PrescriptionOrder) o;
-            return isStat == that.isStat && fillByDate == that.fillByDate &&
-                   orderId.equals(that.orderId) && patientId.equals(that.patientId);
+            return isStat == that.isStat
+                    && fillByDate == that.fillByDate
+                    && orderId.equals(that.orderId)
+                    && patientId.equals(that.patientId);
         }
 
         @Override
@@ -58,6 +82,7 @@ public class PrescriptionQueue {
 
     // Custom Comparator for PrescriptionOrder to define priority
     private static class OrderComparator implements Comparator<PrescriptionOrder> {
+
         @Override
         public int compare(PrescriptionOrder o1, PrescriptionOrder o2) {
             // STAT orders first
@@ -86,6 +111,7 @@ public class PrescriptionQueue {
 
     /**
      * Adds a new prescription order to the queue. This method is thread-safe.
+     *
      * @param order The PrescriptionOrder to add.
      */
     public void addOrder(PrescriptionOrder order) {
@@ -99,16 +125,19 @@ public class PrescriptionQueue {
     }
 
     /**
-     * Retrieves and removes the highest priority prescription order from the queue.
-     * This method is thread-safe.
-     * @return The highest priority PrescriptionOrder, or null if the queue is empty.
+     * Retrieves and removes the highest priority prescription order from the
+     * queue. This method is thread-safe.
+     *
+     * @return The highest priority PrescriptionOrder, or null if the queue is
+     * empty.
      */
     public PrescriptionOrder getNextOrder() {
         lock.lock();
         try {
             PrescriptionOrder nextOrder = queue.poll();
             if (nextOrder != null) {
-                System.out.println(Thread.currentThread().getName() + " retrieved: " + nextOrder.getOrderId());
+                System.out.println(
+                        Thread.currentThread().getName() + " retrieved: " + nextOrder.getOrderId());
             } else {
                 System.out.println(Thread.currentThread().getName() + " queue is empty.");
             }
@@ -120,6 +149,7 @@ public class PrescriptionQueue {
 
     /**
      * Returns the number of orders currently in the queue.
+     *
      * @return The size of the queue.
      */
     public int size() {
@@ -135,17 +165,35 @@ public class PrescriptionQueue {
         PrescriptionQueue pq = new PrescriptionQueue();
 
         // Simulate orders being added by multiple threads
-        Thread producer1 = new Thread(() -> {
-            pq.addOrder(new PrescriptionOrder("P001", "PatA", false, System.currentTimeMillis() + 5000));
-            pq.addOrder(new PrescriptionOrder("P003", "PatC", true, System.currentTimeMillis() + 1000)); // STAT
-            pq.addOrder(new PrescriptionOrder("P005", "PatE", false, System.currentTimeMillis() + 2000));
-        }, "Producer-1");
+        Thread producer1
+                = new Thread(
+                        () -> {
+                            pq.addOrder(
+                                    new PrescriptionOrder("P001", "PatA", false, System.currentTimeMillis() + 5000));
+                            pq.addOrder(
+                                    new PrescriptionOrder(
+                                            "P003", "PatC", true, System.currentTimeMillis() + 1000)); // STAT
+                            pq.addOrder(
+                                    new PrescriptionOrder("P005", "PatE", false, System.currentTimeMillis() + 2000));
+                        },
+                        "Producer-1");
 
-        Thread producer2 = new Thread(() -> {
-            pq.addOrder(new PrescriptionOrder("P002", "PatB", false, System.currentTimeMillis() + 10000));
-            pq.addOrder(new PrescriptionOrder("P004", "PatD", true, System.currentTimeMillis() + 500)); // STAT
-            pq.addOrder(new PrescriptionOrder("P006", "PatF", false, System.currentTimeMillis() + 2000)); // Same fill date as P005
-        }, "Producer-2");
+        Thread producer2
+                = new Thread(
+                        () -> {
+                            pq.addOrder(
+                                    new PrescriptionOrder("P002", "PatB", false, System.currentTimeMillis() + 10000));
+                            pq.addOrder(
+                                    new PrescriptionOrder(
+                                            "P004", "PatD", true, System.currentTimeMillis() + 500)); // STAT
+                            pq.addOrder(
+                                    new PrescriptionOrder(
+                                            "P006",
+                                            "PatF",
+                                            false,
+                                            System.currentTimeMillis() + 2000)); // Same fill date as P005
+                        },
+                        "Producer-2");
 
         producer1.start();
         producer2.start();
@@ -156,20 +204,21 @@ public class PrescriptionQueue {
         System.out.println("\n--- Processing Orders ---");
 
         // Simulate orders being processed by multiple threads
-        Runnable consumerTask = () -> {
-            for (int i = 0; i < 3; i++) { // Each consumer tries to get 3 orders
-                PrescriptionOrder order = pq.getNextOrder();
-                if (order != null) {
-                    try {
-                        Thread.sleep(500); // Simulate processing time
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+        Runnable consumerTask
+                = () -> {
+                    for (int i = 0; i < 3; i++) { // Each consumer tries to get 3 orders
+                        PrescriptionOrder order = pq.getNextOrder();
+                        if (order != null) {
+                            try {
+                                Thread.sleep(500); // Simulate processing time
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        } else {
+                            break;
+                        }
                     }
-                } else {
-                    break;
-                }
-            }
-        };
+                };
 
         Thread consumer1 = new Thread(consumerTask, "Consumer-1");
         Thread consumer2 = new Thread(consumerTask, "Consumer-2");

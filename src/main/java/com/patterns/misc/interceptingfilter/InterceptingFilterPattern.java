@@ -15,19 +15,22 @@ package com.patterns.misc.interceptingfilter;
  * logging or tracking of request and then pass the requests to corresponding
  * handlers. Following are the entities of this type of design pattern.
  *
+ * <p>
  * Filter - Filter which will performs certain task prior or after execution of
  * request by request handler.
  *
+ * <p>
  * Filter Chain - Filter Chain carries multiple filters and help to execute them
  * in defined order on target.
  *
+ * <p>
  * Target - Target object is the request handler
  *
+ * <p>
  * Filter Manager - Filter Manager manages the filters and Filter Chain.
  *
+ * <p>
  * Client - Client is the object who sends request to the Target object.
- *
- *
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:

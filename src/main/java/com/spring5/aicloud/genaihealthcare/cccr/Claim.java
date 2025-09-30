@@ -4,30 +4,31 @@
  */
 package com.spring5.aicloud.genaihealthcare.cccr;
 
+import com.spring5.entity.Patient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
-import com.spring5.entity.Patient;
 
 @Data
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "claims",
-    indexes = {
-        @Index(name = "idx_patient_date", columnList = "patientId, claimDate"),
-        @Index(name = "idx_externalId", columnList = "externalId", unique = true)
-    })
+@Table(
+        name = "claims",
+        indexes = {
+            @Index(name = "idx_patient_date", columnList = "patientId, claimDate"),
+            @Index(name = "idx_externalId", columnList = "externalId", unique = true)
+        })
 public class Claim {
 
     @Id
@@ -49,6 +50,7 @@ public class Claim {
 
     @Column(name = "encounter_id")
     public String encounterId; // optional: ties professional & facility claims
+
     public Instant receivedAt;
 
     private String diagnosisCode; // ICD-10 codes
@@ -70,5 +72,4 @@ public class Claim {
     public LocalDateTime serviceDate;
     public LocalDateTime SubmitTime;
     public LocalDate reviewDate;
-
 }

@@ -17,19 +17,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class EventHandlingTest {
-    
+
     @Test
     public void testOrderCreatedEvent() {
         // Setup
         MBassador<Object> eventBus = new EventBusConfig().eventBus();
         NotificationHandler handler = mock(NotificationHandler.class);
         eventBus.subscribe(handler);
-        
+
         // Test
         eventBus.publish(new OrderCreatedEvent("TEST-123", "test@example.com"));
-        
+
         // Verify
-        verify(handler, times(1))
-            .handleOrderCreated(any(OrderCreatedEvent.class));
+        verify(handler, times(1)).handleOrderCreated(any(OrderCreatedEvent.class));
     }
 }

@@ -7,13 +7,12 @@ package com.sisllc.mathformulas.impl;
  * and returns a single number. This operation can be defined either
  * algebraically or geometrically.
  *
- *
+ * <p>
  * Questions answered by this page: Java dot product of two arrays. Dot product
  * calculation in Java. java example of Scalar Product. Compute the dot product
  * of two vectors
  *
  * @author david
- *
  */
 public class DotProduct {
 

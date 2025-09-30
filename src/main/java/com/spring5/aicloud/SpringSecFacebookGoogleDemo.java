@@ -5,11 +5,9 @@
 package com.spring5.aicloud;
 
 /**
- *
  * @author javaugi
  */
 public class SpringSecFacebookGoogleDemo {
-    
 }
 
 /*
@@ -24,7 +22,7 @@ xml
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
-    
+
     <!-- JWT Support -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
@@ -43,7 +41,7 @@ xml
         <version>0.11.5</version>
         <scope>runtime</scope>
     </dependency>
-    
+
     <!-- Web Support -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -102,7 +100,7 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutSuccessUrl("/").permitAll()
             );
-        
+
         return http.build();
     }
 
@@ -127,13 +125,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        
+
         String provider = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        
+
         // Process attributes based on provider
         UserPrincipal userPrincipal = UserPrincipal.create(provider, attributes);
-        
+
         return userPrincipal;
     }
 }
@@ -221,28 +219,28 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private JwtTokenProvider tokenProvider;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, 
-                                      HttpServletResponse response, 
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                      HttpServletResponse response,
                                       Authentication authentication) throws IOException {
-        
+
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String token = tokenProvider.generateToken(userPrincipal);
-        
+
         String redirectUrl = determineTargetUrl(request, response, authentication);
         redirectUrl = UriComponentsBuilder.fromUriString(redirectUrl)
             .queryParam("token", token)
             .build().toUriString();
-        
+
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 
     protected String determineTargetUrl(HttpServletRequest request,
-                                      HttpServletResponse response, 
+                                      HttpServletResponse response,
                                       Authentication authentication) {
-        
+
         Optional<String> redirectUri = CookieUtils.getCookie(request, "redirect_uri")
             .map(Cookie::getValue);
-        
+
         return redirectUri.orElse(getDefaultTargetUrl());
     }
 }
@@ -259,7 +257,7 @@ public class AuthController {
         response.put("email", userPrincipal.getEmail());
         response.put("name", userPrincipal.getName());
         response.put("provider", userPrincipal.getProvider());
-        
+
         return ResponseEntity.ok(response);
     }
 
@@ -312,5 +310,5 @@ GOOGLE_CLIENT_SECRET=your_google_secret
 FACEBOOK_CLIENT_ID=your_facebook_app_id
 FACEBOOK_CLIENT_SECRET=your_facebook_app_secret
 JWT_SECRET=your_secure_jwt_secret
-This implementation provides a solid foundation for social login with JWT authentication in a Spring Boot microservice. You can extend it by adding more providers (Twitter, GitHub, etc.) following the same pattern.  
-*/
+This implementation provides a solid foundation for social login with JWT authentication in a Spring Boot microservice. You can extend it by adding more providers (Twitter, GitHub, etc.) following the same pattern.
+ */

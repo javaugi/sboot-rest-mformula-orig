@@ -5,33 +5,32 @@
 package com.spring5.graphql;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
-import lombok.RequiredArgsConstructor;
 
 /*
-The @QueryMapping annotation binds this method to a query, a field under the Query type. The query field is then 
-    determined from the method name, bookById. It could also be declared on the annotation. Spring for GraphQL uses 
+The @QueryMapping annotation binds this method to a query, a field under the Query type. The query field is then
+    determined from the method name, bookById. It could also be declared on the annotation. Spring for GraphQL uses
     RuntimeWiring.Builder to register the handler method as a graphql.schema.DataFetcher for the query field bookById.
 
-In GraphQL Java, DataFetchingEnvironment provides access to a map of field-specific argument values. Use the @Argument 
-    annotation to have an argument bound to a target object and injected into the handler method. By default, the method 
+In GraphQL Java, DataFetchingEnvironment provides access to a map of field-specific argument values. Use the @Argument
+    annotation to have an argument bound to a target object and injected into the handler method. By default, the method
     parameter name is used to look up the argument. The argument name can be specified in the annotation.
 
-The @SchemaMapping annotation maps a handler method to a field in the GraphQL schema and declares it to be the DataFetcher 
-    for that field. The field name defaults to the method name, and the type name defaults to the simple class name of the 
-    source/parent object injected into the method. In this example, the field defaults to author and the type defaults to Book. 
+The @SchemaMapping annotation maps a handler method to a field in the GraphQL schema and declares it to be the DataFetcher
+    for that field. The field name defaults to the method name, and the type name defaults to the simple class name of the
+    source/parent object injected into the method. In this example, the field defaults to author and the type defaults to Book.
     The type and field can be specified in the annotation.
-*/
+ */
 @Controller
 @RequiredArgsConstructor
 public class GraphBookController {
-    
+
     private final GraphUserService userService;
     private final GraphBookService bookService;
-    
 
     @SchemaMapping
     public GraphAuthor author(@Argument GraphBook book) {
@@ -39,20 +38,20 @@ public class GraphBookController {
     }
 
     // Maps to 'bookById(id: ID!)' field in Query type
-   // Maps to 'bookById(id: ID!)' field in Query type
+    // Maps to 'bookById(id: ID!)' field in Query type
     @QueryMapping
     public GraphBook bookById(@Argument String id) {
         System.out.println("Fetching book by ID: " + id);
         return bookService.findBookById(id);
-    }    
-    /*
-    @QueryMapping
-    public GraphBook bookById(@Argument String id) {
-        System.out.println("Fetching book by ID: " + id);
-        return GraphBook.getById(id);
     }
-    // */
-    
+
+    /*
+  @QueryMapping
+  public GraphBook bookById(@Argument String id) {
+      System.out.println("Fetching book by ID: " + id);
+      return GraphBook.getById(id);
+  }
+  // */
     // Maps to 'allUsers' field in Query type
     @QueryMapping
     public List<GraphUser> allUsers() {
@@ -66,10 +65,9 @@ public class GraphBookController {
         System.out.println("Fetching user by ID: " + id);
         return userService.findUserById(id);
     }
-
 }
 
-/* 
+/*
 
 Boot the application​
 Start your Spring application.
@@ -94,9 +92,9 @@ query bookDetails {
 }
 
 
-*/
+ */
 
-/*
+ /*
 Understanding Spring Boot GraphQL: QueryMapping vs. Schema Mapping
 In Spring for GraphQL, which integrates Spring Boot with GraphQL, the terms "QueryMapping" and "schema mapping" (often referred to as data fetchers or field resolvers) describe how you connect your GraphQL schema definitions to your backend Java code.
 
@@ -106,7 +104,7 @@ Let's first review your provided schema:
 type Query {
     allUsers: [GraphUser]
     userById(id: ID!): GraphUser
-    
+
     bookById(id: ID!): GraphBook
 }
 
@@ -148,7 +146,7 @@ Assuming book name, author firstName, and author lastName should be non-nullable
 type Query {
     allUsers: [User]
     userById(id: ID!): User
-    
+
     bookById(id: ID!): Book
 }
 
@@ -418,4 +416,4 @@ Often in a main GraphQLQueryController.
 Can be in separate controllers/components dedicated to resolving fields for specific types.
 
 In essence, QueryMapping gets you the initial "root" data, while SchemaMapping helps you "drill down" and fetch related data for nested fields as needed. They work together to fully implement your GraphQL schema.
-*/
+ */

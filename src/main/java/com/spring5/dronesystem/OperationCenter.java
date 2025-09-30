@@ -18,7 +18,8 @@ public class OperationCenter {
     private final Profiler profiler;
     private final Tracker tracker;
 
-    public OperationCenter(SensorDataAggregator aggregator,
+    public OperationCenter(
+            SensorDataAggregator aggregator,
             CommunicationManager commManager,
             Profiler profiler,
             Tracker tracker) {
@@ -68,10 +69,8 @@ public class OperationCenter {
         profiler.startOperation("processIncomingData");
         try {
             aggregator.addData(data);
-            tracker.updatePosition(data.getDroneId(),
-                    data.getLatitude(),
-                    data.getLongitude(),
-                    data.getAltitude());
+            tracker.updatePosition(
+                    data.getDroneId(), data.getLatitude(), data.getLongitude(), data.getAltitude());
             // Additional processing logic
         } finally {
             profiler.endOperation("processIncomingData");

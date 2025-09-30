@@ -7,16 +7,13 @@
  */
 package com.interview.shoppingcart.api.impl;
 
+import com.interview.shoppingcart.api.Item;
+import com.interview.shoppingcart.api.Receipt;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.interview.shoppingcart.api.Item;
-import com.interview.shoppingcart.api.Receipt;
-
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -38,7 +35,7 @@ public class ReceiptImpl implements Receipt {
      * @return Currency formatted total ($X,XXX.XX) of all items
      */
     private String getFormattedTotal(double amount) {
-        DecimalFormat df = new DecimalFormat("$#,###.##");  //set format
+        DecimalFormat df = new DecimalFormat("$#,###.##"); // set format
         return df.format(amount);
     }
 
@@ -88,7 +85,8 @@ public class ReceiptImpl implements Receipt {
         }
 
         double totalPrice = totalItems * coupon.getPrice();
-        double discountPercentage = coupon.getFreeAmout() / (coupon.getGetAmount() + coupon.getFreeAmout());
+        double discountPercentage
+                = coupon.getFreeAmout() / (coupon.getGetAmount() + coupon.getFreeAmout());
         totalDiscount += totalPrice * discountPercentage;
     }
 
@@ -120,5 +118,4 @@ public class ReceiptImpl implements Receipt {
         sb.append("\n You only paid : ").append(getFormattedTotal(finalTotal));
         return sb.toString();
     }
-
 }

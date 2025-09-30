@@ -4,9 +4,9 @@
  */
 package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 
-import java.util.UUID;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,34 +31,34 @@ public class RiskAssessmentController {
 
     @PostMapping("/calculate")
     public ResponseEntity<RiskScore> calculateRiskScore(
-        @RequestBody @Valid RiskCalculationRequest request) {
+            @RequestBody @Valid RiskCalculationRequest request) {
 
-        RiskScore riskScore = riskService.calculateRiskScore(
-            request.getMemberId(), request.getModelType());
+        RiskScore riskScore
+                = riskService.calculateRiskScore(request.getMemberId(), request.getModelType());
 
         return ResponseEntity.ok(riskScore);
     }
 
     @PostMapping("/calculate-batch")
     public ResponseEntity<BatchRiskResponse> calculateBatchRiskScores(
-        @RequestBody @Valid BatchRiskRequest request) {
+            @RequestBody @Valid BatchRiskRequest request) {
 
-        CompletableFuture<List<RiskScore>> future = riskService.calculateBatchRiskScores(
-            request.getMemberIds(), request.getModelType());
+        CompletableFuture<List<RiskScore>> future
+                = riskService.calculateBatchRiskScores(request.getMemberIds(), request.getModelType());
 
-        BatchRiskResponse response = BatchRiskResponse.builder()
-            .batchId(UUID.randomUUID().toString())
-            .status("PROCESSING")
-            .message("Risk assessment started for " + request.getMemberIds().size() + " members")
-            .build();
+        BatchRiskResponse response
+                = BatchRiskResponse.builder()
+                        .batchId(UUID.randomUUID().toString())
+                        .status("PROCESSING")
+                        .message("Risk assessment started for " + request.getMemberIds().size() + " members")
+                        .build();
 
         return ResponseEntity.accepted().body(response);
     }
 
     @GetMapping("/members/{memberId}/scores")
     public ResponseEntity<List<RiskScore>> getMemberRiskScores(
-        @PathVariable String memberId,
-        @RequestParam(required = false) String modelType) {
+            @PathVariable String memberId, @RequestParam(required = false) String modelType) {
 
         List<RiskScore> scores = riskService.getRiskScoresByMember(memberId, modelType);
         return ResponseEntity.ok(scores);
@@ -66,8 +66,7 @@ public class RiskAssessmentController {
 
     @GetMapping("/population-analysis")
     public ResponseEntity<PopulationRiskAnalysis> analyzePopulationRisk(
-        @RequestParam String planType,
-        @RequestParam(required = false) Integer year) {
+            @RequestParam String planType, @RequestParam(required = false) Integer year) {
 
         PopulationRiskAnalysis analysis = riskService.analyzePopulationRisk(planType, year);
         return ResponseEntity.ok(analysis);

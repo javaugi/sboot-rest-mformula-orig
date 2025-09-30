@@ -12,13 +12,18 @@ import lombok.Data;
 @Data
 @Builder(toBuilder = true)
 public class InventoryEvent {
-    public enum EventType { STOCK_UPDATE, RESERVATION, SALE }
-    
+
+    public enum EventType {
+        STOCK_UPDATE,
+        RESERVATION,
+        SALE
+    }
+
     String eventId;
     String vin;
     EventType type;
     String dealerId;
     Instant timestamp;
     Map<String, Object> details;
-    long version;    
+    long version;
 }

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -31,7 +30,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.username= (:username)")
     Optional<User> findByUsername(@Param("username") String username);
-    
+
     boolean existsByEmail(@Param("email") String email);
 
     List<User> findByStatus(String status);

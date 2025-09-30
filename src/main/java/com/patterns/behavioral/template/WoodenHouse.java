@@ -8,8 +8,6 @@
 package com.patterns.behavioral.template;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -25,5 +23,4 @@ public class WoodenHouse extends HouseTemplate {
     public void buildPillars() {
         System.out.println("Building Pillars with Wood coating");
     }
-
 }

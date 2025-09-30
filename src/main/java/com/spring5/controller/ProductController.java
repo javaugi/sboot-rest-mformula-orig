@@ -7,20 +7,22 @@
  */
 package com.spring5.controller;
 
-import com.spring5.type.DisplayCriteria;
 import com.spring5.entity.Product;
 import com.spring5.service.ProductService;
+import com.spring5.type.DisplayCriteria;
+import com.spring5.utils.pact.ApiResponse;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,28 +31,55 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 @Controller
-@RequestMapping("/product")
+@RequestMapping("api/products")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
-    
-    static final String[] PROD_NAMES = {"Abundance", "Acclimaze", "Accruex", "Adornica", "Aerosol Cheese", "Aftertizer",
-        "Airborne Pickle", "AirHead", "Alumina", "Apple Cheeks", "Baby Donuts", "Bag of Scones", "Bath and Relax",
-        "Botox Barbie", "Brand Dandy", "Bris-o-matic", "Brush n Flush", "Bum Bait", "Buster Boon", "Callflex",
-        "Data Basket", "Deal Light", "Demo Lotion", "Develaport", "DialUp", "Diamond Sky", "Diet Smokes", "DigiGate"};
+
+    static final String[] PROD_NAMES = {
+        "Abundance",
+        "Acclimaze",
+        "Accruex",
+        "Adornica",
+        "Aerosol Cheese",
+        "Aftertizer",
+        "Airborne Pickle",
+        "AirHead",
+        "Alumina",
+        "Apple Cheeks",
+        "Baby Donuts",
+        "Bag of Scones",
+        "Bath and Relax",
+        "Botox Barbie",
+        "Brand Dandy",
+        "Bris-o-matic",
+        "Brush n Flush",
+        "Bum Bait",
+        "Buster Boon",
+        "Callflex",
+        "Data Basket",
+        "Deal Light",
+        "Demo Lotion",
+        "Develaport",
+        "DialUp",
+        "Diamond Sky",
+        "Diet Smokes",
+        "DigiGate"
+    };
     static final List<String> PROD_LIST = Arrays.asList(PROD_NAMES);
 
     private static int pageSize = 5;
@@ -70,24 +99,50 @@ public class ProductController {
         long pages = totalRecords / pageSize;
         log.info("products total {} pages total {} with page size {}", totalRecords, pages, pageSize);
     }
-    
+
     public static <T> List<T> iterableToList(Iterable<T> iterable) {
         List<T> list = new ArrayList<>();
         iterable.forEach(list::add);
         return list;
-    }  
-    
+    }
+
     @GetMapping
+    public ApiResponse<Collection<Product>> getProducts() {
+        return ApiResponse.success(productService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<Product> getById(@PathVariable Long id) {
+        Optional<Product> opt = productService.getProductById(id);
+        if (opt.isPresent()) {
+            return ApiResponse.error("Product not found");
+        }
+        Product product = opt.get();
+        return ApiResponse.success(product);
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<Collection<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.findAll());
     }
-    
-    //*
+
+    @GetMapping("/all/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Optional<Product> opt = productService.getProductById(id);
+        if (opt.isPresent()) {
+            return ResponseEntity.accepted().body(null);
+        }
+        Product product = opt.get();
+        return ResponseEntity.ok(product);
+    }
+
+    // *
     @GetMapping("/index")
     public String index(HttpServletRequest request, ModelMap modelMap) {
         log.info("index page");
         return "index";
     }
+
     // */
     @GetMapping("/listProducts")
     public String listProducts(HttpServletRequest request, ModelMap modelMap) {
@@ -98,7 +153,8 @@ public class ProductController {
         int size = pageSize;
         String search = "";
 
-        DisplayCriteria criteria = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
+        DisplayCriteria criteria
+                = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
         if (criteria == null) {
             criteria = new DisplayCriteria();
         } else {
@@ -114,9 +170,13 @@ public class ProductController {
 
         List<Product> products = allProducts;
         if (!search.isEmpty()) {
-            products = allProducts.stream()
-                    .filter(line -> line.getName().contains(searchParam) || line.getDescription().contains(searchParam))
-                    .collect(Collectors.toList());
+            products
+                    = allProducts.stream()
+                            .filter(
+                                    line
+                                    -> line.getName().contains(searchParam)
+                                    || line.getDescription().contains(searchParam))
+                            .collect(Collectors.toList());
         }
         log.error("queryString {}", request.getQueryString());
 
@@ -133,8 +193,12 @@ public class ProductController {
     }
 
     @PostMapping("/updateEntry")
-    public String updateEntry(@ModelAttribute("displayCriteria") DisplayCriteria criteria, HttpServletRequest request, ModelMap modelMap) {
-        DisplayCriteria criteriaOrig = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
+    public String updateEntry(
+            @ModelAttribute("displayCriteria") DisplayCriteria criteria,
+            HttpServletRequest request,
+            ModelMap modelMap) {
+        DisplayCriteria criteriaOrig
+                = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
         if (criteriaOrig != null) {
             if (criteria.getEntry() <= 0) {
                 criteria.setEntry(criteriaOrig.getEntry());

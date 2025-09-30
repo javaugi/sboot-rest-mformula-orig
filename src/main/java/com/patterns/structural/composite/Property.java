@@ -10,7 +10,6 @@ package com.patterns.structural.composite;
 import java.util.List;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -46,5 +45,4 @@ public interface Property {
     public List<Property> getProperties();
 
     public void setProperties(List<Property> properties);
-
 }

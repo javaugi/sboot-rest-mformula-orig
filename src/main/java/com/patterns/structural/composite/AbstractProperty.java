@@ -13,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -24,7 +22,10 @@ public abstract class AbstractProperty implements Property {
     private static final Logger log = LoggerFactory.getLogger(AbstractProperty.class);
 
     enum PropertyType {
-        Apartment(1), Tenement(2), Bungalow(3), Office(4);
+        Apartment(1),
+        Tenement(2),
+        Bungalow(3),
+        Office(4);
         int type;
 
         PropertyType(int type) {
@@ -77,5 +78,4 @@ public abstract class AbstractProperty implements Property {
     public void setProperties(List<Property> properties) {
         this.properties = properties;
     }
-
 }

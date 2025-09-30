@@ -20,42 +20,42 @@ Ollama supports DeepSeek models (like deepseek-coder for code or deepseek-llm fo
 Available DeepSeek Models on Ollama:
     deepseek/deepseek-llm:7b (General-purpose LLM)
     deepseek/deepseek-coder:6.7b (Code-focused LLM)
-*/
+ */
 @Service
 public class AiOllamaService {
-    //Option 1: Run DeepSeek Locally with Ollama (Recommended for Free)
+    // Option 1: Run DeepSeek Locally with Ollama (Recommended for Free)
+
     private final String OLLAMA_API = "http://localhost:11434/api/generate";
-    
+
     @Autowired
-    private @Qualifier(AiConfig.REST_TEMPLATE) RestTemplate restTemplate;
+    private @Qualifier(AiConfig.REST_TEMPLATE)
+    RestTemplate restTemplate;
 
     public String askAI(String prompt) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String requestBody = """
+        String requestBody
+                = """
             {
                 "model": "deepseek-llm",
                 "prompt": "%s",
                 "stream": false
             }
-            """.formatted(prompt);
+            """
+                        .formatted(prompt);
 
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(
-            OLLAMA_API, 
-            request, 
-            String.class
-        );
+        ResponseEntity<String> response = restTemplate.postForEntity(OLLAMA_API, request, String.class);
 
         return response.getBody();
-    }    
-    
+    }
+
     // Call a locally running DeepSeek model (if supported)
     public String queryLocalDeepSeekModel(String prompt) {
         String requestBody = "{\"model\":\"deepseek-llm\", \"prompt\":\"" + prompt + "\"}";
         return restTemplate.postForObject(OLLAMA_API, requestBody, String.class);
-    }    
+    }
 }
 
 /*
@@ -104,7 +104,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class AiOllamaService {
-    
+
     private final String OLLAMA_API = "http://localhost:11434/api/generate";
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -122,8 +122,8 @@ public class AiOllamaService {
 
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(
-            OLLAMA_API, 
-            request, 
+            OLLAMA_API,
+            request,
             String.class
         );
 
@@ -199,4 +199,4 @@ Which Option Should You Choose?
 Approach	Pros	Cons
 Ollama (Local)	Free, Fast, No API limits	Requires local GPU (for big models)
 Python Server	Works with Hugging Face models	Slower, Needs Python setup
-*/
+ */

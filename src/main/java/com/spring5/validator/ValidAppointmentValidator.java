@@ -9,10 +9,10 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
- *
  * @author javaugi
  */
-public class ValidAppointmentValidator implements ConstraintValidator<ValidAppointment, Appointment> {
+public class ValidAppointmentValidator
+        implements ConstraintValidator<ValidAppointment, Appointment> {
 
     @Override
     public boolean isValid(Appointment appointment, ConstraintValidatorContext context) {
@@ -22,7 +22,8 @@ public class ValidAppointmentValidator implements ConstraintValidator<ValidAppoi
 
         if (appointment.getEndTime().isBefore(appointment.getStartTime())) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("End time must be after start time")
+            context
+                    .buildConstraintViolationWithTemplate("End time must be after start time")
                     .addPropertyNode("endTime")
                     .addConstraintViolation();
             return false;
@@ -30,5 +31,4 @@ public class ValidAppointmentValidator implements ConstraintValidator<ValidAppoi
 
         return true;
     }
-
 }

@@ -18,6 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataRequest {
+
     private String inputPath;
-    private String outputPath;    
+    private String outputPath;
 }

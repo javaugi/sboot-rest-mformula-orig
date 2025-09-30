@@ -11,8 +11,8 @@ public class Q51UpdateBits {
         }
 
         /* Create a mask to clear bits i through j in n
-		/* EXAMPLE: i = 2, j = 4. Result should be 11100011.
-		 * (Using 8 bits for this example.  This is obviously not actually 8 bits.)
+    /* EXAMPLE: i = 2, j = 4. Result should be 11100011.
+     * (Using 8 bits for this example.  This is obviously not actually 8 bits.)
          */
         int allOnes = ~0; // allOnes = 11111111
 
@@ -36,5 +36,4 @@ public class Q51UpdateBits {
         int c = updateBits(a, b, 4, 12);
         System.out.println(AssortedMethods.toFullBinaryString(c));
     }
-
 }

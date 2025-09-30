@@ -14,6 +14,7 @@ import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 public class FileParser {
+
     public static String extractText(String filePath) throws IOException {
         if (filePath.endsWith(".pdf")) {
             try (PDDocument doc = Loader.loadPDF(new File(filePath))) {

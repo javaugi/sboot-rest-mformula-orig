@@ -22,59 +22,60 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author javaugi
  */
 @RestController
 @RequestMapping("/hrank/traders")
 public class HackerRankFixTradeController {
-    
+
     @Autowired
     private TradeService tradeService;
-    
+
     @GetMapping
     public ResponseEntity<List<Trade>> getAllTrades() {
         return ResponseEntity.ok(tradeService.getAllTrades());
     }
-    
-    //@PostMapping("/create-trade")
-    //@PostMapping("/create-trade-by-account")
-    //@PostMapping(value = "/trade", consumes = "application/vnd.create-trade+json")
-    //@PostMapping(value = "/trade", params = "action=create")    
+
+    // @PostMapping("/create-trade")
+    // @PostMapping("/create-trade-by-account")
+    // @PostMapping(value = "/trade", consumes = "application/vnd.create-trade+json")
+    // @PostMapping(value = "/trade", params = "action=create")
     @PostMapping("/create-trade")
     public ResponseEntity<Trade> createTrade(@RequestBody Trade trade) {
         Trade createdTrade = tradeService.createTrade(trade);
         return new ResponseEntity<>(createdTrade, HttpStatus.CREATED);
     }
-    
+
     @PutMapping("/add-money")
-    public void addMoneyByUserAccountId(@PathVariable long userAccountId, @PathVariable BigDecimal amount) {
-        try{
-            tradeService.addMoney(userAccountId, amount); 
+    public void addMoneyByUserAccountId(
+            @PathVariable long userAccountId, @PathVariable BigDecimal amount) {
+        try {
+            tradeService.addMoney(userAccountId, amount);
             throw new NoException("OK");
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new NotAcceptableException("Not Acceptable");
         }
     }
 
     @PutMapping("/{userAccount}/{amount}")
     @ResponseStatus(HttpStatus.OK)
-    public void addMoneyByUserAccountNumber(@PathVariable String userAccountNumber, @PathVariable BigDecimal amount) {
-        try{
-            tradeService.addMoneyByAccount(userAccountNumber, amount);     
-            //throw new NoException("OK");
-        } catch(Exception ex) {
+    public void addMoneyByUserAccountNumber(
+            @PathVariable String userAccountNumber, @PathVariable BigDecimal amount) {
+        try {
+            tradeService.addMoneyByAccount(userAccountNumber, amount);
+            // throw new NoException("OK");
+        } catch (Exception ex) {
             throw new NotAcceptableException("Not Acceptable");
         }
     }
-    
+
     @ResponseStatus(HttpStatus.OK)
     public class NoException extends RuntimeException {
+
         public NoException(String message) {
             super(message);
         }
     }
-    
 
     @PutMapping("/update-trade")
     @ResponseStatus(HttpStatus.OK)
@@ -85,24 +86,25 @@ public class HackerRankFixTradeController {
         } else {
             throw new ResourceNotFoundException("No trades found");
         }
-    }    
+    }
 
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     public List<Trade> getAllTradesByUserEmail(@PathVariable String userEmai) {
-        try{
+        try {
             List<Trade> trades = tradeService.getAllTradesByUserEmail(userEmai);
             if (trades == null || trades.isEmpty()) {
                 throw new ResourceNotFoundException("No trades found");
             }
             return trades;
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             throw new ResourceNotFoundException("No trades found");
         }
     }
-    
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public class ResourceNotFoundException extends RuntimeException {
+
         public ResourceNotFoundException(String message) {
             super(message);
         }
@@ -110,6 +112,7 @@ public class HackerRankFixTradeController {
 
     @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
     public class RequestTimeOutException extends RuntimeException {
+
         public RequestTimeOutException(String message) {
             super(message);
         }
@@ -117,10 +120,12 @@ public class HackerRankFixTradeController {
 
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public class NotAcceptableException extends RuntimeException {
+
         public NotAcceptableException(String message) {
             super(message);
         }
     }
+
     // Add proper exception handling
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -133,11 +138,10 @@ public class HackerRankFixTradeController {
     public ResponseEntity<?> handleNotFound(RequestTimeOutException ex) {
         return ResponseEntity.notFound().build();
     }
-    
+
     @ExceptionHandler(NotAcceptableException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public ResponseEntity<?> notAcceptable(NotAcceptableException ex) {
         return ResponseEntity.noContent().build();
     }
-    
 }

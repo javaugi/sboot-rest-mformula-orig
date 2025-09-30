@@ -44,5 +44,4 @@ public class Q41BalanceImproved {
 
         System.out.println("Is balanced? " + isBalanced(root));
     }
-
 }

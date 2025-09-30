@@ -35,9 +35,9 @@ public class ClinicalValidationService {
     private boolean isPhysicianClaimBeforeHospital(Claim claim) {
         // Business logic: 60% of physician claims come first
         return claim.getClaimType() == ClaimType.PHYSICIAN
-            && claim.getSubmitTime().isBefore(
-                getHospitalClaimSubmitTime(claim.getPatientId(), claim.getServiceDate())
-            );
+                && claim
+                        .getSubmitTime()
+                        .isBefore(getHospitalClaimSubmitTime(claim.getPatientId(), claim.getServiceDate()));
     }
 
     private LocalDateTime getHospitalClaimSubmitTime(String patientId, LocalDateTime ServiceDate) {

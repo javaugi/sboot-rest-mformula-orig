@@ -71,7 +71,11 @@ public class QuickSort1<T extends Comparable<T>> {
      */
     public void sort(T[] array) {
         T[] sortedArr = quicksort(array, 0, array.length - 1);
-        System.out.println("sort \n original array=" + Arrays.toString(array) + "\n sorted array=" + Arrays.toString(sortedArr));
+        System.out.println(
+                "sort \n original array="
+                + Arrays.toString(array)
+                + "\n sorted array="
+                + Arrays.toString(sortedArr));
     }
 
     /**
@@ -130,16 +134,20 @@ public class QuickSort1<T extends Comparable<T>> {
 
     public void sort2(T[] array) {
         T[] sortedArr = quickSort(array, 0, array.length - 1);
-        System.out.println("sort2 \n original array=" + Arrays.toString(array) + "\n sorted array=" + Arrays.toString(sortedArr));
+        System.out.println(
+                "sort2 \n original array="
+                + Arrays.toString(array)
+                + "\n sorted array="
+                + Arrays.toString(sortedArr));
     }
-    
+
     private T[] quickSort(T[] arr, int low, int high) {
         if (low < high) {
             /* pi is partitioning index, arr[pi] is now
-           at right place */
+      at right place */
             int pi = partition(arr, low, high);
 
-            quickSort(arr, low, pi - 1);  // Before pi
+            quickSort(arr, low, pi - 1); // Before pi
             quickSort(arr, pi + 1, high); // After pi
         }
         return arr;
@@ -154,11 +162,11 @@ public class QuickSort1<T extends Comparable<T>> {
             // If current element is smaller than or
             // equal to pivot
             if ((arr[j]).compareTo(pivot) <= 0) {
-                i++;    // increment index of smaller element
+                i++; // increment index of smaller element
                 swap(arr, i, j);
             }
         }
-        
+
         int returnValue = i + 1;
         swap(arr, returnValue, high);
         return returnValue;

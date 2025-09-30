@@ -34,16 +34,18 @@ public class RealTimeDataProcessor {
     @PostMapping("/publish")
     public String publishEvent(@RequestBody String message) {
         logger.info("Received request to publish message: {}", message);
-        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-            try {
-                // 2. Publish the message to a Kafka topic (simulating a real-time stream).
-                // This shows proficiency in messaging and asynchronous operations.
-                kafkaTemplate.send("jetblue-topic", message);
-                logger.info("Successfully published message to Kafka: {}", message);
-            } catch (Exception e) {
-                logger.error("Failed to publish message to Kafka", e);
-            }
-        });
+        CompletableFuture<Void> future
+                = CompletableFuture.runAsync(
+                        () -> {
+                            try {
+                                // 2. Publish the message to a Kafka topic (simulating a real-time stream).
+                                // This shows proficiency in messaging and asynchronous operations.
+                                kafkaTemplate.send("jetblue-topic", message);
+                                logger.info("Successfully published message to Kafka: {}", message);
+                            } catch (Exception e) {
+                                logger.error("Failed to publish message to Kafka", e);
+                            }
+                        });
 
         // The method returns immediately, making it non-blocking, a requirement for real-time systems.
         return "Message publication is in progress...";

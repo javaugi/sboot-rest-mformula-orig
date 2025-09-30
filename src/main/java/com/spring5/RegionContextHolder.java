@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RegionContextHolder {
+
     private static final ThreadLocal<String> context = new ThreadLocal<>();
 
     public static void setRegion(String region) {

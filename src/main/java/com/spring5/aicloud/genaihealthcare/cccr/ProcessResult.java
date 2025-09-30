@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Builder(toBuilder = true)
 public class ProcessResult {
+
     String failed;
     Claim claim;
-
 }

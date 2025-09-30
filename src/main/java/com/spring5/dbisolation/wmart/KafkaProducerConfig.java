@@ -4,9 +4,9 @@
  */
 package com.spring5.dbisolation.wmart;
 
-//@Configuration
-import com.spring5.dbisolation.wmart.trans.StoreIdPartitioner;
+// @Configuration
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.spring5.dbisolation.wmart.trans.StoreIdPartitioner;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -41,9 +41,11 @@ public class KafkaProducerConfig {
 
         // Critical settings for reliability
         configProps.put(ProducerConfig.ACKS_CONFIG, "all"); // Wait for all replicas
-        configProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true"); // Prevent producer duplicates
+        configProps.put(
+                ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true"); // Prevent producer duplicates
         configProps.put(ProducerConfig.RETRIES_CONFIG, Integer.MAX_VALUE); // Retry forever
-        configProps.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5"); // Required with idempotence
+        configProps.put(
+                ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5"); // Required with idempotence
 
         return new DefaultKafkaProducerFactory<>(configProps);
     }

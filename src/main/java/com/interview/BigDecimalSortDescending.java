@@ -13,23 +13,23 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
  * @author javaugi
  */
 public class BigDecimalSortDescending {
 
     public static void main(String[] args) {
         // Input data
-        String[] input = {"9",
-            "-100", "50", "0", "56.6", "90",
-            "0.12", ".12", "02.34", "000.000"
-        };
+        String[] input = {"9", "-100", "50", "0", "56.6", "90", "0.12", ".12", "02.34", "000.000"};
         System.out.println("Original=" + Arrays.toString(input));
-        
+
+        Arrays.stream(input)
+                .sorted((a, b) -> new BigDecimal(a).compareTo(new BigDecimal(b)))
+                .forEach(e -> System.out.print("\t" + e));
+
         System.out.println("\n*** SortPrint ...");
         sortPrint(input);
         System.out.println("\n ***DONE SortPrint ...");
-        
+
         String[] input0 = Arrays.copyOfRange(input, 0, input.length);
         System.out.println("Original copied=" + Arrays.toString(input0));
 
@@ -44,39 +44,36 @@ public class BigDecimalSortDescending {
 
         System.out.println("Solution 3 \n");
         int n = 9;
-        String[] input3 = {
-            "-100", "50", "0", "56.6", "90",
-            "0.12", ".12", "02.34", "000.000"
-        };
+        String[] input3 = {"-100", "50", "0", "56.6", "90", "0.12", ".12", "02.34", "000.000"};
         sortPrint3(n, input3);
     }
 
     /*
-Sample Input
+  Sample Input
 
-9
--100
-50
-0
-56.6
-90
-0.12
-.12
-02.34
-000.000
-Sample Output
+  9
+  -100
+  50
+  0
+  56.6
+  90
+  0.12
+  .12
+  02.34
+  000.000
+  Sample Output
 
-90
-56.6
-50
-02.34
-0.12
-.12
-0
-000.000
--100    
-    */
-    private static void run0() {        
+  90
+  56.6
+  50
+  02.34
+  0.12
+  .12
+  0
+  000.000
+  -100
+     */
+    private static void run0() {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         String[] s = new String[n + 2];
@@ -85,7 +82,7 @@ Sample Output
         }
         sc.close();
 
-        //Write your code here
+        // Write your code here
         List<String> originalNumbers = new ArrayList<>();
         for (String v : s) {
             if (v != null && !v.isEmpty()) {
@@ -95,8 +92,7 @@ Sample Output
 
         List<String> sortedNumbers = new ArrayList<>(originalNumbers);
         // Custom comparator to sort based on BigDecimal value
-        sortedNumbers
-                .sort((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)));
+        sortedNumbers.sort((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)));
 
         s = new String[sortedNumbers.size()];
         int ndx = 0;
@@ -104,9 +100,9 @@ Sample Output
             s[ndx] = v;
             ndx++;
         }
-        //System.out.println("Original Sorted array=" + Arrays.toString(s));
+        // System.out.println("Original Sorted array=" + Arrays.toString(s));
         n = s.length;
-        //Output
+        // Output
         for (int i = 0; i < n; i++) {
             System.out.println(s[i]);
         }
@@ -133,10 +129,10 @@ Sample Output
             s[ndx] = v.toString();
             ndx++;
         }
-        //System.out.println("Original Sorted array=" + Arrays.toString(s));
+        // System.out.println("Original Sorted array=" + Arrays.toString(s));
         System.out.println("4 FINAL s=" + Arrays.toString(s));
         n = s.length;
-        //Output
+        // Output
         for (int i = 0; i < n; i++) {
             System.out.println(s[i]);
         }
@@ -152,14 +148,14 @@ Sample Output
     private static void sortDescendingPrint1(String first, String[] input) {
         // Convert to BigDecimal and sort in descending order
         /*
-        List<BigDecimal> decimals = new ArrayList<>();
-        for (String num : input) {
-            decimals.add(new BigDecimal(num));
-        }
+    List<BigDecimal> decimals = new ArrayList<>();
+    for (String num : input) {
+        decimals.add(new BigDecimal(num));
+    }
 
-        // Sort in descending order
-        Collections.sort(decimals, Collections.reverseOrder());
-        // */
+    // Sort in descending order
+    Collections.sort(decimals, Collections.reverseOrder());
+    // */
 
         // Print the results (preserving original string representation)
         // To match exact input format, we need to track original strings
@@ -175,40 +171,35 @@ Sample Output
             System.out.println(num);
         }
     }
-    
-    
+
     private static void sortPrint(String[] input) {
         String[] orig = Arrays.copyOfRange(input, 0, input.length);
         System.out.println("\n sortPrint Ascending BigDecimal array...");
         Arrays.stream(input)
                 .sorted((a, b) -> new BigDecimal(a).compareTo(new BigDecimal(b)))
                 .forEach(e -> doPrint.print(e));
-        
+
         input = Arrays.copyOfRange(orig, 0, orig.length);
         System.out.println("\n sortPrint Descending BigDecimal array input=" + Arrays.toString(input));
         Arrays.stream(input)
                 .sorted((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)))
                 .forEach(e -> doPrint.print(e));
-        
+
         input = Arrays.copyOfRange(orig, 0, orig.length);
         System.out.println("\n sortPrint Descending BigDecimal array input=" + Arrays.toString(input));
         Arrays.stream(input)
-            .sorted((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)))
-            .forEach(e -> System.out.print("        " + e));
+                .sorted((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)))
+                .forEach(e -> System.out.print("        " + e));
 
         input = Arrays.copyOfRange(orig, 0, orig.length);
         System.out.println("\n sortPrint Ascending String array ...");
-        Arrays.stream(input)
-                .sorted()
-                .forEach(e -> doPrint.print(e));
-        
+        Arrays.stream(input).sorted().forEach(e -> doPrint.print(e));
+
         input = Arrays.copyOfRange(orig, 0, orig.length);
         System.out.println("\n sortPrint Descending String array ...");
-        Arrays.stream(input)
-                .sorted(Collections.reverseOrder())
-                .forEach(e -> doPrint.print(e));
+        Arrays.stream(input).sorted(Collections.reverseOrder()).forEach(e -> doPrint.print(e));
     }
-    
+
     public static final GenericPrint doPrint = e -> System.out.print("\t " + e);
 }
 
@@ -245,7 +236,7 @@ import java.util.stream.*;
 public class BigDecimalSortDescending {
     public static void main(String[] args) {
         String[] input = { "-100", "50", "0", "56.6", "90", "0.12", ".12", "02.34", "000.000" };
-        
+
         Arrays.stream(input)
               .sorted((a, b) -> new BigDecimal(b).compareTo(new BigDecimal(a)))
               .forEach(System.out::println);

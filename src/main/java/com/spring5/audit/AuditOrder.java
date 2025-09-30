@@ -29,10 +29,10 @@ public class AuditOrder implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     double quantity;
     String status;
-    
+
     public AuditOrder(OrderRequest request) {
         this.id = request.itemId;
         this.quantity = request.quantity;

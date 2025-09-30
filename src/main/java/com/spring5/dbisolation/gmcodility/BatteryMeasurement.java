@@ -15,22 +15,21 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 
-
 @Data
 @Builder(toBuilder = true)
 @Entity
 @Table(name = "BATTERY_MEASUREMENT")
 public class BatteryMeasurement {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "batterytestdata_id")
     private BatteryTestData batteryTestData;
-    
+
     private double voltage;
     private double temperature;
-    
 }

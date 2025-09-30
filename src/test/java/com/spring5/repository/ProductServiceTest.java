@@ -27,20 +27,21 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 //@SpringBootTest
 public class ProductServiceTest {
+
     @Mock
     private ProductRepository productRepo;
-    
+
     //When using Mockito Use @InjectMocks to inject Mocked beans to following class
     @InjectMocks
     private ProductServiceImpl productService;
-    
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-    
+
     @Test
-    public void testNothing() {        
+    public void testNothing() {
     }
 
     //@Test

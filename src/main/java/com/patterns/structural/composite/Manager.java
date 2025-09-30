@@ -12,8 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -62,5 +60,4 @@ public class Manager implements Employee {
     public void remove(Employee employee) {
         employees.remove(employee);
     }
-
 }

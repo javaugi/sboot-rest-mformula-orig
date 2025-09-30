@@ -4,12 +4,11 @@ package com.sisllc.mathformulas.impl;
  * http://www.javacodex.com/Math-Examples/
  *
  * @author david
- *
+ * <p>
  * Compound interest can be calculated with the following formula: A = amount P
  * = principal R = rate n = years
- *
+ * <p>
  * A=P(1+R)^n Java code: amount = principal * Math.pow(1+rate, years);
- *
  */
 public class CompoundInterest {
 
@@ -24,14 +23,14 @@ public class CompoundInterest {
         years = 30;
         rate = .0525;
         calc(years, principal, rate);
-
     }
 
     private static void calc(int years, double principal, double rate) {
         System.out.printf("Principle: %.2f \n", principal);
         System.out.println("Years: " + years);
         System.out.println("Interest rate: " + rate);
-        System.out.println("Fromula: " + principal + " * (" + (1 + rate) + " to the power of " + years + ")");
+        System.out.println(
+                "Fromula: " + principal + " * (" + (1 + rate) + " to the power of " + years + ")");
 
         System.out.println("Total amount componded over the " + years + " years:");
         for (int i = 1; i <= years; i++) {
@@ -39,5 +38,4 @@ public class CompoundInterest {
             System.out.printf("Year " + i + ": %.2f \n", amount);
         }
     }
-
 }

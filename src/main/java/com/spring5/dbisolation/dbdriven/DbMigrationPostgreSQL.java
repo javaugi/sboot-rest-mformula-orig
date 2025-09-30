@@ -23,7 +23,6 @@ CREATE TABLE customer (
 
 // V2__Add_phone_column.sql
 ALTER TABLE customer ADD COLUMN phone VARCHAR(20);
-*/
+ */
 public class DbMigrationPostgreSQL {
-    
 }

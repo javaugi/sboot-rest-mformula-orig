@@ -15,7 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidAppointmentValidator.class)
 public @interface ValidAppointment {
+
     String message() default "Invalid appointment";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

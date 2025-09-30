@@ -3,8 +3,6 @@ package com.sisllc.mathformulas.ci.ch03;
 import com.sisllc.mathformulas.ci.lib.AssortedMethods;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -14,9 +12,11 @@ public class Q31StackTraverseShiftExpand {
     static int number_of_stacks = 3;
     static int default_size = 4;
     static int total_size = default_size * number_of_stacks;
-    static Q31StackData[] stacks = {new Q31StackData(0, default_size),
+    static Q31StackData[] stacks = {
+        new Q31StackData(0, default_size),
         new Q31StackData(default_size, default_size),
-        new Q31StackData(default_size * 2, default_size)};
+        new Q31StackData(default_size * 2, default_size)
+    };
     static int[] buffer = new int[total_size];
 
     public static void main(String[] args) throws Exception {
@@ -103,7 +103,7 @@ public class Q31StackTraverseShiftExpand {
             }
         }
         /* Find the index of the top element in the array + 1,
-		 * and increment the stack pointer */
+     * and increment the stack pointer */
         stack.size++;
         stack.pointer = nextElement(stack.pointer);
         buffer[stack.pointer] = value;

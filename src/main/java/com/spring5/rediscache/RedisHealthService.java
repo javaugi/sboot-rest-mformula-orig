@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -26,18 +26,11 @@ public class RedisHealthService {
             RedisConnection connection = redisConnectionFactory.getConnection();
             String pong = connection.ping();
             connection.close();
-            
+
             return new HealthCheckResponse(
-                "Redis", 
-                "UP", 
-                Map.of("response", pong, "timestamp", Instant.now())
-            );
+                    "Redis", "UP", Map.of("response", pong, "timestamp", Instant.now()));
         } catch (DataAccessException e) {
-            return new HealthCheckResponse(
-                "Redis", 
-                "DOWN", 
-                Map.of("error", e.getMessage())
-            );
+            return new HealthCheckResponse("Redis", "DOWN", Map.of("error", e.getMessage()));
         }
     }
 
@@ -45,16 +38,17 @@ public class RedisHealthService {
     public void monitorRedisPerformance() {
         try (RedisConnection connection = redisConnectionFactory.getConnection()) {
             RedisServerCommands serverCommands = connection.serverCommands();
-            
+
             Map<String, Object> metrics = new HashMap<>();
             metrics.put("used_memory", serverCommands.info("memory").getProperty("used_memory"));
-            metrics.put("connected_clients", serverCommands.info("clients").getProperty("connected_clients"));
-            
+            metrics.put(
+                    "connected_clients", serverCommands.info("clients").getProperty("connected_clients"));
+
             // Log or send to monitoring system
             logRedisMetrics(metrics);
         }
     }
-    
+
     private void logRedisMetrics(Map<String, Object> metrics) {
         System.out.println("logRedisMetrics: " + metrics);
     }

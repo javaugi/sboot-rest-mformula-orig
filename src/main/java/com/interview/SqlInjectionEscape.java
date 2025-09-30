@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -41,6 +39,7 @@ public class SqlInjectionEscape {
     /**
      * Escape string to protected against SQL Injection
      *
+     * <p>
      * You must add a single quote ' around the result of this function for
      * data, or a backtick ` around table and row identifiers. If this function
      * returns null than the result should be changed to "NULL" without any
@@ -69,25 +68,24 @@ public class SqlInjectionEscape {
             }
         }
 
-
         /*
-        if (str.replaceAll("[a-zA-Z0-9_!@#$%^&*()-=+~.;:,\\Q[\\E\\Q]\\E<>{}\\/? ]", "").length() < 1) {
-            return str;
-        }
-        String clean_string = str;
-        clean_string = clean_string.replaceAll("\\\\", "\\\\\\\\");
-        clean_string = clean_string.replaceAll("\\n", "\\\\n");
-        clean_string = clean_string.replaceAll("\\r", "\\\\r");
-        clean_string = clean_string.replaceAll("\\t", "\\\\t");
-        clean_string = clean_string.replaceAll("\\00", "\\\\0");
-        clean_string = clean_string.replaceAll("'", "\\\\'");
-        clean_string = clean_string.replaceAll("\\\"", "\\\\\"");
+    if (str.replaceAll("[a-zA-Z0-9_!@#$%^&*()-=+~.;:,\\Q[\\E\\Q]\\E<>{}\\/? ]", "").length() < 1) {
+        return str;
+    }
+    String clean_string = str;
+    clean_string = clean_string.replaceAll("\\\\", "\\\\\\\\");
+    clean_string = clean_string.replaceAll("\\n", "\\\\n");
+    clean_string = clean_string.replaceAll("\\r", "\\\\r");
+    clean_string = clean_string.replaceAll("\\t", "\\\\t");
+    clean_string = clean_string.replaceAll("\\00", "\\\\0");
+    clean_string = clean_string.replaceAll("'", "\\\\'");
+    clean_string = clean_string.replaceAll("\\\"", "\\\\\"");
 
-        if (clean_string.replaceAll("[a-zA-Z0-9_!@#$%^&*()-=+~.;:,\\Q[\\E\\Q]\\E<>{}\\/?\\\\\"' ]",
-                "").length() < 1) {
-            return clean_string;
-        }
-        // */
+    if (clean_string.replaceAll("[a-zA-Z0-9_!@#$%^&*()-=+~.;:,\\Q[\\E\\Q]\\E<>{}\\/?\\\\\"' ]",
+            "").length() < 1) {
+        return clean_string;
+    }
+    // */
         java.sql.Statement stmt = link.createStatement();
         String qry = "SELECT QUOTE('" + str + "')";
 
@@ -106,8 +104,7 @@ public class SqlInjectionEscape {
      * @return
      * @throws Exception
      */
-    public static String quoteEscapeData(java.sql.Connection link, String str)
-            throws Exception {
+    public static String quoteEscapeData(java.sql.Connection link, String str) throws Exception {
         if (str == null || str.trim().isEmpty()) {
             return "NULL";
         }

@@ -11,23 +11,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Random;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
- *
  * @author javaugi
  */
 public class DateTimeManipulationDemo {
 
     public static void main(String[] args) throws IOException {
-        //dateConsoleInput();
+        // dateConsoleInput();
         Solution.demoWithDates();
-        
-        System.out.println("randomInt10To20()=" + randomInt10To20() + "-randomInt20To30()=" + randomInt20To30());
+
+        System.out.println(
+                "randomInt10To20()=" + randomInt10To20() + "-randomInt20To30()=" + randomInt20To30());
     }
 
     public static int randomInt20To30() {
@@ -38,7 +34,8 @@ public class DateTimeManipulationDemo {
         // To get a random integer within a specific range (e.g., between min and max inclusive)
         int min = 20;
         int max = 30;
-        int randomIntInRange = (int) (Math.random() * (max - min + 1)) + min; // Gets a random integer from 10 to 20
+        int randomIntInRange
+                = (int) (Math.random() * (max - min + 1)) + min; // Gets a random integer from 10 to 20
         return randomIntInRange;
     }
 
@@ -54,18 +51,19 @@ public class DateTimeManipulationDemo {
         // To get a random integer within a specific range (e.g., between min and max inclusive)
         int min = 10;
         int max = 20;
-        int randomIntInRange = random.nextInt(max - min + 1) + min; // Gets a random integer from 10 to 20
+        int randomIntInRange
+                = random.nextInt(max - min + 1) + min; // Gets a random integer from 10 to 20
         return randomIntInRange;
     }
 
     public class Solution {
 
         /*
-        public static void main(String[] args) throws IOException {
-            //dateConsoleInput();
-            demoWithDates();
-        }
-        // */
+    public static void main(String[] args) throws IOException {
+        //dateConsoleInput();
+        demoWithDates();
+    }
+    // */
         public static void demoWithDates() {
             String results = Results3.findDay(7, 5, 2015);
             System.out.println("1st: " + results);
@@ -80,7 +78,7 @@ public class DateTimeManipulationDemo {
                 cal.setTime(date);
                 int value = DateTimeManipulationDemo.randomInt10To20();
                 cal.add(Calendar.DATE, value);
-                            
+
                 System.out.println("\n calling findDay from date=" + cal.getTime());
                 results = Result2.findDay(cal.getTime());
                 System.out.println("ith: " + results);
@@ -89,7 +87,8 @@ public class DateTimeManipulationDemo {
 
         public static void dateConsoleInput() throws IOException, NumberFormatException {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+            BufferedWriter bufferedWriter
+                    = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
 
             String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
@@ -121,7 +120,9 @@ public class DateTimeManipulationDemo {
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             int diff = dayOfWeek - firstDayOfWeek;
 
-            String[] daysArr = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+            String[] daysArr = {
+                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            };
 
             String dayValue = daysArr[diff].toUpperCase();
             System.out.println(dayValue);
@@ -146,14 +147,18 @@ public class DateTimeManipulationDemo {
             int firstDayOfWeek = cal.getFirstDayOfWeek();
             int diff = day - firstDayOfWeek - 1;
 
-            String[] daysArr = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+            String[] daysArr = {
+                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            };
 
-            //List<String> days = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday") ;
-            //String[] daysArr = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-            System.out.println("diff=" + diff + "firstDayOfWeek=" + firstDayOfWeek + "-date=" + cal.getTime());
+            // List<String> days = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+            // "Friday", "Saturday") ;
+            // String[] daysArr = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+            // "Saturday"};
+            System.out.println(
+                    "diff=" + diff + "firstDayOfWeek=" + firstDayOfWeek + "-date=" + cal.getTime());
             return daysArr[diff].toUpperCase();
         }
-
     }
 
     class Result2 {
@@ -170,7 +175,9 @@ public class DateTimeManipulationDemo {
         public static String findDay(Date date) {
             int diff = getDiffForDayOfWeek(date);
 
-            String[] daysArr = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+            String[] daysArr = {
+                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            };
             String dayValue = daysArr[diff].toUpperCase();
             System.out.println("diff=" + diff + "-dayValue=" + dayValue + "-orig date =" + date);
             return dayValue;
@@ -184,7 +191,6 @@ public class DateTimeManipulationDemo {
             int diff = dayOfWeek - firstDayOfWeek;
             return diff;
         }
-
     }
 
     class Results3 {
@@ -196,7 +202,9 @@ public class DateTimeManipulationDemo {
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             int diff = dayOfWeek - firstDayOfWeek;
 
-            String[] daysArr = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+            String[] daysArr = {
+                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            };
             String dayValue = daysArr[diff].toUpperCase();
             System.out.println(dayValue);
             System.out.println("diff=" + diff + "-dayValue=" + dayValue + "-orig date =" + cal.getTime());

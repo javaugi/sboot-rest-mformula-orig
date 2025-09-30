@@ -19,26 +19,24 @@ The code showcases expertise in:
     Secure configuration management
     Real-time data processing
     Defense-specific requirements (MIL-STD documentation, security practices)
-*/
+ */
 public class MilitaryGpsDroneSystemMain {
-    //https://github.com/traccar/traccar
-    //https://sourceforge.net/directory/gps/java/?os=windows
-    //https://github.com/locationtech/spatial4j
-    //http://www.opengts.org/
-    
-    //https://github.com/janesmae/awesome-drones
-    //https://opensource.com/article/18/2/drone-projects
-    //https://github.com/kameshsampath/drone-java-quickstart
-    //https://github.com/codeminders/javadrone
-    //https://wiki.paparazziuav.org/wiki/Main_Page
-    //https://ardupilot.org/
-    
-    //Java  https://github.com/kameshsampath/drone-java-quickstart
+    // https://github.com/traccar/traccar
+    // https://sourceforge.net/directory/gps/java/?os=windows
+    // https://github.com/locationtech/spatial4j
+    // http://www.opengts.org/
+
+    // https://github.com/janesmae/awesome-drones
+    // https://opensource.com/article/18/2/drone-projects
+    // https://github.com/kameshsampath/drone-java-quickstart
+    // https://github.com/codeminders/javadrone
+    // https://wiki.paparazziuav.org/wiki/Main_Page
+    // https://ardupilot.org/
+    // Java  https://github.com/kameshsampath/drone-java-quickstart
     // https://github.com/javaugi/Mobile-SDK-Android
     // https://www.traccar.org/traccar-api/
-    
-    //https://www.baeldung.com/spring-mobile
-    //https://github.com/javaugi/21-points-sb-mobile-react-native
+    // https://www.baeldung.com/spring-mobile
+    // https://github.com/javaugi/21-points-sb-mobile-react-native
 }
 
 /*
@@ -129,4 +127,4 @@ xml
   <version>2.10.3</version>
 </dependency>
 Note that some drone SDKs may require additional setup or registration with the manufacturer before use. Always check the license terms of each library for your specific use case.
-*/
+ */

@@ -7,9 +7,7 @@ package com.spring5.empbilpayroll;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javaugi
  */
 public interface PayrollRepository extends JpaRepository<PayrollRun, Long> {
-    
 }

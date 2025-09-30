@@ -6,12 +6,12 @@ package com.spring5.payroll;
 
 import com.spring5.empbilpayroll.ClientBillingSummary;
 
-
 public class BillingCompositeService {
+
     private BillingService billing;
     private PaymentService payments;
-    public ClientBillingSummary getSummary(long id) { 
+
+    public ClientBillingSummary getSummary(long id) {
         return null;
     }
-    
 }

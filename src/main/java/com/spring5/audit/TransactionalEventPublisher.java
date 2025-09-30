@@ -19,7 +19,8 @@ public class TransactionalEventPublisher {
     private final MBassador<Object> eventBus;
     private final ThreadLocal<Queue<Object>> eventQueue = ThreadLocal.withInitial(LinkedList::new);
 
-    public TransactionalEventPublisher(@Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
+    public TransactionalEventPublisher(
+            @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
         this.eventBus = eventBus;
     }
 

@@ -1,8 +1,6 @@
 package com.sisllc.mathformulas.ci.ch03;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -25,8 +23,7 @@ public class Q31StackData {
         if (start <= index && index < start + capacity) {
             // non-wrapping, or "head" (right side) of wrapping case
             return true;
-        } else if (start + capacity > total_size
-                && index < (start + capacity) % total_size) {
+        } else if (start + capacity > total_size && index < (start + capacity) % total_size) {
             // tail (left side) of wrapping case
             return true;
         }

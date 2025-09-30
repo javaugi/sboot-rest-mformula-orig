@@ -8,8 +8,6 @@
 package com.patterns.behavioral.memento;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -43,7 +41,7 @@ public class FileWriterUtilMementoOriginator {
         this.content = memento.content;
     }
 
-    //Notice the Memento inner class and implementation of save and undo methods.
+    // Notice the Memento inner class and implementation of save and undo methods.
     private class Memento {
 
         private String fileName;
@@ -51,7 +49,8 @@ public class FileWriterUtilMementoOriginator {
 
         public Memento(String file, StringBuilder content) {
             this.fileName = file;
-            //notice the deep copy so that Memento and FileWriterUtil content variables don't refer to same object
+            // notice the deep copy so that Memento and FileWriterUtil content variables don't refer to
+            // same object
             this.content = new StringBuilder(content);
         }
     }

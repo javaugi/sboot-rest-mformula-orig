@@ -4,7 +4,7 @@
  */
 package com.spring5.aicloud.genaihealthcare;
 
-//import static jakarta.persistence.GenerationType.UUID;
+// import static jakarta.persistence.GenerationType.UUID;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
@@ -22,5 +22,4 @@ public class LLMClientImpl implements LLMClient {
         String provenance = UUID.randomUUID().toString();
         return new LLMResponse(result, confidence, modelName, modelVersion, provenance);
     }
-
 }

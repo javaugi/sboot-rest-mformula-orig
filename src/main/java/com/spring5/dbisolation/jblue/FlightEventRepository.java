@@ -29,36 +29,40 @@ public interface FlightEventRepository extends CosmosRepository<FlightEvent, Str
     List<FlightEvent> findByDepartureAirportFull(@Param("departureAirport") String departureAirport);
 
     // GOOD: Projection - select only needed fields
-    @Query("SELECT c.flightNumber, c.airlineCode, c.departureTime, c.arrivalAirport "
-        + "FROM c WHERE c.departureAirport = @departureAirport")
-    List<FlightProjection> findByDepartureAirportProjection(@Param("departureAirport") String departureAirport);
+    @Query(
+            "SELECT c.flightNumber, c.airlineCode, c.departureTime, c.arrivalAirport "
+            + "FROM c WHERE c.departureAirport = @departureAirport")
+    List<FlightProjection> findByDepartureAirportProjection(
+            @Param("departureAirport") String departureAirport);
 
     // Projection with complex fields
-    @Query("SELECT c.id, c.flightNumber, c.airline.airlineName, c.departureAirportInfo.city "
-        + "FROM c WHERE c.airlineCode = @airlineCode")
+    @Query(
+            "SELECT c.id, c.flightNumber, c.airline.airlineName, c.departureAirportInfo.city "
+            + "FROM c WHERE c.airlineCode = @airlineCode")
     List<FlightSummary> findFlightSummariesByAirline(@Param("airlineCode") String airlineCode);
 
     // Projection with aggregation
-    @Query("SELECT c.airlineCode, COUNT(1) as flightCount "
-        + "FROM c WHERE c.departureAirport = @departureAirport "
-        + "GROUP BY c.airlineCode")
-    List<AirlineFlightCount> countFlightsByAirline(@Param("departureAirport") String departureAirport);
+    @Query(
+            "SELECT c.airlineCode, COUNT(1) as flightCount "
+            + "FROM c WHERE c.departureAirport = @departureAirport "
+            + "GROUP BY c.airlineCode")
+    List<AirlineFlightCount> countFlightsByAirline(
+            @Param("departureAirport") String departureAirport);
 
     // Projection with complex fields
     /* Spring has a build-in function for projection
-    @Query("SELECT c.flightNumber, c.departureTime, c.departureAirport "
-        + "FROM c WHERE c.airlineCode = @airlineCode")
-    // */
+  @Query("SELECT c.flightNumber, c.departureTime, c.departureAirport "
+      + "FROM c WHERE c.airlineCode = @airlineCode")
+  // */
     List<FlightEssentialInfo> findByAirlineCode(String airlineCode);
 
     // Method with pagination support
-    @Query("SELECT c.flightNumber, c.airlineCode, c.departureTime "
-        + "FROM c WHERE c.departureAirport = @departureAirport")
+    @Query(
+            "SELECT c.flightNumber, c.airlineCode, c.departureTime "
+            + "FROM c WHERE c.departureAirport = @departureAirport")
     List<FlightProjection> findByDepartureAirportPaginated(
-        @Param("departureAirport") String departureAirport,
-        Pageable pageable);
+            @Param("departureAirport") String departureAirport, Pageable pageable);
 
-    @Query("SELECT COUNT(1) as count "
-        + "FROM c WHERE c.departureAirport = @departureAirport ")
+    @Query("SELECT COUNT(1) as count " + "FROM c WHERE c.departureAirport = @departureAirport ")
     Long countByDepartureAirport(String departureAirport);
 }

@@ -8,8 +8,6 @@
 package com.spring5.type;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -39,5 +37,4 @@ public class DisplayCriteria {
     public String toString() {
         return "DisplayCriteria{" + "entry=" + entry + ", search=" + search + '}';
     }
-
 }

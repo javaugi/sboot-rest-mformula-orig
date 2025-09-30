@@ -132,12 +132,17 @@ public class Q911ReduceEvaluate {
         if (left == 0 && right == expression.length() - 1) {
             return expression;
         }
-        String newexpression = expression.substring(0, left) + '(' + expression.substring(left, right + 1) + ')' + expression.substring(right + 1);
+        String newexpression
+                = expression.substring(0, left)
+                + '('
+                + expression.substring(left, right + 1)
+                + ')'
+                + expression.substring(right + 1);
         return newexpression;
-
     }
 
-    public static int bruteForce(String expression, HashMap<String, Boolean> completed, boolean result, boolean[] flags) {
+    public static int bruteForce(
+            String expression, HashMap<String, Boolean> completed, boolean result, boolean[] flags) {
         int count = 0;
         boolean isDone = true;
         if (completed.containsKey(expression)) {
@@ -209,7 +214,8 @@ public class Q911ReduceEvaluate {
         return c;
     }
 
-    public static int countDP(String exp, boolean result, int start, int end, HashMap<String, Integer> cache) {
+    public static int countDP(
+            String exp, boolean result, int start, int end, HashMap<String, Integer> cache) {
         String key = "" + result + start + end;
         if (cache.containsKey(key)) {
             return cache.get(key);
@@ -243,12 +249,15 @@ public class Q911ReduceEvaluate {
                 if (op == '&') {
                     count += countDP(exp, false, start, i - 1, cache) * countDP(exp, true, i + 1, end, cache);
                     count += countDP(exp, true, start, i - 1, cache) * countDP(exp, false, i + 1, end, cache);
-                    count += countDP(exp, false, start, i - 1, cache) * countDP(exp, false, i + 1, end, cache);
+                    count
+                            += countDP(exp, false, start, i - 1, cache) * countDP(exp, false, i + 1, end, cache);
                 } else if (op == '|') {
-                    count += countDP(exp, false, start, i - 1, cache) * countDP(exp, false, i + 1, end, cache);
+                    count
+                            += countDP(exp, false, start, i - 1, cache) * countDP(exp, false, i + 1, end, cache);
                 } else if (op == '^') {
                     count += countDP(exp, true, start, i - 1, cache) * countDP(exp, true, i + 1, end, cache);
-                    count += countDP(exp, false, start, i - 1, cache) * countDP(exp, false, i + 1, end, cache);
+                    count
+                            += countDP(exp, false, start, i - 1, cache) * countDP(exp, false, i + 1, end, cache);
                 }
             }
         }
@@ -274,7 +283,8 @@ public class Q911ReduceEvaluate {
         return (int) num;
     }
 
-    public static int countDPEff(String exp, boolean result, int start, int end, HashMap<String, Integer> cache) {
+    public static int countDPEff(
+            String exp, boolean result, int start, int end, HashMap<String, Integer> cache) {
         String key = "" + start + end;
         int count = 0;
         if (!cache.containsKey(key)) {
@@ -289,16 +299,23 @@ public class Q911ReduceEvaluate {
             for (int i = start + 1; i <= end; i += 2) {
                 char op = exp.charAt(i);
                 if (op == '&') {
-                    count += countDPEff(exp, true, start, i - 1, cache) * countDPEff(exp, true, i + 1, end, cache);
+                    count
+                            += countDPEff(exp, true, start, i - 1, cache) * countDPEff(exp, true, i + 1, end, cache);
                 } else if (op == '|') {
                     int left_ops = (i - 1 - start) / 2; // parens on left
-                    int right_ops = (end - i - 1) / 2;  // parens on right
+                    int right_ops = (end - i - 1) / 2; // parens on right
                     int total_ways = total(left_ops) * total(right_ops);
-                    int total_false = countDPEff(exp, false, start, i - 1, cache) * countDPEff(exp, false, i + 1, end, cache);
+                    int total_false
+                            = countDPEff(exp, false, start, i - 1, cache)
+                            * countDPEff(exp, false, i + 1, end, cache);
                     count += total_ways - total_false;
                 } else if (op == '^') {
-                    count += countDPEff(exp, true, start, i - 1, cache) * countDPEff(exp, false, i + 1, end, cache);
-                    count += countDPEff(exp, false, start, i - 1, cache) * countDPEff(exp, true, i + 1, end, cache);
+                    count
+                            += countDPEff(exp, true, start, i - 1, cache)
+                            * countDPEff(exp, false, i + 1, end, cache);
+                    count
+                            += countDPEff(exp, false, start, i - 1, cache)
+                            * countDPEff(exp, true, i + 1, end, cache);
                 }
             }
             cache.put(key, count);
@@ -317,11 +334,12 @@ public class Q911ReduceEvaluate {
         String terms = "0^0|1&1^1|0|1";
         boolean result = true;
 
-        bruteForce(terms, new HashMap<String, Boolean>(), result, new boolean[(terms.length() - 1) / 2]);
+        bruteForce(
+                terms, new HashMap<String, Boolean>(), result, new boolean[(terms.length() - 1) / 2]);
         System.out.println(countR(terms, result, 0, terms.length() - 1));
-        System.out.println(countDP(terms, result, 0, terms.length() - 1, new HashMap<String, Integer>()));
-        System.out.println(countDPEff(terms, result, 0, terms.length() - 1, new HashMap<String, Integer>()));
-
+        System.out.println(
+                countDP(terms, result, 0, terms.length() - 1, new HashMap<String, Integer>()));
+        System.out.println(
+                countDPEff(terms, result, 0, terms.length() - 1, new HashMap<String, Integer>()));
     }
-
 }

@@ -9,14 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author javaugi
  */
 public class TotalValidSubarrays {
+
     public static void main(String[] args) {
         int[] intArr = {2, 5, 6, 8, 4};
         Arrays.sort(intArr); // Sort the array first
-        //intArr = {2, 4, 5, 6, 8};
+        // intArr = {2, 4, 5, 6, 8};
         System.out.println("1 Total valid subarrays: " + countTotalValidSubarrays(intArr));
         System.out.println("2 Total valid subarrays: " + countTotalValidSubarrays2(intArr));
     }
@@ -38,7 +38,8 @@ public class TotalValidSubarrays {
         return total;
     }
 
-    private static void generateSubarrays(int[] arr, int num, int start, List<Integer> current, List<List<Integer>> result) {
+    private static void generateSubarrays(
+            int[] arr, int num, int start, List<Integer> current, List<List<Integer>> result) {
         if (!current.isEmpty()) {
             result.add(new ArrayList<>(current));
         }
@@ -48,8 +49,8 @@ public class TotalValidSubarrays {
             generateSubarrays(arr, num, i + 1, current, result);
             current.remove(current.size() - 1);
         }
-    }    
-    
+    }
+
     public static int countTotalValidSubarrays2(int[] arr) {
         int total = 0;
 
@@ -63,7 +64,8 @@ public class TotalValidSubarrays {
         return total;
     }
 
-    private static void generateSubarrays2(int[] arr, int num, int start, List<Integer> current, List<List<Integer>> result) {
+    private static void generateSubarrays2(
+            int[] arr, int num, int start, List<Integer> current, List<List<Integer>> result) {
         if (!current.isEmpty()) {
             result.add(new ArrayList<>(current));
         }
@@ -73,5 +75,5 @@ public class TotalValidSubarrays {
             generateSubarrays(arr, num, i + 1, current, result);
             current.remove(current.size() - 1);
         }
-    }  
+    }
 }

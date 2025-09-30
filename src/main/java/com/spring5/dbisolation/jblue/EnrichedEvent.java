@@ -13,5 +13,4 @@ public class EnrichedEvent {
 
     private FlightEvent event;
     private EnrichedReference ref;
-
 }

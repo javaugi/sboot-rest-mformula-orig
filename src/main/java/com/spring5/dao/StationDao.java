@@ -11,18 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author javaugi
  */
 @Repository
 public class StationDao {
+
     @Autowired
     private StationRepository stationRepository;
-    
+
     public List<Station> saveAll(List<Station> records) {
         return stationRepository.saveAll(records);
     }
-    
+
     public List<Station> findAll() {
         return stationRepository.findAll();
     }

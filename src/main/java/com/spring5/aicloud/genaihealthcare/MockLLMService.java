@@ -24,7 +24,8 @@ class MockLLMService implements LLMService {
         // The prompt would be carefully engineered to include context while
         // maintaining privacy. The model would be instructed to generate a
         // sympathetic, helpful, and non-diagnostic response.
-        String generatedText = "Thank you for your question. It's important to discuss your concerns with your doctor. Our team is here to support you.";
+        String generatedText
+                = "Thank you for your question. It's important to discuss your concerns with your doctor. Our team is here to support you.";
 
         // --- AI Governance & Trust ---
         // Step 2: Response validation and human-in-the-loop check

@@ -13,32 +13,34 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 /**
- *
  * @author javaugi
  */
 @Component
-public class RedisNoSQLConnChecker implements CommandLineRunner {    
-    private final static Logger log = LoggerFactory.getLogger(RedisNoSQLConnChecker.class);
-    
+public class RedisNoSQLConnChecker implements CommandLineRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(RedisNoSQLConnChecker.class);
+
     @Value("${spring.redis.enabled}")
     protected Boolean redisCacheEnabled;
+
     @Value("${spring.data.redis.host}")
     protected String redisCacheHost;
+
     @Value("${spring.data.redis.port}")
     protected Integer redisCachePort;
-    
+
     private Jedis jedis;
-    
+
     @Override
     public void run(String... args) throws Exception {
         if (redisCacheEnabled && StringUtils.isNotEmpty(redisCacheHost)) {
             boolean redisRunning = redisConnectedRunning();
-            log.info("Checking Redis connected running {}", redisRunning); 
+            log.info("Checking Redis connected running {}", redisRunning);
             runRedisNoSQLDemo();
         }
     }
-    
-    private boolean redisConnectedRunning() {        
+
+    private boolean redisConnectedRunning() {
         try {
             jedis = new Jedis(redisCacheHost, redisCachePort);
             log.info("redisConnectedRunning ...");
@@ -49,10 +51,10 @@ public class RedisNoSQLConnChecker implements CommandLineRunner {
             // SpringApplication.exit(SpringApplicationContext.getAppContext(), () -> 1);
             // System.exit(1);
         }
-        
+
         return false;
     }
-    
+
     private void runRedisNoSQLDemo() {
         try {
             jedis.set("name", "Jane Smith");
@@ -62,7 +64,6 @@ public class RedisNoSQLConnChecker implements CommandLineRunner {
             e.printStackTrace();
         }
     }
-    
 }
 
 /*
@@ -89,4 +90,4 @@ redis-sentinel :// [[username :] password@] host1[:port1] [, host2[:port2]] [, h
                    [?[timeout=timeout[d|h|m|s|ms|us|ns]] [&sentinelMasterId=sentinelMasterId]
                    [&clientName=clientName] [&libraryName=libraryName]
                    [&libraryVersion=libraryVersion] ]
-*/
+ */

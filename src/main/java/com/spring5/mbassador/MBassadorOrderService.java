@@ -12,28 +12,28 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
 public class MBassadorOrderService {
-    
+
     @Autowired
-    private @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> bus;
-    
+    private @Qualifier(EventBusConfig.MB_EVENT_BUS)
+    MBassador<Object> bus;
+
     public void createOrder(String orderId) {
         // Business logic...
         bus.publish(new OrderCreatedEvent(orderId));
-    }    
-    
+    }
+
     public void createOrder(String orderId, String email) {
         // Business logic...
         bus.publish(new OrderCreatedEvent(orderId));
-    }    
+    }
 
     @Handler
     public void handle(UpdateInventoryCommand cmd) {
         // Update database...
         bus.publish(new InventoryUpdatedEvent(cmd.getProductId(), cmd.getNewQuantity()));
-    }       
+    }
 }

@@ -4,9 +4,9 @@
  */
 package com.spring5.filter;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 /*
@@ -15,9 +15,11 @@ Spring provides a filter that calculates ETag by buffering response. Useful for 
  */
 @Configuration
 public class FiltersConfig {
+
     @Bean
     public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagFilter() {
-        FilterRegistrationBean<ShallowEtagHeaderFilter> fr = new FilterRegistrationBean<>(new ShallowEtagHeaderFilter());
+        FilterRegistrationBean<ShallowEtagHeaderFilter> fr
+                = new FilterRegistrationBean<>(new ShallowEtagHeaderFilter());
         fr.addUrlPatterns("/api/*"); // limit to API paths that are safe to buffer
         fr.setName("etagFilter");
         return fr;

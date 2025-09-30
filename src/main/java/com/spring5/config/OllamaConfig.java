@@ -19,9 +19,9 @@ public class OllamaConfig {
     @Bean
     public WebClient ollamaWebClient(OllamaProperties properties) {
         return WebClient.builder()
-            .baseUrl(properties.getBaseUrl())
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .build();
+                .baseUrl(properties.getBaseUrl())
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
     }
 
     @Bean

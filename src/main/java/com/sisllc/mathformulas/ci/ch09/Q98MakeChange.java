@@ -58,5 +58,4 @@ public class Q98MakeChange {
             System.out.println("makeChange(" + i + ") = " + makeChange(i));
         }
     }
-
 }

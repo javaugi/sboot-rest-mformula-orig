@@ -5,11 +5,9 @@
 package com.spring5.payroll;
 
 /**
- *
  * @author javaugi
  */
 public class PayrollContext {
-    
 }
 
 /*
@@ -72,7 +70,7 @@ public abstract class PayrollDecorator implements PayrollRule {
 public class NightShiftDecorator extends PayrollDecorator {
     @Override
     public double calculateOvertime(double hoursWorked, Employee employee) {
-        return wrappedRule.calculateOvertime(hoursWorked, employee) 
+        return wrappedRule.calculateOvertime(hoursWorked, employee)
                + (employee.isNightShift() ? hoursWorked * 0.2 : 0);
     }
 }
@@ -196,4 +194,4 @@ Observer                Notify external systems                         Tax fili
 
 This design ensures maintainability (easy to add new regions), compliance (validations), and performance (caching, clean separation).
 
-*/
+ */

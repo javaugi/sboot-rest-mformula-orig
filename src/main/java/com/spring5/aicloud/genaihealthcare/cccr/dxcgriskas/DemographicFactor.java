@@ -5,9 +5,7 @@
 package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 
 /**
- *
  * @author javau
  */
 public class DemographicFactor {
-
 }

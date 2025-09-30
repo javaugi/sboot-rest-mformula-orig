@@ -8,7 +8,6 @@
 package com.patterns.behavioral.chainresp;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

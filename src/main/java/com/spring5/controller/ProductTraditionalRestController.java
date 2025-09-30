@@ -4,7 +4,7 @@
  */
 package com.spring5.controller;
 
-//import static com.mongodb.client.model.Filters.where;
+// import static com.mongodb.client.model.Filters.where;
 import com.spring5.entity.Product;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author javaugi
  */
 @RestController
@@ -44,7 +43,8 @@ public class ProductTraditionalRestController {
 
     // PUT - Replace product
     @PutMapping("/{id}")
-    public ResponseEntity<Product> replaceProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> replaceProduct(
+            @PathVariable Long id, @RequestBody Product product) {
         product.setId(id);
         productStore.put(id, product);
         return ResponseEntity.ok(product);
@@ -52,7 +52,8 @@ public class ProductTraditionalRestController {
 
     // PATCH - Partial update
     @PatchMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Long id, @RequestBody Map<String, Object> updates) {
         Product existing = productStore.get(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();

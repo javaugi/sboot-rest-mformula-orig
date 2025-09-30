@@ -40,5 +40,4 @@ public class ArrayMerge {
         merge(a, b, 8, 6);
         System.out.println(AssortedMethods.arrayToString(a));
     }
-
 }

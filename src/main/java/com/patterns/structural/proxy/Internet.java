@@ -8,7 +8,6 @@
 package com.patterns.structural.proxy;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

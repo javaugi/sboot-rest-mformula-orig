@@ -16,15 +16,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class FlightServicePaginationParallelProcessing {
+
     private final FlightRepositoryCustomAdvancedPaging customFlightRepository;
     private final FlightEventRepository flightRepository;
 
     // Example 1: Process large dataset with controlled RU consumption
     public void processAllFlights(String airportCode) {
-        String query = "SELECT c.flightNumber, c.airlineCode FROM c WHERE c.departureAirport = '" + airportCode + "'";
+        String query
+                = "SELECT c.flightNumber, c.airlineCode FROM c WHERE c.departureAirport = '"
+                + airportCode
+                + "'";
 
         // Process in small batches to avoid RU spikes
-        List<FlightEvent> results = customFlightRepository.findLargeDatasetWithPagination(query, 100, null);
+        List<FlightEvent> results
+                = customFlightRepository.findLargeDatasetWithPagination(query, 100, null);
         results.forEach(this::processFlight);
     }
 
@@ -35,11 +40,11 @@ public class FlightServicePaginationParallelProcessing {
 
         Page<FlightProjection> resultPage;
         do {
-            resultPage = PageableExecutionUtils.getPage(
-                flightRepository.findByDepartureAirportPaginated(airportCode, pageable),
-                pageable,
-                () -> getCount(airportCode)
-            );
+            resultPage
+                    = PageableExecutionUtils.getPage(
+                            flightRepository.findByDepartureAirportPaginated(airportCode, pageable),
+                            pageable,
+                            () -> getCount(airportCode));
 
             processPage(resultPage.getContent());
             pageable = pageable.next();
@@ -50,7 +55,8 @@ public class FlightServicePaginationParallelProcessing {
     // Example 3: Parallel processing for very large datasets
     public void processVeryLargeDataset() {
         String query = "SELECT * FROM c WHERE c.departureTime > '2024-01-01'";
-        customFlightRepository.processLargeDatasetInParallel(query, 1000, 4); // 4 threads, 1000 items per batch
+        customFlightRepository.processLargeDatasetInParallel(
+                query, 1000, 4); // 4 threads, 1000 items per batch
     }
 
     private long getCount(String airportCode) {
@@ -58,10 +64,11 @@ public class FlightServicePaginationParallelProcessing {
     }
 
     private void processPage(List<FlightProjection> flights) {
-        flights.forEach(flight -> {
-            // Process each flight with minimal data
-            System.out.println("Processing: " + flight.getFlightNumber());
-        });
+        flights.forEach(
+                flight -> {
+                    // Process each flight with minimal data
+                    System.out.println("Processing: " + flight.getFlightNumber());
+                });
     }
 
     private void processFlight(FlightEvent flight) {

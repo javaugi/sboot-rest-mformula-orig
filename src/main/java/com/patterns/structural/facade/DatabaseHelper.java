@@ -10,7 +10,6 @@ package com.patterns.structural.facade;
 import java.sql.Connection;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

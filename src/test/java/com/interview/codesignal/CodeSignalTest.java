@@ -8,18 +8,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import static org.junit.Assert.assertTrue;
-//import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- *
  * @author javaugi
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CodeSignalTest {
-        
+
     @Test
     public void testStringList() {
         ArrayList<Integer> myList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
@@ -33,7 +31,7 @@ public class CodeSignalTest {
         ArrayList<Integer> concatenateList = new ArrayList<>(myList);
         concatenateList.addAll(Arrays.asList(6, 7, 8)); // [1, 2, 3, 4, 5, 6, 7, 8]
         String concatenateString = myString + ", world!"; // "Hello, world!"
-        
+
         // Finding the index of an element in a list or a string
         // indexOf returns the first occurrence index of the element
         // returns -1 if the list or the string doesn't contain the element
@@ -42,8 +40,7 @@ public class CodeSignalTest {
 
         // Sorting items in ArrayList in non-increasing order
         ArrayList<Integer> sortedList = new ArrayList<>(myList);
-        sortedList.sort(Collections.reverseOrder()); // [5, 4, 3, 2, 1]  
+        sortedList.sort(Collections.reverseOrder()); // [5, 4, 3, 2, 1]
         assertTrue(indexList == 2);
     }
-    
 }

@@ -20,16 +20,19 @@ public class TransactionService {
     private final TransactionMapper transactionMapper;
     private final UserService userService;
 
-    public TransactionService(TransactionRepository transactionRepository,
-        TransactionMapper transactionMapper,
-        UserService userService) {
+    public TransactionService(
+            TransactionRepository transactionRepository,
+            TransactionMapper transactionMapper,
+            UserService userService) {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
         this.userService = userService;
     }
 
-    public Page<TransactionDto> getTransactions(TransactionQueryCriteria criteria, Pageable pageable) {
-        log.info("Fetching transactions for user: {} with criteria: {}", criteria.getUserId(), criteria);
+    public Page<TransactionDto> getTransactions(
+            TransactionQueryCriteria criteria, Pageable pageable) {
+        log.info(
+                "Fetching transactions for user: {} with criteria: {}", criteria.getUserId(), criteria);
 
         // Validate user exists
         userService.validateUserExists(Long.valueOf(criteria.getUserId()));

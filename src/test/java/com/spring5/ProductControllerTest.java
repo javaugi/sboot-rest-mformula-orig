@@ -24,24 +24,24 @@ public class ProductControllerTest {
     //@Test
     public void testGetById_PathVariable() {
         webTestClient.get()
-            .uri("/restproducts/{id}", 1)
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(String.class)
-            .isEqualTo("Product ID: 1");
+                .uri("/restproducts/{id}", 1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("Product ID: 1");
     }
 
     //@Test
     public void testGetByType_RequestParam() {
         webTestClient.get()
-            .uri(uriBuilder
-                -> uriBuilder.path("/restproducts")
-                .queryParam("type", "book")
-                .build())
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(String.class)
-            .isEqualTo("Product type: book");
+                .uri(uriBuilder
+                        -> uriBuilder.path("/restproducts")
+                        .queryParam("type", "book")
+                        .build())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("Product type: book");
     }
 
     //@Test
@@ -51,51 +51,50 @@ public class ProductControllerTest {
         dto.setPrice(new BigDecimal(49.99));
 
         webTestClient.post()
-            .uri("/restproducts")
-            @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(dto)
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(String.class)
-            .isEqualTo("Created: Gadget");
+                .uri("/restproducts")
+                @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)            .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(dto)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("Created: Gadget");
     }
 
     //@Test
     public void testHeader_RequestHeader() {
         webTestClient.get()
-            .uri("/restproducts/headers")
-            .header("X-Request-ID", "abc-123")
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(String.class)
-            .isEqualTo("Header: abc-123");
+                .uri("/restproducts/headers")
+                .header("X-Request-ID", "abc-123")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("Header: abc-123");
     }
 
     //@Test
     public void testFileUpload_RequestPart() {
         webTestClient.post()
-            .uri("/restproducts/upload")
-            .contentType(MediaType.MULTIPART_FORM_DATA)
-            .body(BodyInserters.fromMultipartData("file",
-                new ByteArrayResource("test content".getBytes()) {
-                @Override
-                public String getFilename() {
-                    return "test.txt";
-                }
-            }))
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody(String.class)
-            .isEqualTo("Uploaded: test.txt");
+                .uri("/restproducts/upload")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData("file",
+                        new ByteArrayResource("test content".getBytes()) {
+                    @Override
+                    public String getFilename() {
+                        return "test.txt";
+                    }
+                }))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .isEqualTo("Uploaded: test.txt");
     }
 }
 
 /*
-🧠 Notes
 Parameter Type	Method Used in Test
 @PathVariable	.uri("/restproducts/{id}", 1)
 @RequestParam	.queryParam("type", "book")
 @RequestBody	.bodyValue(dto) with JSON
 @RequestHeader	.header("X-Request-ID", "...")
 @RequestPart	BodyInserters.fromMultipartData(...)
-*/
+ */

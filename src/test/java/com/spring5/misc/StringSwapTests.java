@@ -10,14 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class StringSwapTests {
-    
-    @Test    
+
+    @Test
     public void stringSwap2charsOnly() {
         StringSwapHelper help = new StringSwapHelper();
         Assert.assertEquals("BA", help.swaplasttwochars("AB"));
         Assert.assertEquals("ABCD", help.swaplasttwochars("DCBA"));
     }
-            
+
     private static class StringSwapHelper {
 
         public StringSwapHelper() {
@@ -28,7 +28,7 @@ public class StringSwapTests {
             for (int i = ab.length() - 1; i >= 0; i--) {
                 rv.append(ab.charAt(i));
             }
-            
+
             return rv.toString();
         }
     }

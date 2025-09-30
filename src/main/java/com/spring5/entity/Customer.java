@@ -26,22 +26,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "customers")
 public class Customer extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-        
+
     private String name;
     private String email;
+
     // other fields
-    
-    @OneToOne(fetch = FetchType.LAZY)  // Recommended default
+    @OneToOne(fetch = FetchType.LAZY) // Recommended default
     @JoinColumn(name = "loyalty_account_id")
-    private LoyaltyAccount loyaltyAccount;    
-    
+    private LoyaltyAccount loyaltyAccount;
+
     public Customer(Long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
     }
-    
 }

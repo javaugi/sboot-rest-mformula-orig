@@ -14,7 +14,6 @@ import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 
 /**
- *
  * @author javaugi
  */
 /*
@@ -27,11 +26,12 @@ The ResourceSupport/Resource/Resources/PagedResources group of classes never rea
     Resource is now EntityModel
     Resources is now CollectionModel
     PagedResources is now PagedModel
-*/
+ */
 @Getter
 @Setter
 @ToString
 public class PatientResource extends RepresentationModel {
+
     private Long patientId;
     private String name;
     private String firstName;
@@ -40,8 +40,8 @@ public class PatientResource extends RepresentationModel {
     private String gender;
     private String address;
     private String phoneNumber;
-    private List<Appointment> appointments;  
-    
+    private List<Appointment> appointments;
+
     // Constructor, getters, and setters
     public PatientResource(Patient patient) {
         this.patientId = patient.getId();
@@ -53,5 +53,5 @@ public class PatientResource extends RepresentationModel {
         this.address = patient.getAddress();
         this.phoneNumber = patient.getPhoneNumber();
         this.appointments = patient.getAppointments();
-    }    
+    }
 }

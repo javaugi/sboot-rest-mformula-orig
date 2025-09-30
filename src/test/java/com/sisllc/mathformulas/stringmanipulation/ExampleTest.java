@@ -9,13 +9,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
-public class ExampleTest extends ProjectTest{
+public class ExampleTest extends ProjectTest {
 
     @Test
     public void whenThen() {

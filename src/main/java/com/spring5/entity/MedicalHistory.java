@@ -19,7 +19,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -31,14 +30,14 @@ import lombok.ToString;
 @Entity
 @Table(name = "MED_HISTORY")
 public class MedicalHistory {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
-    
+
     private String history;
-    
 }

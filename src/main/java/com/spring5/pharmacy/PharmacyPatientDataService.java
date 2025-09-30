@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PharmacyPatientDataService {
+
     public PatientData validate(long patientId) {
         return null;
     }

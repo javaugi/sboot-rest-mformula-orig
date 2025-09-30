@@ -12,26 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 
 /**
- *
  * @author javaugi
  */
 public class KafkaConsumerPersistAuditEvent {
+
     @Autowired
     private ElasticsearchClient elasticsearchClient;
-    
+
     @KafkaListener(topics = "audit-events")
     public void persistAuditEvent(AuditEvent event) {
         // Index in Elasticsearch
-        try{
+        try {
             elasticsearchClient.index(
-                IndexRequest.of(idx -> idx
-                    .index("audit-logs")
-                    .id(event.getEventId())
-                    .document(event)
-                ));
-        }catch(ElasticsearchException | IOException ex) {
-            
-        }
-    }    
+                    IndexRequest.of(idx -> idx.index("audit-logs").id(event.getEventId()).document(event)));
+        } catch (ElasticsearchException | IOException ex) {
 
+        }
+    }
 }

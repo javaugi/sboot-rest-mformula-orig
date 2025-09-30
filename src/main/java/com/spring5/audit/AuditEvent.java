@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,10 +24,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class AuditEvent extends Object implements java.io.Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     String eventId;
     String userId;
     Long entityId;
@@ -37,5 +37,4 @@ public class AuditEvent extends Object implements java.io.Serializable {
     String eventValue;
     String eventType;
     String details;
-    
 }

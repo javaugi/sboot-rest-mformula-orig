@@ -9,19 +9,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class DxcgSoapClient {
     /*
-}
-extends WebServiceGatewaySupport {
+  }
+  extends WebServiceGatewaySupport {
 
-    private static final String NAMESPACE_URI = "http://verisk.com/dxcg/ws";
+      private static final String NAMESPACE_URI = "http://verisk.com/dxcg/ws";
 
-    public CalculateRiskScoreResponse calculateRiskScore(CalculateRiskScoreRequest request) {
-        return (CalculateRiskScoreResponse) getWebServiceTemplate()
-            .marshalSendAndReceive(request, new SoapActionCallback(NAMESPACE_URI));
-    }
+      public CalculateRiskScoreResponse calculateRiskScore(CalculateRiskScoreRequest request) {
+          return (CalculateRiskScoreResponse) getWebServiceTemplate()
+              .marshalSendAndReceive(request, new SoapActionCallback(NAMESPACE_URI));
+      }
 
-    public SubmitBatchRiskResponse submitBatchRiskAssessment(BatchRiskRequest request) {
-        return (SubmitBatchRiskResponse) getWebServiceTemplate()
-            .marshalSendAndReceive(request, new SoapActionCallback(NAMESPACE_URI));
-    }
-    // */
+      public SubmitBatchRiskResponse submitBatchRiskAssessment(BatchRiskRequest request) {
+          return (SubmitBatchRiskResponse) getWebServiceTemplate()
+              .marshalSendAndReceive(request, new SoapActionCallback(NAMESPACE_URI));
+      }
+      // */
 }

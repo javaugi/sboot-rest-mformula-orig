@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class PaymentRequest {
+
     private String id;
     private BigDecimal amount; // Amount in major currency units (e.g., USD)
 }

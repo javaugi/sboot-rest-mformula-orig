@@ -7,12 +7,7 @@
  */
 package com.patterns.structural.bridge;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -28,5 +23,5 @@ public abstract class VehicleBridgeAbstraction {
         this.workShop2 = workShop2;
     }
 
-    abstract public void manufacture();
+    public abstract void manufacture();
 }

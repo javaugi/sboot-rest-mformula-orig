@@ -3,8 +3,6 @@ package com.sisllc.mathformulas.ci.ch03;
 import java.util.EmptyStackException;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

@@ -8,11 +8,10 @@ package com.interview.common.utils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- *
  * @author david
  */
 public class AddressPoBoxVO {
-    
+
     String address;
     String poBox;
     boolean poBoxFound = false;

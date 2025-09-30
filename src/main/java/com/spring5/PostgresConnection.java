@@ -12,12 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PostgresConnection {
-    
+
     public static void main(String[] args) {
         PostgresConnection main = new PostgresConnection();
         main.testPostgreSQLConn();
     }
-        
+
     private void testPostgreSQLConn() {
         log.info("PostgresConnection running ...");
         String url = "jdbc:postgresql://localhost:5433/algotdb";
@@ -33,6 +33,6 @@ public class PostgresConnection {
             }
         } catch (SQLException e) {
             System.err.println("Error connecting to PostgreSQL: " + e.getMessage());
-        }     
+        }
     }
 }

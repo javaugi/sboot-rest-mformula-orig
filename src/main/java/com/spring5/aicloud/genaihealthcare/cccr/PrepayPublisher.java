@@ -12,6 +12,7 @@ public class PrepayPublisher {
 
     public void publishPrepayEvent(Claim trigger, List<Claim> matches) {
         // In production: write to Kafka topic (compact key: patientId) with evidence + audit id.
-        System.out.println("PREPAY EVENT: trigger=" + trigger.externalId + " matches=" + matches.size());
+        System.out.println(
+                "PREPAY EVENT: trigger=" + trigger.externalId + " matches=" + matches.size());
     }
 }

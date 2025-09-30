@@ -21,12 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "GRAPH_USER_PROFILE")
 public class GraphUserProfile implements java.io.Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     private String firstName;
     private String lastName;
-    private String avatarUrl;    
+    private String avatarUrl;
 }

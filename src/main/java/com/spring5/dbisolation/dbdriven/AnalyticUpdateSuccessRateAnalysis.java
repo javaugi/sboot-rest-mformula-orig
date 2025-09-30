@@ -5,12 +5,11 @@
 package com.spring5.dbisolation.dbdriven;
 
 /**
- *
  * @author javau
  */
 public class AnalyticUpdateSuccessRateAnalysis {
-    
 }
+
 /*
 Question: Write a query to analyze OTA update success rates by vehicle model and region.
 
@@ -41,8 +40,8 @@ SELECT
     ROUND(avg_duration_minutes, 2) AS avg_duration_min,
     median_download_speed
 FROM update_stats
-ORDER BY 
+ORDER BY
     CASE WHEN model_name IS NULL THEN 1 ELSE 0 END,
     CASE WHEN region IS NULL THEN 1 ELSE 0 END,
     success_rate DESC;
-*/
+ */

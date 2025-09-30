@@ -22,8 +22,8 @@ public class Q96GenerateParen {
                     if (str.charAt(i) == '(') {
                         String s = insertInside(str, i);
                         /* Add s to set if it is not already in there. Note:
-						 * HashSet automatically checks for duplicates before
-						 * adding, so an explicit check is not necessary. */
+             * HashSet automatically checks for duplicates before
+             * adding, so an explicit check is not necessary. */
                         set.add(s);
                     }
                 }
@@ -40,5 +40,4 @@ public class Q96GenerateParen {
         }
         System.out.println(list.size());
     }
-
 }

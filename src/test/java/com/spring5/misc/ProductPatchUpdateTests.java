@@ -20,40 +20,39 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest 
+@SpringBootTest
 @AutoConfigureMockMvc
 public class ProductPatchUpdateTests {
-    
+
     @Mock
     private ProductRepository productRepo;
-    
+
     @Autowired
-    private MockMvc mockMvc;    
-    
-    //When using Mockito Use @InjectMocks to inject Mocked beans to following class
+    private MockMvc mockMvc;
+
+    // When using Mockito Use @InjectMocks to inject Mocked beans to following class
     @InjectMocks
     private ProductServiceImpl productService;
-    
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-    
+
     @Test
-    public void testNothing() {        
-    } 
-    
+    public void testNothing() {
+    }
+
     @Test
     public void testPatchProduct() {
         /*
-        mockMvc.perform(put("/restproduct/heavyresource/1")
-          .contentType("application/json")
-          .content(objectMapper.writeValueAsString(new Product(1, "Tom", "Jackson", 12, "heaven street")))
-          ).andExpect(status().isOk());    
-        // */        
-        
+    mockMvc.perform(put("/restproduct/heavyresource/1")
+      .contentType("application/json")
+      .content(objectMapper.writeValueAsString(new Product(1, "Tom", "Jackson", 12, "heaven street")))
+      ).andExpect(status().isOk());
+    // */
+
     }
-    
 }

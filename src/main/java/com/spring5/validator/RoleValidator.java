@@ -9,7 +9,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
- *
  * @author javaugi
  */
 public class RoleValidator implements ConstraintValidator<ValidateRole, String> {
@@ -19,7 +18,7 @@ public class RoleValidator implements ConstraintValidator<ValidateRole, String> 
         if (role == null) {
             return false;
         }
-        
+
         try {
             RoleTypes.valueOf("ROLE_" + role.toUpperCase());
             return true;
@@ -27,5 +26,4 @@ public class RoleValidator implements ConstraintValidator<ValidateRole, String> 
             return false;
         }
     }
-    
 }

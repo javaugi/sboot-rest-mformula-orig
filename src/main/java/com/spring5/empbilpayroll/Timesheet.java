@@ -23,8 +23,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class Timesheet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
 }

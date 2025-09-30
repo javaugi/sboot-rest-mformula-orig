@@ -4,11 +4,12 @@
  */
 package com.spring5.aicloud;
 
-//import dev.langchain4j.service.AiService;
+// import dev.langchain4j.service.AiService;
 import org.springframework.stereotype.Service;
-    
+
 @Service
-//@AiService
+// @AiService
 public interface AiAssistant {
-      String chat(String message);
+
+    String chat(String message);
 }

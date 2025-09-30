@@ -14,7 +14,6 @@ import com.interview.cls.sealed.shape.TransparentRectangle;
 import com.interview.cls.sealed.shape.Triangle;
 
 /**
- *
  * @author javau
  */
 public class SealedClassMain {
@@ -55,14 +54,14 @@ public class SealedClassMain {
                 t.area();
             case Triangle t ->
                 t.area();
-            // No 'default' case is required here because Shape is sealed and all permitted subclasses are handled.
+            // No 'default' case is required here because Shape is sealed and all permitted subclasses are
+            // handled.
             // If Triangle was a direct permitted subclass of Shape, it would need its own case.
             // Since Triangle extends Square (which is non-sealed), it falls under the 'Square' case.
             default ->
                 0;
         };
     }
-
 }
 /*
 To write a sealed class in Java, follow these steps:

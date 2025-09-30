@@ -8,7 +8,6 @@
 package com.patterns.behavioral.command;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

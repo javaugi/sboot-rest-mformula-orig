@@ -4,10 +4,9 @@
  */
 package com.spring5;
 
-
 public class ReactFrondEndConfig {
-    //see sample github spring boot with React projects
-    
+    // see sample github spring boot with React projects
+
 }
 /*
 https://github.com/javaugi/full-stack-with-react-and-spring-boot
@@ -24,9 +23,9 @@ https://github.com/javaugi/fullstack-nextjs-app-template
 https://github.com/javaugi/full-stack-with-react-and-spring-boot
 
 https://www.dhiwise.com/post/a-step-by-step-guide-to-implementing-react-spring-boot
-*/
+ */
 
-/*
+ /*
 Here are some GitHub projects that demonstrate how to build full-stack applications using Java Spring Boot and React:
 General Full-Stack Examples:
 bdostumski/learning-full-stack:
@@ -53,7 +52,7 @@ RameshMF/ReactJS-Spring-Boot-CRUD-Full-Stack-App:
 This project focuses on a CRUD (Create, Read, Update, Delete) application using React and Spring Boot, providing a clear example of data management.
 PacktPublishing/Full-Stack-Development-with-Spring-Boot-and-React:
 .
-This repository accompanies a book on full-stack development with Spring Boot and React, offering a comprehensive guide and examples. 
+This repository accompanies a book on full-stack development with Spring Boot and React, offering a comprehensive guide and examples.
 Learning Resources:
 in28minutes/full-stack-with-react-and-spring-boot:
 .
@@ -62,9 +61,9 @@ darbyluv2code/fullstack-react-and-springboot:
 .
 This repository provides the source code for a popular course on full-stack development with React and Spring Boot, offering a structured learning path.
 These projects provide a range of examples, from basic setups to more advanced applications, covering different aspects of full-stack development with Java Spring Boot and React. They can be used as a starting point for learning or as a reference for building your own applications.
-*/
+ */
 
-/*
+ /*
 Here are some examples of full-stack applications using Java Spring Boot and React:
 1. E-commerce Application:
 Backend (Spring Boot):
@@ -114,4 +113,4 @@ Use React's built-in state management or libraries like Redux/Context API for co
 Deployment:
 Package the frontend and backend separately or as a single artifact for deployment.
 These examples demonstrate the flexibility and power of combining Spring Boot and React for building modern, scalable full-stack applications
-*/
+ */

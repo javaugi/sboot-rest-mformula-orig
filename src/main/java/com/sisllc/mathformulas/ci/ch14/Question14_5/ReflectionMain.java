@@ -10,7 +10,8 @@ public class ReflectionMain {
             Object[] doubleArgs = new Object[]{4.2, 3.9};
 
             /* Get class */
-            Class rectangleDefinition = Class.forName("com.sisllc.mathformulas.ci.ch14.Question14_5.Rectangle");
+            Class rectangleDefinition
+                    = Class.forName("com.sisllc.mathformulas.ci.ch14.Question14_5.Rectangle");
 
             /* Equivalent: Rectangle rectangle = new Rectangle(4.2, 3.9); */
             Class[] doubleArgsClass = new Class[]{double.class, double.class};

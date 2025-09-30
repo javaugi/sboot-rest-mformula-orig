@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author javaugi
  */
 public class ConvertToIntegerArray {
@@ -23,12 +22,9 @@ public class ConvertToIntegerArray {
 
     public static Integer[] integerListToIntegerArray(List<Integer> list) {
         return list.toArray(Integer[]::new);
-    }    
+    }
 
     public static Integer[] integerListToIntegerArray(int[] intArr) {
-        return Arrays.stream(intArr)
-                .boxed()
-                .collect(Collectors.toList())
-                .toArray(Integer[]::new);
-    }    
+        return Arrays.stream(intArr).boxed().collect(Collectors.toList()).toArray(Integer[]::new);
+    }
 }

@@ -15,17 +15,28 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class ProjectDTO {
 
-    @Schema(description = "Unique identifier of the project", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(
+            description = "Unique identifier of the project",
+            example = "1",
+            accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @Schema(description = "Name of the project", example = "Enterprise Fulfillment Dashboard", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(
+            description = "Name of the project",
+            example = "Enterprise Fulfillment Dashboard",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Name is mandatory")
     private String name;
 
-    @Schema(description = "Detailed description of the project", example = "A microservice to handle all fulfillment operations.")
+    @Schema(
+            description = "Detailed description of the project",
+            example = "A microservice to handle all fulfillment operations.")
     private String description;
 
-    @Schema(description = "Timestamp when the project was created", example = "2024-10-27T10:30:00", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(
+            description = "Timestamp when the project was created",
+            example = "2024-10-27T10:30:00",
+            accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime dateCreated;
 
     // Standard getters and setters

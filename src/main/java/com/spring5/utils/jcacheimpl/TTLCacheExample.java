@@ -21,10 +21,13 @@ public class TTLCacheExample {
         System.out.println("Get key1 after TTL: " + cache.get("key1")); // Returns null
 
         // Cache-through pattern
-        String value = cache.get("key2", () -> {
-            System.out.println("Computing value for key2...");
-            return "computed_value";
-        });
+        String value
+                = cache.get(
+                        "key2",
+                        () -> {
+                            System.out.println("Computing value for key2...");
+                            return "computed_value";
+                        });
         System.out.println("Computed value: " + value);
 
         // Get statistics
@@ -56,4 +59,4 @@ Design Considerations
     Graceful Shutdown: Proper executor service shutdown mechanism
 
 This implementation provides a robust, self-contained caching solution without external dependencies, suitable for most Java 8 applications.
-*/
+ */

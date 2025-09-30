@@ -12,9 +12,10 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-//@AutoConfigureMockMvc
+// @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+// @AutoConfigureMockMvc
 public class PerformanceReviewServiceSpringBootTests {
+
     private PerformanceReviewService service = new PerformanceReviewService();
 
     @Test
@@ -33,10 +34,13 @@ public class PerformanceReviewServiceSpringBootTests {
     // Test 2
     @Test
     public void calculateBonus_Invalid_ReturnsCorrectMultiplier() {
-        Exception exception = assertThrows(InvalidReviewScoreException.class, () -> {
-            service.calculateBonus("Invalid");
-            //assertEquals(1.00, result);
-        });
+        Exception exception
+                = assertThrows(
+                        InvalidReviewScoreException.class,
+                        () -> {
+                            service.calculateBonus("Invalid");
+                            // assertEquals(1.00, result);
+                        });
 
         // Assert on the exception's message
         assertEquals("Invalid performance score: Invalid", exception.getMessage());

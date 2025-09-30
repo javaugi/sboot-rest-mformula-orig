@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PerformanceReviewService {
+
     public double calculateBonus(String score) throws InvalidReviewScoreException {
         switch (score) {
             case "Super Exceeds" -> {
@@ -25,8 +26,6 @@ public class PerformanceReviewService {
             }
             default ->
                 throw new InvalidReviewScoreException("Invalid performance score: " + score);
-
         }
-
     }
 }

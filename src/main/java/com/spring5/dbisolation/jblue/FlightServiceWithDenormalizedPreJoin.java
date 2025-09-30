@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class FlightServiceWithDenormalizedPreJoin {
+
     private final FlightDetailRepository flightDetailRepository;
 
-    public void createFlightWithPreJoinedData(FlightEvent flight, Airline airline,
-        Aircraft aircraft, AirPort departure, AirPort arrival) {
+    public void createFlightWithPreJoinedData(
+            FlightEvent flight, Airline airline, Aircraft aircraft, AirPort departure, AirPort arrival) {
 
         FlightDetail flightDetail = new FlightDetail();
         flightDetail.setId(flight.getId());

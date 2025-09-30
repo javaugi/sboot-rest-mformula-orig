@@ -34,7 +34,7 @@ Ollama supports DeepSeek models (like deepseek-coder for code or deepseek-llm fo
 Available DeepSeek Models on Ollama:
     deepseek/deepseek-llm:7b (General-purpose LLM)
     deepseek/deepseek-coder:6.7b (Code-focused LLM)
-*/
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -43,108 +43,132 @@ public class OllamaApiService {
     @Qualifier(AiConfig.REST_TEMPLATE)
     private final RestTemplate restTemplate;
 
-    //public static final String OLLAMA_API = "http://localhost:11434/api/generate";
+    // public static final String OLLAMA_API = "http://localhost:11434/api/generate";
     /*
-    curl http://localhost:11434/api/generate -d '{
-      "model": "deepseek-llm",
-      "prompt": "Explain quantum computing"
-    }'
+  curl http://localhost:11434/api/generate -d '{
+    "model": "deepseek-llm",
+    "prompt": "Explain quantum computing"
+  }'
      */
     // Call a locally running DeepSeek model (if supported)
     public Mono<String> queryOllamaByWebClient(OllamaRequest ollamaRequest) {
-        //String requestBody = "{\"model\":\"deepseek-llm\", \"prompt\":\"" + ollamaRequest.prompt() + "\"}";
+        // String requestBody = "{\"model\":\"deepseek-llm\", \"prompt\":\"" + ollamaRequest.prompt() +
+        // "\"}";
         log.debug("queryOllamaByWebClient ollamaRequest {}", ollamaRequest);
-        return WebClient
-            .builder()
-            .clientConnector(new ReactorClientHttpConnector(HttpClient.create()
-                .responseTimeout(Duration.ofSeconds(30))))
-            .build()
-            .post()
-            .uri(OLLAMA_API)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(ollamaRequest)
-            .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), response -> {
-                // 4. Log error response details
-                log.error("queryOllamaByWebClient Request failed with status: {}", response.statusCode());
-                return response.bodyToMono(String.class)
-                    .defaultIfEmpty("queryOllamaByWebClient No error empty body")
-                    .flatMap(errorBody -> {
-                    log.error("queryOllamaByWebClient Error response body: {}", errorBody);
-                        return Mono.error(new RuntimeException(
-                            "HTTP " + response.statusCode() + " - " + errorBody
-                        ));
-                    });
-            })
-            .bodyToMono(String.class)
-            .onErrorResume(WebClientResponseException.class, ex -> {
-                log.debug("queryByWebClient WebClientResponseException ", ex);
-                // Provide a more specific error message for a 403 Forbidden error
-                if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
-                    return Mono.error(new RuntimeException("403 FORBIDDEN: Your API key is likely invalid or missing permissions."));
-                }
-                // For other WebClient errors, re-throw a more generic exception
-                return Mono.error(new RuntimeException("Error from API: " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString(), ex));
-            });
+        return WebClient.builder()
+                .clientConnector(
+                        new ReactorClientHttpConnector(
+                                HttpClient.create().responseTimeout(Duration.ofSeconds(30))))
+                .build()
+                .post()
+                .uri(OLLAMA_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ollamaRequest)
+                .retrieve()
+                .onStatus(
+                        status -> !status.is2xxSuccessful(),
+                        response -> {
+                            // 4. Log error response details
+                            log.error(
+                                    "queryOllamaByWebClient Request failed with status: {}", response.statusCode());
+                            return response
+                                    .bodyToMono(String.class)
+                                    .defaultIfEmpty("queryOllamaByWebClient No error empty body")
+                                    .flatMap(
+                                            errorBody -> {
+                                                log.error("queryOllamaByWebClient Error response body: {}", errorBody);
+                                                return Mono.error(
+                                                        new RuntimeException(
+                                                                "HTTP " + response.statusCode() + " - " + errorBody));
+                                            });
+                        })
+                .bodyToMono(String.class)
+                .onErrorResume(
+                        WebClientResponseException.class,
+                        ex -> {
+                            log.debug("queryByWebClient WebClientResponseException ", ex);
+                            // Provide a more specific error message for a 403 Forbidden error
+                            if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
+                                return Mono.error(
+                                        new RuntimeException(
+                                                "403 FORBIDDEN: Your API key is likely invalid or missing permissions."));
+                            }
+                            // For other WebClient errors, re-throw a more generic exception
+                            return Mono.error(
+                                    new RuntimeException(
+                                            "Error from API: "
+                                            + ex.getStatusCode()
+                                            + " - "
+                                            + ex.getResponseBodyAsString(),
+                                            ex));
+                        });
     }
 
-    //(Use this if the API returns a stream like Server-Sent Events)
+    // (Use this if the API returns a stream like Server-Sent Events)
     public Flux<String> streamOllamaByWebClient(OllamaRequest ollamaRequest) {
-        //String requestBody = "{\"model\":\"deepseek-llm\", \"prompt\":\"" + prompt + "\"}";
-        Consumer<HttpHeaders> headersConsumer = existingHeaders -> {
-            existingHeaders.setContentType(MediaType.APPLICATION_JSON);
-            existingHeaders.set("X-Custom-Header", "value");
-            // Add more header modifications as needed
-        };
+        // String requestBody = "{\"model\":\"deepseek-llm\", \"prompt\":\"" + prompt + "\"}";
+        Consumer<HttpHeaders> headersConsumer
+                = existingHeaders -> {
+                    existingHeaders.setContentType(MediaType.APPLICATION_JSON);
+                    existingHeaders.set("X-Custom-Header", "value");
+                    // Add more header modifications as needed
+                };
 
         log.debug("streamOllamaByWebClient ollamaRequest {}", ollamaRequest);
         // 3. Create WebClient with ollamaRequest logging
         return WebClient.create()
-            .post()
-            .uri(OLLAMA_API)
-            .headers(headersConsumer)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(ollamaRequest)
-            .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), response -> {
-                // 4. Log error response details
-                log.error("Request failed with status: {}", response.statusCode());
-                return response.bodyToMono(String.class)
-                    .defaultIfEmpty("No error empty body")
-                    .flatMap(errorBody -> {
-                        log.error("Error response body: {}", errorBody);
-                        return Mono.error(new RuntimeException(
-                            "HTTP " + response.statusCode() + " - " + errorBody
-                        ));
-                    });
-            })
-            .bodyToFlux(String.class)
-            // 5. Add response stream logging
-            .doOnNext(chunk -> log.debug("Received chunk: {}", chunk))
-            .doOnSubscribe(sub -> log.debug("Starting stream request"))
-            .doOnComplete(() -> log.debug("Stream completed successfully"))
-            .doOnError(e -> {
-                if (e instanceof ConnectException) {
-                    log.error("Failed to connect to Ollama service at {}", OLLAMA_API);
-                } else if (e instanceof ReadTimeoutException) {
-                    log.error("Timeout while waiting for Ollama response");
-                }
-                log.error("Query error occurred", e);
-            })
-            .doOnCancel(() -> log.warn("Stream was cancelled"));
+                .post()
+                .uri(OLLAMA_API)
+                .headers(headersConsumer)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ollamaRequest)
+                .retrieve()
+                .onStatus(
+                        status -> !status.is2xxSuccessful(),
+                        response -> {
+                            // 4. Log error response details
+                            log.error("Request failed with status: {}", response.statusCode());
+                            return response
+                                    .bodyToMono(String.class)
+                                    .defaultIfEmpty("No error empty body")
+                                    .flatMap(
+                                            errorBody -> {
+                                                log.error("Error response body: {}", errorBody);
+                                                return Mono.error(
+                                                        new RuntimeException(
+                                                                "HTTP " + response.statusCode() + " - " + errorBody));
+                                            });
+                        })
+                .bodyToFlux(String.class)
+                // 5. Add response stream logging
+                .doOnNext(chunk -> log.debug("Received chunk: {}", chunk))
+                .doOnSubscribe(sub -> log.debug("Starting stream request"))
+                .doOnComplete(() -> log.debug("Stream completed successfully"))
+                .doOnError(
+                        e -> {
+                            if (e instanceof ConnectException) {
+                                log.error("Failed to connect to Ollama service at {}", OLLAMA_API);
+                            } else if (e instanceof ReadTimeoutException) {
+                                log.error("Timeout while waiting for Ollama response");
+                            }
+                            log.error("Query error occurred", e);
+                        })
+                .doOnCancel(() -> log.warn("Stream was cancelled"));
     }
 
     public Mono<String> queryOllamaByTemplate(OllamaRequest ollamaRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String requestBody = """
+        String requestBody
+                = """
             {
                 "model": "deepseek-llm",
                 "prompt": "%s",
                 "stream": false
             }
-            """.formatted(ollamaRequest.prompt());
+            """
+                        .formatted(ollamaRequest.prompt());
 
         log.debug("queryOllamaByTemplate requestBody {}", ollamaRequest);
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
@@ -152,19 +176,19 @@ public class OllamaApiService {
         log.debug("queryOllamaByTemplate response.getBody() {}", response.getBody());
 
         return Mono.justOrEmpty(response.getBody())
-            .doOnNext(chunk -> log.debug("Received chunk: {}", chunk))
-            .doOnSubscribe(sub -> log.debug("Starting stream request"))
-            .doOnError(e -> {
-                if (e instanceof ConnectException) {
-                    log.error("Failed to connect to Ollama service at {}", OLLAMA_API);
-                } else if (e instanceof ReadTimeoutException) {
-                    log.error("Timeout while waiting for Ollama response");
-                }
-                log.error("Query error occurred", e);
-            })
-            .doOnCancel(() -> log.warn("Stream was cancelled"));
+                .doOnNext(chunk -> log.debug("Received chunk: {}", chunk))
+                .doOnSubscribe(sub -> log.debug("Starting stream request"))
+                .doOnError(
+                        e -> {
+                            if (e instanceof ConnectException) {
+                                log.error("Failed to connect to Ollama service at {}", OLLAMA_API);
+                            } else if (e instanceof ReadTimeoutException) {
+                                log.error("Timeout while waiting for Ollama response");
+                            }
+                            log.error("Query error occurred", e);
+                        })
+                .doOnCancel(() -> log.warn("Stream was cancelled"));
     }
-
 }
 
 /*
@@ -183,7 +207,7 @@ Note: If you're using Spring WebFlux, you might want to:
 Also, be careful with your string concatenation for JSON - consider using a proper JSON library to avoid injection issues or malformed JSON.
  */
 
-/*
+ /*
 Option 1: Run DeepSeek Locally with Ollama (Recommended for Free)
 Ollama lets you run open-source LLMs (like DeepSeek, Llama 3, Mistral) locally. We’ll call it from Spring Boot.
 
@@ -229,7 +253,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class OllamaApiService {
-    
+
     private final String OLLAMA_API = "http://localhost:11434/api/generate";
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -247,8 +271,8 @@ public class OllamaApiService {
 
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(
-            OLLAMA_API, 
-            request, 
+            OLLAMA_API,
+            request,
             String.class
         );
 
@@ -324,4 +348,4 @@ Which Option Should You Choose?
 Approach	Pros	Cons
 Ollama (Local)	Free, Fast, No API limits	Requires local GPU (for big models)
 Python Server	Works with Hugging Face models	Slower, Needs Python setup
-*/
+ */

@@ -20,8 +20,8 @@ public class SpringOpenAIController {
         this.springOpenAIService = springOpenAIService;
     }
 
-    //http://localhost:8080/openaichat?prompt=What is for dinner today
-    @GetMapping    
+    // http://localhost:8080/openaichat?prompt=What is for dinner today
+    @GetMapping
     public ResponseEntity<String> sendMessage(@RequestParam String prompt) {
         return ResponseEntity.ok(springOpenAIService.ask(prompt));
     }

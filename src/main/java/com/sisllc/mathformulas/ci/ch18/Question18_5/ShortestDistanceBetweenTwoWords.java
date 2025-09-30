@@ -68,8 +68,16 @@ public class ShortestDistanceBetweenTwoWords {
             String word2 = pair[1];
             int distance = shortest(wordlist, word1, word2);
             boolean confirm = searchConfirm(wordlist, word1, word2, distance);
-            System.out.println("Distance between <" + word1 + "> and <" + word2 + ">: " + distance + " (" + confirm + ")");
+            System.out.println(
+                    "Distance between <"
+                    + word1
+                    + "> and <"
+                    + word2
+                    + ">: "
+                    + distance
+                    + " ("
+                    + confirm
+                    + ")");
         }
     }
-
 }

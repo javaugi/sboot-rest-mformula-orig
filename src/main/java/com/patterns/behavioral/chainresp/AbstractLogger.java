@@ -8,8 +8,6 @@
 package com.patterns.behavioral.chainresp;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -22,7 +20,7 @@ public abstract class AbstractLogger {
 
     protected int level;
 
-    //next element in chain or responsibility
+    // next element in chain or responsibility
     protected AbstractLogger nextLogger;
 
     public void setNextLogger(AbstractLogger nextLogger) {
@@ -38,6 +36,5 @@ public abstract class AbstractLogger {
         }
     }
 
-    abstract protected void write(String message);
-
+    protected abstract void write(String message);
 }

@@ -8,9 +8,9 @@ import com.spring5.empbilpayroll.Employee;
 import java.math.BigDecimal;
 
 /**
- *
  * @author javaugi
  */
 public interface TaxCalculator {
-    BigDecimal calculate(Employee employee, PayrollContext context);    
+
+    BigDecimal calculate(Employee employee, PayrollContext context);
 }

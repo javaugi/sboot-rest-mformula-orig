@@ -5,14 +5,13 @@
 package com.spring5.mbassador;
 
 /**
- *
  * @author javaugi
  */
 public class InventoryUpdatedEvent {
 
     private String productId;
     private int newQuantity;
-    
+
     public InventoryUpdatedEvent(String productId, int newQuantity) {
         this.productId = productId;
         this.newQuantity = newQuantity;
@@ -33,5 +32,4 @@ public class InventoryUpdatedEvent {
     public void setNewQuantity(int newQuantity) {
         this.newQuantity = newQuantity;
     }
-
 }

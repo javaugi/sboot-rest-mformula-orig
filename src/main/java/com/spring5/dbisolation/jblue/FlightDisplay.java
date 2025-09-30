@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlightDisplay {
+
     private String flightNumber;
     private String airlineCode;
     private LocalDateTime departureTime;

@@ -9,5 +9,4 @@ public class InvalidReviewScoreException extends Exception {
     public InvalidReviewScoreException(String message) {
         super(message);
     }
-
 }

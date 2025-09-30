@@ -1,6 +1,5 @@
 package com.sisllc.mathformulas.ci.ch11.Question11_7;
 
-import java.util.ArrayList;
 import java.util.*;
 
 public class IncreaseSequence {
@@ -15,7 +14,8 @@ public class IncreaseSequence {
         return seq1.size() > seq2.size() ? seq1 : seq2;
     }
 
-    private static void longestIncreasingSubsequence(ArrayList<HtWt> array, ArrayList<HtWt>[] solutions, int current_index) {
+    private static void longestIncreasingSubsequence(
+            ArrayList<HtWt> array, ArrayList<HtWt>[] solutions, int current_index) {
         if (current_index >= array.size() || current_index < 0) {
             return;
         }
@@ -25,7 +25,8 @@ public class IncreaseSequence {
         ArrayList<HtWt> best_sequence = null;
         for (int i = 0; i < current_index; i++) {
             if (array.get(i).isBefore(current_element)) { // If current_element is bigger than list tail
-                best_sequence = seqWithMaxLength(best_sequence, solutions[i]); // Set best_sequence to our new max
+                best_sequence
+                        = seqWithMaxLength(best_sequence, solutions[i]); // Set best_sequence to our new max
             }
         }
 
@@ -102,5 +103,4 @@ public class IncreaseSequence {
         ArrayList<HtWt> solution = getIncreasingSequence(items);
         printList(solution);
     }
-
 }

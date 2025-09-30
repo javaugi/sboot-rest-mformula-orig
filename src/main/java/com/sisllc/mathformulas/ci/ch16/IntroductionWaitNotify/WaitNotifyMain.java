@@ -18,5 +18,4 @@ public class WaitNotifyMain {
         }
         System.out.println("Program terminating.");
     }
-
 }

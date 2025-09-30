@@ -6,10 +6,9 @@ package com.spring5.dbisolation.wmart;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//@Service
+// @Service
 @RequiredArgsConstructor
 public class WmOrderService {
 

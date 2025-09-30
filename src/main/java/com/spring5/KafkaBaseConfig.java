@@ -23,9 +23,9 @@ import org.springframework.stereotype.Service;
 @Configuration
 @Service
 public class KafkaBaseConfig {
-    
+
     public static final String KAFKA_DEF_TOPIC = "my-default-topic";
-    
+
     public static final String KAFKA_TMPL_AUDIT_EVENT = "auditEventKafkaTemplate";
     public static final String KAFKA_TMPL_TRADE_EVENT = "tradeEventKafkaTemplate";
     public static final String KAFKA_TMPL_DOC_EVENT = "docEventKafkaTemplate";
@@ -33,23 +33,25 @@ public class KafkaBaseConfig {
     public static final String KAFKA_TMPL_STR = "stringKafkaTemplate";
 
     @Value("${spring.kafka.bootstrap-servers}")
-    protected String bootstrapServers;          //"127.0.0.1:9092"
+    protected String bootstrapServers; // "127.0.0.1:9092"
+
     @Value("${spring.kafka.schema-registry-url}")
-    protected String schemaRegistryUrl;         //127.0.0.1:8081
+    protected String schemaRegistryUrl; // 127.0.0.1:8081
+
     @Value("${spring.kafka.consumer.group-id}")
-    private String groupId;                     //my-kafka-consumer-group
+    private String groupId; // my-kafka-consumer-group
 
     public Map<String, Object> baseProducerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        //props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
+        // props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
         props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
 
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return props;
     }
-    
+
     public Map<String, Object> tunedProducerConfigs() {
         Map<String, Object> props = baseProducerConfigs();
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384 * 4); // 64KB
@@ -71,34 +73,33 @@ public class KafkaBaseConfig {
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100); // Max records per poll
         return props;
     }
-    
+
     public Map<String, Object> tunedConsumerConfigs() {
         Map<String, Object> props = baseConsumerConfigs();
         props.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 16384); // 16KB
         props.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, 500);
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 500);
-        
+
         return props;
     }
-    
+
     public Map<String, Object> baseAvroProducerConfigs() {
         Map<String, Object> props = baseProducerConfigs();
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
         return props;
     }
-            
+
     public Map<String, Object> tunedAvroProducerConfigs() {
         Map<String, Object> props = tunedProducerConfigs();
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
         return props;
     }
-    
+
     @Primary
     @Bean
     public ProducerFactory producerFactory() {
         return new DefaultKafkaProducerFactory<>(baseAvroProducerConfigs());
     }
-    
 }
 /*
 basically means: Kafka isn’t running, or your app can’t reach it on localhost:9092.
@@ -166,4 +167,4 @@ Run:
 
 bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 If this fails, it confirms Kafka isn’t reachable.
-*/
+ */

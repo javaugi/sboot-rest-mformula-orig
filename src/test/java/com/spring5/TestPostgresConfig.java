@@ -30,7 +30,7 @@ public class TestPostgresConfig {
     public ConnectionFactory connectionFactory() {
         log.info("TestPostgresConfig conn url {}", url);
         return ConnectionFactories.get(
-            String.format("%s?user=%s&password=%s", url, uname, pwd)
+                String.format("%s?user=%s&password=%s", url, uname, pwd)
         );
     }
 }

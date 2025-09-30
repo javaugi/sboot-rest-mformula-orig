@@ -8,23 +8,29 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-    
+
 /**
- *
  * @author javaugi https://www.hackerrank.com/test
  */
 public class TwoDimMatrix {
 
     private static final TwoDimMatrix main = new TwoDimMatrix();
 
-    static final String[][] playtimes = {{"Song1", "5.35"}, {"Song1", "1.35"}, {"Song1", "4.35"}, {"Song1", "4.35"}, {"Song1", "5.35"}, {"Song1", "2.35"}};
+    static final String[][] playtimes = {
+        {"Song1", "5.35"},
+        {"Song1", "1.35"},
+        {"Song1", "4.35"},
+        {"Song1", "4.35"},
+        {"Song1", "5.35"},
+        {"Song1", "2.35"}
+    };
 
     public static void main(String[] args) {
-        //main.run1();
+        // main.run1();
         main.run2();
         enhancedLooping();
     }
-    
+
     private void run1() {
         create1();
         create2();
@@ -34,50 +40,50 @@ public class TwoDimMatrix {
     private void run2() {
         String[] members = chatRoomMembers();
         String[][] roomInvites = chatRoomInfo();
-                
+
         Map<String, Integer> map = new HashMap<>();
 
         Set<String> memberSet = getAllMembers(roomInvites);
-        initMap(map, members);         
-        initMap(map, memberSet);         
-        
+        initMap(map, members);
+        initMap(map, memberSet);
+
         for (String[] row : roomInvites) {
             processInvitees(map, row[2]);
         }
-        
+
         printMap(map);
     }
-    
+
     private Set<String> getAllMembers(String[][] roomInvites) {
         Set<String> memberSet = new HashSet<>();
-        for (String[] row: roomInvites) {
+        for (String[] row : roomInvites) {
             memberSet.add(row[1]);
             String[] msgTo = row[2].split(",");
-            for (String mem: msgTo) {
+            for (String mem : msgTo) {
                 if (!"ALL".equals(mem.toUpperCase())) {
                     memberSet.add(mem);
                 }
             }
         }
-        
+
         return memberSet;
     }
-    
+
     private void initMap(Map<String, Integer> map, String[] members) {
-        for (String mem: members) {
+        for (String mem : members) {
             map.put(mem, 0);
-        }         
+        }
     }
-    
+
     private void initMap(Map<String, Integer> map, Set<String> members) {
-        for (String mem: members) {
+        for (String mem : members) {
             map.put(mem, 0);
-        }         
+        }
     }
 
     private void processInvitees(Map<String, Integer> map, String inviteesArr) {
         String[] invitees = inviteesArr.split(",");
-        for (String inviteeId: invitees) {
+        for (String inviteeId : invitees) {
             inviteeId = inviteeId.trim();
             if ("ALL".equalsIgnoreCase(inviteeId)) {
                 addToAll(map);
@@ -92,9 +98,9 @@ public class TwoDimMatrix {
             }
         }
     }
-    
+
     private void addToAll(Map<String, Integer> map) {
-        for (String key: map.keySet()) {
+        for (String key : map.keySet()) {
             Integer entryValue = map.get(key);
             if (entryValue == null) {
                 entryValue = 0;
@@ -103,24 +109,24 @@ public class TwoDimMatrix {
             map.put(key, entryValue);
         }
     }
-    
+
     private void printMap(Map<String, Integer> map) {
         System.out.print("\n Chat room invitees with the number of invite count \n");
-        for (String key: map.keySet()) {
+        for (String key : map.keySet()) {
             System.out.println("Member=" + key + "-total invites=" + map.get(key));
         }
     }
-    
+
     private String[] chatRoomMembers() {
         String[] members = {"id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10"};
         System.out.print("\n Chat room members ...");
-        for (var mem: members) {
+        for (var mem : members) {
             System.out.print(mem + "\t");
         }
-        
+
         return members;
     }
-    
+
     private String[][] chatRoomInfo() {
         String[][] roomInvites = {
             {"MSG", "id1", "id2"},
@@ -135,8 +141,7 @@ public class TwoDimMatrix {
             {"MSG", "id6", "id1, id2, id5, id7"},
             {"MSG", "id4", "ALL, id2, id5, id7"},
             {"MSG", "id3", "id1, id2, id5, id7"},
-            {"MSG", "id1", "ALL, id2, id5, id7"},
-        };
+            {"MSG", "id1", "ALL, id2, id5, id7"},};
 
         System.out.println("\n--- Printing roomInvites ---");
         for (int row = 0; row < roomInvites.length; row++) {
@@ -145,10 +150,10 @@ public class TwoDimMatrix {
             }
             System.out.println();
         }
-        
+
         System.out.println("\n--- Printing roomInvites with enhanced loop ---");
-        for (String[] row: roomInvites) {
-            for (String element: row) {
+        for (String[] row : roomInvites) {
+            for (String element : row) {
                 System.out.print(element + "\t");
             }
             System.out.println();
@@ -156,7 +161,6 @@ public class TwoDimMatrix {
 
         return roomInvites;
     }
-    
 
     private static void enhancedLooping() {
         // 1. Declare and initialize a 2D String array with fixed dimensions.
@@ -189,9 +193,9 @@ public class TwoDimMatrix {
 
         // 4. Example of declaring and initializing with values directly (alternative).
         String[][] anotherStringArray = {
-                {"A", "B", "C"},
-                {"D", "E", "F"},
-                {"G", "H", "I", "J"} //jagged array is allowed
+            {"A", "B", "C"},
+            {"D", "E", "F"},
+            {"G", "H", "I", "J"} // jagged array is allowed
         };
 
         System.out.println("\n--- Printing anotherStringArray ---");
@@ -203,7 +207,7 @@ public class TwoDimMatrix {
         }
 
         // 5. Example of creating a jagged array (rows can have different lengths).
-        String[][] jaggedArray = new String[3][]; //only define number of rows
+        String[][] jaggedArray = new String[3][]; // only define number of rows
         jaggedArray[0] = new String[2]; // Row 0 has 2 columns
         jaggedArray[1] = new String[3]; // Row 1 has 3 columns
         jaggedArray[2] = new String[4]; // Row 2 has 4 columns
@@ -226,8 +230,7 @@ public class TwoDimMatrix {
             System.out.println();
         }
     }
-    
-    
+
     private String[][] create1() {
         // 1. Declare and initialize a 2D String array with fixed dimensions.
         //    - The first dimension specifies the number of rows.
@@ -260,11 +263,11 @@ public class TwoDimMatrix {
     }
 
     private String[][] create2() {
-        //Example of declaring and initializing with values directly (alternative).
+        // Example of declaring and initializing with values directly (alternative).
         String[][] anotherStringArray = {
             {"A", "B", "C"},
             {"D", "E", "F"},
-            {"G", "H", "I", "J"} //jagged array is allowed
+            {"G", "H", "I", "J"} // jagged array is allowed
         };
 
         System.out.println("\n--- Printing anotherStringArray ---");
@@ -280,7 +283,7 @@ public class TwoDimMatrix {
 
     private String[][] create3() {
         // 5. Example of creating a jagged array (rows can have different lengths).
-        String[][] jaggedArray = new String[3][]; //only define number of rows
+        String[][] jaggedArray = new String[3][]; // only define number of rows
         jaggedArray[0] = new String[2]; // Row 0 has 2 columns
         jaggedArray[1] = new String[3]; // Row 1 has 3 columns
         jaggedArray[2] = new String[4]; // Row 2 has 4 columns
@@ -305,5 +308,4 @@ public class TwoDimMatrix {
 
         return jaggedArray;
     }
-
 }

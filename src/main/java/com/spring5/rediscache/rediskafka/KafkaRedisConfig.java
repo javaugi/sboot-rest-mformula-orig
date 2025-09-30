@@ -4,7 +4,6 @@
  */
 package com.spring5.rediscache.rediskafka;
 
-import com.spring5.pharmacy.*;
 import com.spring5.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +12,14 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
 public class KafkaRedisConfig extends KafkaBaseConfig {
-    
+
     public static final String REDIS_KAFKA_ORDER_EVENT_TMPL = "redisKafkaEventKafkaTemplate";
-    
+
     @Bean(name = REDIS_KAFKA_ORDER_EVENT_TMPL)
     public KafkaTemplate<String, KafkaOrderedEvent> redisKafkaEventKafkaTemplate() {
         return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(baseAvroProducerConfigs()));
-    } 
-} 
+    }
+}
 /*
 Example:
 @RestController
@@ -189,4 +188,4 @@ Example Answer:
 ✅ Practice Coding: Focus on Java concurrency, Spring Boot, and GCP APIs.
 ✅ Review Case Studies: CVS likely uses GCP, Kafka, and microservices.
 ✅ Prepare Questions: Ask about their biggest tech debt challenges.
-*/
+ */

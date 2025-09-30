@@ -53,7 +53,6 @@ public class HibernateQueries {
         String hql = "FROM Employee";
         Query<Employee> query = session.createQuery(hql, Employee.class);
         List<Employee> employees = query.getResultList();
-
     }
 
     private void hqlQ2SelWhere() {
@@ -62,7 +61,6 @@ public class HibernateQueries {
         Query<Employee> query = session.createQuery(hql, Employee.class);
         query.setParameter("dept", "IT");
         List<Employee> itEmployees = query.getResultList();
-
     }
 
     private void hqlQ3SelWithJoin() {
@@ -95,7 +93,6 @@ public class HibernateQueries {
         Root<Employee> root = criteria.from(Employee.class);
         criteria.select(root).where(builder.equal(root.get("department"), "IT"));
         List<Employee> itEmployees = session.createQuery(criteria).getResultList();
-
     }
 
     private void criteriaQ2WithJoins() {
@@ -113,7 +110,6 @@ public class HibernateQueries {
         String sql = "SELECT * FROM employees";
         Query<Employee> query = session.createNativeQuery(sql, Employee.class);
         List<Employee> employees = query.getResultList();
-
     }
 
     private void nativeSqlQ2WithParameters() {
@@ -122,7 +118,6 @@ public class HibernateQueries {
         Query<Employee> query = session.createNativeQuery(sql, Employee.class);
         query.setParameter("dept", "Finance");
         List<Employee> financeEmployees = query.getResultList();
-
     }
 
     private void nativeSqlQ3WithScalarResults() {

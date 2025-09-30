@@ -43,7 +43,7 @@ public class FindMaxSubSquireFromMatrixWithLargestSumB {
             maxSum = Math.max(maxSum, runningSum);
 
             /* If running_sum is < 0 no point in trying to continue the
-			 * series. Reset. */
+       * series. Reset. */
             if (runningSum < 0) {
                 runningSum = 0;
             }
@@ -58,5 +58,4 @@ public class FindMaxSubSquireFromMatrixWithLargestSumB {
         AssortedMethods.printMatrix(matrix);
         System.out.println(sum);
     }
-
 }

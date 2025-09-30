@@ -4,9 +4,8 @@
  */
 package com.spring5;
 
-//https://github.com/javaugi/event-driven-microservices-docker-example
+// https://github.com/javaugi/event-driven-microservices-docker-example
 public class DockerConfig {
-    
 }
 
 /*
@@ -82,10 +81,9 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
 Then run:
 docker-compose up --build
-*/
+ */
 
-
-/*
+ /*
 Here’s a step-by-step guide for pushing a Spring Boot Docker image to Docker Hub, and deploying it to AWS, GCP, or Kubernetes.
 
 ✅ 1. Push Docker Image to Docker Hub
@@ -342,4 +340,4 @@ terraform apply -var="docker_image=your-aws-account-id.dkr.ecr.us-east-1.amazona
 Once complete, you’ll get the load balancer DNS to access your deployed app.
 
 
-*/
+ */

@@ -5,7 +5,6 @@
 package com.spring5.dbisolation.wmart.trans;
 
 import jakarta.validation.ConstraintViolationException;
-import static java.lang.Math.log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,20 +18,20 @@ public class WmGlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleInvalidDateRange(InvalidDateRangeException ex) {
         log.warn("Invalid date range requested: {}", ex.getMessage());
         return ResponseEntity.badRequest()
-            .body(new ErrorResponse("INVALID_DATE_RANGE", ex.getMessage()));
+                .body(new ErrorResponse("INVALID_DATE_RANGE", ex.getMessage()));
     }
 
     @ExceptionHandler(QueryRangeTooLargeException.class)
     public ResponseEntity<ErrorResponse> handleQueryRangeTooLarge(QueryRangeTooLargeException ex) {
         log.warn("Query range too large: {}", ex.getMessage());
         return ResponseEntity.badRequest()
-            .body(new ErrorResponse("QUERY_RANGE_TOO_LARGE", ex.getMessage()));
+                .body(new ErrorResponse("QUERY_RANGE_TOO_LARGE", ex.getMessage()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex) {
         log.warn("Constraint violation: {}", ex.getMessage());
         return ResponseEntity.badRequest()
-            .body(new ErrorResponse("VALIDATION_ERROR", "Invalid request parameters"));
+                .body(new ErrorResponse("VALIDATION_ERROR", "Invalid request parameters"));
     }
 }

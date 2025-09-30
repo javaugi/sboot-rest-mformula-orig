@@ -12,8 +12,8 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.stereotype.Service;
 
-@Service 
-@RequiredArgsConstructor 
+@Service
+@RequiredArgsConstructor
 @Slf4j
 public class DynamicConcurrencyAdjustmentManager {
 
@@ -29,4 +29,3 @@ public class DynamicConcurrencyAdjustmentManager {
         }
     }
 }
-

@@ -49,7 +49,7 @@ public class LockFactory {
     }
 
     /* To prevent deadlocks, force the processes to declare upfront what order they will
-	 * need the locks in. Verify that this order does not create a deadlock (a cycle in a directed graph)
+   * need the locks in. Verify that this order does not create a deadlock (a cycle in a directed graph)
      */
     public boolean declare(int ownerId, int[] resourcesInOrder) {
         Hashtable<Integer, Boolean> touchedNodes = new Hashtable<Integer, Boolean>();
@@ -75,7 +75,7 @@ public class LockFactory {
         }
 
         /* No cycles detected. Save the order that was declared, so that we can verify that the
-		 * process is really calling the locks in the order it said it would. */
+     * process is really calling the locks in the order it said it would. */
         LinkedList<LockNode> list = new LinkedList<LockNode>();
         for (int i = 0; i < resourcesInOrder.length; i++) {
             LockNode resource = locks[resourcesInOrder[i]];
@@ -87,7 +87,7 @@ public class LockFactory {
     }
 
     /* Get the lock, verifying first that the process is really calling the locks in the order
-	 * it said it would. */
+   * it said it would. */
     public Lock getLock(int ownerId, int resourceID) {
         LinkedList<LockNode> list = lockOrder.get(ownerId);
         if (list == null) {

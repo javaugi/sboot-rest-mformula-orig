@@ -4,7 +4,6 @@
  */
 package com.interview;
 
-
 /*
 Proficient in modern front-end frameworks including Angular (2+), AngularJS, and React for building scalable, component-based SPAs.
 Experience with Azure Active Directory (Azure AD) for authentication, SSO, and identity management across enterprise systems.
@@ -15,8 +14,7 @@ Azure AD integration for authentication and access management in enterprise syst
 
 Delivered as a scalable REST API integrated into high-consumer-count applications, ensuring no breaking changes for consumers.
 
-Delivered a robust REST API platform integrated with Kafka messaging, built for millions of API calls daily, maintaining consumer trust through semantic versioning and zero-breaking changes.  
-*/
+Delivered a robust REST API platform integrated with Kafka messaging, built for millions of API calls daily, maintaining consumer trust through semantic versioning and zero-breaking changes.
+ */
 public class AzureAdEtc {
-    
 }

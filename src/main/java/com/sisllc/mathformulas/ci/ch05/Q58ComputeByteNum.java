@@ -64,11 +64,10 @@ public class Q58ComputeByteNum {
         int width = 8 * 4;
         int height = 15;
         byte[] screen = new byte[width * height / 8];
-        //screen[1] = 13;
+        // screen[1] = 13;
 
         drawLine(screen, width, 8, 10, 2);
 
         printScreen(screen, width);
     }
-
 }

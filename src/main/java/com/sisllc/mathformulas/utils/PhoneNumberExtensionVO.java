@@ -2,22 +2,21 @@
  * Copyright (C) 2023 Center for Information Management, Inc.
  *
  * This program is proprietary.
- * Redistribution without permission is strictly prohibited.  
+ * Redistribution without permission is strictly prohibited.
  * For more information, contact <http://www.ciminc.com>
  */
-
 package com.sisllc.mathformulas.utils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
- * @version $LastChangedRevision $LastChangedDate
- * Last Modified Author: $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author:
+ * $LastChangedBy
  */
 public class PhoneNumberExtensionVO {
+
     private static final Logger log = LoggerFactory.getLogger(PhoneNumberExtensionVO.class);
 
     String originalPhoneExtension;
@@ -68,7 +67,13 @@ public class PhoneNumberExtensionVO {
 
     @Override
     public String toString() {
-        return "PhoneNumberExtensionVO{" + "originalPhoneExtension=" + originalPhoneExtension + ", formattedPhoneNumber=" + formattedPhoneNumber + ", extension=" + extension + '}';
+        return "PhoneNumberExtensionVO{"
+                + "originalPhoneExtension="
+                + originalPhoneExtension
+                + ", formattedPhoneNumber="
+                + formattedPhoneNumber
+                + ", extension="
+                + extension
+                + '}';
     }
-
 }

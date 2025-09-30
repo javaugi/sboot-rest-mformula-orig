@@ -7,17 +7,18 @@ package com.spring5.model;
 import com.spring5.entity.Assessment;
 import java.time.LocalDate;
 import org.springframework.hateoas.EntityModel;
+
 /**
- *
  * @author javaugi
  */
 public class AssessmentModel extends EntityModel<Assessment> {
+
     private final Assessment assessment;
 
     public AssessmentModel(Assessment assessment) {
         this.assessment = assessment;
     }
-    
+
     public Long getId() {
         return assessment.getId();
     }
@@ -33,6 +34,4 @@ public class AssessmentModel extends EntityModel<Assessment> {
     public String getStatus() {
         return assessment.getStatus();
     }
-    
-    
 }

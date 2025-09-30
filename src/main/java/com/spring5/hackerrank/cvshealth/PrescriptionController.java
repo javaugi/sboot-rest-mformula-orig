@@ -4,15 +4,14 @@
  */
 package com.spring5.hackerrank.cvshealth;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/azureapi/prescriptions")
@@ -26,12 +25,14 @@ public class PrescriptionController {
     }
 
     @PostMapping
-    public ResponseEntity<PrescriptionOrder> createPrescription(@RequestBody PrescriptionOrder order) {
+    public ResponseEntity<PrescriptionOrder> createPrescription(
+            @RequestBody PrescriptionOrder order) {
         if (order.getId() == null || order.getId().isEmpty()) {
             order.setId(UUID.randomUUID().toString()); // Generate a unique ID if not provided
         }
         if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
-            order.setOrderId(order.getId()); // Use ID as orderId if not explicitly set for partition key demo
+            order.setOrderId(
+                    order.getId()); // Use ID as orderId if not explicitly set for partition key demo
         }
         if (order.getOrderDate() == null) {
             order.setOrderDate(Instant.now());
@@ -43,8 +44,7 @@ public class PrescriptionController {
     @GetMapping("/{id}")
     public ResponseEntity<PrescriptionOrder> getPrescriptionById(@PathVariable String id) {
         Optional<PrescriptionOrder> order = prescriptionRepository.findById(id);
-        return order.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+        return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping

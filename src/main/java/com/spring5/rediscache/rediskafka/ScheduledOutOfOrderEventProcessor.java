@@ -15,28 +15,29 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ScheduledOutOfOrderEventProcessor {
 
-    private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_OBJ) RedisTemplate<String, Object> redisTemplate;
+    private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_OBJ)
+    RedisTemplate<String, Object> redisTemplate;
     private final KafkaOrderedConsumer eventConsumer;
 
     @Scheduled(fixedRate = 5000) // Run every 5 seconds
     public void processOutOfOrderEvents() {
         // Get all entity IDs with out-of-order events
         Set<String> entityKeys = redisTemplate.keys("kafka:out-of-order:*");
-        
+
         for (String key : entityKeys) {
             String entityId = key.substring("kafka:out-of-order:".length());
             String sequenceKey = "kafka:sequence:" + entityId;
-            
-            Long lastSequence = (Long)redisTemplate.opsForValue().get(sequenceKey);
+
+            Long lastSequence = (Long) redisTemplate.opsForValue().get(sequenceKey);
             lastSequence = lastSequence == null ? 0L : lastSequence;
-            
+
             // Peek at the next event without removing it
             KafkaOrderedEvent nextEvent = (KafkaOrderedEvent) redisTemplate.opsForList().index(key, 0);
-            
+
             if (nextEvent != null && nextEvent.getSequenceNumber() == lastSequence + 1) {
                 // Process the event
                 eventConsumer.processOrderedEvent(nextEvent);
-                
+
                 // Remove the processed event
                 redisTemplate.opsForList().leftPop(key);
             }

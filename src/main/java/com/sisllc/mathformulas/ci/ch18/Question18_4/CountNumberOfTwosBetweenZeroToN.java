@@ -68,5 +68,4 @@ public class CountNumberOfTwosBetweenZeroToN {
             System.out.println("Between 0 and " + i + ": " + v1 + " " + v2);
         }
     }
-
 }

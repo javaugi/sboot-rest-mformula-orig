@@ -6,12 +6,11 @@ package com.interview.hrank.palindrom;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- *
- * @author javau
- */
+@Slf4j
 public class PalindromeFinder {
 
     public static void main(String[] args) {
@@ -22,18 +21,99 @@ public class PalindromeFinder {
         String[] test4 = {"race", "car", "ecar"};
         String[] test5 = {"a", "a", "a", "b"};
 
-        System.out.println("Test 1: " + Arrays.toString(test1) + " -> "
-            + countPossiblePalindromes(test1));
-        System.out.println("Test 2: " + Arrays.toString(test2) + " -> "
-            + countPossiblePalindromes(test2));
-        System.out.println("Test 3: " + Arrays.toString(test3) + " -> "
-            + countPossiblePalindromes(test3));
-        System.out.println("Test 4: " + Arrays.toString(test4) + " -> "
-            + countPossiblePalindromes(test4));
-        System.out.println("Test 5: " + Arrays.toString(test5) + " -> "
-            + countPossiblePalindromes(test5));
+        System.out.println(
+                "#1-1 Test: " + Arrays.toString(test1) + " -> " + countPossiblePalindromes(test1));
+        System.out.println(
+                "#1-1-2 Test: " + Arrays.toString(test1) + " -> " + countPossiblePalindromes(test1));
+        System.out.println(
+                "#1-1-3 Test: " + Arrays.toString(test1) + " -> " + countPossiblePalindromes(test1));
+        System.out.println(
+                "#1-1-4 Test: " + Arrays.toString(test1) + " -> " + countPossiblePalindromes(test1));
+        System.out.println(
+                "#1-1-5 Test: " + Arrays.toString(test1) + " -> " + countPossiblePalindromes(test1));
+        System.out.println(
+                "#1-2 Test: " + Arrays.toString(test1) + " -> " + countPossiblePalindromesNew1(test1));
+
+        System.out.println(
+                "#2-1 Test: " + Arrays.toString(test2) + " -> " + countPossiblePalindromes(test2));
+        System.out.println(
+                "#2-2 Test: " + Arrays.toString(test2) + " -> " + countPossiblePalindromesNew1(test2));
+        System.out.println(
+                "#3-1 Test: " + Arrays.toString(test3) + " -> " + countPossiblePalindromes(test3));
+        System.out.println(
+                "#3-2 Test: " + Arrays.toString(test3) + " -> " + countPossiblePalindromesNew1(test3));
+        System.out.println(
+                "#4-1 Test: " + Arrays.toString(test4) + " -> " + countPossiblePalindromes(test4));
+        System.out.println(
+                "#4-2 Test: " + Arrays.toString(test4) + " -> " + countPossiblePalindromesNew1(test4));
+        System.out.println(
+                "#5-1 Test: " + Arrays.toString(test5) + " -> " + countPossiblePalindromes(test5));
+        System.out.println(
+                "#5-2 Test: " + Arrays.toString(test5) + " -> " + countPossiblePalindromesNew1(test5));
     }
 
+    public static int countPossiblePalindromesNew1(String[] arr) {
+        int count = 0;
+        List<String> origList = Arrays.asList(arr);
+        String availableChars;
+
+        for (int i = 0; i < arr.length; i++) {
+            String str = arr[i];
+            if (isPalindrome(str)) {
+                // log.debug("*** FOUND i={} str={} count={}", i, str, count);
+                count++;
+            } else {
+                availableChars = getAvailableCharacters(arr, i);
+                // log.debug("Else i={} str={} strRemaining={}", i, str, strRemaining);
+                boolean found = false;
+                for (int j = 0; j < str.length(); j++) {
+                    for (char c : availableChars.toCharArray()) {
+                        // String newStr = str.replace(str[i], c);
+                        String modStr = getModifiedstring(str, j, c);
+                        // log.debug("Else Looping str={}, j={}, c={} modStr={}", str, j, c, modStr);
+                        if (isPalindrome(modStr)) {
+                            // log.debug("*** FOUND i={} j={} str={} count={}", i, j, modStr, count);
+                            count++;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private static String getAvailableCharacters(String[] arr, int excludeIndex) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < arr.length; i++) {
+            if (i != excludeIndex) {
+                sb.append(arr[i]);
+            }
+        }
+        return sb.toString();
+    }
+
+    private static String getModifiedstring(String str, int index, char c) {
+        return str.substring(0, index) + c + str.substring(index + 1);
+    }
+
+    private static boolean isPalindrome(String str) {
+        return new StringBuilder(str).reverse().toString().equals(str);
+    }
+
+    private static String getListString(List<String> syncList) {
+        StringBuilder sb = new StringBuilder();
+        for (String str : syncList) {
+            sb.append(str);
+        }
+
+        return sb.toString();
+    }
 
     /**
      * Counts how many strings in the array can be turned into palindromes by
@@ -120,9 +200,8 @@ public class PalindromeFinder {
      * Checks if a string can be turned into a palindrome using available
      * characters
      */
-    private static boolean canFormPalindrome(String str,
-        Map<Character, Integer> totalChars,
-        int totalStrings) {
+    private static boolean canFormPalindrome(
+            String str, Map<Character, Integer> totalChars, int totalStrings) {
         // Frequency count for current string
         Map<Character, Integer> strFreq = getCharacterFrequency(str);
 
@@ -134,10 +213,11 @@ public class PalindromeFinder {
      * Core logic to check if palindrome formation is possible with character
      * replacements
      */
-    private static boolean canFormPalindromeWithReplacements(Map<Character, Integer> strFreq,
-        Map<Character, Integer> totalChars,
-        int targetLength,
-        int totalStrings) {
+    private static boolean canFormPalindromeWithReplacements(
+            Map<Character, Integer> strFreq,
+            Map<Character, Integer> totalChars,
+            int targetLength,
+            int totalStrings) {
         // For a string to be a palindrome, at most one character can have odd frequency
         int oddCount = 0;
 
@@ -181,12 +261,10 @@ public class PalindromeFinder {
         return oddCount <= 1;
     }
 
-
     /**
      * Optimized palindrome check using character frequency analysis
      */
-    private static boolean canFormPalindromeOptimized(String str,
-        Map<Character, Integer> totalFreq) {
+    private static boolean canFormPalindromeOptimized(String str, Map<Character, Integer> totalFreq) {
         int n = str.length();
 
         // Create a copy of total frequency map for simulation
@@ -237,9 +315,8 @@ public class PalindromeFinder {
     /**
      * Helper method to check if deficit can be covered
      */
-    private static boolean canCoverDeficit(int deficit,
-        Map<Character, Integer> totalChars,
-        int targetLength) {
+    private static boolean canCoverDeficit(
+            int deficit, Map<Character, Integer> totalChars, int targetLength) {
         // Calculate total available characters
         int totalAvailable = totalChars.values().stream().mapToInt(Integer::intValue).sum();
 
@@ -270,7 +347,6 @@ public class PalindromeFinder {
         }
         return totalFreq;
     }
-
 
     /**
      * Simple check: A string can be palindrome if the total character pool
@@ -309,7 +385,8 @@ public class PalindromeFinder {
         return oddCount <= 1;
     }
 
-    private static boolean canFormPalindromeFromPool(String str, Map<Character, Integer> pool, int totalChars) {
+    private static boolean canFormPalindromeFromPool(
+            String str, Map<Character, Integer> pool, int totalChars) {
         int n = str.length();
         if (n > totalChars) {
             return false;

@@ -11,13 +11,12 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author javaugi
  */
 public class ArrayListConvertCopyInsertDelete {
 
     public static void main(String[] args) {
-        //test1();
+        // test1();
         test2();
     }
 
@@ -25,21 +24,23 @@ public class ArrayListConvertCopyInsertDelete {
         String line = "12 0  1 78 12";
         int[] intArr = inputlineToIntArray(line);
 
-        System.out.println("Oroginal array=" + Arrays.toString(intArr)); //[12, 0, 1, 78, 12]
+        System.out.println("Oroginal array=" + Arrays.toString(intArr)); // [12, 0, 1, 78, 12]
         intArr = insertIntoIntArrUsingList(intArr, 5, 23);
-        System.out.println("After insert 23 at 5 array=" + Arrays.toString(intArr)); //[12, 0, 1, 78, 12, 23]
+        System.out.println(
+                "After insert 23 at 5 array=" + Arrays.toString(intArr)); // [12, 0, 1, 78, 12, 23]
         intArr = deleteFromIntArrUsingList(intArr, 0);
-        System.out.println("After delete at 0=" + Arrays.toString(intArr)); //[0, 1, 78, 12, 23]
+        System.out.println("After delete at 0=" + Arrays.toString(intArr)); // [0, 1, 78, 12, 23]
     }
 
     private static void test1() {
         int[] intArr = {12, 0, 1, 78, 12};
 
-        System.out.println("Oroginal array=" + Arrays.toString(intArr)); //[12, 0, 1, 78, 12]
+        System.out.println("Oroginal array=" + Arrays.toString(intArr)); // [12, 0, 1, 78, 12]
         intArr = insertIntoIntArrUsingList(intArr, 5, 23);
-        System.out.println("After insert 23 at 5 array=" + Arrays.toString(intArr)); //[12, 0, 1, 78, 12, 23]
+        System.out.println(
+                "After insert 23 at 5 array=" + Arrays.toString(intArr)); // [12, 0, 1, 78, 12, 23]
         intArr = deleteFromIntArrUsingList(intArr, 0);
-        System.out.println("After delete at 0=" + Arrays.toString(intArr)); //[0, 1, 78, 12, 23]
+        System.out.println("After delete at 0=" + Arrays.toString(intArr)); // [0, 1, 78, 12, 23]
     }
 
     public static int[] insertIntoIntArrUsingList(int[] originalArray, int index, int newValue) {
@@ -61,21 +62,21 @@ public class ArrayListConvertCopyInsertDelete {
     }
 
     public static int[] inputlineToIntArray(String inputLine) {
-        return Arrays.stream(inputLine.split("\\s+"))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+        return Arrays.stream(inputLine.split("\\s+")).mapToInt(Integer::parseInt).toArray();
     }
 
     public static int[] strArrToIntArray(String[] tokens) {
         return Arrays.stream(tokens)
-            //.mapToDouble(Double:parseDouble)
-            .mapToInt(Integer::parseInt)                .toArray();
+                // .mapToDouble(Double:parseDouble)
+                .mapToInt(Integer::parseInt)
+                .toArray();
     }
 
     public static int[] integerListToIntArray(List<Integer> list) {
-        int[] intArr = list.stream()
-                .mapToInt(Integer::intValue) // Convert Integer to int
-                .toArray();
+        int[] intArr
+                = list.stream()
+                        .mapToInt(Integer::intValue) // Convert Integer to int
+                        .toArray();
         return intArr;
     }
 
@@ -97,15 +98,13 @@ public class ArrayListConvertCopyInsertDelete {
     }
 
     public static List<Integer> intArrayToIntegerList(int[] originalArray) {
-        List<Integer> integerList = Arrays.stream(originalArray)
-                .boxed()
-                .collect(Collectors.toList());
+        List<Integer> integerList = Arrays.stream(originalArray).boxed().collect(Collectors.toList());
         return integerList;
     }
 
     public static List<Integer> integerArrayToIntegerList(Integer[] integerArr) {
         return Arrays.asList(integerArr);
-        //return new ArrayList<>(Arrays.asList(integerArr));
+        // return new ArrayList<>(Arrays.asList(integerArr));
     }
 
     public static int[] insertElement(int[] originalArray, int newElement, int position) {
@@ -170,7 +169,7 @@ public class ArrayListConvertCopyInsertDelete {
                 L = list.toArray(new Integer[0]);
             }
         }
-        System.out.println(Arrays.toString(L).replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
-
+        System.out.println(
+                Arrays.toString(L).replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
     }
 }

@@ -22,5 +22,4 @@ public class Q104FindDups {
         System.out.println(AssortedMethods.arrayToString(array));
         checkDuplicates(array);
     }
-
 }

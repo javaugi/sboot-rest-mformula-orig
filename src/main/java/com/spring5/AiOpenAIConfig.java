@@ -18,32 +18,35 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 /**
- *
  * @author javaugi
  */
 @Configuration
-public class AiOpenAIConfig implements CommandLineRunner{
+public class AiOpenAIConfig implements CommandLineRunner {
+
     private static final Logger log = LoggerFactory.getLogger(AiOpenAIConfig.class);
-    
+
     @Value("classpath:/prompts/system-message.st")
-    private Resource systemResource;    
+    private Resource systemResource;
+
     @Value("${spring.ai.openai.uri}")
     private String baseUrl;
+
     @Value("${spring.ai.openai.api-key}")
     private String apiKey;
+
     @Value("${openai.api.model}")
     private String apiModel;
-    
+
     @Override
     public void run(String... args) throws Exception {
-        log.info("AiDeepSeekConfig with baseUrl {} args {} ", baseUrl, Arrays.toString(args)); 
+        log.info("AiDeepSeekConfig with baseUrl {} args {} ", baseUrl, Arrays.toString(args));
         hide(systemResource, apiKey, apiModel);
     }
 
     private void hide(Resource resource, String... args) {
-        //doNothing
-    }   
-    
+        // doNothing
+    }
+
     @Bean(name = "openAiApi")
     public OpenAiApi chatCompletionApi() {
         return OpenAiApi.builder().baseUrl(baseUrl).apiKey(apiKey).build();
@@ -53,8 +56,8 @@ public class AiOpenAIConfig implements CommandLineRunner{
     public OpenAiChatModel openAiClient(@Qualifier("openAiApi") OpenAiApi openAiApi) {
         return OpenAiChatModel.builder()
                 .openAiApi(openAiApi)
-                .defaultOptions(OpenAiChatOptions.builder().model(apiModel).maxTokens(4096).temperature(0.7).build())
+                .defaultOptions(
+                        OpenAiChatOptions.builder().model(apiModel).maxTokens(4096).temperature(0.7).build())
                 .build();
-    }      
-       
+    }
 }

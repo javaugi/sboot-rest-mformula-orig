@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GraphUserProfileInput {
+
     private String firstName;
-    private String lastName;    
+    private String lastName;
 }

@@ -37,7 +37,5 @@ public class FindElementFromMatrix {
                 System.out.println(v + ": " + findElement(matrix, v));
             }
         }
-
     }
-
 }

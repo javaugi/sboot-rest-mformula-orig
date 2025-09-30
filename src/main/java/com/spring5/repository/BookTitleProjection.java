@@ -6,6 +6,8 @@ package com.spring5.repository;
 
 // 3. Using Spring Data JPA Projections
 public interface BookTitleProjection {
+
     String getTitle();
+
     String getAuthor();
 }

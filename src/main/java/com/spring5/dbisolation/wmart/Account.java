@@ -4,7 +4,6 @@
  */
 package com.spring5.dbisolation.wmart;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.math.BigDecimal;
 import lombok.Builder;
@@ -13,7 +12,7 @@ import org.springframework.data.annotation.Version;
 
 @Data
 @Builder(toBuilder = true)
-//@Entity
+// @Entity
 public class Account {
 
     @Id

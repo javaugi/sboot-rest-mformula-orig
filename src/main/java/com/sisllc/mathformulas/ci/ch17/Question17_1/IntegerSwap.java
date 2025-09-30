@@ -31,5 +31,4 @@ public class IntegerSwap {
         swap(a, b);
         swap_opt(a, b);
     }
-
 }

@@ -3,8 +3,6 @@ package com.sisllc.mathformulas.ci.lib;
 import java.util.ArrayList;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -25,7 +23,6 @@ public class Trie {
         }
     }
 
-
     /* Takes a list of strings as an argument, and constructs a trie that stores these strings. */
     public Trie(String[] list) {
         root = new TrieNode();
@@ -35,7 +32,7 @@ public class Trie {
     }
 
     /* Checks whether this trie contains a string with the prefix passed
-     * in as argument.
+   * in as argument.
      */
     public boolean contains(String prefix, boolean exact) {
         TrieNode lastNode = root;

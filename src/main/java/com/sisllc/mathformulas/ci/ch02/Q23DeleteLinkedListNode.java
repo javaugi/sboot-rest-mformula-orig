@@ -4,8 +4,6 @@ import com.sisllc.mathformulas.ci.lib.AssortedMethods;
 import com.sisllc.mathformulas.ci.lib.LinkedListNode;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

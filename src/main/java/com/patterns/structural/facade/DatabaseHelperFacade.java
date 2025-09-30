@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -50,14 +48,15 @@ public class DatabaseHelperFacade {
                 }
                 break;
         }
-
     }
 
     public static enum DBTypes {
-        MYSQL, ORACLE;
+        MYSQL,
+        ORACLE;
     }
 
     public static enum ReportTypes {
-        HTML, PDF;
+        HTML,
+        PDF;
     }
 }

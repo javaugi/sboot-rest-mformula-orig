@@ -10,8 +10,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-//@KafkaListener(topics = "order-events", groupId = "payment-service")
+// @KafkaListener(topics = "order-events", groupId = "payment-service")
 public class SagaChoreographyPaymentService {
+
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 

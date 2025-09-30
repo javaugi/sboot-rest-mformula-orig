@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FlightDetailRepository extends CosmosRepository<FlightDetail, String> {
+
     Optional<FlightDetail> findByFlightNumber(String flightNumber);
 }

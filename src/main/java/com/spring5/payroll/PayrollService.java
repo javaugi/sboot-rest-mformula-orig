@@ -11,23 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
 public class PayrollService {
+
     private PayrollRuleStrategy rule;
     private List<PayrollObserver> observers;
-    
+
     @Autowired
     private DroolsPayrollService payrollRules;
 
     public PayrollResult calculatePayroll(Employee employee) {
         PayrollResult result = new PayrollResult();
-        
+
         // Step 1: Apply business rules (modifies employee)
         payrollRules.applyDrools(employee);
-    
+
         // Step 2: Use rules-processed employee for calculations
         result.setOvertimePay(rule.calculateOvertime(employee.getHoursWorked(), employee));
         result.setTax(rule.calculateTax(employee));
@@ -35,7 +35,7 @@ public class PayrollService {
         // ... other calculations
         observers.forEach(obs -> obs.onPayrollProcessed(employee, result));
         return result;
-    }    
+    }
 }
 /*
 Key Interactions
@@ -84,4 +84,4 @@ Add More Calculations:
 
 result.setBonusPay(employee.getBonus());
 Let me know if you'd like to dive deeper into any p
-*/
+ */

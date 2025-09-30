@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -52,7 +50,7 @@ public class FactorNumberIntoPrimeIntArray {
     }
 
     private static int[] convertListToIntArray(List<Integer> list) {
-        //System.out.println("convertListToIntArray list=" + list);
+        // System.out.println("convertListToIntArray list=" + list);
         int[] returnValue = new int[list.size()];
         for (int i = 0; i < list.size(); i++) {
             returnValue[i] = list.get(i);
@@ -61,7 +59,7 @@ public class FactorNumberIntoPrimeIntArray {
     }
 
     public static void main(String[] args) {
-        //prime numbers: 2, 3, 5, 7, 11, 13, 17, 19, 23 and 29.
+        // prime numbers: 2, 3, 5, 7, 11, 13, 17, 19, 23 and 29.
         // 2    [2]
         // 3    [3]
         // 4    [2, 2]
@@ -73,13 +71,24 @@ public class FactorNumberIntoPrimeIntArray {
         int[] arr = {2, 3, 4, 5, 6, 7, 8, 9, 10, 315};
         FactorNumberIntoPrimeIntArray pgm = new FactorNumberIntoPrimeIntArray();
         for (int i = 0; i < arr.length; i++) {
-            System.out.print("\n first prime  of i:   " + arr[i] + "=: " + Arrays.toString(pgm.factorN(arr[i])));
-            System.out.print("\n primeFactors  of i:  " + arr[i] + "=: " + Arrays.toString(pgm.factorN2Primes(arr[i])));
-            System.out.print("\n primeFactors2 of i:  " + arr[i] + "=: " + Arrays.toString(pgm.factorNumberToPrimes(arr[i])));
-            System.out.print("\n doFactoring of i:    " + arr[i] + "=: " + Arrays.toString(pgm.doFactoring(arr[i])));
+            System.out.print(
+                    "\n first prime  of i:   " + arr[i] + "=: " + Arrays.toString(pgm.factorN(arr[i])));
+            System.out.print(
+                    "\n primeFactors  of i:  "
+                    + arr[i]
+                    + "=: "
+                    + Arrays.toString(pgm.factorN2Primes(arr[i])));
+            System.out.print(
+                    "\n primeFactors2 of i:  "
+                    + arr[i]
+                    + "=: "
+                    + Arrays.toString(pgm.factorNumberToPrimes(arr[i])));
+            System.out.print(
+                    "\n doFactoring of i:    " + arr[i] + "=: " + Arrays.toString(pgm.doFactoring(arr[i])));
 
             List<Integer> list = new ArrayList<>();
-            System.out.print("\n primeFactors2 of i:  " + arr[i] + "=: " + pgm.factorRecursive(list, arr[i], 2));
+            System.out.print(
+                    "\n primeFactors2 of i:  " + arr[i] + "=: " + pgm.factorRecursive(list, arr[i], 2));
         }
     }
 
@@ -136,7 +145,7 @@ public class FactorNumberIntoPrimeIntArray {
         if (n % i == 0) {
             list.add(i);
             n /= i;
-            //find all numbers that devide i
+            // find all numbers that devide i
             i--;
         }
         return doFactoring(list, n, ++i);

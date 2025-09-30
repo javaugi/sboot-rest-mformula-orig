@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * of design pattern comes under creational pattern as this pattern provides one
  * of the best ways to create an object.
  *
+ * <p>
  * This pattern involves a single class which is responsible to create an object
  * while making sure that only single object gets created. This class provides a
  * way to access its only object which can be accessed directly without need to
@@ -36,8 +37,7 @@ public class SingletonPattern {
     void runExample() {
         SingleObject object = SingleObject.getInstance();
 
-        //show the message
+        // show the message
         object.showMessage();
     }
-
 }

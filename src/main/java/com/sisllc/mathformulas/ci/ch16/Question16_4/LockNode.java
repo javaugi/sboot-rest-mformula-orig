@@ -8,7 +8,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class LockNode {
 
     public enum VisitState {
-        FRESH, VISITING, VISITED
+        FRESH,
+        VISITING,
+        VISITED
     };
 
     private ArrayList<LockNode> children;

@@ -14,12 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class KafkaBatchConcurrentConsumerService {
-// Batch listener implementation
+    // Batch listener implementation
 
     @KafkaListener(
             topics = "${kafka.topic.batch}",
-            containerFactory = "batchKafkaListenerContainerFactory"
-    )
+            containerFactory = "batchKafkaListenerContainerFactory")
     public void consumeBatch(List<ConsumerRecord<String, String>> records, Acknowledgment ack) {
         log.info("Received batch of {} messages", records.size());
 
@@ -33,8 +32,7 @@ public class KafkaBatchConcurrentConsumerService {
 
         ack.acknowledge(); // Acknowledge the entire batch
     }
-    
+
     private void processMessage(String message) {
-        
     }
 }

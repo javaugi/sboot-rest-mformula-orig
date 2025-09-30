@@ -20,32 +20,31 @@ import reactor.core.scheduler.Schedulers;
 public class CompetableFutureClaimAnalysisService {
 
     /*
-        When to Use CompletableFuture Instead
-        While Kafka is superior for service orchestration, CompletableFuture still has its place:
+     When to Use CompletableFuture Instead
+     While Kafka is superior for service orchestration, CompletableFuture still has its place:
 
-        // Use CompletableFuture for within-service parallel processing
-        // when not dealing with Kafka streams
+     // Use CompletableFuture for within-service parallel processing
+     // when not dealing with Kafka streams
      */
     public Mono<AnalysisResult> analyzeClaim(Claim claim) {
-        return Mono.fromCallable(() -> {
-            // CPU-intensive analysis that benefits from parallel processing
-            CompletableFuture<ClinicalData> clinicalFuture = CompletableFuture.supplyAsync(
-                () -> analyzeClinicalData(claim),
-                ForkJoinPool.commonPool()
-            );
+        return Mono.fromCallable(
+                () -> {
+                    // CPU-intensive analysis that benefits from parallel processing
+                    CompletableFuture<ClinicalData> clinicalFuture
+                    = CompletableFuture.supplyAsync(
+                            () -> analyzeClinicalData(claim), ForkJoinPool.commonPool());
 
-            CompletableFuture<FinancialData> financialFuture = CompletableFuture.supplyAsync(
-                () -> analyzeFinancialData(claim),
-                ForkJoinPool.commonPool()
-            );
+                    CompletableFuture<FinancialData> financialFuture
+                            = CompletableFuture.supplyAsync(
+                                    () -> analyzeFinancialData(claim), ForkJoinPool.commonPool());
 
-            return CompletableFuture.allOf(clinicalFuture, financialFuture)
-                .thenApply(voidResult -> new AnalysisResult(
-                clinicalFuture.join(),
-                financialFuture.join()
-            ))
-                .get(); // Blocking call, but within dedicated thread pool
-        }).subscribeOn(Schedulers.boundedElastic());
+                    return CompletableFuture.allOf(clinicalFuture, financialFuture)
+                            .thenApply(
+                                    voidResult
+                                    -> new AnalysisResult(clinicalFuture.join(), financialFuture.join()))
+                            .get(); // Blocking call, but within dedicated thread pool
+                })
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     private ClinicalData analyzeClinicalData(Claim claim) {

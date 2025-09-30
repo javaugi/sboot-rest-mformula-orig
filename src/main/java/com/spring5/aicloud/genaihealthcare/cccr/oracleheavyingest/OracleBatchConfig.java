@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 import javax.sql.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
-//import oracle.jdbc.datasource.OracleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -22,17 +21,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableScheduling
 public class OracleBatchConfig {
 
-    //Use Direct Path Inserts: /*+ APPEND */ for minimal redo generation
+    // Use Direct Path Inserts: /*+ APPEND */ for minimal redo generation
     /*
-    Key Strategies Summary
-        1. Use Direct Path Inserts: for minimal redo generation
-        2. Leverage Partitioning: Process data in manageable chunks
-        3. Implement Parallel Processing: Use Oracle parallel hints and Spring Batch
-        4. Avoid Row-Level Locks: Use ROWID-based processing and batch updates
-        5. Use External Tables: For initial loads without impacting production tables
-        6. Implement Async Processing: Use Oracle AQ for non-blocking operations
-        7. Monitor Continuously: Track lock contention and performance metrics
-        8. Use Materialized Views: Offload reporting from transactional systems
+  Key Strategies Summary
+      1. Use Direct Path Inserts: for minimal redo generation
+      2. Leverage Partitioning: Process data in manageable chunks
+      3. Implement Parallel Processing: Use Oracle parallel hints and Spring Batch
+      4. Avoid Row-Level Locks: Use ROWID-based processing and batch updates
+      5. Use External Tables: For initial loads without impacting production tables
+      6. Implement Async Processing: Use Oracle AQ for non-blocking operations
+      7. Monitor Continuously: Track lock contention and performance metrics
+      8. Use Materialized Views: Offload reporting from transactional systems
      */
     @Bean
     public TaskExecutor batchTaskExecutor() {
@@ -51,14 +50,15 @@ public class OracleBatchConfig {
         return template;
     }
 
-    //*
+    // *
     @Bean
     public DataSource dataSource() throws SQLException {
         OracleDataSource dataSource = new OracleDataSource();
         dataSource.setURL("jdbc:oracle:thin:@//host:port/service");
         dataSource.setUser("username");
         dataSource.setPassword("password");
-        dataSource.setConnectionProperties(new Properties() {
+        dataSource.setConnectionProperties(
+                new Properties() {
             {
                 put("oracle.jdbc.defaultRowPrefetch", "1000");
                 put("oracle.jdbc.useThreadLocalBufferCache", "true");

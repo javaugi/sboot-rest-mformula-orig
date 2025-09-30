@@ -5,12 +5,11 @@
 package com.spring5.mongodb;
 
 /**
- *
  * @author javaugi
  */
 public class NoSQLMain {
-    
 }
+
 /*
 NoSQL, which stands for "not only SQL," represents a category of database management systems that diverge from the traditional relational database model. These databases are designed to handle large volumes of unstructured or semi-structured data, offering flexibility, scalability, and high performance, particularly in distributed environments. NoSQL databases utilize various data models, including document, key-value, graph, and column-family stores.
 Examples of NoSQL Databases and Java Code Snippets:
@@ -129,4 +128,4 @@ public class Neo4jExample {
     }
 }
 
-*/
+ */

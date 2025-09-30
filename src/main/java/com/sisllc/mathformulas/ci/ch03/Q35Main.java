@@ -30,7 +30,12 @@ public class Q35Main {
 
             if (test_queue.size() == my_queue.size()) {
                 if (test_queue.size() > 0 && test_queue.peek() != my_queue.peek()) {
-                    System.out.println("******* FAILURE - DIFFERENT TOPS: " + test_queue.peek() + ", " + my_queue.peek() + " ******");
+                    System.out.println(
+                            "******* FAILURE - DIFFERENT TOPS: "
+                            + test_queue.peek()
+                            + ", "
+                            + my_queue.peek()
+                            + " ******");
                 }
             } else {
                 System.out.println("******* FAILURE - DIFFERENT SIZES ******");

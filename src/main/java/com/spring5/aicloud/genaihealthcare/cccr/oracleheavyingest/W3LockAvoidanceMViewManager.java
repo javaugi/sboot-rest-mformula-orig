@@ -9,10 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
- *
  * @author javau
  */
 public class W3LockAvoidanceMViewManager {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -23,20 +23,21 @@ public class W3LockAvoidanceMViewManager {
     }
 
     private void refreshMv(String mvName, String refreshType) {
-        String sql = String.format(
-            "BEGIN DBMS_MVIEW.REFRESH('%s', '%s'); END;",
-            mvName, refreshType);
+        String sql = String.format("BEGIN DBMS_MVIEW.REFRESH('%s', '%s'); END;", mvName, refreshType);
 
         jdbcTemplate.execute(sql);
     }
 
     public void createIncrementalMView(String mvName, String query) {
-        String sql = String.format("""
+        String sql
+                = String.format(
+                        """
             CREATE MATERIALIZED VIEW %s
             BUILD IMMEDIATE
             REFRESH FAST ON COMMIT
             AS %s
-            """, mvName, query);
+            """,
+                        mvName, query);
 
         jdbcTemplate.execute(sql);
     }

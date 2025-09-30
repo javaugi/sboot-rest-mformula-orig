@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.spring5.service.aiml;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +45,7 @@ public class GeminiApiService {
     // @Value("${google.gemini.api-key}")
     @Value("${spring.ai.gemini.base-url}")
     private String geminiApiUrl;
+
     @Value("${spring.ai.gemini.api-key:}    ")
     private String geminiApiKey; // Leave empty for Canvas auto-injection in JS, or load from properties
 
@@ -51,8 +53,10 @@ public class GeminiApiService {
     private static final long INITIAL_BACKOFF_MILLIS = 1000;
 
     // Constructor to inject WebClient and ObjectMapper
-    public GeminiApiService(@Qualifier(AiConfig.REST_TEMPLATE) RestTemplate restTemplate,
-        WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
+    public GeminiApiService(
+            @Qualifier(AiConfig.REST_TEMPLATE) RestTemplate restTemplate,
+            WebClient.Builder webClientBuilder,
+            ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
@@ -72,49 +76,64 @@ public class GeminiApiService {
 
         // Check if the API key is available
         if (!StringUtils.hasText(geminiApiKey)) {
-            return Mono.error(new IllegalArgumentException("Gemini API key is not configured. Please check your application properties."));
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Gemini API key is not configured. Please check your application properties."));
         }
 
         // Use WebClient to make the POST request
         log.debug("queryByWebClient calling webClient geminiApiUrl {}", geminiApiUrl);
         String urlWithApiKey = geminiApiUrl + "?key=" + geminiApiKey;
         return WebClient.builder()
-            .clientConnector(new ReactorClientHttpConnector(HttpClient.create()
-                .responseTimeout(Duration.ofSeconds(30))))
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-            .build()
-            .post()
-            .uri(urlWithApiKey)
-            .body(BodyInserters.fromValue(rootNode))
-            .retrieve()
-            .bodyToMono(String.class) // Retrieve the response body as a Mono<String>
-            .flatMap(responseBody -> {
-                try {
-                    log.debug("queryByWebClient responseBody {}", responseBody);
-                    JsonNode responseJson = objectMapper.readTree(responseBody);
-                    JsonNode candidate = responseJson.at("/candidates/0/content/parts/0/text");
-                    log.debug("queryByWebClient candidate {}", candidate);
-                    if (candidate.isTextual()) {
-                        return Mono.just(candidate.asText());
-                    } else {
-                        // Handle cases where the response structure is unexpected
-                        log.warn("Unexpected Gemini API response structure: " + responseBody);
-                        return Mono.error(new RuntimeException("Unexpected Gemini API response structure."));
-                    }
-                } catch (JsonProcessingException e) {
-                    return Mono.error(new RuntimeException("Failed to parse Gemini API response.", e));
-                }
-            })
-            .onErrorResume(WebClientResponseException.class, ex -> {
-            log.debug("queryByWebClient WebClientResponseException ", ex);
-                // Provide a more specific error message for a 403 Forbidden error
-                if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
-                    return Mono.error(new RuntimeException("403 FORBIDDEN: Your API key is likely invalid or missing permissions. Please verify your 'google.gemini.api-key' in application.properties."));
-                }
-                // For other WebClient errors, re-throw a more generic exception
-                return Mono.error(new RuntimeException("Error from Gemini API: " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString(), ex));
-            });
+                .clientConnector(
+                        new ReactorClientHttpConnector(
+                                HttpClient.create().responseTimeout(Duration.ofSeconds(30))))
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .build()
+                .post()
+                .uri(urlWithApiKey)
+                .body(BodyInserters.fromValue(rootNode))
+                .retrieve()
+                .bodyToMono(String.class) // Retrieve the response body as a Mono<String>
+                .flatMap(
+                        responseBody -> {
+                            try {
+                                log.debug("queryByWebClient responseBody {}", responseBody);
+                                JsonNode responseJson = objectMapper.readTree(responseBody);
+                                JsonNode candidate = responseJson.at("/candidates/0/content/parts/0/text");
+                                log.debug("queryByWebClient candidate {}", candidate);
+                                if (candidate.isTextual()) {
+                                    return Mono.just(candidate.asText());
+                                } else {
+                                    // Handle cases where the response structure is unexpected
+                                    log.warn("Unexpected Gemini API response structure: " + responseBody);
+                                    return Mono.error(
+                                            new RuntimeException("Unexpected Gemini API response structure."));
+                                }
+                            } catch (JsonProcessingException e) {
+                                return Mono.error(new RuntimeException("Failed to parse Gemini API response.", e));
+                            }
+                        })
+                .onErrorResume(
+                        WebClientResponseException.class,
+                        ex -> {
+                            log.debug("queryByWebClient WebClientResponseException ", ex);
+                            // Provide a more specific error message for a 403 Forbidden error
+                            if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
+                                return Mono.error(
+                                        new RuntimeException(
+                                                "403 FORBIDDEN: Your API key is likely invalid or missing permissions. Please verify your 'google.gemini.api-key' in application.properties."));
+                            }
+                            // For other WebClient errors, re-throw a more generic exception
+                            return Mono.error(
+                                    new RuntimeException(
+                                            "Error from Gemini API: "
+                                            + ex.getStatusCode()
+                                            + " - "
+                                            + ex.getResponseBodyAsString(),
+                                            ex));
+                        });
     }
 
     /**
@@ -141,7 +160,8 @@ public class GeminiApiService {
         for (int i = 0; i < MAX_RETRIES; i++) {
             log.debug("queryByTemplate calling restTemplate try {} prompt {}", i, prompt);
             try {
-                ResponseEntity<String> response = restTemplate.postForEntity(urlWithApiKey, requestEntity, String.class);
+                ResponseEntity<String> response
+                        = restTemplate.postForEntity(urlWithApiKey, requestEntity, String.class);
                 log.debug("queryByTemplate response " + response);
 
                 if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
@@ -156,9 +176,16 @@ public class GeminiApiService {
                         throw new RuntimeException("Unexpected Gemini API response structure.");
                     }
                 } else {
-                    log.warn("Gemini API call failed with status: " + response.getStatusCode() + ", body: " + response.getBody());
+                    log.warn(
+                            "Gemini API call failed with status: "
+                            + response.getStatusCode()
+                            + ", body: "
+                            + response.getBody());
                     // Retry for non-success status codes (e.g., 429 Too Many Requests, 5xx errors)
-                    if (response.getStatusCode().is4xxClientError() && !response.getStatusCode().equals(org.springframework.http.HttpStatus.TOO_MANY_REQUESTS)) {
+                    if (response.getStatusCode().is4xxClientError()
+                            && !response
+                                    .getStatusCode()
+                                    .equals(org.springframework.http.HttpStatus.TOO_MANY_REQUESTS)) {
                         // Don't retry for client errors unless it's 429
                         throw new RuntimeException("Gemini API client error: " + response.getStatusCode());
                     }
@@ -166,7 +193,8 @@ public class GeminiApiService {
             } catch (JsonProcessingException | RuntimeException e) {
                 log.warn("Error calling Gemini API (attempt " + (i + 1) + "): ", e.getMessage());
                 if (i == MAX_RETRIES - 1) {
-                    throw new RuntimeException("Failed to call Gemini API after " + MAX_RETRIES + " retries.", e);
+                    throw new RuntimeException(
+                            "Failed to call Gemini API after " + MAX_RETRIES + " retries.", e);
                 }
             }
 
@@ -199,7 +227,6 @@ public class GeminiApiService {
         return headers;
     }
 }
-
 
 /*
 curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent" \

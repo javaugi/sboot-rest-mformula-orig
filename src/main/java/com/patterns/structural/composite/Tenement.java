@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -54,6 +52,14 @@ public class Tenement extends AbstractProperty {
 
     @Override
     public void print() {
-        System.out.println("Type " + type + " - The tenement built by " + builder + " is located at " + address + " sells for " + price);
+        System.out.println(
+                "Type "
+                + type
+                + " - The tenement built by "
+                + builder
+                + " is located at "
+                + address
+                + " sells for "
+                + price);
     }
 }

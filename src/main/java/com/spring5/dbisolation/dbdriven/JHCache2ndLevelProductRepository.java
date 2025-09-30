@@ -14,8 +14,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JHCache2ndLevelProductRepository extends JpaRepository<JPAHibernateCache2ndLevelProduct, Long>{
-    @QueryHints(@QueryHint(name = "org.hibernate.cacheable", value = "true"))
+public interface JHCache2ndLevelProductRepository
+        extends JpaRepository<JPAHibernateCache2ndLevelProduct, Long> {
+
+    @QueryHints(
+            @QueryHint(name = "org.hibernate.cacheable", value = "true"))
     @Query("SELECT p FROM JPAHibernateCache2ndLevelProduct p WHERE p.price > :minPrice")
-    List<JPAHibernateCache2ndLevelProduct> findExpensiveProducts(@Param("minPrice") BigDecimal minPrice);    
+    List<JPAHibernateCache2ndLevelProduct> findExpensiveProducts(
+            @Param("minPrice") BigDecimal minPrice);
 }

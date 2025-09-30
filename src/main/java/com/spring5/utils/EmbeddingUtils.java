@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmbeddingUtils {
+
     public static List<Embedding> convertDoublesToEmbeddings(List<Double> doubleList) {
         Embedding embedding = new Embedding();
         embedding.setEmbedding(doubleList);
@@ -21,7 +22,8 @@ public class EmbeddingUtils {
 
     public static List<ChatCompletionChoice> convertToChatChoices(OllamaChatResponse response) {
         ChatCompletionChoice choice = new ChatCompletionChoice();
-        ChatMessage message = new ChatMessage(response.getMessage().getRole(), response.getMessage().getContent());
+        ChatMessage message
+                = new ChatMessage(response.getMessage().getRole(), response.getMessage().getContent());
         choice.setMessage(message);
 
         return List.of(choice);

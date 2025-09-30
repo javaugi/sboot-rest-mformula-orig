@@ -8,8 +8,6 @@
 package com.interview.common.compositevisitor;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -31,7 +29,8 @@ public class Manager extends EmployeeAbstract {
 
     @Override
     public void printSalary() {
-        System.out.println("Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
+        System.out.println(
+                "Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
         super.printSalary();
     }
 

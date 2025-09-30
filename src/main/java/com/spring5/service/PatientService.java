@@ -33,7 +33,7 @@ public class PatientService {
     public Patient save(Patient patient) {
         return patientRepository.save(patient);
     }
-    
+
     public Patient findById(Long id) {
         return patientRepository.findById(id).orElse(null);
     }
@@ -47,12 +47,13 @@ public class PatientService {
         if (patient == null) {
             return null;
         }
-        
+
         BeanUtils.copyProperties(updatedPatient, patient, "id");
         return patientRepository.save(patient);
     }
 
-    public List<Assessment> findAssessmentsByPatientId(Long patientId, AssessmentService assessmentService) {
+    public List<Assessment> findAssessmentsByPatientId(
+            Long patientId, AssessmentService assessmentService) {
         return assessmentService.findAll().stream()
                 .filter(assessment -> assessment.getPatientId().equals(patientId))
                 .collect(Collectors.toList());

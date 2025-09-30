@@ -11,31 +11,34 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *
  * @author javaugi
  */
 public class PaymentSecPciDssSecretMan {
-    //See PaymentService and PaymentStripeConfig
-    
+    // See PaymentService and PaymentStripeConfig
+
     private static final Logger log = LoggerFactory.getLogger(PaymentSecPciDssSecretMan.class);
-    //4. Security - PCI DSS Compliance: See PaymentService
+
+    // 4. Security - PCI DSS Compliance: See PaymentService
     class PaymentService {
         // Never log full payment details
+
         public void process(PaymentRequest request) {
-            log.info("Processing payment {} for amount {}", 
-                maskPaymentId(request.getId()), // Shows only last 4 digits
-                request.getAmount());
+            log.info(
+                    "Processing payment {} for amount {}",
+                    maskPaymentId(request.getId()), // Shows only last 4 digits
+                    request.getAmount());
         }
 
         private String maskPaymentId(String id) {
             return "****" + id.substring(id.length() - 4);
         }
-    }    
+    }
 
-    //Secret Management:  -- see PaymentStripeConfig
+    // Secret Management:  -- see PaymentStripeConfig
     @Configuration
     @ConfigurationProperties(prefix = "payment.stripe")
     class StripeConfig {
+
         @Value("${vault.stripe.api-key}")
         private String apiKey;
         // ...

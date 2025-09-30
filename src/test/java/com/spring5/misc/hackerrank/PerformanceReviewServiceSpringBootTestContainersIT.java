@@ -24,15 +24,16 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 // 1. Mark this class to use Testcontainers and Spring Boot
 @Testcontainers(disabledWithoutDocker = true)
 @SpringBootTest // Loads the full application context
-@Transactional  // Rolls back transaction after each test, ensuring clean state
+@Transactional // Rolls back transaction after each test, ensuring clean state
 public class PerformanceReviewServiceSpringBootTestContainersIT {
 
     // 2. Define the container instance. This will start a PostgreSQL Docker container.
     @Container
-    public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine")
-        .withDatabaseName("testdb")
-        .withUsername("test")
-        .withPassword("test");
+    public static PostgreSQLContainer<?> postgres
+            = new PostgreSQLContainer<>("postgres:15-alpine")
+                    .withDatabaseName("testdb")
+                    .withUsername("test")
+                    .withPassword("test");
 
     // 3. Dynamically override Spring DataSource properties to point to the Testcontainer
     @DynamicPropertySource
@@ -41,7 +42,8 @@ public class PerformanceReviewServiceSpringBootTestContainersIT {
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
         // You can add other properties like Hibernate dialect if needed
-        // registry.add("spring.jpa.properties.hibernate.dialect", () -> "org.hibernate.dialect.PostgreSQLDialect");
+        // registry.add("spring.jpa.properties.hibernate.dialect", () ->
+        // "org.hibernate.dialect.PostgreSQLDialect");
     }
 
     // 4. Autowire the actual service from the Spring context
@@ -68,7 +70,8 @@ public class PerformanceReviewServiceSpringBootTestContainersIT {
 
     // 6. Test the complete flow with a real database
     @Test
-    void calculateBonus_WithExceedsScore_ReturnsCorrectMultiplierFromRealDb() throws InvalidReviewScoreException {
+    void calculateBonus_WithExceedsScore_ReturnsCorrectMultiplierFromRealDb()
+            throws InvalidReviewScoreException {
         // Act
         double result = performanceReviewService.calculateBonus("Exceeds");
 
@@ -77,7 +80,8 @@ public class PerformanceReviewServiceSpringBootTestContainersIT {
     }
 
     @Test
-    void calculateBonus_WithMeetsScore_ReturnsCorrectMultiplierFromRealDb() throws InvalidReviewScoreException {
+    void calculateBonus_WithMeetsScore_ReturnsCorrectMultiplierFromRealDb()
+            throws InvalidReviewScoreException {
         // Act
         double result = performanceReviewService.calculateBonus("Meets");
 
@@ -89,13 +93,14 @@ public class PerformanceReviewServiceSpringBootTestContainersIT {
     void calculateBonus_WithInvalidScore_ThrowsException() {
         // Act & Assert
         assertThatThrownBy(() -> performanceReviewService.calculateBonus("Invalid Score"))
-            .isInstanceOf(InvalidReviewScoreException.class)
-            .hasMessageContaining("Invalid performance score: Invalid Score");
+                .isInstanceOf(InvalidReviewScoreException.class)
+                .hasMessageContaining("Invalid performance score: Invalid Score");
     }
 
     // 7. Test that the service can handle new data added dynamically to the DB
     @Test
-    void calculateBonus_WithNewlyAddedScore_ReturnsNewMultiplier() throws InvalidReviewScoreException {
+    void calculateBonus_WithNewlyAddedScore_ReturnsNewMultiplier()
+            throws InvalidReviewScoreException {
         // Arrange: Add a new bonus rule at runtime
         bonusRepository.save(new BonusMultiplier("Super Exceeds", 1.50));
 

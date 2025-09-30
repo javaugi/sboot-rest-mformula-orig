@@ -8,8 +8,6 @@
 package com.patterns.behavioral.iterator;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -21,5 +19,4 @@ public interface ChannelCollection {
     public void removeChannel(Channel c);
 
     public ChannelIterator iterator(ChannelTypeEnum type);
-
 }

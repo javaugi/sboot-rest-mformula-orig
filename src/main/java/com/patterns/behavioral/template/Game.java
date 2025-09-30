@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -27,16 +25,16 @@ public abstract class Game {
 
     abstract void endPlay();
 
-    //template method
+    // template method
     public final void play() {
 
-        //initialize the game
+        // initialize the game
         initialize();
 
-        //start game
+        // start game
         startPlay();
 
-        //end game
+        // end game
         endPlay();
     }
 }

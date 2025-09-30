@@ -5,7 +5,6 @@
 package com.spring5.misc;
 
 // Unit Test
-
 import com.spring5.dbisolation.gmcodility.VehicleTestResult;
 import com.spring5.dbisolation.gmcodility.VehicleTestResultRepository;
 import java.time.LocalDate;
@@ -26,42 +25,39 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-
-//@ExtendWith(MockitoExtension.class)
-//@DataJpaTest
+// @ExtendWith(MockitoExtension.class)
+// @DataJpaTest
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 public class VehicleTestResultControllerTest {
-    
-    //@MockBean
-    //@Mock
-    //@InjectMocks
+
+    // @MockBean
+    // @Mock
+    // @InjectMocks
     @Autowired
     private VehicleTestResultRepository testResultRepository;
 
     @Autowired
     private MockMvc mockMvc;
-        
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-    
-    //@Test
+
+    // @Test
     public void getTestResults_withFilters_shouldReturnFilteredResults() throws Exception {
-        VehicleTestResult result = new VehicleTestResult(1L, "BATTERY", "shsddfdfldfdf", LocalDate.now(), true);
-        
-        when(testResultRepository.findAll(any(Specification.class)))
-            .thenReturn(List.of(result));
-        
-        mockMvc.perform(get("/api/vehicle-tests")
-                .param("testType", "BATTERY")
-                .param("passed", "true"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].testType").value("BATTERY"))
-            .andExpect(jsonPath("$[0].passed").value(true));
+        VehicleTestResult result
+                = new VehicleTestResult(1L, "BATTERY", "shsddfdfldfdf", LocalDate.now(), true);
+
+        when(testResultRepository.findAll(any(Specification.class))).thenReturn(List.of(result));
+
+        mockMvc
+                .perform(get("/api/vehicle-tests").param("testType", "BATTERY").param("passed", "true"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].testType").value("BATTERY"))
+                .andExpect(jsonPath("$[0].passed").value(true));
     }
 }

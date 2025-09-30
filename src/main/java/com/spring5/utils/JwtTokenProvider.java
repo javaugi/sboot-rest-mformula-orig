@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-    
+
     public String getUsernameFromJWT(String jwt) {
         return extractUsername(jwt);
     }
@@ -47,13 +47,13 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
         return Jwts.builder()
-            .subject(username)
-            .claim("role", role)
-            .claim("userType", userType)
-            .issuedAt(now)
-            .expiration(expiryDate)
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
-            .compact();
+                .subject(username)
+                .claim("role", role)
+                .claim("userType", userType)
+                .issuedAt(now)
+                .expiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public String generateRefreshToken(String username) {
@@ -61,16 +61,16 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + refreshExpiration);
 
         return Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(now)
-            .setExpiration(expiryDate)
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
-            .compact();
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            //Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            // Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
             return false;
@@ -97,8 +97,7 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts
-                .builder()
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -111,7 +110,7 @@ public class JwtTokenProvider {
         return extractClaim(token, Claims::getSubject);
     }
 
-     public Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
@@ -122,13 +121,13 @@ public class JwtTokenProvider {
 
     private Claims extractAllClaims(String token) {
         /*
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        // */
+    return Jwts
+            .parserBuilder()
+            .setSigningKey(getSignInKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+    // */
         return null;
     }
 
@@ -255,4 +254,4 @@ Expiration: Set a reasonable expiration time for your tokens.
 Error Handling: Implement proper error handling for token parsing and validation.
 Base64 Encoding: The secret key should be base64 encoded for security reasons.
 This code provides a starting point. You might need to customize it further based on your specific requirements
-*/
+ */

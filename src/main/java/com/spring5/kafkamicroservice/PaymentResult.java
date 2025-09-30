@@ -10,19 +10,20 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PaymentResult {
+
     private boolean success;
     private String paymentId;
     private String error;
-    
+
     public PaymentResult(boolean success, String error) {
         this.success = success;
         this.error = error;
     }
-    
+
     public boolean success() {
         return success;
     }
-    
+
     public String error() {
         return error;
     }

@@ -1,6 +1,5 @@
 package com.sisllc.mathformulas.ci.ch17.Question17_10;
 
-import java.awt.List;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,8 +29,7 @@ public class EncodeHashMapToCharArray {
         return outputStream.toByteArray();
     }
 
-    private void encodeTokens(ByteArrayOutputStream output)
-            throws IOException {
+    private void encodeTokens(ByteArrayOutputStream output) throws IOException {
         nextToken("<");
 
         // read tag name
@@ -98,8 +96,8 @@ public class EncodeHashMapToCharArray {
         if (token.equals(expectedToken)) {
             currentTokenIndex++;
         } else {
-            throw new IOException("Unexpected input. Expected '"
-                    + expectedToken + "'; found '" + token + "'.");
+            throw new IOException(
+                    "Unexpected input. Expected '" + expectedToken + "'; found '" + token + "'.");
         }
     }
 
@@ -112,14 +110,12 @@ public class EncodeHashMapToCharArray {
     }
 
     private boolean hasNextTokens(String... expectedTokens) {
-        if (currentTokenIndex + expectedTokens.length
-                > tokens.size()) {
+        if (currentTokenIndex + expectedTokens.length > tokens.size()) {
             return false;
         }
 
         for (int i = 0; i < expectedTokens.length; i++) {
-            if (!tokens.get(currentTokenIndex + i)
-                    .equals(expectedTokens[i])) {
+            if (!tokens.get(currentTokenIndex + i).equals(expectedTokens[i])) {
                 return false;
             }
         }
@@ -156,8 +152,7 @@ public class EncodeHashMapToCharArray {
             string.append(c);
             i++;
             c = input[i];
-            if (c == '<' || c == '>' || c == '='
-                    || c == '/' || c == ' ') {
+            if (c == '<' || c == '>' || c == '=' || c == '/' || c == ' ') {
                 break;
             }
         } while (i < input.length);

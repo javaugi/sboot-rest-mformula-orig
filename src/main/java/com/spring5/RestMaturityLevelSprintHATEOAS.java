@@ -5,12 +5,11 @@
 package com.spring5;
 
 /**
- *
  * @author javaugi
  */
 public class RestMaturityLevelSprintHATEOAS {
-    
 }
+
 /*
 Key Features
 
@@ -40,10 +39,9 @@ This implementation provides a solid foundation that can be extended with additi
     Pagination
     Caching
     API documentation with Swagger
-*/
+ */
 
-
-/*
+ /*
 Example: REST Maturity Levels & API Design Critique
 Let’s break down the Richardson Maturity Model (RMM) with a concrete example and then critique a real-world API design.
 
@@ -122,9 +120,9 @@ Design:
 
 http
 Copy
-POST /api/v1/createPayment HTTP/1.1  
-Body: { "orderId": 100, "amount": 50 }  
-Response: { "success": true, "transactionId": "txn_123" }  
+POST /api/v1/createPayment HTTP/1.1
+Body: { "orderId": 100, "amount": 50 }
+Response: { "success": true, "transactionId": "txn_123" }
 Critique Using REST Maturity Levels
 Level 0-1 Issues:
 
@@ -145,10 +143,10 @@ No hypermedia (e.g., no link to refund or check payment status).
 Improved Design (Level 3 REST)
 http
 Copy
-PUT /payments/order-100 HTTP/1.1  
-Body: { "amount": 50, "currency": "USD" }  
+PUT /payments/order-100 HTTP/1.1
+Body: { "amount": 50, "currency": "USD" }
 
-Response (201 Created):  
+Response (201 Created):
 {
   "id": "txn_123",
   "status": "completed",
@@ -214,19 +212,19 @@ Strong Answer:
 "I’d use POST /payments/{id}/refunds with HATEOAS links for discoverability. Idempotency would be ensured via a Idempotency-Key header."
 
 Would you like a side-by-side comparison of good vs. bad API designs for another scenario (e.g., user management)?
-*/
+ */
 
-/*
+ /*
 Explanation of Level 3 REST API (HATEOAS) and Spring HATEOAS Usage:
 
-This example demonstrates a Level 3 REST API because the responses include hypermedia links, allowing the client to 
+This example demonstrates a Level 3 REST API because the responses include hypermedia links, allowing the client to
 discover and navigate the API without having hardcoded URLs. Spring HATEOAS simplifies the process of adding these links.
 
 RepresentationModel and EntityModel:
 
-PatientModel extends RepresentationModel. This is used for the root level representation of a patient, where we might 
+PatientModel extends RepresentationModel. This is used for the root level representation of a patient, where we might
 want to include links to related resources (like assessments) directly within the patient object's representation.
-AssessmentModel, QuestionModel, and AnswerModel extend EntityModel. This is a more specific type of RepresentationModel 
+AssessmentModel, QuestionModel, and AnswerModel extend EntityModel. This is a more specific type of RepresentationModel
 that wraps a single entity and allows adding links related to that specific entity.
 
 WebMvcLinkBuilder:
@@ -234,7 +232,7 @@ WebMvcLinkBuilder:
 linkTo(methodOn(ControllerClass.class).methodName(methodParameters)) is a core utility from Spring HATEOAS. It allows
 you to create links to your Spring MVC controller methods in a type-safe way. You don't need to hardcode URLs as strings.
 .withSelfRel(): Creates a link with the rel attribute set to self, pointing to the current resource.
-.withRel("relationName"): Creates a link with a custom rel attribute, describing the relationship between the current 
+.withRel("relationName"): Creates a link with a custom rel attribute, describing the relationship between the current
 resource and the linked resource (e.g., "assessments", "patient", "answers", "create", "update", "questions").
 
 Controller Methods:
@@ -322,7 +320,7 @@ JSON
     }
   }
 }
-The response for a specific patient includes links to itself (self), the collection of all patients (patients), the patient's 
+The response for a specific patient includes links to itself (self), the collection of all patients (patients), the patient's
 assessments (assessments), and an action to update the patient (update).
 
 3. Get assessments for a specific patient:
@@ -367,18 +365,18 @@ JSON
     }
   }
 }
-The response for a patient's assessments includes links to each individual assessment (self), the associated 
+The response for a patient's assessments includes links to each individual assessment (self), the associated
 patient (patient), and the answers for that assessment (answers).
 
 Key Principles of Level 3 REST (HATEOAS) Demonstrated:
 
-Discoverability: Clients can discover available actions and related resources by following the links provided 
+Discoverability: Clients can discover available actions and related resources by following the links provided
 in the responses. They don't need prior knowledge of all the API endpoints.
 Self-Descriptive Messages: Each response contains information about the resource itself and how to interact
 with it further through the links.
 Application State Transitions: The links guide the client through the possible state transitions of the application.
 For example, after retrieving a patient, the client can see a link to update the patient.
-This detailed example illustrates how to build a Level 3 REST API for a healthcare assessment system using 
-Spring HATEOAS. By including hypermedia links, you create a more flexible, evolvable, and discoverable API. 
+This detailed example illustrates how to build a Level 3 REST API for a healthcare assessment system using
+Spring HATEOAS. By including hypermedia links, you create a more flexible, evolvable, and discoverable API.
 Remember to include the necessary Spring HATEOAS dependency in your pom.xml or build.gradle file:
-*/
+ */

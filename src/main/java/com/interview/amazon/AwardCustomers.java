@@ -5,27 +5,50 @@
 package com.interview.amazon;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
- *
  * @author javaugi
  */
 public class AwardCustomers {
-    
+
     public static void main(String[] args) {
         int[] points = {10, 5, 20, 15, 30, 25}; // Example customer points
         System.out.println("Example customer points:" + Arrays.toString(points));
-        
+
         int[] awards = determineAwards(points);
-        
+
         System.out.println("Top 3 Customers (Indices) who receive awards:");
-        System.out.println("1st Place: Customer " + awards[0] + " (Award: " + points.length + " points)"  + " (Total Award: " + (points.length + points[awards[0]]) + " points)");
-        System.out.println("2nd Place: Customer " + awards[1] + " (Award: " + (points.length - 1) + " points)"  + " (Total Award: " + (points.length - 1 + points[awards[1]]) + " points)");
-        System.out.println("3rd Place: Customer " + awards[2] + " (Award: " + (points.length - 2) + " points)"  + " (Total Award: " + (points.length - 2 + points[awards[2]]) + " points)");
+        System.out.println(
+                "1st Place: Customer "
+                + awards[0]
+                + " (Award: "
+                + points.length
+                + " points)"
+                + " (Total Award: "
+                + (points.length + points[awards[0]])
+                + " points)");
+        System.out.println(
+                "2nd Place: Customer "
+                + awards[1]
+                + " (Award: "
+                + (points.length - 1)
+                + " points)"
+                + " (Total Award: "
+                + (points.length - 1 + points[awards[1]])
+                + " points)");
+        System.out.println(
+                "3rd Place: Customer "
+                + awards[2]
+                + " (Award: "
+                + (points.length - 2)
+                + " points)"
+                + " (Total Award: "
+                + (points.length - 2 + points[awards[2]])
+                + " points)");
     }
-    
+
     public static int[] determineAwards(int[] points) {
         // Create an array of Customer objects (index + points)
         Customer[] customers = new Customer[points.length];
@@ -35,8 +58,8 @@ public class AwardCustomers {
 
         // Sort customers in descending order of points
         Arrays.sort(customers, Comparator.comparingInt(Customer::getPoints).reversed());
-        Collections.sort(Arrays.asList(customers), Comparator.comparing(Customer::getPoints).reversed());
-        
+        Collections.sort(
+                Arrays.asList(customers), Comparator.comparing(Customer::getPoints).reversed());
 
         // Extract the top 3 customer indices
         int[] top3Indices = new int[3];
@@ -48,21 +71,20 @@ public class AwardCustomers {
     }
 
     // Helper class to store customer index and points
-    static class Customer {
+    public static class Customer {
 
         int index;
         int points;
-        
+
         Customer(int index, int points) {
             this.index = index;
             this.points = points;
         }
-        
+
         public int getPoints() {
             return points;
         }
     }
-    
 }
 /*
 I have a integer array points[] that stores customer's points that customer i has points of points[i]. The second round will award three customers with points of points[].length, points.length -1, and points.length -2 to determine the final award. Who will receive the final award? Please write a Java program to prove
@@ -97,9 +119,9 @@ import java.util.Comparator;
 public class AwardCustomers {
     public static void main(String[] args) {
         int[] points = {10, 5, 20, 15, 30, 25}; // Example customer points
-        
+
         int[] awards = determineAwards(points);
-        
+
         System.out.println("Top 3 Customers (Indices) who receive awards:");
         System.out.println("1st Place: Customer " + awards[0] + " (Award: " + points.length + " points)");
         System.out.println("2nd Place: Customer " + awards[1] + " (Award: " + (points.length - 1) + " points)");

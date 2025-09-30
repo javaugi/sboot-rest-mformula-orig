@@ -12,5 +12,6 @@ import reactor.core.publisher.Flux;
 @Repository
 @Transactional
 public interface MongoRDBRepository extends ReactiveMongoRepository<MongoRDBProduct, Long> {
-    Flux<MongoRDBProduct> findByPriceLessThan(double price);    
+
+    Flux<MongoRDBProduct> findByPriceLessThan(double price);
 }

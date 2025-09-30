@@ -7,10 +7,10 @@ package com.spring5.dbisolation.wmart;
 import java.math.BigDecimal;
 
 /**
- *
  * @author javau
  */
 public class ExternalCurrencyServiceClient {
+
     public BigDecimal getConversionRate(String fromCurrency, String toCurrency) {
         return new BigDecimal(0);
     }

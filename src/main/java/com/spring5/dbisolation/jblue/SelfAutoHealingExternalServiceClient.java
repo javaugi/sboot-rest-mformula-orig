@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 public class SelfAutoHealingExternalServiceClient {
 
     /* see application.yml
-resilience4j.circuitbreaker:
-  instances:
-    externalService:
-      registerHealthIndicator: true
-      slidingWindowType: COUNT_BASED
-      slidingWindowSize: 10
-      failureRateThreshold: 50 # Open the circuit if 50% of calls fail
-      waitDurationInOpenState: 5s # Stay open for 5 seconds
-      permittedNumberOfCallsInHalfOpenState: 3 # Allow 3 calls in half-open state
-      eventConsumerBufferSize: 10
+  resilience4j.circuitbreaker:
+    instances:
+      externalService:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        failureRateThreshold: 50 # Open the circuit if 50% of calls fail
+        waitDurationInOpenState: 5s # Stay open for 5 seconds
+        permittedNumberOfCallsInHalfOpenState: 3 # Allow 3 calls in half-open state
+        eventConsumerBufferSize: 10
      */
     @CircuitBreaker(name = "externalService", fallbackMethod = "fallbackResponse")
     @Retry(name = "externalService")

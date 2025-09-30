@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.interview.cls.sealed.shape;
-// Non-sealed permitted subclass (can be extended by any class)
 
+// Non-sealed permitted subclass (can be extended by any class)
 public non-sealed class Square extends Shape {
 
     private final double width;

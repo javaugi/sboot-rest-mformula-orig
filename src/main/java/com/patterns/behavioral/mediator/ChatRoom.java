@@ -10,8 +10,6 @@ package com.patterns.behavioral.mediator;
 import java.util.Date;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

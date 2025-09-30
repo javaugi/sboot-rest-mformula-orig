@@ -4,12 +4,16 @@
  */
 package com.spring5.dbisolation.jblue;
 
+import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.spring.data.cosmos.core.mapping.CompositeIndex;
 import com.azure.spring.data.cosmos.core.mapping.CompositeIndexPath;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,91 +21,87 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import com.azure.cosmos.models.CompositePathSortOrder;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @CosmosIndexingPolicy(
-    includePaths = {
-        "/flightNumber/?",
-        "/flightType/?",
-        "/flightDate/?",
-        "/price/?",
-        "/airlineCode/?",
-        "/departureTime/?",
-        "/flightDuration/?"
-    },
-    excludePaths = {
-        "/*"
-    },
-    compositeIndexes = {
-        // For queries: ORDER BY flightNumber ASC, flightDate DESC
-        @CompositeIndex(paths = {
-        @CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
-        @CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
-        @CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
-        @CompositeIndexPath(path = "/flightDuration", order = CompositePathSortOrder.DESCENDING)
-    }),
-        // For queries: ORDER BY airlineCode ASC, departureTime DESC, flightNumber ASC
-        @CompositeIndex(paths = {
-        @CompositeIndexPath(path = "/airlineCode", order = CompositePathSortOrder.ASCENDING),
-        @CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
-        @CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
-        @CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
-        @CompositeIndexPath(path = "/flightDuration", order = CompositePathSortOrder.DESCENDING)
-    })
-    }
-)
+        includePaths = {
+            "/flightNumber/?",
+            "/flightType/?",
+            "/flightDate/?",
+            "/price/?",
+            "/airlineCode/?",
+            "/departureTime/?",
+            "/flightDuration/?"
+        },
+        excludePaths = {"/*"},
+        compositeIndexes = {
+            // For queries: ORDER BY flightNumber ASC, flightDate DESC
+            @CompositeIndex(
+                    paths = {
+                        @CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
+                        @CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
+                        @CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
+                        @CompositeIndexPath(path = "/flightDuration", order = CompositePathSortOrder.DESCENDING)
+                    }),
+            // For queries: ORDER BY airlineCode ASC, departureTime DESC, flightNumber ASC
+            @CompositeIndex(
+                    paths = {
+                        @CompositeIndexPath(path = "/airlineCode", order = CompositePathSortOrder.ASCENDING),
+                        @CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
+                        @CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
+                        @CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
+                        @CompositeIndexPath(path = "/flightDuration", order = CompositePathSortOrder.DESCENDING)
+                    })
+        })
 @Container(containerName = "flightEvents", ru = "400")
 public class FlightEvent {
+
     @Id
     private String id;
 
     @PartitionKey
     private String flightNumber; // flight-level unique key or flightId for each flight (used for ordering)
-    /*
-    The PartitionKey in Azure Cosmos DB Java container definition is a crucial concept that determines how your data is distributed and scaled.
-        It's specified using the @PartitionKey annotation on the field that will serve as the partition key.
 
-    Key Points About PartitionKey:
-    1. Purpose:
-        Horizontal scaling: Data is distributed across physical partitions based on partition key
-        Performance: All operations within a partition are efficient and transactional
-        Query efficiency: Point reads are fastest when you specify both ID and partition key
-    4. Choosing a Good Partition Key:
-        High cardinality: Many distinct values
-        Even distribution: Similar number of items per partition key value
-        Aligned with access patterns: Frequently queried together
-    5. Multiple Partition Keys (if needed using synthetic keys):
+    /*
+  The PartitionKey in Azure Cosmos DB Java container definition is a crucial concept that determines how your data is distributed and scaled.
+      It's specified using the @PartitionKey annotation on the field that will serve as the partition key.
+
+  Key Points About PartitionKey:
+  1. Purpose:
+      Horizontal scaling: Data is distributed across physical partitions based on partition key
+      Performance: All operations within a partition are efficient and transactional
+      Query efficiency: Point reads are fastest when you specify both ID and partition key
+  4. Choosing a Good Partition Key:
+      High cardinality: Many distinct values
+      Even distribution: Similar number of items per partition key value
+      Aligned with access patterns: Frequently queried together
+  5. Multiple Partition Keys (if needed using synthetic keys):
      */
     // If you need a composite partition key, create a synthetic one:
     // Set it in constructor or method:
-    /* 
-    @PartitionKey
-    private String partitionKey; // e.g., "UA_2024-01-15"
-    public void setPartitionKey() {
-        this.partitionKey = airlineCode + "_" + flightDate;
-    }
+    /*
+  @PartitionKey
+  private String partitionKey; // e.g., "UA_2024-01-15"
+  public void setPartitionKey() {
+      this.partitionKey = airlineCode + "_" + flightDate;
+  }
 
-    // Good partition key choices:
-    @PartitionKey
-    private String flightNumber; // High cardinality
+  // Good partition key choices:
+  @PartitionKey
+  private String flightNumber; // High cardinality
 
-    @PartitionKey
-    private String airlineCode; // If you have many airlines
+  @PartitionKey
+  private String airlineCode; // If you have many airlines
 
-    // Poor partition key choices:
-    @PartitionKey
-    private String flightType; // Low cardinality (only few types: domestic/international)
+  // Poor partition key choices:
+  @PartitionKey
+  private String flightType; // Low cardinality (only few types: domestic/international)
 
-    @PartitionKey
-    private boolean isActive; // Very low cardinality (only true/false)
-    // */
-
+  @PartitionKey
+  private boolean isActive; // Very low cardinality (only true/false)
+  // */
     private Map<String, Object> payload;
     private Double price;
     private Integer passengers;
@@ -137,7 +137,6 @@ public class FlightEvent {
 
         this.createdDate = OffsetDateTime.now();
         this.updatedDate = OffsetDateTime.now();
-
     }
 
     public FlightEvent(String id, String flightNumber, String eventType) {
@@ -154,10 +153,10 @@ public class FlightEvent {
         this.timestamp = Instant.ofEpochMilli(timestamp);
     }
 
-
     @Override
     public String toString() {
-        return String.format("FlightEvent{id='%s', number='%s', status='%s', ts=%d}",
-            id, flightNumber, status, timestamp);
+        return String.format(
+                "FlightEvent{id='%s', number='%s', status='%s', ts=%d}",
+                id, flightNumber, status, timestamp);
     }
 }

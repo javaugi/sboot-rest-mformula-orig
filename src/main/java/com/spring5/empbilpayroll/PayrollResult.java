@@ -23,12 +23,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class PayrollResult {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     private double baseSalary;
     private double overtimePay;
-    private double tax;  
+    private double tax;
     private double netSalary;
 }

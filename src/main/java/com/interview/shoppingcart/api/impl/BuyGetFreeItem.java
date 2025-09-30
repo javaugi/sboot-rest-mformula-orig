@@ -7,11 +7,7 @@
  */
 package com.interview.shoppingcart.api.impl;
 
-
-
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

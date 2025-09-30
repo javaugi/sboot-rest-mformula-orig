@@ -7,14 +7,13 @@ package com.interview.codesignal;
 import java.util.Arrays;
 
 /**
- *
  * @author javaugi
  */
 /*
 Advanced Array Manipulation Techniques
 Lesson Overview
 Welcome to another pivotal lesson in your Java interview preparation. In this lesson, we will concentrate on Advanced Array
-Manipulation Techniques, focusing on the representation and manipulation of arrays directly, without relying on built-in functions. 
+Manipulation Techniques, focusing on the representation and manipulation of arrays directly, without relying on built-in functions.
 This topic is indispensable when preparing for technical interviews, as many problems often involve performing various operations on arrays.
 
 Quick Example
@@ -28,14 +27,14 @@ The code might look like this:
 
 Motivation
 Developing proficiency in Advanced Array Manipulation Techniques is rewarding and powerful, as it not only opens up efficient ways to
-solve problems that may appear convoluted at first, but also cultivates the skills necessary for handling even more complex algorithms. 
-Through practice exercises, we aim to equip you with an intuitive understanding of these techniques, which will significantly aid you 
+solve problems that may appear convoluted at first, but also cultivates the skills necessary for handling even more complex algorithms.
+Through practice exercises, we aim to equip you with an intuitive understanding of these techniques, which will significantly aid you
 in your problem-solving abilities. So, let's get started!
 
-The Java operator % in the formula k = k % nums.length is the modulo operator. It calculates the remainder 
+The Java operator % in the formula k = k % nums.length is the modulo operator. It calculates the remainder
 of the division of the left operand (k) by the right operand (nums.length).
 
-Let's break down what it does and why it's useful in this context, which usually involves working with 
+Let's break down what it does and why it's useful in this context, which usually involves working with
 arrays or lists and handling wrapping around indices.
 
 Understanding the Modulo Operator (%)
@@ -65,8 +64,8 @@ If k = 7, then k % 5 is 7 % 5, which equals 2. This wraps around once and then l
 If k = 10, then k % 5 is 10 % 5, which equals 0. Wraps around twice.
 If k is negative:
 
-If k = -1, then k % 5 is -1 % 5, which equals -1 in Java. While this is the mathematical remainder, in array 
-indexing contexts, you often want a positive index. You might see this adjusted to (k % nums.length + nums.length) 
+If k = -1, then k % 5 is -1 % 5, which equals -1 in Java. While this is the mathematical remainder, in array
+indexing contexts, you often want a positive index. You might see this adjusted to (k % nums.length + nums.length)
 % nums.length to ensure a positive result (e.g., -1 % 5 + 5) % 5 becomes (-1 + 5) % 5, which is 4 % 5, resulting in 4).
 If k = -6, then k % 5 is -6 % 5, which equals -1. Adjusted: (-1 + 5) % 5 = 4.
 Common Use Cases:
@@ -84,7 +83,7 @@ Hashing: Distributing keys within a certain range of indices in a hash table.
 Cyclic Operations: Performing operations that repeat in a cycle.
 
 In essence, k = k % nums.length normalizes the value of k to be within the valid index range of the nums
-array (from 0 to nums.length - 1), handling cases where k might be larger than the array size or even negative. 
+array (from 0 to nums.length - 1), handling cases where k might be larger than the array size or even negative.
 It ensures that any index-related calculations stay within the bounds of the data structure.
  */
 public class L2AdvancedArrayManipulation {
@@ -99,10 +98,12 @@ public class L2AdvancedArrayManipulation {
         System.out.println("3. rotateArray after Reverse the entire array: \n" + Arrays.toString(nums));
         // Reverse the first k elements
         reverse(nums, 0, k - 1);
-        System.out.println("4. rotateArray after Reverse the first k elements: \n" + Arrays.toString(nums));
+        System.out.println(
+                "4. rotateArray after Reverse the first k elements: \n" + Arrays.toString(nums));
         // Reverse the rest of the array
         reverse(nums, k, nums.length - 1);
-        System.out.println("5. rotateArray after Reverse the rest of the array: \n" + Arrays.toString(nums));
+        System.out.println(
+                "5. rotateArray after Reverse the rest of the array: \n" + Arrays.toString(nums));
     }
 
     private static void reverse(int[] nums, int start, int end) {
@@ -120,44 +121,43 @@ public class L2AdvancedArrayManipulation {
     }
 
     /*
-    In this example, when k = 3, the algorithm: 
-    initial array 1, 2, 3, 4, 5, 6, 7
-    first   reverses the entire array, resulting in [7, 6, 5, 4, 3, 2, 1].
-    Then,   it reverses the first k elements, giving us [5, 6, 7, 4, 3, 2, 1], 
-    and finally, reverses the rest of the array to get [5, 6, 7, 1, 2, 3, 4], achieving the desired rotation.    
+  In this example, when k = 3, the algorithm:
+  initial array 1, 2, 3, 4, 5, 6, 7
+  first   reverses the entire array, resulting in [7, 6, 5, 4, 3, 2, 1].
+  Then,   it reverses the first k elements, giving us [5, 6, 7, 4, 3, 2, 1],
+  and finally, reverses the rest of the array to get [5, 6, 7, 1, 2, 3, 4], achieving the desired rotation.
      */
     public static void main(String[] args) {
-        int[] nums = {1, 2, 3, 4, 5, 6, 7};        
-        int k = 3;  //rotate k position
+        int[] nums = {1, 2, 3, 4, 5, 6, 7};
+        int k = 3; // rotate k position
         String str = "1234567";
         System.out.println("Job starts now with initial array: \n" + Arrays.toString(nums));
         System.out.println("substring 0 to k: \n" + str.substring(0, k + 1));
-        System.out.println("substring k to end: \n" + str.substring(k+1));        
+        System.out.println("substring k to end: \n" + str.substring(k + 1));
 
         rotateArray(nums, k);
         for (int num : nums) {
             System.out.print(num + " ");
         }
         // Output: 5 6 7 1 2 3 4
-        
-        
+
         System.out.println("\n New method ...");
-        int[] nums2 = {1, 2, 3, 4, 5, 6, 7};   
+        int[] nums2 = {1, 2, 3, 4, 5, 6, 7};
         rotate(nums2, k);
         for (int num : nums2) {
             System.out.print(num + " ");
         }
         // Output: 5 6 7 1 2 3 4
-        
+
         System.out.println("\n New Rotation ...");
-        int[] nums3 = {1, 2, 3, 4, 5, 6, 7};   
+        int[] nums3 = {1, 2, 3, 4, 5, 6, 7};
         rotateNew(nums3, k);
         System.out.println("\n New Rotation output...");
         for (int num : nums3) {
             System.out.print(num + " ");
         }
     }
-    
+
     public static void rotate(int[] nums, int k) {
         k %= nums.length;
         reverseDeepSeek(nums, 0, nums.length - 1);
@@ -174,7 +174,7 @@ public class L2AdvancedArrayManipulation {
             end--;
         }
     }
-    
+
     public static void rotateNew(int[] nums, int k) {
         k %= nums.length;
         StringBuilder sb = new StringBuilder();
@@ -182,33 +182,33 @@ public class L2AdvancedArrayManipulation {
             sb.append(nums[i]);
         }
         String str = sb.toString();
-        System.out.println("rotateNew k=" + k + "-original array=" + Arrays.toString(nums) + "-original str=" + str);
+        System.out.println(
+                "rotateNew k=" + k + "-original array=" + Arrays.toString(nums) + "-original str=" + str);
 
         sb = new StringBuilder();
         sb.append(str.substring(k + 1));
         sb.append(str.substring(0, k + 1));
         System.out.println("rotateNew rotate result=" + sb.toString());
-        
+
         for (int i = 0; i < sb.toString().length(); i++) {
             nums[i] = Character.getNumericValue(sb.toString().charAt(i));
         }
     }
-    
-    
+
     /*
-Explanation
-Modulo Operation: The line k %= nums.length; ensures that if k is larger than the array length, it wraps around. For example, rotating an array of length 7 by 10 positions is equivalent to rotating it by 3 positions (since 10 % 7 = 3).
+  Explanation
+  Modulo Operation: The line k %= nums.length; ensures that if k is larger than the array length, it wraps around. For example, rotating an array of length 7 by 10 positions is equivalent to rotating it by 3 positions (since 10 % 7 = 3).
 
-Reverse Function: The reverse function takes an array and two indices, start and end, and reverses the elements in the subarray defined by these indices.
+  Reverse Function: The reverse function takes an array and two indices, start and end, and reverses the elements in the subarray defined by these indices.
 
-Three Reversals:
+  Three Reversals:
 
-First Reverse: Reverses the entire array to bring the last k elements to the front but in reverse order.
+  First Reverse: Reverses the entire array to bring the last k elements to the front but in reverse order.
 
-Second Reverse: Reverses the first k elements to correct their order.
+  Second Reverse: Reverses the first k elements to correct their order.
 
-Third Reverse: Reverses the remaining elements to correct their order.
+  Third Reverse: Reverses the remaining elements to correct their order.
 
-For the input array {1, 2, 3, 4, 5, 6, 7} and k = 3, the output after rotation is {5, 6, 7, 1, 2, 3, 4}. This method efficiently rotates the array in O(n) time with O(1) additional space.    
-    */
+  For the input array {1, 2, 3, 4, 5, 6, 7} and k = 3, the output after rotation is {5, 6, 7, 1, 2, 3, 4}. This method efficiently rotates the array in O(n) time with O(1) additional space.
+     */
 }

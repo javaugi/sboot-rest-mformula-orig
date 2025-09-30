@@ -13,11 +13,13 @@ import org.slf4j.LoggerFactory;
 /**
  * https://www.tutorialspoint.com/design_pattern/design_pattern_overview.htm
  *
+ * <p>
  * Abstract Factory patterns work around a super-factory which creates other
  * factories. This factory is also called as factory of factories. This type of
  * design pattern comes under creational pattern as this pattern provides one of
  * the best ways to create an object.
  *
+ * <p>
  * In Abstract Factory pattern an interface is responsible for creating a
  * factory of related objects without explicitly specifying their classes. Each
  * generated factory can give the objects as per the Factory pattern.
@@ -47,36 +49,38 @@ public class AbstractFactoryPattern {
         // Step 1 Create an interface.
         // Step 2 Create concrete classes implementing the same interface.
         // Step 3 Create an Abstract class to get factories for Normal and Rounded Shape Objects.
-        // Step 4 Create Factory classes extending AbstractFactory to generate object of concrete class based on given information.
+        // Step 4 Create Factory classes extending AbstractFactory to generate object of concrete class
+        // based on given information.
 
-        // Step 5 Create a Factory generator/producer class to get factories by passing an information such as Shape
-        // Step 6 Use the FactoryProducer to get AbstractFactory in order to get factories of concrete classes by
+        // Step 5 Create a Factory generator/producer class to get factories by passing an information
+        // such as Shape
+        // Step 6 Use the FactoryProducer to get AbstractFactory in order to get factories of concrete
+        // classes by
         //  passing an information such as type.
         AbstractFactoryPattern fact = new AbstractFactoryPattern();
         fact.runExampe();
     }
 
     void runExampe() {
-        //get rounded shape factory
+        // get rounded shape factory
         AbstractFactory shapeFactory = FactoryProducer.getFactory(false);
-        //get an object of Shape Rounded Rectangle
+        // get an object of Shape Rounded Rectangle
         Shape shape1 = shapeFactory.getShape("RECTANGLE");
-        //call draw method of Shape Rectangle
+        // call draw method of Shape Rectangle
         shape1.draw();
-        //get an object of Shape Rounded Square
+        // get an object of Shape Rounded Square
         Shape shape2 = shapeFactory.getShape("SQUARE");
-        //call draw method of Shape Square
+        // call draw method of Shape Square
         shape2.draw();
-        //get rounded shape factory
+        // get rounded shape factory
         AbstractFactory shapeFactory1 = FactoryProducer.getFactory(true);
-        //get an object of Shape Rectangle
+        // get an object of Shape Rectangle
         Shape shape3 = shapeFactory1.getShape("RECTANGLE");
-        //call draw method of Shape Rectangle
+        // call draw method of Shape Rectangle
         shape3.draw();
-        //get an object of Shape Square
+        // get an object of Shape Square
         Shape shape4 = shapeFactory1.getShape("SQUARE");
-        //call draw method of Shape Square
+        // call draw method of Shape Square
         shape4.draw();
     }
-
 }

@@ -10,8 +10,6 @@ package com.interview.shoppingcart.api.impl;
 import com.interview.shoppingcart.api.Item;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -33,5 +31,4 @@ public class DiscountItem extends ItemImpl {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
-
 }

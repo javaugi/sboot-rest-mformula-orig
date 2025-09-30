@@ -5,11 +5,9 @@
 package com.spring5;
 
 /**
- *
  * @author javaugi
  */
 public class PrometheusEurekaServerMonitoring {
-    
 }
 
 /*
@@ -56,7 +54,7 @@ public class MyApplication {
     // ...
 }
 3. Configure Prometheus
-Configure Prometheus to scrape metrics from your Spring Boot application. Create a prometheus.yml file: 
+Configure Prometheus to scrape metrics from your Spring Boot application. Create a prometheus.yml file:
 Code
 
 scrape_configs:
@@ -123,4 +121,4 @@ Start your Spring Boot application(s). They should register with Eureka.
 Start Prometheus using the configured prometheus.yml.
 Access the Prometheus UI (usually at http://localhost:9090) to query and visualize metrics.
 This setup allows you to monitor your Spring Boot microservices using Prometheus, with service discovery handled by Eureka.
-*/
+ */

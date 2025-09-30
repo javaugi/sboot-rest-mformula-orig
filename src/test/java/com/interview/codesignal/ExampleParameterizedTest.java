@@ -13,22 +13,17 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class ExampleParameterizedTest {
-    
-    
-    //Example of Parameterized Test (JUnit 5):
+
+    // Example of Parameterized Test (JUnit 5):
     @ParameterizedTest
-    @CsvSource({
-        "'ccaabbb', 5",
-        "'aaa', 3",
-        "'', 0"
-    })
+    @CsvSource({"'ccaabbb', 5", "'aaa', 3", "'', 0"})
     public void testLongestSubstring_Parameterized(String input, int expected) {
-        System.out.println("testLongestSubstring_Parameterized - Example of Parameterized Test (JUnit 5):");
-        Code2MediumStringProcessing main = new Code2MediumStringProcessing();        
+        System.out.println(
+                "testLongestSubstring_Parameterized - Example of Parameterized Test (JUnit 5):");
+        Code2MediumStringProcessing main = new Code2MediumStringProcessing();
         assertEquals(expected, main.longestSubstringWithAtLeastTwoDistinctChars(input));
     }
-    
-    
+
     // The method to test
     public boolean isPalindrome(String candidate) {
         if (candidate == null) {
@@ -40,15 +35,15 @@ public class ExampleParameterizedTest {
 
     // Parameterized test with a set of palindrome strings
     @ParameterizedTest
-    @ValueSource(strings = { "radar", "level", "rotor", "civic", "madam" })
+    @ValueSource(strings = {"radar", "level", "rotor", "civic", "madam"})
     public void testIsPalindrome_withValidPalindromes(String candidate) {
         assertTrue(isPalindrome(candidate), candidate + " should be a palindrome");
     }
 
     // Parameterized test with a set of non-palindrome strings
     @ParameterizedTest
-    @ValueSource(strings = { "hello", "world", "java", "parameterized", "junit" })
+    @ValueSource(strings = {"hello", "world", "java", "parameterized", "junit"})
     public void testIsPalindrome_withInvalidPalindromes(String candidate) {
         assertFalse(isPalindrome(candidate), candidate + " should not be a palindrome");
-    }    
+    }
 }

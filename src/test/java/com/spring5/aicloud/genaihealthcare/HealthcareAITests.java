@@ -4,11 +4,9 @@
  */
 package com.spring5.aicloud.genaihealthcare;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class HealthcareAITests {
@@ -16,22 +14,32 @@ public class HealthcareAITests {
     @Autowired
     private ResponsibleAIIndexService aiService;
 
-    //@Test
+    // @Test
     public void testResponsibleAIIndexCreation() {
-        ResponsibleAIIndex index = ResponsibleAIIndex.builder()
-            .modelName("patient_diagnosis_model").transparencyScore(8.5).fairnessScore(9.0).privacyScore(9.5).regulatoryAlignmentScore(8.0)
-            .build();
+        ResponsibleAIIndex index
+                = ResponsibleAIIndex.builder()
+                        .modelName("patient_diagnosis_model")
+                        .transparencyScore(8.5)
+                        .fairnessScore(9.0)
+                        .privacyScore(9.5)
+                        .regulatoryAlignmentScore(8.0)
+                        .build();
 
-            assertNotNull(index);
+        assertNotNull(index);
         assertEquals("COMPLIANT", index.getComplianceStatus());
         assertTrue(index.getOverallScore() >= 8.0);
     }
 
-    //@Test
+    // @Test
     public void testAIService() {
-        ResponsibleAIIndex index = ResponsibleAIIndex.builder()
-            .modelName("test_model").transparencyScore(7.0).fairnessScore(8.0).privacyScore(9.0).regulatoryAlignmentScore(8.0)
-            .build();
+        ResponsibleAIIndex index
+                = ResponsibleAIIndex.builder()
+                        .modelName("test_model")
+                        .transparencyScore(7.0)
+                        .fairnessScore(8.0)
+                        .privacyScore(9.0)
+                        .regulatoryAlignmentScore(8.0)
+                        .build();
 
         ResponsibleAIIndex saved = aiService.saveOrUpdateIndex(index);
         assertNotNull(saved.getId());

@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
@@ -40,23 +39,24 @@ public class Resilience4jExternalService {
 
     // Simulate a slow external system call (for Timeout or Bulkhead examples if needed)
     public CompletableFuture<String> callExternalSystemAsync() {
-        return CompletableFuture.supplyAsync(() -> {
-            logger.info("Calling external system asynchronously...");
-            try {
-                TimeUnit.SECONDS.sleep(random.nextInt(5)); // Simulate random delay up to 5 seconds
-                if (random.nextBoolean()) {
-                    logger.error("Async external system call failed!");
-                    throw new RuntimeException("Async external system is down!");
-                } else {
-                    logger.info("Async external system call successful.");
-                    return "Async success from external system!";
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                logger.error("Async call interrupted", e);
-                throw new RuntimeException("Async call interrupted", e);
-            }
-        });
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    logger.info("Calling external system asynchronously...");
+                    try {
+                        TimeUnit.SECONDS.sleep(random.nextInt(5)); // Simulate random delay up to 5 seconds
+                        if (random.nextBoolean()) {
+                            logger.error("Async external system call failed!");
+                            throw new RuntimeException("Async external system is down!");
+                        } else {
+                            logger.info("Async external system call successful.");
+                            return "Async success from external system!";
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        logger.error("Async call interrupted", e);
+                        throw new RuntimeException("Async call interrupted", e);
+                    }
+                });
     }
 
     public int getFailureCount() {

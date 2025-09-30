@@ -5,13 +5,14 @@
 package com.spring5;
 
 /**
- *
  * @author javaugi
  */
 public class MonitoringAlertingHeathAcuator {
-    //1. spring-boot-starter-actuator  Spring Boot Actuator's Health Indicator: management.endpoints.web.exposure.include=health
-    //2. Prometheus is a powerful open-source system monitoring and alerting toolkit management.endpoints.web.exposure.include=prometheus
-    //3. How to selecttively include and exclude things   
+    // 1. spring-boot-starter-actuator  Spring Boot Actuator's Health Indicator:
+    // management.endpoints.web.exposure.include=health
+    // 2. Prometheus is a powerful open-source system monitoring and alerting toolkit
+    // management.endpoints.web.exposure.include=prometheus
+    // 3. How to selecttively include and exclude things
     //      management.endpoints.web.exposure.include=*
     //      management.endpoints.web.exposure.exclude=env,heapdump
 }
@@ -103,31 +104,31 @@ driver.verifyConnectivity() attempts to establish a connection and perform a bas
 The try-catch block catches potential connection errors.
 Inside the catch block, you can log the error clearly. You also have the option to forcefully exit the application if a database connection is considered essential for the application to run.
 By implementing one or both of these checks, you can get early feedback on the Neo4j database's availability. This will help you diagnose the issue (database not running, incorrect connection details, network problems) and prevent the NullPointerException you were encountering because the Spring Data Neo4j components relying on a healthy connection will not be fully initialized when the database is down.
-*/
+ */
 
-/*
-Prometheus is a powerful open-source system monitoring and alerting toolkit. It was originally built at SoundCloud and is now a graduated project of the Cloud Native Computing Foundation (CNCF).   
+ /*
+Prometheus is a powerful open-source system monitoring and alerting toolkit. It was originally built at SoundCloud and is now a graduated project of the Cloud Native Computing Foundation (CNCF).
 
-Its primary function is to collect and store metrics as time-series data. This means it records numerical information along with a timestamp, and optional key-value pairs called labels.   
+Its primary function is to collect and store metrics as time-series data. This means it records numerical information along with a timestamp, and optional key-value pairs called labels.
 
 Here are some of the key aspects of Prometheus:
 
-Time-Series Database: At its core is a time-series database optimized for storing and querying time-stamped data.   
-Pull-Based Model: Prometheus primarily collects metrics by "scraping" or pulling them over HTTP from configured targets (like applications, servers, or other services that expose metrics).   
-Multi-dimensional Data Model: Metrics are identified by a metric name and a set of key-value pairs (labels). This allows for flexible and powerful querying and aggregation of data based on various dimensions.   
-PromQL (Prometheus Query Language): Prometheus has its own functional query language, PromQL, which is designed for working with time-series data. It allows users to select, filter, and aggregate metrics to gain insights into the performance and health of their systems.   
-Alerting: Prometheus allows you to define alert rules based on PromQL expressions. When the conditions of a rule are met, Prometheus can send alerts to an Alertmanager.   
-Alertmanager: This component handles alerts sent by the Prometheus server. It can group, deduplicate, route, and silence alerts before sending notifications through various channels (like email, Slack, PagerDuty, etc.).   
-Exporters and Client Libraries: To collect metrics from various systems, Prometheus uses exporters (which are separate services that translate metrics from third-party systems into a Prometheus-readable format) and client libraries (which allow developers to instrument their own applications to expose metrics directly).   
-Service Discovery: In dynamic environments (like Kubernetes), Prometheus can integrate with service discovery mechanisms to automatically find and monitor new targets as they are created.   
-In essence, Prometheus is a widely used tool for monitoring the health and performance of modern, often cloud-native and microservices-based, systems by collecting, storing, and analyzing numerical metrics over time and providing a robust alerting mechanism. It is often used in conjunction with visualization tools like Grafana to create dashboards for better data representation.   
+Time-Series Database: At its core is a time-series database optimized for storing and querying time-stamped data.
+Pull-Based Model: Prometheus primarily collects metrics by "scraping" or pulling them over HTTP from configured targets (like applications, servers, or other services that expose metrics).
+Multi-dimensional Data Model: Metrics are identified by a metric name and a set of key-value pairs (labels). This allows for flexible and powerful querying and aggregation of data based on various dimensions.
+PromQL (Prometheus Query Language): Prometheus has its own functional query language, PromQL, which is designed for working with time-series data. It allows users to select, filter, and aggregate metrics to gain insights into the performance and health of their systems.
+Alerting: Prometheus allows you to define alert rules based on PromQL expressions. When the conditions of a rule are met, Prometheus can send alerts to an Alertmanager.
+Alertmanager: This component handles alerts sent by the Prometheus server. It can group, deduplicate, route, and silence alerts before sending notifications through various channels (like email, Slack, PagerDuty, etc.).
+Exporters and Client Libraries: To collect metrics from various systems, Prometheus uses exporters (which are separate services that translate metrics from third-party systems into a Prometheus-readable format) and client libraries (which allow developers to instrument their own applications to expose metrics directly).
+Service Discovery: In dynamic environments (like Kubernetes), Prometheus can integrate with service discovery mechanisms to automatically find and monitor new targets as they are created.
+In essence, Prometheus is a widely used tool for monitoring the health and performance of modern, often cloud-native and microservices-based, systems by collecting, storing, and analyzing numerical metrics over time and providing a robust alerting mechanism. It is often used in conjunction with visualization tools like Grafana to create dashboards for better data representation.
 
 
 Sources and related content
 
-*/
+ */
 
-/*
+ /*
 To include more than one endpoint for management.endpoints.web.exposure.include in your Spring Boot application.properties or application.yml file, you simply provide a comma-separated list of the endpoint IDs.
 
 In application.properties:
@@ -203,4 +204,4 @@ management:
           - env
           - heapdump
 Choose the method that best suits your needs for exposing Actuator endpoints in your application.
-*/
+ */

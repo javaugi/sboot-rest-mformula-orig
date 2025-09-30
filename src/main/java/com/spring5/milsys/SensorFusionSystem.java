@@ -4,11 +4,11 @@
  */
 package com.spring5.milsys;
 
+import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 import java.util.function.*;
-import java.time.*;
 
 public class SensorFusionSystem {
 
@@ -34,7 +34,6 @@ public class SensorFusionSystem {
         }
 
         // Getters omitted
-
         public String getSensorId() {
             return sensorId;
         }
@@ -52,36 +51,32 @@ public class SensorFusionSystem {
         }
     }
 
-    public void registerSensor(String sensorId,
-            Function<double[], Double> processingAlgorithm,
-            int normalPriority) {
-        sensorProcessors.put(sensorId, new SensorProcessor(sensorId, processingAlgorithm, normalPriority));
+    public void registerSensor(
+            String sensorId, Function<double[], Double> processingAlgorithm, int normalPriority) {
+        sensorProcessors.put(
+                sensorId, new SensorProcessor(sensorId, processingAlgorithm, normalPriority));
     }
 
     public void startFusionEngine() {
-        fusionExecutor.submit(() -> {
-            while (!shutdown) {
-                try {
-                    FusionEvent event = eventQueue.poll(100, TimeUnit.MILLISECONDS);
-                    if (event != null) {
-                        processEvent(event);
+        fusionExecutor.submit(
+                () -> {
+                    while (!shutdown) {
+                        try {
+                            FusionEvent event = eventQueue.poll(100, TimeUnit.MILLISECONDS);
+                            if (event != null) {
+                                processEvent(event);
+                            }
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
+                });
     }
 
     public void submitSensorData(String sensorId, double[] rawData) {
         SensorProcessor processor = sensorProcessors.get(sensorId);
         if (processor != null) {
-            eventQueue.offer(new FusionEvent(
-                    sensorId,
-                    rawData,
-                    Instant.now(),
-                    processor.normalPriority
-            ));
+            eventQueue.offer(new FusionEvent(sensorId, rawData, Instant.now(), processor.normalPriority));
         }
     }
 
@@ -113,9 +108,8 @@ public class SensorFusionSystem {
         private final int normalPriority;
         private final AtomicReference<Double> threshold = new AtomicReference<>(1.0);
 
-        public SensorProcessor(String sensorId,
-                Function<double[], Double> processingAlgorithm,
-                int normalPriority) {
+        public SensorProcessor(
+                String sensorId, Function<double[], Double> processingAlgorithm, int normalPriority) {
             this.sensorId = sensorId;
             this.processingAlgorithm = processingAlgorithm;
             this.normalPriority = normalPriority;

@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -32,7 +30,7 @@ public class TemplatePattern {
         System.out.println("\n\n\n HouseTemplate");
         HouseTemplate houseType = new WoodenHouse();
 
-        //using template method
+        // using template method
         houseType.buildHouse();
         System.out.println("************");
 

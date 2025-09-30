@@ -5,9 +5,7 @@
 package com.spring5.empbilpayroll;
 
 /**
- *
  * @author javaugi
  */
 public class ClientBillingSummary {
-    
 }

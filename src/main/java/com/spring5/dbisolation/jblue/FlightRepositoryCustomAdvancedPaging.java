@@ -7,12 +7,12 @@ package com.spring5.dbisolation.jblue;
 import java.util.List;
 
 /**
- *
  * @author javau
  */
 public interface FlightRepositoryCustomAdvancedPaging {
 
-    List<FlightEvent> findLargeDatasetWithPagination(String query, int maxItemCount, String continuationToken);
+    List<FlightEvent> findLargeDatasetWithPagination(
+            String query, int maxItemCount, String continuationToken);
 
     void processLargeDatasetInParallel(String query, int batchSize, int parallelism);
 }

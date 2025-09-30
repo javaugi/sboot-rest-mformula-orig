@@ -8,6 +8,7 @@ import com.interview.hrank.Student;
 import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
+
 /*
     1×× Informational
     2×× Success
@@ -22,34 +23,40 @@ To your original question:
     If the Server somehow fails (for example, you can't read the database), then return a 5xx.
     The "official" list of HTTP error codes is RFC 7231:
  */
-
 public class PrivateInnerClassMethod {
 
     public static void main(String[] args) throws Exception {
         runMain1();
         printStudentMethods();
-    }//end of main
+    } // end of main
 
-    private static void runMain1() throws IOException, 
-            SecurityException, ExitControl.ExitTrappedException, IllegalAccessException, 
-            NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+    private static void runMain1()
+            throws IOException,
+            SecurityException,
+            ExitControl.ExitTrappedException,
+            IllegalAccessException,
+            NoSuchMethodException,
+            IllegalArgumentException,
+            InvocationTargetException {
         ExitControl.forbidExit(405);
-        
+
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             int num = Integer.parseInt(br.readLine().trim());
-            Object o;// Must be used to hold the reference of the instance of the class Solution.Inner.Private
+            Object o; // Must be used to hold the reference of the instance of the class
+            // Solution.Inner.Private
 
-            //Write your code here
+            // Write your code here
             o = new Inner().new Private();
 
             Method method = o.getClass().getDeclaredMethod("powerof2", int.class);
             method.setAccessible(true);
             String result = (String) method.invoke(o, num);
             System.out.println(num + " is " + result);
-            System.out.println("An instance of class: " + o.getClass().getCanonicalName() + " has been created");
+            System.out.println(
+                    "An instance of class: " + o.getClass().getCanonicalName() + " has been created");
 
-        }//end of try
+        } // end of try
         catch (ExitControl.ExitTrappedException e) {
             System.out.println("Unsuccessful Termination!!");
         }
@@ -60,16 +67,15 @@ public class PrivateInnerClassMethod {
         Method[] methods = student.getDeclaredMethods();
 
         ArrayList<String> methodList = new ArrayList<>();
-        for (Method method : methods) {            
+        for (Method method : methods) {
             methodList.add(method.getName());
         }
         Collections.sort(methodList);
         for (String name : methodList) {
             System.out.println(name);
-        }        
+        }
     }
-    
-    
+
     static class Inner {
 
         private class Private {
@@ -78,9 +84,8 @@ public class PrivateInnerClassMethod {
                 return ((num & num - 1) == 0) ? "power of 2" : "not a power of 2";
             }
         }
-    }//end of Inner
-
-}//end of Solution
+    } // end of Inner
+} // end of Solution
 
 /*
 class DoNotTerminate { //This class prevents exit(0)
@@ -103,12 +108,14 @@ class DoNotTerminate { //This class prevents exit(0)
     }
 }
 // */
-
 class ExitControl {
+
     public static class ExitTrappedException extends SecurityException {
+
         public ExitTrappedException(String message) {
             super(message);
         }
+
         private static final long serialVersionUID = 1L;
     }
 

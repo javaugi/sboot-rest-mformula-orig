@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ArrayOccuranceMax {
+
     private static final ArrayOccuranceMax main = new ArrayOccuranceMax();
 
     public static void main(String[] args) {
@@ -40,23 +41,22 @@ public class ArrayOccuranceMax {
 
     private void usingStreams1(int[] numbers) {
         // Using Java 8 streams to find occurrences
-        Map<Integer, Long> occurrences = Arrays.stream(numbers)
-            .boxed()
-            .collect(Collectors.groupingBy(
-                Function.identity(),
-                Collectors.counting()
-            ));
+        Map<Integer, Long> occurrences
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         // Find element with max occurrences
-        Optional<Map.Entry<Integer, Long>> maxEntry = occurrences
-            .entrySet()
-            .stream()
-            .max(Map.Entry.comparingByValue());
+        Optional<Map.Entry<Integer, Long>> maxEntry
+                = occurrences.entrySet().stream().max(Map.Entry.comparingByValue());
 
         log.info("Occurrences: " + occurrences);
 
         if (maxEntry.isPresent()) {
-            log.info("Element with max occurrences:{} Count:{}", maxEntry.get().getKey(), maxEntry.get().getValue());
+            log.info(
+                    "Element with max occurrences:{} Count:{}",
+                    maxEntry.get().getKey(),
+                    maxEntry.get().getValue());
         } else {
             log.info("No elements found");
         }
@@ -64,18 +64,18 @@ public class ArrayOccuranceMax {
 
     private void usingStreams2(int[] numbers) {
         Optional<Map.Entry<Integer, Long>> maxEntry
-            = Arrays.stream(numbers)
-                .boxed()
-                .collect(Collectors.groupingBy(
-                    Function.identity(),
-                    Collectors.counting()
-                ))
-                .entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue());
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                        .entrySet()
+                        .stream()
+                        .max(Map.Entry.comparingByValue());
 
         if (maxEntry.isPresent()) {
-            log.info("Element with max occurrences:{} Count:{}", maxEntry.get().getKey(), maxEntry.get().getValue());
+            log.info(
+                    "Element with max occurrences:{} Count:{}",
+                    maxEntry.get().getKey(),
+                    maxEntry.get().getValue());
         } else {
             log.info("No elements found");
         }
@@ -83,31 +83,25 @@ public class ArrayOccuranceMax {
 
     private void usingStreams3(int[] numbers) {
         // Using Java 8 streams to find occurrences
-        Map<Integer, Long> occurrences = Arrays.stream(numbers)
-            .boxed()
-            .collect(Collectors.groupingBy(
-                Function.identity(),
-                Collectors.counting()
-            ));
+        Map<Integer, Long> occurrences
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         log.info("Occurrences: " + occurrences);
 
         // Find the maximum occurrence count
-        Optional<Long> maxCount = occurrences
-            .values()
-            .stream()
-            .max(Long::compare);
+        Optional<Long> maxCount = occurrences.values().stream().max(Long::compare);
 
         if (maxCount.isPresent()) {
             long maxValue = maxCount.get();
 
             // Find all elements with the maximum occurrence count
-            List<Integer> maxElements = occurrences
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() == maxValue)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+            List<Integer> maxElements
+                    = occurrences.entrySet().stream()
+                            .filter(entry -> entry.getValue() == maxValue)
+                            .map(Map.Entry::getKey)
+                            .collect(Collectors.toList());
 
             if (maxElements.size() == 1) {
                 log.info("Element with max occurrences: {} Count: {}", maxElements.get(0), maxValue);
@@ -121,38 +115,32 @@ public class ArrayOccuranceMax {
 
     private void usingStreams4(int[] numbers) {
         // Using Java 8 streams to find occurrences
-        Map<Integer, Long> occurrences = Arrays.stream(numbers)
-            .boxed()
-            .collect(Collectors.groupingBy(
-                Function.identity(),
-                Collectors.counting()
-            ));
+        Map<Integer, Long> occurrences
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         log.info("Occurrences: " + occurrences);
 
         // Find the maximum count first
-        Optional<Long> maxCountOpt = occurrences
-            .values()
-            .stream()
-            .max(Long::compare);
+        Optional<Long> maxCountOpt = occurrences.values().stream().max(Long::compare);
 
         if (maxCountOpt.isPresent()) {
             long maxCount = maxCountOpt.get();
 
             // Find all entries with the maximum count
-            List<Map.Entry<Integer, Long>> maxEntries = occurrences
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() == maxCount)
-                .collect(Collectors.toList());
+            List<Map.Entry<Integer, Long>> maxEntries
+                    = occurrences.entrySet().stream()
+                            .filter(entry -> entry.getValue() == maxCount)
+                            .collect(Collectors.toList());
 
             if (maxEntries.size() == 1) {
                 Map.Entry<Integer, Long> entry = maxEntries.get(0);
                 log.info("Element with max occurrences: {} Count: {}", entry.getKey(), entry.getValue());
             } else {
                 log.info("Elements with max occurrences:");
-                maxEntries.forEach(entry
-                    -> log.info("  Element: {} Count: {}", entry.getKey(), entry.getValue()));
+                maxEntries.forEach(
+                        entry -> log.info("  Element: {} Count: {}", entry.getKey(), entry.getValue()));
             }
         } else {
             log.info("No elements found");
@@ -161,33 +149,27 @@ public class ArrayOccuranceMax {
 
     private void usingStreams5(int[] numbers) {
         // Using Java 8 streams to find occurrences
-        Map<Integer, Long> occurrences = Arrays.stream(numbers)
-            .boxed()
-            .collect(Collectors.groupingBy(
-                Function.identity(),
-                Collectors.counting()
-            ));
+        Map<Integer, Long> occurrences
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         log.info("Occurrences: " + occurrences);
 
         // Find the maximum count first
-        Optional<Long> maxCountOpt = occurrences
-            .values()
-            .stream()
-            .max(Long::compare);
+        Optional<Long> maxCountOpt = occurrences.values().stream().max(Long::compare);
 
         if (maxCountOpt.isPresent()) {
             long maxCount = maxCountOpt.get();
 
             // Find all entries with the maximum count
-            List<Map.Entry<Integer, Long>> maxEntries = occurrences
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() == maxCount)
-                .collect(Collectors.toList());
+            List<Map.Entry<Integer, Long>> maxEntries
+                    = occurrences.entrySet().stream()
+                            .filter(entry -> entry.getValue() == maxCount)
+                            .collect(Collectors.toList());
 
-            maxEntries.forEach(entry
-                -> log.info("  Element: {} Count: {}", entry.getKey(), entry.getValue()));
+            maxEntries.forEach(
+                    entry -> log.info("  Element: {} Count: {}", entry.getKey(), entry.getValue()));
         } else {
             log.info("No elements found");
         }
@@ -195,17 +177,14 @@ public class ArrayOccuranceMax {
 
     private void usingStreams6(int[] numbers) {
         // Using Java 8 streams to find occurrences
-        Map<Integer, Long> occurrences = Arrays.stream(numbers)
-            .boxed()
-            .collect(Collectors.groupingBy(
-                Function.identity(),
-                Collectors.counting()
-            ));
+        Map<Integer, Long> occurrences
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         // Find element with max occurrences
-        Optional<Map.Entry<Integer, Long>> maxEntry = occurrences.entrySet()
-            .stream()
-            .max(Map.Entry.comparingByValue());
+        Optional<Map.Entry<Integer, Long>> maxEntry
+                = occurrences.entrySet().stream().max(Map.Entry.comparingByValue());
 
         System.out.println("Occurrences: " + occurrences);
 
@@ -216,5 +195,4 @@ public class ArrayOccuranceMax {
             System.out.println("No elements found");
         }
     }
-
 }

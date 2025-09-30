@@ -9,10 +9,9 @@ import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import java.math.BigDecimal;
 import java.util.concurrent.CompletableFuture;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-//@Service
+// @Service
 public class WmPaymentService {
 
     private final ExternalCurrencyServiceClient currencyClient;
@@ -25,15 +24,18 @@ public class WmPaymentService {
     @CircuitBreaker(name = "currencyService", fallbackMethod = "getCachedConversionRate")
     @Retry(name = "currencyService", fallbackMethod = "getCachedConversionRate")
     @TimeLimiter(name = "currencyService")
-    public CompletableFuture<BigDecimal> getConvertedAmount(String fromCurrency, String toCurrency, BigDecimal amount) {
-        return CompletableFuture.supplyAsync(() -> {
-            BigDecimal rate = currencyClient.getConversionRate(fromCurrency, toCurrency);
-            return amount.multiply(rate);
-        });
+    public CompletableFuture<BigDecimal> getConvertedAmount(
+            String fromCurrency, String toCurrency, BigDecimal amount) {
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    BigDecimal rate = currencyClient.getConversionRate(fromCurrency, toCurrency);
+                    return amount.multiply(rate);
+                });
     }
 
     // Fallback method
-    private CompletableFuture<BigDecimal> getCachedConversionRate(String fromCurrency, String toCurrency, BigDecimal amount, Exception e) {
+    private CompletableFuture<BigDecimal> getCachedConversionRate(
+            String fromCurrency, String toCurrency, BigDecimal amount, Exception e) {
         // Logic to get a stale-but-acceptable rate from a local cache
         BigDecimal cachedRate = getRateFromCache(fromCurrency, toCurrency);
         return CompletableFuture.completedFuture(amount.multiply(cachedRate));
@@ -45,10 +47,10 @@ public class WmPaymentService {
     }
 
     /*
-    public synchronized Mono<PaymentResponse> processPayment(PaymentRequest request) {
-        return Mono.just(PaymentResponse.builder().build());
-    }
-    // */
+  public synchronized Mono<PaymentResponse> processPayment(PaymentRequest request) {
+      return Mono.just(PaymentResponse.builder().build());
+  }
+  // */
     public synchronized Mono<PaymentResponse> processPayment(PaymentRequest request) {
         // Implementation
         return Mono.just(PaymentResponse.builder().build());

@@ -6,7 +6,6 @@ package com.spring5.dbisolation.dbdriven;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -22,36 +21,38 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER article_search_vector_update
 BEFORE INSERT OR UPDATE ON articles
 FOR EACH ROW EXECUTE FUNCTION update_article_search_vector();
-*/
-
+ */
 @Repository
-public interface PostgreSQLFullTextSearchTableArticleRepo extends JpaRepository<PostgreSQLFullTextSearchTableArticle, Long>{
+public interface PostgreSQLFullTextSearchTableArticleRepo
+        extends JpaRepository<PostgreSQLFullTextSearchTableArticle, Long> {
 
-    //query = database performance
+    // query = database performance
     /*
-    @Query(value = "SELECT a FROM PostgreSQLFullTextSearchTableArticle a  " +
-           " WHERE to_tsvector('english', a.title || ' ' || a.content) @@ plainto_tsquery('english', :searchVector) " +
-           "ORDER BY ts_rank(to_tsvector('english', a.title || ' ' || a.content), plainto_tsquery('english', :searchVector)) DESC")
-            // */
-    List<PostgreSQLFullTextSearchTableArticle> getArticlesBySearchVector(@Param("searchVector") String searchVector);    
-    
-    /*
-    PostgreSQL Index Recommendation
-        -- Add generated column
-        ALTER TABLE articles ADD COLUMN search_vector tsvector
-        GENERATED ALWAYS AS (to_tsvector('english', coalesce(title, '') || ' ' || coalesce(content, ''))) STORED;
+  @Query(value = "SELECT a FROM PostgreSQLFullTextSearchTableArticle a  " +
+         " WHERE to_tsvector('english', a.title || ' ' || a.content) @@ plainto_tsquery('english', :searchVector) " +
+         "ORDER BY ts_rank(to_tsvector('english', a.title || ' ' || a.content), plainto_tsquery('english', :searchVector)) DESC")
+          // */
+    List<PostgreSQLFullTextSearchTableArticle> getArticlesBySearchVector(
+            @Param("searchVector") String searchVector);
 
-        -- Create index
-        CREATE INDEX idx_articles_search ON articles USING gin(search_vector);
-    Then the optimized query becomes:    
-    */
-    
     /*
-    @Query(value = "SELECT a FROM PostgreSQLFullTextSearchTableArticle a  " +
-           " WHERE search_vector @@ plainto_tsquery('english', :searchVector) " +
-           " ORDER BY ts_rank(search_vector, plainto_tsquery('english', :searchVector)) DESC ")
-            // */
-    List<PostgreSQLFullTextSearchTableArticle> searchArticlesBySearchVector(@Param("searchVector") String searchVector);    
+  PostgreSQL Index Recommendation
+      -- Add generated column
+      ALTER TABLE articles ADD COLUMN search_vector tsvector
+      GENERATED ALWAYS AS (to_tsvector('english', coalesce(title, '') || ' ' || coalesce(content, ''))) STORED;
+
+      -- Create index
+      CREATE INDEX idx_articles_search ON articles USING gin(search_vector);
+  Then the optimized query becomes:
+     */
+
+ /*
+  @Query(value = "SELECT a FROM PostgreSQLFullTextSearchTableArticle a  " +
+         " WHERE search_vector @@ plainto_tsquery('english', :searchVector) " +
+         " ORDER BY ts_rank(search_vector, plainto_tsquery('english', :searchVector)) DESC ")
+          // */
+    List<PostgreSQLFullTextSearchTableArticle> searchArticlesBySearchVector(
+            @Param("searchVector") String searchVector);
 }
 
 /*
@@ -85,4 +86,4 @@ Results will be ordered by:
     Higher rank if terms appear in title
     Higher rank if terms appear close together
     Higher rank if terms appear multiple times
-*/
+ */

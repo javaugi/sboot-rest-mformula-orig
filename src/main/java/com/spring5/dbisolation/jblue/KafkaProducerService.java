@@ -9,32 +9,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 
 /**
- *
  * @author javau
  */
 public class KafkaProducerService {
 
     /*
 
-    1) Kafka setup & producer
-        Topic considerations
-            Create topics with an appropriate number of partitions (N) for expected parallelism.
-            Ordering is guaranteed per partition. Messages with the same key go to the same partition.
+  1) Kafka setup & producer
+      Topic considerations
+          Create topics with an appropriate number of partitions (N) for expected parallelism.
+          Ordering is guaranteed per partition. Messages with the same key go to the same partition.
 
-    Example (CLI):
-        kafka-topics --create --topic booking-events --partitions 12 --replication-factor 3 --bootstrap-server broker:9092
-        kafka-topics --create --topic flight-events   --partitions 12 --replication-factor 3 --bootstrap-server broker:9092
+  Example (CLI):
+      kafka-topics --create --topic booking-events --partitions 12 --replication-factor 3 --bootstrap-server broker:9092
+      kafka-topics --create --topic flight-events   --partitions 12 --replication-factor 3 --bootstrap-server broker:9092
 
-    KafkaProducer config notes
-        enable.idempotence=true for the producer (ensures producer-side de-duplication).
-        acks=all for durability.
-        Optionally use Kafka transactions if you need atomic writes to multiple topics/partitions.
+  KafkaProducer config notes
+      enable.idempotence=true for the producer (ensures producer-side de-duplication).
+      acks=all for durability.
+      Optionally use Kafka transactions if you need atomic writes to multiple topics/partitions.
 
-    Properties sample:
-        spring.kafka.producer.properties.enable.idempotence=true
-        spring.kafka.producer.properties.acks=all
-        spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
-        spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+  Properties sample:
+      spring.kafka.producer.properties.enable.idempotence=true
+      spring.kafka.producer.properties.acks=all
+      spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+      spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
      */
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;

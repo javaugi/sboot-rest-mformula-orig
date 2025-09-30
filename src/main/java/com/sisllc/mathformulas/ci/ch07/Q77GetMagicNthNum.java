@@ -1,7 +1,7 @@
 package com.sisllc.mathformulas.ci.ch07;
 
-import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class Q77GetMagicNthNum {
 

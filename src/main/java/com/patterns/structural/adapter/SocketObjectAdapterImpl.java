@@ -8,15 +8,13 @@
 package com.patterns.structural.adapter;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public class SocketObjectAdapterImpl implements SocketAdapter {
 
-    //Using Composition for adapter pattern
+    // Using Composition for adapter pattern
     private Socket sock = new Socket();
 
     @Override

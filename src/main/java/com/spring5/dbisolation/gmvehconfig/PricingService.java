@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PricingService {
-    
+
     private final List<PricingRule> rules;
+
     public PricingService() {
         rules = new ArrayList<>();
     }
-    
+
     public BigDecimal calculatePrice(VehicleConfig config) {
         BigDecimal price = config.getBasePrice();
         for (PricingRule rule : rules) {

@@ -8,16 +8,14 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- *
  * @author javau
  */
 public class GraphAuthorQueryResolver implements GraphQLQueryResolver {
+
     @Autowired
     private GraphAuthorRepository repo;
 
     public GraphAuthor getGraphAuthor(String id) {
         return repo.findById(id).orElseThrow();
     }
-
-    
 }

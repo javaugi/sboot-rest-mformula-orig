@@ -4,7 +4,6 @@
  */
 package com.spring5.utils.jcacheimpl;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.Executors;
@@ -38,18 +37,18 @@ public class TTLCache<K, V> {
         this.accessQueue = new ConcurrentLinkedDeque<>();
 
         // Initialize cleanup scheduler
-        this.cleanupExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
-            Thread t = new Thread(r, "TTLCache-Cleanup");
-            t.setDaemon(true);
-            return t;
-        });
+        this.cleanupExecutor
+                = Executors.newSingleThreadScheduledExecutor(
+                        r -> {
+                            Thread t = new Thread(r, "TTLCache-Cleanup");
+                            t.setDaemon(true);
+                            return t;
+                        });
 
         // Schedule periodic cleanup
         long cleanupInterval = Math.max(1000, defaultTTLMillis / 10); // Cleanup at least every second
         cleanupExecutor.scheduleAtFixedRate(
-            this::cleanupExpiredEntries,
-            cleanupInterval, cleanupInterval, TimeUnit.MILLISECONDS
-        );
+                this::cleanupExpiredEntries, cleanupInterval, cleanupInterval, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -99,12 +98,14 @@ public class TTLCache<K, V> {
         long ttlMillis = timeUnit.toMillis(ttl);
         CacheEntry<V> entry = new CacheEntry<>(value, ttlMillis);
 
-        cache.compute(key, (k, existingEntry) -> {
-            if (existingEntry != null) {
-                accessQueue.remove(k); // Remove from queue for re-insertion at end
-            }
-            return entry;
-        });
+        cache.compute(
+                key,
+                (k, existingEntry) -> {
+                    if (existingEntry != null) {
+                        accessQueue.remove(k); // Remove from queue for re-insertion at end
+                    }
+                    return entry;
+                });
 
         accessQueue.add(key); // Add to end of queue (most recently used)
 
@@ -190,9 +191,7 @@ public class TTLCache<K, V> {
      * Get the number of valid (non-expired) entries
      */
     public int validSize() {
-        return (int) cache.entrySet().stream()
-            .filter(entry -> !entry.getValue().isExpired())
-            .count();
+        return (int) cache.entrySet().stream().filter(entry -> !entry.getValue().isExpired()).count();
     }
 
     /**
@@ -225,14 +224,17 @@ public class TTLCache<K, V> {
         long now = System.currentTimeMillis();
 
         // Remove expired entries
-        cache.entrySet().removeIf(entry -> {
-            if (entry.getValue().isExpired()) {
-                accessQueue.remove(entry.getKey());
-                evictionCount.incrementAndGet();
-                return true;
-            }
-            return false;
-        });
+        cache
+                .entrySet()
+                .removeIf(
+                        entry -> {
+                            if (entry.getValue().isExpired()) {
+                                accessQueue.remove(entry.getKey());
+                                evictionCount.incrementAndGet();
+                                return true;
+                            }
+                            return false;
+                        });
 
         // Enforce capacity after cleanup
         enforceCapacity();
@@ -257,12 +259,7 @@ public class TTLCache<K, V> {
      */
     public CacheStats getStats() {
         return new CacheStats(
-            hitCount.get(),
-            missCount.get(),
-            evictionCount.get(),
-            cache.size(),
-            validSize()
-        );
+                hitCount.get(), missCount.get(), evictionCount.get(), cache.size(), validSize());
     }
 
     /**
@@ -277,23 +274,21 @@ public class TTLCache<K, V> {
         public final int validSize;
         public final double hitRatio;
 
-        public CacheStats(long hitCount, long missCount, long evictionCount,
-            int totalSize, int validSize) {
+        public CacheStats(
+                long hitCount, long missCount, long evictionCount, int totalSize, int validSize) {
             this.hitCount = hitCount;
             this.missCount = missCount;
             this.evictionCount = evictionCount;
             this.totalSize = totalSize;
             this.validSize = validSize;
-            this.hitRatio = (hitCount + missCount) > 0
-                ? (double) hitCount / (hitCount + missCount) : 0.0;
+            this.hitRatio = (hitCount + missCount) > 0 ? (double) hitCount / (hitCount + missCount) : 0.0;
         }
 
         @Override
         public String toString() {
             return String.format(
-                "CacheStats{hits=%d, misses=%d, evictions=%d, hitRatio=%.2f, size=%d/%d}",
-                hitCount, missCount, evictionCount, hitRatio, validSize, totalSize
-            );
+                    "CacheStats{hits=%d, misses=%d, evictions=%d, hitRatio=%.2f, size=%d/%d}",
+                    hitCount, missCount, evictionCount, hitRatio, validSize, totalSize);
         }
     }
 }

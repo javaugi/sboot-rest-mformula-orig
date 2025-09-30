@@ -4,23 +4,21 @@
  */
 package com.spring5.mongodb;
 
-import com.api.jsonata4java.expressions.functions.MapFunction;
 import java.util.List;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Mysql {
 
-    //@Autowired
+    // @Autowired
     private SparkSession sparkSession;
 
-    //@Autowired
+    // @Autowired
     private JavaSparkContext jsc;
 
     public List<String> getTableNames(String JDBC_URI, String JDBC_username, String JDBC_password) {
@@ -31,9 +29,12 @@ public class Mysql {
     public List<String> mysql_getTablesName(String uri, String username, String password) {
         String DB = uri.substring(uri.lastIndexOf("/") + 1);
 
-        String dbQuery = "(SELECT table_name FROM information_schema.tables WHERE table_schema = '" + DB + "') tmp";
+        String dbQuery
+                = "(SELECT table_name FROM information_schema.tables WHERE table_schema = '" + DB + "') tmp";
         Dataset<Row> mysql
-                = sparkSession.read().format("jdbc")
+                = sparkSession
+                        .read()
+                        .format("jdbc")
                         .option("url", uri)
                         .option("user", username)
                         .option("password", password)
@@ -42,17 +43,15 @@ public class Mysql {
 
         System.out.println("Total Tables " + mysql.count());
         /*
-        List<String> list_tables_o = mysql.select("table_name")
-                .map(row -> row.mkString(), Encoders.STRING())
-                .collectAsList();
-        List<String> list_tables = mysql.select("table_name")
-                .map((MapFunction<Row, String>) row -> row.getString(0), Encoders.STRING())
-                .collectAsList();
-        // */
+    List<String> list_tables_o = mysql.select("table_name")
+            .map(row -> row.mkString(), Encoders.STRING())
+            .collectAsList();
+    List<String> list_tables = mysql.select("table_name")
+            .map((MapFunction<Row, String>) row -> row.getString(0), Encoders.STRING())
+            .collectAsList();
+    // */
 
-        List<String> list_tables = mysql.select("table_name")
-                .as(Encoders.STRING())
-                .collectAsList();
+        List<String> list_tables = mysql.select("table_name").as(Encoders.STRING()).collectAsList();
 
         return list_tables;
     }
@@ -165,4 +164,4 @@ Copy
 Edit
 System.out.println(mysql.select("table_name").getClass());
 It should be org.apache.spark.sql.Dataset.
-*/
+ */

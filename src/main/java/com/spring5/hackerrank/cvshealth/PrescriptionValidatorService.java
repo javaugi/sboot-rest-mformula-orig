@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PrescriptionValidatorService {
-    
+
     private final KafkaProducer<String, String> kafkaProducer;
 
     public PrescriptionValidatorService(KafkaProducer<String, String> kafkaProducer) {
@@ -23,13 +23,17 @@ public class PrescriptionValidatorService {
         while (attempts < 3) {
             try {
                 if (validate(prescription)) {
-                    kafkaProducer.send(new ProducerRecord<>("prescriptions" + prescription.getId(), "VALIDATED"));
+                    kafkaProducer.send(
+                            new ProducerRecord<>("prescriptions" + prescription.getId(), "VALIDATED"));
                     return true;
                 }
                 return false;
             } catch (TransientException ex) {
                 attempts++;
-                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
+                }
             }
         }
         return false;

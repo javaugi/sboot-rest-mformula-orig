@@ -4,18 +4,23 @@
  */
 package com.spring5.audit;
 
-
 /**
- *
  * @author javaugi
  */
 public class OrderCreatedEvent {
+
     private String orderId;
     private boolean success;
     private String customerEmail;
-    
-    public OrderCreatedEvent(String orderId) { this.orderId = orderId; }
-    public OrderCreatedEvent(String orderId, String email) { this.orderId = orderId; this.customerEmail = email;}
+
+    public OrderCreatedEvent(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public OrderCreatedEvent(String orderId, String email) {
+        this.orderId = orderId;
+        this.customerEmail = email;
+    }
 
     public String getOrderId() {
         return orderId;
@@ -40,7 +45,4 @@ public class OrderCreatedEvent {
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
-    
-    
-    
 }

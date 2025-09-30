@@ -29,7 +29,9 @@ public class Q75PointEqual {
 
     public static boolean doTest(Square s1, Square s2, Point start, Point end) {
         Q57Line line = s1.cut(s2);
-        boolean r = (isApproxEqual(line.start, start) && isApproxEqual(line.end, end)) || (isApproxEqual(line.start, end) && isApproxEqual(line.end, start));
+        boolean r
+                = (isApproxEqual(line.start, start) && isApproxEqual(line.end, end))
+                || (isApproxEqual(line.start, end) && isApproxEqual(line.end, start));
         if (!r) {
             printSquare(s1);
             printSquare(s2);
@@ -57,27 +59,35 @@ public class Q75PointEqual {
         doTestFull(new Square(10, 10, 10), new Square(8, 10, 10), new Point(8, 15), new Point(20, 15));
 
         // Partially overlapping -- corners
-        doTestFull(new Square(10, 10, 10), new Square(8, 7, 7), new Point(8.777777, 7), new Point(18.8888888, 20));
+        doTestFull(
+                new Square(10, 10, 10),
+                new Square(8, 7, 7),
+                new Point(8.777777, 7),
+                new Point(18.8888888, 20));
 
         // Partially overlapping -- on top of each other
         doTestFull(new Square(10, 10, 10), new Square(8, 7, 15), new Point(8, 22), new Point(23, 7));
 
         // Not overlapping -- side by side
-        doTestFull(new Square(10, 10, 10), new Square(19, 25, 4), new Point(12.5, 10), new Point(22, 29));
+        doTestFull(
+                new Square(10, 10, 10), new Square(19, 25, 4), new Point(12.5, 10), new Point(22, 29));
 
         // Not overlapping -- on top of each other
         doTestFull(new Square(10, 10, 10), new Square(4, 4, 3), new Point(4, 4), new Point(20, 20));
 
         // Contained
-        doTestFull(new Square(10, 10, 10), new Square(12, 14, 3), new Point(10, 16.66666), new Point(20, 13.333));
+        doTestFull(
+                new Square(10, 10, 10),
+                new Square(12, 14, 3),
+                new Point(10, 16.66666),
+                new Point(20, 13.333));
     }
 
     public static void main(String[] args) {
         /* For an easy way to test these, open up Square Cut Tester.xlsx
-		 * in the Chapter 7, Problem 5 folder. Copy and paste the exact
-		 * output from below into the file (including all tabs).
+     * in the Chapter 7, Problem 5 folder. Copy and paste the exact
+     * output from below into the file (including all tabs).
          */
         doTests();
     }
-
 }

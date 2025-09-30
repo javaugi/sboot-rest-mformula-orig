@@ -19,12 +19,13 @@ Query tips:
 @RequiredArgsConstructor
 @Service
 public class FlightServiceWithChangeFeed4PreJoin {
+
     private final FlightDetailRepository flightDetailRepository;
     private final AirlineRepository airlineRepository;
     private final AirportRepository airportRepository;
 
     // Use Cosmos DB change feed to keep denormalized data in sync
-    //@CosmosDbChangeFeedListener(database = "travelDB", container = "flightEvents")
+    // @CosmosDbChangeFeedListener(database = "travelDB", container = "flightEvents")
     public void handleFlightChanges(List<FlightEvent> changes) {
         for (FlightEvent flight : changes) {
             updateFlightDetails(flight);
@@ -34,12 +35,15 @@ public class FlightServiceWithChangeFeed4PreJoin {
     private void updateFlightDetails(FlightEvent flight) {
         // Get related data
         Airline airline = airlineRepository.findByAirlineCode(flight.getAirlineCode()).orElse(null);
-        AirPort departure = airportRepository.findByAirportCode(flight.getDepartureAirport()).orElse(null);
+        AirPort departure
+                = airportRepository.findByAirportCode(flight.getDepartureAirport()).orElse(null);
         AirPort arrival = airportRepository.findByAirportCode(flight.getArrivalAirport()).orElse(null);
 
         // Update denormalized document
-        FlightDetail flightDetail = flightDetailRepository.findByFlightNumber(flight.getFlightNumber())
-            .orElse(new FlightDetail());
+        FlightDetail flightDetail
+                = flightDetailRepository
+                        .findByFlightNumber(flight.getFlightNumber())
+                        .orElse(new FlightDetail());
 
         flightDetail.setFlightNumber(flight.getFlightNumber());
         flightDetail.setDepartureAirport(flight.getDepartureAirport());

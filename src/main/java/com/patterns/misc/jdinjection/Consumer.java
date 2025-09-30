@@ -8,7 +8,6 @@
 package com.patterns.misc.jdinjection;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

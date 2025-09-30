@@ -4,15 +4,16 @@
  */
 package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 
-import java.util.List;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import java.util.List;
 import lombok.extern.jackson.Jacksonized;
 
 @lombok.Data
 @lombok.Builder(toBuilder = true)
 @Jacksonized
 public class BatchRiskRequest {
+
     @NotEmpty
     private List<String> memberIds;
 

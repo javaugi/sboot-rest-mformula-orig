@@ -24,21 +24,26 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {
+
     private final AnswerService answerService;
     private final AssessmentService assessmentService;
     private final AnswerRepository answerRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<Answer>> getAnswerById(@PathVariable Long id) {
-        Answer answer; //answerService.findById(id);
+        Answer answer; // answerService.findById(id);
         answer = answerRepository.findById(id).orElse(null);
         if (answer == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Answer not found");
         }
-        EntityModel<Answer> model = EntityModel.of(answer)
-            .add(linkTo(methodOn(AnswerController.class).getAnswerById(id)).withSelfRel())
-            .add(linkTo(methodOn(AssessmentController.class)
-                .getAssessmentById(answer.getAssessmentId())).withRel("assessment"));
+        EntityModel<Answer> model
+                = EntityModel.of(answer)
+                        .add(linkTo(methodOn(AnswerController.class).getAnswerById(id)).withSelfRel())
+                        .add(
+                                linkTo(
+                                        methodOn(AssessmentController.class)
+                                                .getAssessmentById(answer.getAssessmentId()))
+                                        .withRel("assessment"));
 
         return ResponseEntity.ok(model);
     }
@@ -63,12 +68,12 @@ public ResponseEntity<EntityModel<Answer>> getAnswerById(@PathVariable Long id) 
     if (answer == null) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Answer not found");
     }
-    
+
     EntityModel<Answer> model = EntityModel.of(answer)
         .add(linkTo(methodOn(AnswerController.class).getAnswerById(id)).withSelfRel())
         .add(linkTo(methodOn(AssessmentController.class)
             .getAssessmentById(answer.getAssessmentId())).withRel("assessment"));
-    
+
     return ResponseEntity.ok(model);
 }
 Option 2: Make AnswerModel extend RepresentationModel
@@ -76,11 +81,11 @@ java
 Copy
 public class AnswerModel extends RepresentationModel<AnswerModel> {
     private final Answer answer;
-    
+
     public AnswerModel(Answer answer) {
         this.answer = answer;
     }
-    
+
     // Getters and other methods
 }
 
@@ -90,12 +95,12 @@ public ResponseEntity<AnswerModel> getAnswerById(@PathVariable Long id) {
     if (answer == null) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Answer not found");
     }
-    
+
     AnswerModel model = new AnswerModel(answer);
     model.add(linkTo(methodOn(AnswerController.class).getAnswerById(id)).withSelfRel())
          .add(linkTo(methodOn(AssessmentController.class)
              .getAssessmentById(answer.getAssessmentId())).withRel("assessment"));
-    
+
     return ResponseEntity.ok(model);
 }
 Option 3: Use a ModelMapper approach
@@ -107,16 +112,16 @@ public ResponseEntity<AnswerModel> getAnswerById(@PathVariable Long id) {
     if (answer == null) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Answer not found");
     }
-    
+
     // Convert Answer to AnswerModel using your preferred mapping approach
     AnswerModel answerModel = modelMapper.map(answer, AnswerModel.class);
-    
+
     // Create EntityModel wrapper
     EntityModel<AnswerModel> model = EntityModel.of(answerModel)
         .add(linkTo(methodOn(AnswerController.class).getAnswerById(id)).withSelfRel())
         .add(linkTo(methodOn(AssessmentController.class)
             .getAssessmentById(answer.getAssessmentId())).withRel("assessment"));
-    
+
     return ResponseEntity.ok(model);
 }
 Key Points
@@ -136,4 +141,4 @@ It properly supports HATEOAS
 It's more maintainable than wrapping everything in EntityModel
 
 If you need to keep AnswerModel as a pure DTO without extending RepresentationModel, then Option 3 would be the better choice.
-*/
+ */

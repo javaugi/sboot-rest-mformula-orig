@@ -15,15 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public class FactorNumberIntoPrimeIntArrayTest extends ProjectTest {
 
-    private static final Logger log = LoggerFactory.getLogger(FactorNumberIntoPrimeIntArrayTest.class);
+    private static final Logger log
+            = LoggerFactory.getLogger(FactorNumberIntoPrimeIntArrayTest.class);
 
     int[] returnValue = null;
 
@@ -32,10 +31,9 @@ public class FactorNumberIntoPrimeIntArrayTest extends ProjectTest {
     @Before
     public void setup() {
         primeFactor = new FactorNumberIntoPrimeIntArray();
-
     }
 
-    //prime numbers: 2, 3, 5, 7, 11, 13, 17, 19, 23 and 29.
+    // prime numbers: 2, 3, 5, 7, 11, 13, 17, 19, 23 and 29.
     // 2    [2]
     // 3    [3]
     // 4    [2, 2]

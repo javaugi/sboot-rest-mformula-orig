@@ -1,8 +1,6 @@
 package com.sisllc.mathformulas.ci.lib;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

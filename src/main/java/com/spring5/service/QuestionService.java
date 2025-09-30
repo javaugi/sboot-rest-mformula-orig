@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author javaugi
  */
 @org.springframework.stereotype.Service
 public class QuestionService {
+
     private final Map<Long, Question> questions = new HashMap<>();
     private long nextId = 1;
 
@@ -24,12 +24,10 @@ public class QuestionService {
         questions.put(newQuestion.getId(), newQuestion);
         return newQuestion;
     }
-    
+
     public static Question createQuestion(String text) {
-        return Question.builder()
-                .text(text)
-                .build();
-    }       
+        return Question.builder().text(text).build();
+    }
 
     public Question findById(Long id) {
         return questions.get(id);
@@ -37,5 +35,5 @@ public class QuestionService {
 
     public List<Question> findAll() {
         return new ArrayList<>(questions.values());
-    }    
+    }
 }

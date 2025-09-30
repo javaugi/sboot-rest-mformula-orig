@@ -7,45 +7,45 @@ package com.interview.hrank;
 import java.util.Scanner;
 
 /**
- *
  * @author javaugi
  */
 public class SeriesCalculator {
+
     public static void main(String[] args) {
-        //runScanner();
+        // runScanner();
         runArray();
     }
 
     private static void runScanner() {
         Scanner scanner = new Scanner(System.in);
-        
+
         // Read number of queries
         System.out.print("Enter number of queries: ");
         int q = scanner.nextInt();
-             
+
         for (int i = 0; i < q; i++) {
             // Read a, b, and n for each query
             System.out.print("Enter a, b, and n (space-separated): ");
             int a = scanner.nextInt();
             int b = scanner.nextInt();
             int n = scanner.nextInt();
-            
+
             // Calculate and print the series
             printSeries(a, b, n);
         }
-        
+
         scanner.close();
     }
 
-    public static void runArray() {        
+    public static void runArray() {
         int[][] intArr = {{0, 2, 10}, {5, 3, 5}};
 
-        for (int[] row: intArr) {
+        for (int[] row : intArr) {
             printSeries(row[0], row[1], row[2]);
         }
-       
     }
-    //a + 2⁰×b + (a + 2⁰×b + 2¹×b) + (a + 2⁰×b + 2¹×b + 2²×b
+
+    // a + 2⁰×b + (a + 2⁰×b + 2¹×b) + (a + 2⁰×b + 2¹×b + 2²×b
     public static void printSeries(int a, int b, int n) {
         int current = a;
         for (int i = 0; i < n; i++) {
@@ -54,7 +54,7 @@ public class SeriesCalculator {
             System.out.print(current + " ");
         }
         System.out.println(); // Move to next line after each series
-    }    
+    }
 }
 
 /*
@@ -81,12 +81,12 @@ Input:
     0 2 5
     5 3 4
 Output:
-    2 6 14 30 62 
-    8 14 26 50 
+    2 6 14 30 62
+    8 14 26 50
 
 Alternative Implementation (Using Bit Shift for Powers of 2): For better performance, you can replace Math.pow(2, i) with (1 << i):
 
     current += (1 << i) * b;
 This version is more efficient as it uses bit shifting instead of floating-point exponentiation.
 Would you like me to modify the solution for any specific constraints or requirements?
-*/
+ */

@@ -19,6 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PayrollProcessedEventObserver {
+
     private long employeeId;
-    private BigDecimal netPay;    
+    private BigDecimal netPay;
 }

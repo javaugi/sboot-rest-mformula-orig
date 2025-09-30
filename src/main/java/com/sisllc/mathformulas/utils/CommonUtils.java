@@ -2,11 +2,11 @@
  * Copyright (C) 2023 Center for Information Management, Inc.
  *
  * This program is proprietary.
- * Redistribution without permission is strictly prohibited.  
+ * Redistribution without permission is strictly prohibited.
  * For more information, contact <http://www.ciminc.com>
  */
-
 package com.sisllc.mathformulas.utils;
+
 import com.interview.common.utils.AddressPoBoxVO;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -34,22 +34,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
- * @version $LastChangedRevision $LastChangedDate
- * Last Modified Author: $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author:
+ * $LastChangedBy
  */
 public class CommonUtils {
+
     private static final Logger log = LoggerFactory.getLogger(CommonUtils.class);
 
     public static final String REC_RULES_INTERVAL_PATTERN = "INTERVAL=([0-9]*\\.?[0-9]+)";
     public static final String DD_MMM_YYYY_DASHES = "dd-MMM-yyyy";
-    public static final String EMAIL_REG_EXPRESSION = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
-    public static final String US_PHONE_REG_EXPRESSION = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
+    public static final String EMAIL_REG_EXPRESSION
+            = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+    public static final String US_PHONE_REG_EXPRESSION
+            = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
     public static final String PHONE_INT_EXPRESSION = "^\\([0-9]{10})$";
-    public static final String LAST_NAME_SEARCH_STATE_WIDE_REG_EX = "'''|,|-| |SR.|SR|JR|JR.|DR|DR.|III|II|111|11|\\.|\\(.+?\\)'";
-    public static final String PO_BOX_REG_EXPRESSION = "((P(OST)?.?\\s*((O(FF(ICE)?)?)?.?\\s*(B(IN|OX|.?))|B(IN|OX))+))[\\w\\s*\\W]*";
+    public static final String LAST_NAME_SEARCH_STATE_WIDE_REG_EX
+            = "'''|,|-| |SR.|SR|JR|JR.|DR|DR.|III|II|111|11|\\.|\\(.+?\\)'";
+    public static final String PO_BOX_REG_EXPRESSION
+            = "((P(OST)?.?\\s*((O(FF(ICE)?)?)?.?\\s*(B(IN|OX|.?))|B(IN|OX))+))[\\w\\s*\\W]*";
     public static final String PHONE_NUMBER_ONLY_REGEX = "[^0-9]";
 
     public static Integer serviceEventIntervalFinder(String input) {
@@ -120,14 +123,15 @@ public class CommonUtils {
 
     public static PhoneNumberExtensionVO extractUsPhoneExtension(String phoneNumberExtension) {
         PhoneNumberExtensionVO phoneNumberExtensionVO = new PhoneNumberExtensionVO();
-        // see PhoneFormatExtensionTest for example phone number with extensions from the CTS.VENDORVIEW_USERS.PHONE_NUMBER
+        // see PhoneFormatExtensionTest for example phone number with extensions from the
+        // CTS.VENDORVIEW_USERS.PHONE_NUMBER
         phoneNumberExtensionVO.setOriginalPhoneExtension(phoneNumberExtension);
         if (StringUtils.isBlank(phoneNumberExtension)) {
             phoneNumberExtensionVO.setValid(false);
             return phoneNumberExtensionVO;
         }
 
-        //trim and remove country code
+        // trim and remove country code
         phoneNumberExtension = phoneNumberExtension.trim();
         phoneNumberExtension = phoneNumberExtension.replaceAll("^1-", "");
         phoneNumberExtension = phoneNumberExtension.replaceAll("^1 ", "");
@@ -145,7 +149,7 @@ public class CommonUtils {
 
         String phoneNumber = phoneExtentionNumber.substring(0, 9);
         String formattedPhone = phoneNumberToUSFormat(phoneExtentionNumber.substring(0, 10));
-        //System.out.println("phoneNumber=" + phoneNumber + "-formattedPhone=" + formattedPhone);
+        // System.out.println("phoneNumber=" + phoneNumber + "-formattedPhone=" + formattedPhone);
         phoneNumberExtensionVO.setPhoneNumber(phoneNumber);
         phoneNumberExtensionVO.setFormattedPhoneNumber(formattedPhone);
 
@@ -231,7 +235,12 @@ public class CommonUtils {
         }
 
         if (addressPoBoxVO.isPoBoxFound() && address.length() != addressPoBoxVO.length()) {
-            log.info("stringToSearch {} length {} \n return length {} return value {}", address, address.length(), addressPoBoxVO.length(), addressPoBoxVO);
+            log.info(
+                    "stringToSearch {} length {} \n return length {} return value {}",
+                    address,
+                    address.length(),
+                    addressPoBoxVO.length(),
+                    addressPoBoxVO);
         }
         return addressPoBoxVO;
     }
@@ -388,5 +397,4 @@ public class CommonUtils {
     public static String formatDate(Date date, String format) {
         return new SimpleDateFormat(format, Locale.US).format(date);
     }
-
 }

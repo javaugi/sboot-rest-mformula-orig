@@ -24,7 +24,7 @@ public class Q49NodeFindSum {
         findSum(node.right, sum, path, level + 1);
 
         /* Remove current node from path. Not strictly necessary, since we would
-		 * ignore this value, but it's good practice.
+     * ignore this value, but it's good practice.
          */
         path[level] = Integer.MIN_VALUE;
     }

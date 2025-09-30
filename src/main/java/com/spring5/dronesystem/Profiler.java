@@ -24,13 +24,15 @@ public class Profiler {
 
     public void endOperation(String operationName) {
         long duration = System.nanoTime() - operationStartTime.get();
-        operationStats.compute(operationName, (k, v) -> {
-            if (v == null) {
-                return new OperationStats(duration);
-            }
-            v.recordDuration(duration);
-            return v;
-        });
+        operationStats.compute(
+                operationName,
+                (k, v) -> {
+                    if (v == null) {
+                        return new OperationStats(duration);
+                    }
+                    v.recordDuration(duration);
+                    return v;
+                });
     }
 
     public OperationStats getOperationStats(String operationName) {

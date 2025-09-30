@@ -5,8 +5,6 @@
 package com.interview.shoppingcart.api;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -16,19 +14,21 @@ public interface Coupon {
     static final int LIMIT_AMOUNT = 1000;
 
     static enum CouponCategory {
-        Discount, DiscountByUnits, DiscountPercentage, BuyGetFree;
+        Discount,
+        DiscountByUnits,
+        DiscountPercentage,
+        BuyGetFree;
     }
 
-
     /*
-    int getAmount;
-    int freeAmout;
-    int limitAmout;
-    double discountUnit;
-    double discountAmount;
-    double discountPercentage;
-    double discount;
-    // */
+  int getAmount;
+  int freeAmout;
+  int limitAmout;
+  double discountUnit;
+  double discountAmount;
+  double discountPercentage;
+  double discount;
+  // */
     CouponCategory getCouponCategory();
 
     void setCouponCategory(CouponCategory category);

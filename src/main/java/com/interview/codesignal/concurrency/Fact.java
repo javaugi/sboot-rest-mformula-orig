@@ -5,10 +5,10 @@
 package com.interview.codesignal.concurrency;
 
 /**
- *
  * @author javaugi
  */
 public class Fact {
+
     private String name;
     private Object value;
 
@@ -28,5 +28,5 @@ public class Fact {
     @Override
     public String toString() {
         return name + "=" + value;
-    }    
+    }
 }

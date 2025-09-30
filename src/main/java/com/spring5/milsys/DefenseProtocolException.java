@@ -5,10 +5,10 @@
 package com.spring5.milsys;
 
 /**
- *
  * @author javaugi
  */
 public class DefenseProtocolException extends Exception {
+
     public DefenseProtocolException(String message) {
         super(message);
     }

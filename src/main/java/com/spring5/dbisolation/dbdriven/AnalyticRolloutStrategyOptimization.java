@@ -5,12 +5,11 @@
 package com.spring5.dbisolation.dbdriven;
 
 /**
- *
  * @author javau
  */
 public class AnalyticRolloutStrategyOptimization {
-    
 }
+
 /*
 Question: Create a query to evaluate phased rollout strategies based on success rates.
 
@@ -24,7 +23,7 @@ WITH rollout_performance AS (
         COUNT(*) FILTER (WHERE vu.status = 'success') AS successes,
         COUNT(*) FILTER (WHERE vu.status = 'failed') AS failures,
         AVG(vu.download_speed_kbps) AS avg_speed,
-        PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY 
+        PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY
             EXTRACT(EPOCH FROM (vu.completion_time - vu.attempt_time))) AS p95_duration_seconds
     FROM ota_deployments od
     JOIN vehicle_updates vu ON od.deployment_id = vu.deployment_id
@@ -46,4 +45,4 @@ SELECT
     END AS performance_rating
 FROM rollout_performance
 ORDER BY success_rate DESC;
-*/
+ */

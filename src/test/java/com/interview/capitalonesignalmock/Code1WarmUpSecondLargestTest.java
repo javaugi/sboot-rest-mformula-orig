@@ -10,13 +10,13 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- *
  * @author javaugi
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 public class Code1WarmUpSecondLargestTest {
+
     Code1WarmUpArrayManipulation main = new Code1WarmUpArrayManipulation();
-    
+
     @Test
     public void testSecondLargest_DistinctValues() {
         int[] nums = {5, 3, 9, 1};
@@ -39,5 +39,5 @@ public class Code1WarmUpSecondLargestTest {
     public void testSecondLargest_EmptyArray() {
         int[] nums = {};
         assertEquals(-1, main.secondLargest(nums));
-    }    
+    }
 }

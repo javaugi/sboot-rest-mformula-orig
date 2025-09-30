@@ -4,9 +4,6 @@
  */
 package com.spring5.kafkamicroservice;
 
-import com.spring5.utils.MapToJsonConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +18,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -32,36 +28,36 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class AuditEntry {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     private String eventId;
     private Instant timestamp;
-    private String sourceSystem;   
+    private String sourceSystem;
     private String entityId;
     private EntityType entityType; // TRADE, FILE, USER
     private AuditAction action; // CREATE, UPDATE, DELETE
     private String userId;
-    
-    //You can change columnDefinition = "TEXT" to JSON or JSONB if you're using PostgreSQL.
-    //@Convert(converter = MapToJsonConverter.class)
-    //@Column(columnDefinition = "JSON")
-    //private Map<String, Object> metadata;
+
+    // You can change columnDefinition = "TEXT" to JSON or JSONB if you're using PostgreSQL.
+    // @Convert(converter = MapToJsonConverter.class)
+    // @Column(columnDefinition = "JSON")
+    // private Map<String, Object> metadata;
     // See MapToJsonConverter on how to resove the issue
-    
-     public AuditEntry(String entityId,
+    public AuditEntry(
+            String entityId,
             EntityType entityType,
             AuditAction action,
             String userId,
             Instant timestamp,
             Map<String, Object> metadata) {
         this.entityId = entityId;
-        this.entityType =  entityType;
+        this.entityType = entityType;
         this.action = action;
         this.userId = userId;
         this.timestamp = timestamp;
-        //this.metadata =  metadata;
+        // this.metadata =  metadata;
     }
-     
 }

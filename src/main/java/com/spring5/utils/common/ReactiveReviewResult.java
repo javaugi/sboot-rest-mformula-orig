@@ -30,5 +30,4 @@ public class ReactiveReviewResult {
     public void addOpportunity(ReviewOpportunity oppr) {
         opprs.add(oppr);
     }
-
 }

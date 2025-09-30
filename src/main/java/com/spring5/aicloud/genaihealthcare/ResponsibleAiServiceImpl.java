@@ -17,9 +17,14 @@ class ResponsibleAiServiceImpl implements ResponsibleAIService {
 
     public ResponsibleAiServiceImpl() {
         // Initialize the index with some baseline metrics.
-        aiIndex.put("Transparency", new AiIndexMetric("Transparency", 0.8, "Initial score based on model documentation."));
-        aiIndex.put("Fairness", new AiIndexMetric("Fairness", 0.7, "Initial score based on bias audits."));
-        aiIndex.put("Regulatory Alignment", new AiIndexMetric("Regulatory Alignment", 0.9, "Initial score based on HIPAA compliance."));
+        aiIndex.put(
+                "Transparency",
+                new AiIndexMetric("Transparency", 0.8, "Initial score based on model documentation."));
+        aiIndex.put(
+                "Fairness", new AiIndexMetric("Fairness", 0.7, "Initial score based on bias audits."));
+        aiIndex.put(
+                "Regulatory Alignment",
+                new AiIndexMetric("Regulatory Alignment", 0.9, "Initial score based on HIPAA compliance."));
     }
 
     @Override
@@ -45,7 +50,9 @@ class ResponsibleAiServiceImpl implements ResponsibleAIService {
         // For example, if a human review was required, the "Transparency" metric
         // might be adjusted to reflect the need for more clear responses.
         aiIndex.get("Fairness").score -= 0.01; // Example: a small penalty for a potential bias flag.
-        System.out.println("Responsible AI Index updated. Current Fairness score: " + aiIndex.get("Fairness").getScore());
+        System.out.println(
+                "Responsible AI Index updated. Current Fairness score: "
+                + aiIndex.get("Fairness").getScore());
         // In a real system, this would be a complex process based on a real-time
         // feedback loop and a human review dashboard.
     }

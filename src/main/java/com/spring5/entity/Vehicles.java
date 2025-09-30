@@ -5,12 +5,11 @@
 package com.spring5.entity;
 
 /**
- *
  * @author javau
  */
 public class Vehicles {
-    
 }
+
 /*
 CREATE TABLE vehicles (
     vehicle_id VARCHAR(17) PRIMARY KEY, -- VIN
@@ -22,4 +21,4 @@ CREATE TABLE vehicles (
     last_contact TIMESTAMPTZ,
     region VARCHAR(20) NOT NULL
 );
-*/
+ */

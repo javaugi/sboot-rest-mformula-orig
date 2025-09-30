@@ -2,7 +2,8 @@ package com.sisllc.mathformulas.ci.ch09;
 
 public class FibonacciFB {
 
-    public static int max = 100; // Make this as big as you want! (Though you'll exceed the bounds of a long around 46)
+    public static int max
+            = 100; // Make this as big as you want! (Though you'll exceed the bounds of a long around 46)
     public static int[] fib = new int[max];
 
     public static int fibonacci(int i) {
@@ -41,5 +42,4 @@ public class FibonacciFB {
             System.out.println(j + ": " + times[j] / trials + "ms");
         }
     }
-
 }

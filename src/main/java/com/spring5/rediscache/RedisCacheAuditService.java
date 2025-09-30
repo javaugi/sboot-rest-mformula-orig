@@ -20,7 +20,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
@@ -29,40 +28,39 @@ public class RedisCacheAuditService {
     private static final String AUDIT_STREAM = "healthcare:audit:stream";
 
     @Autowired
-    private @Qualifier(RedisConfig.REDIS_TPL) RedisTemplate<String, Object> redisTemplate;
+    private @Qualifier(RedisConfig.REDIS_TPL)
+    RedisTemplate<String, Object> redisTemplate;
 
     public void logAuditEvent(AuditEvent event) {
-        ObjectRecord<String, AuditEvent> record = StreamRecords.newRecord()
-                .ofObject(event)
-                .withStreamKey(AUDIT_STREAM);
+        ObjectRecord<String, AuditEvent> record
+                = StreamRecords.newRecord().ofObject(event).withStreamKey(AUDIT_STREAM);
 
         redisTemplate.opsForStream().add(record);
     }
 
     /*
-    public List<AuditEvent> getRecentAuditEventsByCount(int count) {
-        return redisTemplate.opsForStream()
-            .read(AuditEvent.class, StreamOffset.latest(AUDIT_STREAM))
-            .limit(count)
-            .map(Record::getValue)
-            .collect(Collectors.toList());
-    }
-    // */
+  public List<AuditEvent> getRecentAuditEventsByCount(int count) {
+      return redisTemplate.opsForStream()
+          .read(AuditEvent.class, StreamOffset.latest(AUDIT_STREAM))
+          .limit(count)
+          .map(Record::getValue)
+          .collect(Collectors.toList());
+  }
+  // */
     public List<AuditEvent> getRecentAuditEvents(int count) {
-        StreamReadOptions options = StreamReadOptions.empty().count(count).block(Duration.ofMillis(100));
+        StreamReadOptions options
+                = StreamReadOptions.empty().count(count).block(Duration.ofMillis(100));
 
-        
         /*
-        List<MapRecord<String, Object, Object>> records = redisTemplate.opsForStream()
-                .read(StreamReadRequest.builder(StreamOffset.latest(AUDIT_STREAM))
-                        .options(options)
-                        .build());
+    List<MapRecord<String, Object, Object>> records = redisTemplate.opsForStream()
+            .read(StreamReadRequest.builder(StreamOffset.latest(AUDIT_STREAM))
+                    .options(options)
+                    .build());
 
-        return records.stream()
-                .map(record -> convertToAuditEvent(record))
-                .collect(Collectors.toList());
-        // */
-        
+    return records.stream()
+            .map(record -> convertToAuditEvent(record))
+            .collect(Collectors.toList());
+    // */
         return null;
     }
 
@@ -70,32 +68,29 @@ public class RedisCacheAuditService {
         // Example conversion logic — adapt to your actual AuditEvent structure
         AuditEvent event = new AuditEvent();
         event.setEventId((String) record.getValue().get("eventId"));
-        //event.setTimestamp((String) record.getValue().get("timestamp"));
+        // event.setTimestamp((String) record.getValue().get("timestamp"));
         event.setEventType((String) record.getValue().get("type"));
         event.setDetails((String) record.getValue().get("details"));
         return event;
     }
-    
-    
+
     /*
-    
-    Optional improvement using object mapping:
-    If you’re storing serialized JSON in Redis, you can integrate Jackson like this:
-    
-    @Autowired
-    private ObjectMapper objectMapper;
-    
-    private AuditEvent convertToAuditEvent(MapRecord<String, Object, Object> record) {
-        return objectMapper.convertValue(record.getValue(), AuditEvent.class);
-    }
-    //*/
 
+  Optional improvement using object mapping:
+  If you’re storing serialized JSON in Redis, you can integrate Jackson like this:
 
+  @Autowired
+  private ObjectMapper objectMapper;
+
+  private AuditEvent convertToAuditEvent(MapRecord<String, Object, Object> record) {
+      return objectMapper.convertValue(record.getValue(), AuditEvent.class);
+  }
+  //*/
     // Batch processing of audit events
     @Scheduled(fixedRate = 30000)
     public void processAuditEvents() {
-        List<ObjectRecord<String, AuditEvent>> records = redisTemplate.opsForStream()
-                .read(AuditEvent.class, StreamOffset.fromStart(AUDIT_STREAM));
+        List<ObjectRecord<String, AuditEvent>> records
+                = redisTemplate.opsForStream().read(AuditEvent.class, StreamOffset.fromStart(AUDIT_STREAM));
 
         if (!records.isEmpty()) {
             // Process and persist to permanent storage
@@ -108,6 +103,5 @@ public class RedisCacheAuditService {
     }
 
     private void persistToDatabase(List<ObjectRecord<String, AuditEvent>> records) {
-
     }
 }

@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.config.TopicBuilder;
 
 /**
- *
  * @author javau
  */
 public class ReactiveKafkaConfig {
+
     @Value("${app.topics.claim-submitted}")
     private String claimSubmittedTopic;
 
@@ -33,19 +33,18 @@ public class ReactiveKafkaConfig {
     @Bean
     public NewTopic claimSubmittedTopic() {
         return TopicBuilder.name(claimSubmittedTopic)
-            .partitions(3)
-            .replicas(1)
-            .config(TopicConfig.RETENTION_MS_CONFIG, "604800000") // 7 days
-            .build();
+                .partitions(3)
+                .replicas(1)
+                .config(TopicConfig.RETENTION_MS_CONFIG, "604800000") // 7 days
+                .build();
     }
 
     @Bean
     public NewTopic deadLetterTopic() {
         return TopicBuilder.name(deadLetterTopic)
-            .partitions(1)
-            .replicas(1)
-            .config(TopicConfig.RETENTION_MS_CONFIG, "2592000000") // 30 days
-            .build();
+                .partitions(1)
+                .replicas(1)
+                .config(TopicConfig.RETENTION_MS_CONFIG, "2592000000") // 30 days
+                .build();
     }
-
 }

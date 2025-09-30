@@ -15,19 +15,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @org.springframework.core.annotation.Order(11)
-public class BinaryTreeFindRootLeafInner implements CommandLineRunner{
+public class BinaryTreeFindRootLeafInner implements CommandLineRunner {
+
     private static final Logger log = LoggerFactory.getLogger(BinaryTreeFindRootLeafInner.class);
 
     public static void main(String[] args) {
-        //testDataPopulation();        
+        // testDataPopulation();
         printQueryResults(args);
     }
-    
+
     @Override
     public void run(String... args) throws Exception {
-        log.info("BinaryTreeFindRootLeafInner with args {}", Arrays.toString(args)); 
+        log.info("BinaryTreeFindRootLeafInner with args {}", Arrays.toString(args));
     }
-    
+
     private static void printQueryResults(String[] args) throws BeansException {
         // Start the Spring application and get the application context
         ConfigurableApplicationContext context = SpringApplication.run(MyApplication.class, args);
@@ -43,38 +44,39 @@ public class BinaryTreeFindRootLeafInner implements CommandLineRunner{
         // Close the application context when done
         context.close();
     }
-    
+
     private static String getQuery() {
-        String q = " select b.N, "
-            + "         case when b.P is null "
-            + "                 then 'Root' "
-            + "              when b.N in (select distinct b0.P from BST b0 where b0.P is not null) "
-            + "                 then 'Inner' "
-            + "              else 'Leaf' "
-            + "         end as p  "
-            + "     from BST b "
-            + "     order by b.N ";
+        String q
+                = " select b.N, "
+                + "         case when b.P is null "
+                + "                 then 'Root' "
+                + "              when b.N in (select distinct b0.P from BST b0 where b0.P is not null) "
+                + "                 then 'Inner' "
+                + "              else 'Leaf' "
+                + "         end as p  "
+                + "     from BST b "
+                + "     order by b.N ";
 
         return q;
-    }   
+    }
 }
 
 /*
-Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! Write a query to print the 
-    respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending 
-    order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores 
+Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! Write a query to print the
+    respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending
+    order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores
     in same number of challenges, then sort them by ascending hacker_id.
 Input Format
 The following tables contain contest data:
-    Hackers: The hacker_id is the id of the hacker, and name is the name of the hacker. 
+    Hackers: The hacker_id is the id of the hacker, and name is the name of the hacker.
     Difficulty: The difficult_level is the level of difficulty of the challenge, and score is the maximum score that can be achieved for
-        a challenge at that difficulty level. 
-    Challenges: The challenge_id is the id of the challenge, the hacker_id is the id of the hacker who created the challenge, and 
-        difficulty_level is the level of difficulty of the challenge. 
-    Submissions: The submission_id is the id of the submission, hacker_id is the id of the hacker who made the submission, 
-        challenge_id is the id of the challenge that the submission belongs to, and score is the score of the submission. 
+        a challenge at that difficulty level.
+    Challenges: The challenge_id is the id of the challenge, the hacker_id is the id of the hacker who created the challenge, and
+        difficulty_level is the level of difficulty of the challenge.
+    Submissions: The submission_id is the id of the submission, hacker_id is the id of the hacker who made the submission,
+        challenge_id is the id of the challenge that the submission belongs to, and score is the score of the submission.
 Sample Input
-    Hackers Table:  Difficulty Table:  Challenges Table:  Submissions Table: 
+    Hackers Table:  Difficulty Table:  Challenges Table:  Submissions Table:
 Sample Output
     90411 Joe
 
@@ -85,30 +87,30 @@ To solve this problem, I need to:
     Filter for hackers with more than one full score challenge
     Sort by the count in descending order, then by hacker_id ascending
 Here's the SQL query:
-        SELECT 
-            s.hacker_id, 
+        SELECT
+            s.hacker_id,
             h.name
-        FROM 
+        FROM
             Submissions s
-        JOIN 
+        JOIN
             Challenges c ON s.challenge_id = c.challenge_id  -- Match submission to challenge
-        JOIN 
+        JOIN
             Difficulty d ON c.difficulty_level = d.difficulty_level -- Get max score for challenge difficulty
-        JOIN 
+        JOIN
             Hackers h ON s.hacker_id = h.hacker_id   -- Get hacker name
-        WHERE 
+        WHERE
             s.score = d.score  -- Only full scores
-        GROUP BY 
-            s.hacker_id, h.name  
-        HAVING 
+        GROUP BY
+            s.hacker_id, h.name
+        HAVING
             COUNT(s.challenge_id) > 1   -- More than one full-score challenge
-        ORDER BY 
+        ORDER BY
             COUNT(s.challenge_id) DESC,  -- Order by most full scores
             s.hacker_id ASC;  -- Then by hacker_id
 
-    this wouble be wrong 
+    this wouble be wrong
         JOIN Challenges c ON s.challenge_id = c.challenge_id AND s.hacker_id = c.hacker_id
-    But this would only find submissions where the hacker submitted a solution to their own challenge, which is likely 
+    But this would only find submissions where the hacker submitted a solution to their own challenge, which is likely
         not the intended logic for a leaderboard.
 
 Explanation:
@@ -127,10 +129,9 @@ Sorting:
 
 This query will return the hacker_id and name of all hackers who achieved full scores on more than one challenge,
     ordered as specified in the problem statement.
-*/
+ */
 
-
-/*
+ /*
 SQL Solution for Student Grades Report
 To solve this problem, I'll need to:
     Join the Students and Grades tables
@@ -138,18 +139,18 @@ To solve this problem, I'll need to:
     Handle the NULL name requirement for grades below 8
 
 Here's the SQL query:
-    SELECT 
-        CASE 
-            WHEN g.Grade >= 8 THEN s.Name 
-            ELSE NULL 
+    SELECT
+        CASE
+            WHEN g.Grade >= 8 THEN s.Name
+            ELSE NULL
         END AS Name,
         g.Grade,
         s.Marks
-    FROM 
+    FROM
         Students s
-    JOIN 
+    JOIN
         Grades g ON s.Marks BETWEEN g.Min_Mark AND g.Max_Mark
-    ORDER BY 
+    ORDER BY
         g.Grade DESC,
         CASE WHEN g.Grade >= 8 THEN s.Name END ASC,
         CASE WHEN g.Grade < 8 THEN s.Marks END ASC;
@@ -164,11 +165,11 @@ Sorting:
     Primary sort: Grade in descending order (highest first)
     For grades 8-10: Secondary sort by name alphabetically
     For grades below 8: Secondary sort by marks in ascending order
-Note: The Grades table structure isn't fully shown in the problem, but I'm assuming it has columns Grade, Min_Mark, 
+Note: The Grades table structure isn't fully shown in the problem, but I'm assuming it has columns Grade, Min_Mark,
     and Max_Mark based on standard grading problems like this. If the column names are different, you would need to adjust the query accordingly.
-*/
+ */
 
-/*
+ /*
 You are given a table, BST, containing two columns: N and P, where N represents the value of a node in Binary Tree, and P is the parent of N.
 Column  Type
 N       Integer
@@ -199,4 +200,4 @@ Sample Output
 6 Leaf
 8 Inner
 9 Leaf
-*/
+ */

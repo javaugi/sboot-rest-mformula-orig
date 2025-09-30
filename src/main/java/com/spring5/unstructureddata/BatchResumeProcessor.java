@@ -18,10 +18,11 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BatchResumeProcessor {
+
     private static final String INPUT_DIR = "resumes/";
     private static final String OUTPUT_DIR = "outputres/";
     private static final ExecutorService executor = Executors.newFixedThreadPool(4); // 4 threads
-    
+
     @Autowired
     LLMService lLMService;
 
@@ -32,10 +33,11 @@ public class BatchResumeProcessor {
 
     private void doBatchProcessing() throws IOException {
         List<Path> resumeFiles = listFiles(INPUT_DIR);
-        List<Future<JsonNode>> futures = resumeFiles.stream()
-                .map(file -> executor.submit(() -> processResume(file)))
-                .collect(Collectors.toList());
-        
+        List<Future<JsonNode>> futures
+                = resumeFiles.stream()
+                        .map(file -> executor.submit(() -> processResume(file)))
+                        .collect(Collectors.toList());
+
         // Wait for all tasks to complete
         for (Future<JsonNode> future : futures) {
             try {
@@ -50,9 +52,10 @@ public class BatchResumeProcessor {
 
     private static List<Path> listFiles(String dir) throws IOException {
         try (Stream<Path> paths = Files.list(Paths.get(dir))) {
-            return paths.filter(Files::isRegularFile)
-                .filter(p -> p.toString().endsWith(".pdf") || p.toString().endsWith(".docx"))
-                .collect(Collectors.toList());
+            return paths
+                    .filter(Files::isRegularFile)
+                    .filter(p -> p.toString().endsWith(".pdf") || p.toString().endsWith(".docx"))
+                    .collect(Collectors.toList());
         }
     }
 
@@ -61,11 +64,11 @@ public class BatchResumeProcessor {
             String text = FileParser.extractText(file.toString());
             JsonNode llmData = lLMService.extractStructuredData(text);
             JsonNode nlpEnhancedData = OpenNLPPostNLPService.enrichWithNLP(llmData);
-            
+
             // Save to output dir
             String outputPath = OUTPUT_DIR + file.getFileName().toString().replace(".pdf", ".json");
             new ObjectMapper().writeValue(new File(outputPath), nlpEnhancedData);
-            
+
             return nlpEnhancedData;
         } catch (Exception e) {
             throw new RuntimeException("Failed to process " + file, e);
@@ -187,11 +190,11 @@ public class BatchResumeProcessor {
             String text = FileParser.extractText(file.toString());
             JsonNode llmData = LLMService.extractStructuredData(text);
             JsonNode nlpEnhancedData = NLPService.enrichWithNLP(llmData);
-            
+
             // Save to output dir
             String outputPath = OUTPUT_DIR + file.getFileName().toString().replace(".pdf", ".json");
             new ObjectMapper().writeValue(new File(outputPath), nlpEnhancedData);
-            
+
             return nlpEnhancedData;
         } catch (Exception e) {
             throw new RuntimeException("Failed to process " + file, e);
@@ -263,21 +266,21 @@ public class NLPService {
 
     public static JsonNode enrichWithNLP(JsonNode data) throws IOException {
         ObjectNode enriched = (ObjectNode) data;
-        
+
         // Extract entities using NLP
         String text = data.get("work_experience").asText();
         String[] tokens = tokenizer.tokenize(text);
-        
+
         // Load NER models (e.g., for skills)
         NameFinderME nameFinder = new NameFinderME(
             new TokenNameFinderModel(new File("en-ner-person.bin"))
         );
-        
+
         Span[] names = nameFinder.find(tokens);
         if (names.length > 0) {
             enriched.put("ner_identified_companies", tokens[names[0].getStart()]);
         }
-        
+
         return enriched;
     }
 }
@@ -325,4 +328,4 @@ Resume Scoring: Rank candidates based on skills/experience.
 LangChain4J RAG: Augment with job description context.
 
 Validation: Ensure extracted emails/phones are valid.
-*/
+ */

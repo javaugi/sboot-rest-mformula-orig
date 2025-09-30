@@ -4,7 +4,7 @@
  */
 package com.spring5.rediscache;
 
-//import static jakarta.persistence.GenerationType.UUID;
+// import static jakarta.persistence.GenerationType.UUID;
 import com.spring5.RedisConfig;
 import java.time.Duration;
 import java.util.UUID;
@@ -18,9 +18,10 @@ public class CriticalHealthcareOperationService {
 
     private static final String LOCK_KEY_PREFIX = "healthcare:lock:";
     private static final long LOCK_EXPIRE_TIME_MS = 30000;
-    
+
     @Autowired
-    private @Qualifier(RedisConfig.REDIS_TPL_STR) RedisTemplate<String, String> redisTemplate;
+    private @Qualifier(RedisConfig.REDIS_TPL_STR)
+    RedisTemplate<String, String> redisTemplate;
 
     public boolean performCriticalOperation(String operationId, String patientId) {
         String lockKey = LOCK_KEY_PREFIX + operationId + ":" + patientId;
@@ -28,11 +29,10 @@ public class CriticalHealthcareOperationService {
 
         try {
             // Attempt to acquire lock
-            Boolean locked = redisTemplate.opsForValue().setIfAbsent(
-                lockKey, 
-                lockValue, 
-                Duration.ofMillis(LOCK_EXPIRE_TIME_MS)
-            );
+            Boolean locked
+                    = redisTemplate
+                            .opsForValue()
+                            .setIfAbsent(lockKey, lockValue, Duration.ofMillis(LOCK_EXPIRE_TIME_MS));
 
             if (Boolean.TRUE.equals(locked)) {
                 // Perform your critical operation

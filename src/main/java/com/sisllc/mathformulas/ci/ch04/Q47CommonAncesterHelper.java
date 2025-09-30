@@ -42,5 +42,4 @@ public class Q47CommonAncesterHelper {
         TreeNode ancestor = commonAncestor(root, n3, n7);
         System.out.println(ancestor.data);
     }
-
 }

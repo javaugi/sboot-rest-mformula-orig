@@ -7,12 +7,7 @@
  */
 package com.patterns.behavioral.iterator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -39,5 +34,4 @@ public class Channel {
     public String toString() {
         return "Frequency=" + this.frequency + ", Type=" + this.TYPE;
     }
-
 }

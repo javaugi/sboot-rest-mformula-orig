@@ -14,7 +14,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
  * @author javaugi
  */
 @Data
@@ -24,11 +23,11 @@ import lombok.NoArgsConstructor;
 @jakarta.persistence.Entity
 @Table(name = "ANSWER")
 public class Answer implements java.io.Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     Long assessmentId;
     Long questionId;
     String answerText;

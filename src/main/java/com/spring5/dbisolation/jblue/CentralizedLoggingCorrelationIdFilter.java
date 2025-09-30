@@ -19,7 +19,7 @@ public class CentralizedLoggingCorrelationIdFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         String correlationId = UUID.randomUUID().toString();
         MDC.put("correlationId", correlationId);
         try {
@@ -30,7 +30,6 @@ public class CentralizedLoggingCorrelationIdFilter implements Filter {
     }
 }
 
-
 /*
 In org.slf4j.MDC, MDC stands for Mapped Diagnostic Context.
 It is a feature used in logging frameworks like SLF4J (Simple Logging Facade for Java) to enrich log messages with contextual information. This
@@ -39,9 +38,9 @@ It is a feature used in logging frameworks like SLF4J (Simple Logging Facade for
     or microservices, where logs from different operations can be interleaved, making it difficult to trace a single request or process. By using MDC,
     you can easily filter, group, and analyze log entries based on this contextual data.
  */
-//2. Logging with JSON + Correlation IDs
-//Use SLF4J + Logback for structured logs.
-//Add logback-spring.xml in src/main/resources
+// 2. Logging with JSON + Correlation IDs
+// Use SLF4J + Logback for structured logs.
+// Add logback-spring.xml in src/main/resources
 
 /*
 2. Logging with JSON + Correlation IDs

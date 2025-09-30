@@ -4,60 +4,52 @@
  */
 package com.spring5.pharmacy;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.retry.annotation.Backoff;
-//import org.springframework.retry.annotation.CircuitBreaker;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
 @Service
 public class PrescriptionSagaEventSourcingService {
-    
+
     @Autowired
     private PrescriptionEventRepository eventRepository;
-    
+
     @Autowired
     private AdjudicationService adjudicationService;
-    
+
     @Autowired
     private InsuranceService insuranceService;
-    
+
     public void handleEvent(PrescriptionEvent event) {
         // Store event
         eventRepository.save(event);
-        
+
         // Check if all steps completed
         if (isSagaComplete(event.getCorrelationId())) {
             completeSaga(event.getCorrelationId());
         } else if (isSagaFailed(event.getCorrelationId())) {
             compensateSaga(event.getCorrelationId());
         }
-    } 
-    
+    }
+
     private boolean isSagaComplete(String correlationId) {
         return true;
     }
-    
+
     private void completeSaga(String correlationId) {
     }
-    
+
     private boolean isSagaFailed(String correlationId) {
         return true;
     }
-    
+
     private void compensateSaga(String correlationId) {
     }
 
-    //SAGA Compensation:
+    // SAGA Compensation:
     public void compensatePrescription(String prescriptionId) {
         // Reverse any completed steps
         adjudicationService.cancelAdjudication(prescriptionId);
         insuranceService.revertCoverageCheck(prescriptionId);
         // Log compensation
-    }    
-        
- 
-
+    }
 }

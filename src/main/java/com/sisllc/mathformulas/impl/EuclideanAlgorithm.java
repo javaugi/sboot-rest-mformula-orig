@@ -4,20 +4,21 @@ package com.sisllc.mathformulas.impl;
  * Euclidean Algorithm The Euclidean algorithm is a way to find the greatest
  * common divisor of two positive integers.
  *
+ * <p>
  * Program to find GCD or HCF of two numbers GCD (Greatest Common Divisor) or
  * HCF (Highest Common Factor) of two numbers is the largest number that divides
  * both of them.
  *
+ * <p>
  * GCD of two numbers is the largest number that divides both of them. A simple
  * way to find GCD is to factorize both numbers and multiply common factors.
  *
  * @author david
- *
  */
 public class EuclideanAlgorithm {
     // find greatest common divisor/Highest Common Factor
 
-    //The algorithm is based on below facts.
+    // The algorithm is based on below facts.
     // If we subtract smaller number from larger(we reduce larger number), GCD doesn’t change.
     // So if we keep subtracting repeatedly the larger of two, we end up with GCD.
     public static int gcd(int a, int b) {
@@ -44,7 +45,8 @@ public class EuclideanAlgorithm {
         return b;
     }
 
-    //Now instead of subtraction, if we divide smaller number, the algorithm stops when we find remainder 0.
+    // Now instead of subtraction, if we divide smaller number, the algorithm stops when we find
+    // remainder 0.
     public static int gcd2(int a, int b) {
         if (a == 0) {
             return b;
@@ -99,7 +101,7 @@ public class EuclideanAlgorithm {
         // Output : 24
 
         int[] arr2 = {2, 7, 3, 9, 4};
-        //Output : 252
+        // Output : 252
 
         int output = 0;
         for (int i = 0; i < arr1.length - 1; i++) {

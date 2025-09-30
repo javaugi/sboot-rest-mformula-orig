@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author javaugi
  */
 public class CapitalCharInString {
@@ -19,8 +18,8 @@ public class CapitalCharInString {
     private static final CapitalCharInString main = new CapitalCharInString();
 
     public static void main(String[] args) {
-        //main.test1();
-        //main.test2();
+        // main.test1();
+        // main.test2();
         convertDigitsToWords();
         removeVowels();
         convertToAscii();
@@ -29,128 +28,135 @@ public class CapitalCharInString {
 
     public static void SimpleROT13Impl() {
         String text = "hello";
-        String rot13 = text.chars()
-            .map(c -> {
-                if (c >= 'a' && c <= 'z') {
-                    return (c - 'a' + 13) % 26 + 'a';
-                } else if (c >= 'A' && c <= 'Z') {
-                    return (c - 'A' + 13) % 26 + 'A';
-                }
-                return c;
-            })
-            .collect(StringBuilder::new,
-                StringBuilder::appendCodePoint,
-                StringBuilder::append)
-            .toString();
+        String rot13
+                = text.chars()
+                        .map(
+                                c -> {
+                                    if (c >= 'a' && c <= 'z') {
+                                        return (c - 'a' + 13) % 26 + 'a';
+                                    } else if (c >= 'A' && c <= 'Z') {
+                                        return (c - 'A' + 13) % 26 + 'A';
+                                    }
+                                    return c;
+                                })
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
         System.out.println(rot13); // uryyb
     }
 
     public static void customCharTrans() {
         String text = "hello123";
-        String transformed = text.chars()
-            .map(c -> {
-                if (Character.isLetter(c)) {
-                    return Character.toUpperCase(c);
-                } else if (Character.isDigit(c)) {
-                    return c + 1; // increment digit
-                }
-                return c;
-            })
-            .collect(StringBuilder::new,
-                StringBuilder::appendCodePoint,
-                StringBuilder::append)
-            .toString();
+        String transformed
+                = text.chars()
+                        .map(
+                                c -> {
+                                    if (Character.isLetter(c)) {
+                                        return Character.toUpperCase(c);
+                                    } else if (Character.isDigit(c)) {
+                                        return c + 1; // increment digit
+                                    }
+                                    return c;
+                                })
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
         System.out.println(transformed); // HELLO234
     }
 
     public static void convertDigitsToWords() {
         String numbers = "123";
-        String words = numbers.chars()
-            .map(c -> {
-                switch (c) {
-                    case '1':
-                        return "one".chars().sum();
-                    case '2':
-                        return "two".chars().sum();
-                    case '3':
-                        return "three".chars().sum();
-                    default:
-                        return c;
-                }
-            })
-            .mapToObj(c -> String.valueOf((char) c))
-            .collect(Collectors.joining());
+        String words
+                = numbers
+                        .chars()
+                        .map(
+                                c -> {
+                                    switch (c) {
+                                        case '1':
+                                            return "one".chars().sum();
+                                        case '2':
+                                            return "two".chars().sum();
+                                        case '3':
+                                            return "three".chars().sum();
+                                        default:
+                                            return c;
+                                    }
+                                })
+                        .mapToObj(c -> String.valueOf((char) c))
+                        .collect(Collectors.joining());
 
         System.out.println(words); // onetwothree
     }
 
     public static void removeVowels() {
         String text = "hello world";
-        String noVowels = text.chars()
-            .filter(c -> "aeiouAEIOU".indexOf(c) == -1)
-            .map(c -> c) // identity map
-            .collect(StringBuilder::new,
-                StringBuilder::appendCodePoint,
-                StringBuilder::append)
-            .toString();
+        String noVowels
+                = text.chars()
+                        .filter(c -> "aeiouAEIOU".indexOf(c) == -1)
+                        .map(c -> c) // identity map
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
         System.out.println(noVowels); // hll wrld
     }
 
     public static void convertToAscii() {
         String text = "abc";
-        int[] asciiValues = text.chars()
-            .map(c -> c) // already ASCII values
-            .toArray();
+        int[] asciiValues
+                = text.chars()
+                        .map(c -> c) // already ASCII values
+                        .toArray();
         System.out.println("1 convertToAscii:" + Arrays.toString(asciiValues)); // [97, 98, 99]
-        System.out.println("2 convertToAscii:" + Arrays.toString(text.chars().toArray())); // [97, 98, 99]
+        System.out.println(
+                "2 convertToAscii:" + Arrays.toString(text.chars().toArray())); // [97, 98, 99]
     }
 
     private void test1() {
         String word = "This is the Test to Check How many Capital Chars are";
 
-        long count = word.chars()
-            .filter(Character::isUpperCase)
-            //.filter(Character::isLetter)
-            //.filter(Character::isDigit)
-            //.filter(c -> !Character.isWhitespace(c))
-            .count();
+        long count
+                = word.chars()
+                        .filter(Character::isUpperCase)
+                        // .filter(Character::isLetter)
+                        // .filter(Character::isDigit)
+                        // .filter(c -> !Character.isWhitespace(c))
+                        .count();
         System.out.println("There are total " + count + " capital characters in the string: " + word);
 
         int shift = 5;
-        String upper = word.chars()
-            //.map(c -> c + shift)
-            //.map(Character::toLowerCase)
-            .map(Character::toUpperCase)
-            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
+        String upper
+                = word.chars()
+                        // .map(c -> c + shift)
+                        // .map(Character::toLowerCase)
+                        .map(Character::toUpperCase)
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
         System.out.println("UPPER: " + upper + " \n original " + word);
 
         // Collect into a String
-        String onlyDigits = word.chars()
-            .filter(Character::isDigit)
-            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
+        String onlyDigits
+                = word.chars()
+                        .filter(Character::isDigit)
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
 
         // Collect into a List<Character>
-        List<Character> charsList = word.chars()
-            .mapToObj(c -> (char) c)
-            .collect(Collectors.toList());
+        List<Character> charsList = word.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
 
-        int sum = word.chars().sum();   // sum of code points
+        int sum = word.chars().sum(); // sum of code points
         OptionalInt max = word.chars().max();
         OptionalInt min = word.chars().min();
         double avg = word.chars().average().orElse(0);
-            
 
         final AtomicInteger counter = new AtomicInteger(0);
-        word.chars().forEach(c -> {
-            if (Character.isUpperCase(c)) {
-                // do something
-                //counter.addAndGet(1);
-                counter.incrementAndGet();
-            }
-        });
-        System.out.println("There are total " + counter.get() + " capital characters in the string: " + word);
+        word.chars()
+                .forEach(
+                        c -> {
+                            if (Character.isUpperCase(c)) {
+                                // do something
+                                // counter.addAndGet(1);
+                                counter.incrementAndGet();
+                            }
+                        });
+        System.out.println(
+                "There are total " + counter.get() + " capital characters in the string: " + word);
 
         int capitalCharCount = 0;
         for (char ch : word.toCharArray()) {
@@ -158,7 +164,8 @@ public class CapitalCharInString {
                 capitalCharCount++;
             }
         }
-        System.out.println("There are total " + capitalCharCount + " capital characters in the string: " + word);
+        System.out.println(
+                "There are total " + capitalCharCount + " capital characters in the string: " + word);
 
         char char1 = 'A';
         char char2 = 'a';
@@ -202,6 +209,12 @@ public class CapitalCharInString {
                 lowerCaseCount++;
             }
         }
-        System.out.println("The array length has " + upperCaseCount + " upper case and " + lowerCaseCount + " lower case and the total is " + (lowerCaseCount + lowerCaseCount));
+        System.out.println(
+                "The array length has "
+                + upperCaseCount
+                + " upper case and "
+                + lowerCaseCount
+                + " lower case and the total is "
+                + (lowerCaseCount + lowerCaseCount));
     }
 }

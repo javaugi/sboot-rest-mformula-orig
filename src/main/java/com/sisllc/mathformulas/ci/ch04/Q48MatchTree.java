@@ -14,7 +14,7 @@ public class Q48MatchTree {
     }
 
     /* Checks if the binary tree rooted at r1 contains the binary tree
-	 * rooted at r2 as a subtree somewhere within it.
+   * rooted at r2 as a subtree somewhere within it.
      */
     public static boolean subTree(TreeNode r1, TreeNode r2) {
         if (r1 == null) {
@@ -29,7 +29,7 @@ public class Q48MatchTree {
     }
 
     /* Checks if the binary tree rooted at r1 contains the
-	 * binary tree rooted at r2 as a subtree starting at r1.
+   * binary tree rooted at r2 as a subtree starting at r1.
      */
     public static boolean matchTree(TreeNode r1, TreeNode r2) {
         if (r2 == null && r1 == null) {
@@ -39,10 +39,9 @@ public class Q48MatchTree {
             return false; //  big tree empty & subtree still not found
         }
         if (r1.data != r2.data) {
-            return false;  // data doesn�t match
+            return false; // data doesn�t match
         }
-        return (matchTree(r1.left, r2.left)
-                && matchTree(r1.right, r2.right));
+        return (matchTree(r1.left, r2.left) && matchTree(r1.right, r2.right));
     }
 
     public static void main(String[] args) {
@@ -70,5 +69,4 @@ public class Q48MatchTree {
             System.out.println("t4 is not a subtree of t3");
         }
     }
-
 }

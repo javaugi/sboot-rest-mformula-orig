@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class WithPartitionKeysMessageProducer {
+
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     public void sendOrderEvent(KafkaOrderEvent event) {
@@ -21,5 +22,5 @@ public class WithPartitionKeysMessageProducer {
 
         // Or explicitly specify partition
         // kafkaTemplate.send("orders", 0, event.getOrderId(), event.toString());
-    }    
+    }
 }

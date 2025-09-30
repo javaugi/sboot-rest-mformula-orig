@@ -11,11 +11,13 @@ import org.springframework.web.client.ResourceAccessException;
 
 @Service
 public class CheckCoverageRetryLogic {
-    @Retryable(value = {ResourceAccessException.class}, 
-               maxAttempts = 3, 
-               backoff = @Backoff(delay = 1000))
+
+    @Retryable(
+            value = {ResourceAccessException.class},
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 1000))
     public InsuranceResponse checkCoverage(String medication, String insuranceId) {
         // REST call implementation
         return new InsuranceResponse("Retry", null);
-    }    
+    }
 }

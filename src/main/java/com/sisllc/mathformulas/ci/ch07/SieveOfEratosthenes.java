@@ -4,9 +4,9 @@ public class SieveOfEratosthenes {
 
     public static void crossOff(boolean[] flags, int prime) {
         /* Cross off remaining multiples of prime. We can start with
-		 * (prime*prime), because if we have a k * prime, where k < prime,
-		 * this value would have already been crossed off in a prior
-		 * iteration. */
+     * (prime*prime), because if we have a k * prime, where k < prime,
+     * this value would have already been crossed off in a prior
+     * iteration. */
         for (int i = prime * prime; i < flags.length; i += prime) {
             flags[i] = false;
         }
@@ -56,7 +56,7 @@ public class SieveOfEratosthenes {
             }
         }
 
-        return flags; //prune(flags, count);
+        return flags; // prune(flags, count);
     }
 
     public static void main(String[] args) {
@@ -67,5 +67,4 @@ public class SieveOfEratosthenes {
             }
         }
     }
-
 }

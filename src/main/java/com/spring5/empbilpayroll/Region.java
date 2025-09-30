@@ -4,23 +4,11 @@
  */
 package com.spring5.empbilpayroll;
 
-import jakarta.persistence.Cacheable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 /**
- *
  * @author javaugi
  */
-
 public enum Region {
-    US, EU, OTHERS;
+    US,
+    EU,
+    OTHERS;
 }

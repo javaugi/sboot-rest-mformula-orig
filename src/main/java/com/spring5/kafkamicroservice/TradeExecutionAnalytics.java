@@ -18,33 +18,33 @@ public class TradeExecutionAnalytics {
 
     public void analyzeTradeFlow(String tradeId) {
         /* TODO
-        Span span = tracer.spanBuilder("analyzeTradeFlow")
-            .setAttribute("trade.id", tradeId)
-            .startSpan();
-        
-        try (Scope scope = span.makeCurrent()) {
-            // 1. Get trade creation span
-            SpanContext tradeCreation = getSpanContextForTradeCreation(tradeId);
-            
-            // 2. Get file processing span
-            SpanContext fileProcessing = getSpanContextForFileProcessing(tradeId);
-            
-            // 3. Get audit spans
-            List<SpanContext> auditSpans = getAuditSpansForTrade(tradeId);
-            
-            // Analyze timing and relationships
-            analyzeTimings(tradeCreation, fileProcessing, auditSpans);
-            
-        } finally {
-            span.end();
-        }
-        // */
+    Span span = tracer.spanBuilder("analyzeTradeFlow")
+        .setAttribute("trade.id", tradeId)
+        .startSpan();
+
+    try (Scope scope = span.makeCurrent()) {
+        // 1. Get trade creation span
+        SpanContext tradeCreation = getSpanContextForTradeCreation(tradeId);
+
+        // 2. Get file processing span
+        SpanContext fileProcessing = getSpanContextForFileProcessing(tradeId);
+
+        // 3. Get audit spans
+        List<SpanContext> auditSpans = getAuditSpansForTrade(tradeId);
+
+        // Analyze timing and relationships
+        analyzeTimings(tradeCreation, fileProcessing, auditSpans);
+
+    } finally {
+        span.end();
+    }
+    // */
     }
 
     /*
-    private void analyzeTimings(SpanContext... contexts) {
-        // Implementation would query your tracing backend (Jaeger, Zipkin, etc.)
-        // to analyze the full flow across services
-    }
-    // */
+  private void analyzeTimings(SpanContext... contexts) {
+      // Implementation would query your tracing backend (Jaeger, Zipkin, etc.)
+      // to analyze the full flow across services
+  }
+  // */
 }

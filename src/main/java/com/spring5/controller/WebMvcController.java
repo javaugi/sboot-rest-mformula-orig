@@ -30,17 +30,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author javaugi
  */
 @RestController
 @RequiredArgsConstructor
 public class WebMvcController {
+
     private final ProductService productService;
     private final ProductRepository productRepository;
 
     // to display all products at localhost:8080
-    // to see database values at localhost:8080/h2-console    
+    // to see database values at localhost:8080/h2-console
     @GetMapping
     public ResponseEntity<Collection<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.findAll());
@@ -50,7 +50,7 @@ public class WebMvcController {
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
 
-        //*
+        // *
         if (productOptional.isPresent()) {
             ResponseEntity.status(HttpStatusCode.valueOf(200)).body(productOptional.get());
             ResponseEntity.status(HttpStatus.OK).body(productOptional.get());
@@ -58,41 +58,47 @@ public class WebMvcController {
             return ResponseEntity.ok(productOptional.get());
         } else {
             ResponseEntity.notFound().build();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
+            return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
         }
         // */
-        //return ResponseEntity.ok(productOptional.orElse(null));
+        // return ResponseEntity.ok(productOptional.orElse(null));
 
-        //round(sqrt((power(max(lat_n) - min(lat_n)) + power(max(lat_n) - min(lat_n))), 2), 4)
+        // round(sqrt((power(max(lat_n) - min(lat_n)) + power(max(lat_n) - min(lat_n))), 2), 4)
     }
 
     @GetMapping("/api/{id}")
     public ResponseEntity<Product> getProductByApiId(@PathVariable Long id) {
-        return productRepository.findById(id)
-            .map(product -> {
-                return ResponseEntity.ok(product);
-            })
-            .orElse(ResponseEntity.notFound().build());
-        //return ResponseEntity.ok(productOptional.orElse(null));
+        return productRepository
+                .findById(id)
+                .map(
+                        product -> {
+                            return ResponseEntity.ok(product);
+                        })
+                .orElse(ResponseEntity.notFound().build());
+        // return ResponseEntity.ok(productOptional.orElse(null));
     }
-    
+
     @GetMapping("/api2/{id}")
     public ResponseEntity<Product> getProductByApi2Id(@PathVariable Long id) {
         return ResponseEntity.ok(productRepository.findById(id).orElse(null));
     }
 
     @GetMapping("/restProducts")
-    public ResponseEntity<Collection<Product>> listProducts(HttpServletRequest request, ModelMap modelMap) {
+    public ResponseEntity<Collection<Product>> listProducts(
+            HttpServletRequest request, ModelMap modelMap) {
         return ResponseEntity.ok(productRepository.findAll());
-    } 
-    
+    }
+
     @GetMapping("/restProducts2")
-    public ResponseEntity<Collection<Product>> listProducts2(org.springframework.http.RequestEntity<Product> request) {
+    public ResponseEntity<Collection<Product>> listProducts2(
+            org.springframework.http.RequestEntity<Product> request) {
         return ResponseEntity.ok(productRepository.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<Product> addProduct(org.springframework.http.RequestEntity<Product> request) {
+    public ResponseEntity<Product> addProduct(
+            org.springframework.http.RequestEntity<Product> request) {
         Product product = productRepository.save(request.getBody());
 
         ResponseEntity.created(URI.create("/api/products/" + product.getId())).body(product);
@@ -111,18 +117,22 @@ public class WebMvcController {
     }
 
     @PutMapping
-    public ResponseEntity<Product> updateProduct(org.springframework.http.RequestEntity<Product> request) {
+    public ResponseEntity<Product> updateProduct(
+            org.springframework.http.RequestEntity<Product> request) {
         Product product = productRepository.save(request.getBody());
         ResponseEntity.status(HttpStatus.FOUND).body(product);
         return ResponseEntity.ok(product);
-    } 
-    
-    
-    @RequestMapping(value = "/heavyresource/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> partialUpdateGeneric(@RequestBody Product productUpdates, @PathVariable("id") Long id) {
+    }
+
+    @RequestMapping(
+            value = "/heavyresource/{id}",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> partialUpdateGeneric(
+            @RequestBody Product productUpdates, @PathVariable("id") Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
 
-        //*
+        // *
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             BeanUtils.copyProperties(productUpdates, product, new String[]{"id"});
@@ -130,27 +140,30 @@ public class WebMvcController {
             ResponseEntity.status(org.springframework.http.HttpStatusCode.valueOf(200)).body(product);
             return ResponseEntity.ok(product);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
+            return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
         }
         // */
-        //return ResponseEntity.ok(productOptional.orElse(null));
-    }    
-    
+        // return ResponseEntity.ok(productOptional.orElse(null));
+    }
+
     @PatchMapping("/{id}")
-    public ResponseEntity<?> patchUpdate(@RequestBody Product productUpdates, @PathVariable("id") Long id) {
+    public ResponseEntity<?> patchUpdate(
+            @RequestBody Product productUpdates, @PathVariable("id") Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
 
-        //*
+        // *
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             BeanUtils.copyProperties(productUpdates, product, new String[]{"id"});
             product = productRepository.save(product);
             return ResponseEntity.ok(product);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
+            return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
         }
         // */
-        //return ResponseEntity.ok(productOptional.orElse(null));
+        // return ResponseEntity.ok(productOptional.orElse(null));
     }
 
     @DeleteMapping("/{id}") // Map DELETE requests to /products/{id}
@@ -161,32 +174,34 @@ public class WebMvcController {
             productRepository.deleteById(id); // Use deleteById for deleting by ID
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content for successful deletion
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
+            return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
         }
-    }    
-    
+    }
+
     @DeleteMapping
-    public ResponseEntity<Void> deleteProduct(org.springframework.http.RequestEntity<Product> request) {  
+    public ResponseEntity<Void> deleteProduct(
+            org.springframework.http.RequestEntity<Product> request) {
         Optional<Product> productOptional = Optional.empty();
         long id = 0;
         if (request.getBody() != null) {
-            id = request.getBody().getId();            
-        }        
+            id = request.getBody().getId();
+        }
         if (id > 0) {
             productOptional = productRepository.findById(id);
         }
-        
+
         if (id > 0 && productOptional.isPresent()) {
             productRepository.deleteById(id); // Use deleteById for deleting by ID
             ResponseEntity.noContent().build();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content for successful deletion
         } else {
             ResponseEntity.notFound().build();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
+            return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
         }
     }
 }
-
 
 /*
 /*
@@ -218,4 +233,4 @@ This implementation provides a solid foundation that can be extended with additi
     Pagination
     Caching
     API documentation with Swagger
-*/
+ */

@@ -11,8 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
-//import org.apache.hadoop.shaded.org.apache.kerby.kerberos.provider.token.JwtTokenProvider;
-//import org.apache.hadoop.shaded.org.apache.kerby.kerberos.provider.token.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -36,7 +34,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter implements GlobalFilter, Ordered {
-    
+
     @Autowired
     private JwtTokenProvider tokenProvider;
     @Autowired
@@ -44,18 +42,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Glo
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    
     @Override
-    protected void doFilterInternal(HttpServletRequest request, 
-                                    HttpServletResponse response, 
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 String username = tokenProvider.getUsernameFromJWT(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = 
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication
+                        = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -64,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Glo
         }
         filterChain.doFilter(request, response);
     }
-    
+
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
@@ -95,14 +93,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Glo
 
         // Add user info to headers for downstream services
         String username = tokenProvider.getUsernameFromToken(token);
-        ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
-            .header("X-User-Id", username)
-            .header("X-User-Role", getRoleFromToken(token))
-            .header("X-User-Type", getUserTypeFromToken(token))
-            .build();
+        ServerHttpRequest modifiedRequest
+                = exchange
+                        .getRequest()
+                        .mutate()
+                        .header("X-User-Id", username)
+                        .header("X-User-Role", getRoleFromToken(token))
+                        .header("X-User-Type", getUserTypeFromToken(token))
+                        .build();
 
         return chain.filter(exchange.mutate().request(modifiedRequest).build());
     }
+
     private String getRoleFromToken(String token) {
         return token;
     }
@@ -113,9 +115,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Glo
 
     private boolean isPublicEndpoint(String path) {
         return path.startsWith("/api/auth/login")
-            || path.startsWith("/api/auth/external")
-            || path.startsWith("/api/auth/refresh")
-            || path.startsWith("/actuator/health");
+                || path.startsWith("/api/auth/external")
+                || path.startsWith("/api/auth/refresh")
+                || path.startsWith("/actuator/health");
     }
 
     private String extractToken(ServerHttpRequest request) {

@@ -10,15 +10,14 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
  * @author javaugi
  */
 public class IteratorReturnsPartialList {
 
     @SuppressWarnings({"unchecked"})
     public static void main(String[] args) {
-        //scanner();
-        ArrayList<String> mylist = new ArrayList<>(List.of("42","10","###","Hello","Java"));
+        // scanner();
+        ArrayList<String> mylist = new ArrayList<>(List.of("42", "10", "###", "Hello", "Java"));
         Iterator it = func(mylist);
         while (it.hasNext()) {
             Object element = it.next();
@@ -51,12 +50,11 @@ public class IteratorReturnsPartialList {
         Iterator it = mylist.iterator();
         while (it.hasNext()) {
             Object element = it.next();
-            if (element instanceof String && "###".equals(element))//Hints: use instanceof operator
+            if (element instanceof String && "###".equals(element)) // Hints: use instanceof operator
             {
                 break;
             }
         }
         return it;
     }
-
 }

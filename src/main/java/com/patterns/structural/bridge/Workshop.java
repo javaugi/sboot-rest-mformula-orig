@@ -8,7 +8,6 @@
 package com.patterns.structural.bridge;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -16,5 +15,5 @@ package com.patterns.structural.bridge;
 public interface Workshop {
     // Implementor for bridge pattern
 
-    abstract public void work();
+    public abstract void work();
 }

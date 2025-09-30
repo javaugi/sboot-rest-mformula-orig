@@ -24,19 +24,18 @@ Best Practices for JSON Validation
     Combine Approaches: Use both annotation-based validation and programmatic validation when needed
 
 This comprehensive approach ensures your Spring Boot CRUD operations are protected with robust validation at multiple levels.
-*/
-
+ */
 @Service
 public class PatientJsonSchemaValidator {
-    
+
     private final Schema patientSchema;
-    
+
     public PatientJsonSchemaValidator() throws IOException {
         InputStream schemaStream = getClass().getResourceAsStream("/jsonschemas/patient-schema.json");
         JSONObject rawSchemaJSONObject = new JSONObject(new JSONTokener(schemaStream));
         this.patientSchema = SchemaLoader.load(rawSchemaJSONObject);
     }
-    
+
     public void validatePatientPayload(String patienPayload) throws ValidationException {
         JSONObject patientJson = new JSONObject(patienPayload);
         patientSchema.validate(patientJson);

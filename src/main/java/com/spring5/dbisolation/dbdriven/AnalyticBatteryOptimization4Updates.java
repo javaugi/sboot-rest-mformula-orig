@@ -5,12 +5,11 @@
 package com.spring5.dbisolation.dbdriven;
 
 /**
- *
  * @author javau
  */
 public class AnalyticBatteryOptimization4Updates {
-    
 }
+
 /*
 Question: Analyze the impact of battery level on update success rates.
 
@@ -32,4 +31,4 @@ FROM vehicle_updates
 WHERE battery_level IS NOT NULL
 GROUP BY battery_range
 ORDER BY battery_range;
-*/
+ */

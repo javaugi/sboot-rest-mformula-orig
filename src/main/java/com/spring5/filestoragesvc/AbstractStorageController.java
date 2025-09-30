@@ -7,7 +7,6 @@
  */
 package com.spring5.filestoragesvc;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import org.slf4j.Logger;
@@ -36,13 +35,10 @@ public abstract class AbstractStorageController {
     }
 
     public ResponseEntity uploadFile(
-            String guid,
-            MultipartFile uploadedFileRef,
-            FileService fileService,
-            String contentType) {
+            String guid, MultipartFile uploadedFileRef, FileService fileService, String contentType) {
 
         String fileName = uploadedFileRef.getOriginalFilename();
-        //to be HIPAA compliant avoid filename that may contain participant info
+        // to be HIPAA compliant avoid filename that may contain participant info
         log.info("UPLOAD - File ID: {} upload request", guid);
 
         InputStream inputStream;
@@ -62,9 +58,7 @@ public abstract class AbstractStorageController {
         }
     }
 
-    public ResponseEntity<Resource> downloadFile(
-            String guid,
-            FileService fileService) {
+    public ResponseEntity<Resource> downloadFile(String guid, FileService fileService) {
 
         log.info("DOWNLOAD - File ID: {} download request", guid);
 
@@ -85,9 +79,7 @@ public abstract class AbstractStorageController {
         }
     }
 
-    public ResponseEntity<String> getFileInfo(
-            String guid,
-            FileService fileService) {
+    public ResponseEntity<String> getFileInfo(String guid, FileService fileService) {
 
         log.info("FILE INFO - File ID: {} file info request", guid);
 
@@ -97,13 +89,12 @@ public abstract class AbstractStorageController {
             log.error("FILE INFO - File ID: {} NOT found", guid);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<String>("fileName=" + fileName + ";contentType=" + contentType, HttpStatus.OK);
+            return new ResponseEntity<String>(
+                    "fileName=" + fileName + ";contentType=" + contentType, HttpStatus.OK);
         }
     }
 
-    public ResponseEntity deleteFile(
-            String guid,
-            FileService fileService) {
+    public ResponseEntity deleteFile(String guid, FileService fileService) {
 
         log.info("DELETE - File ID: {} delete request ", guid);
         if (fileService.deleteFile(guid)) {
@@ -113,12 +104,9 @@ public abstract class AbstractStorageController {
             log.error("DELETE - File ID: {} NOT deleted successfully", guid);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
-    public ResponseEntity<Resource> fileExists(
-            String guid,
-            FileService fileService) {
+    public ResponseEntity<Resource> fileExists(String guid, FileService fileService) {
 
         boolean fileExists = fileService.fileExists(guid);
         log.info("EXISTS - File ID: {} exists {}", guid, fileExists);
@@ -127,6 +115,5 @@ public abstract class AbstractStorageController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
 }

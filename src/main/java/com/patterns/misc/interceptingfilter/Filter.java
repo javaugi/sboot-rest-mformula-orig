@@ -8,7 +8,6 @@
 package com.patterns.misc.interceptingfilter;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

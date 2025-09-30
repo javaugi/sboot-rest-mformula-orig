@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -17,9 +15,9 @@ import org.slf4j.LoggerFactory;
 public class ItemTypeDescriptor {
 
     private static final Logger log = LoggerFactory.getLogger(ItemTypeDescriptor.class);
+
     // ... type definitions
     // Describes when the annotation will be discarded
-
     public enum ItemType {
         TYPE_MUSIC,
         TYPE_PHOTO,

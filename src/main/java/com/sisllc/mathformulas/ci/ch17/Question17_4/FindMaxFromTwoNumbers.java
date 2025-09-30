@@ -26,7 +26,7 @@ public class FindMaxFromTwoNumbers {
         int sc = sign(c); // depends on whether or not a - b overflows
 
         /* We want to define a value k which is 1 if a > b and 0 if a < b.
-		 * (if a = b, it doesn't matter what value k is) */
+     * (if a = b, it doesn't matter what value k is) */
         int use_sign_of_a = sa ^ sb; // If a and b have different signs, then k = sign(a)
         int use_sign_of_c = flip(sa ^ sb); // If a and b have the same sign, then k = sign(a - b)
 
@@ -50,5 +50,4 @@ public class FindMaxFromTwoNumbers {
         System.out.println("max_naive(" + a + ", " + b + ") = " + getMaxNaive(a, b));
         System.out.println("max(" + a + ", " + b + ") = " + getMax(a, b));
     }
-
 }

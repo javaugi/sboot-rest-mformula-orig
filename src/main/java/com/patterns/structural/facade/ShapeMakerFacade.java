@@ -8,8 +8,6 @@
 package com.patterns.structural.facade;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

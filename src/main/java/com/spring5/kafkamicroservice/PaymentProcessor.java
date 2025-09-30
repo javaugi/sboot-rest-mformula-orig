@@ -13,11 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PaymentProcessor {
+
     private static final Logger log = LoggerFactory.getLogger(PaymentProcessor.class);
-    
+
     private final PaymentStripeClient stripeClient;
     private final PaymentPayPalClient paypalClient;
-    
+
     @CircuitBreaker(name = "stripePayment", fallbackMethod = "processWithFallback")
     public PaymentResult process(PaymentRequestEvent event) {
         if (event.method().getCard() != null) {
@@ -27,16 +28,16 @@ public class PaymentProcessor {
         } else {
             throw new UnsupportedOperationException("Unsupported payment method");
         }
-        
+
         /*
-        return switch (event.method()) {
-            case CREDIT_CARD -> stripeClient.charge(event);
-            case PAYPAL -> paypalClient.createOrder(event);
-            default -> throw new UnsupportedOperationException("Unsupported payment method");
-        };
-        // */
+    return switch (event.method()) {
+        case CREDIT_CARD -> stripeClient.charge(event);
+        case PAYPAL -> paypalClient.createOrder(event);
+        default -> throw new UnsupportedOperationException("Unsupported payment method");
+    };
+    // */
     }
-    
+
     public PaymentResult processWithFallback(PaymentRequestEvent event, Exception ex) {
         log.error("Payment failed, trying fallback provider", ex);
         // Implement fallback logic (e.g., try different provider)

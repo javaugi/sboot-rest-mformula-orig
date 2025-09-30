@@ -10,14 +10,18 @@ import java.util.Map;
 import org.apache.kafka.common.serialization.Serializer;
 
 /**
- *
  * @author javau
  */
 public class HashMapSerializer implements Serializer<Map<String, Long>> {
+
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public byte[] serialize(String topic, Map<String, Long> data) {
-        try { return objectMapper.writeValueAsBytes(data); }
-        catch (IOException e) { throw new RuntimeException("Error serializing HashMap", e); }
+        try {
+            return objectMapper.writeValueAsBytes(data);
+        } catch (IOException e) {
+            throw new RuntimeException("Error serializing HashMap", e);
+        }
     }
 }

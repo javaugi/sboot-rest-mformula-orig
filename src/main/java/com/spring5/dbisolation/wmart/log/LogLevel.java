@@ -6,5 +6,9 @@ package com.spring5.dbisolation.wmart.log;
 
 // LogLevel enum
 public enum LogLevel {
-    DEBUG, INFO, WARN, ERROR, FATAL
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR,
+    FATAL
 }

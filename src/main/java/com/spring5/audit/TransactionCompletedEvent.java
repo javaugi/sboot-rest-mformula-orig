@@ -5,9 +5,7 @@
 package com.spring5.audit;
 
 /**
- *
  * @author javaugi
  */
 public class TransactionCompletedEvent {
-    
 }

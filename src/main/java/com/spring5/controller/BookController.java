@@ -5,7 +5,6 @@
 package com.spring5.controller;
 
 // Controller
-
 import com.spring5.entity.Book;
 import com.spring5.service.BookService;
 import java.util.List;
@@ -19,20 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
 public class BookController {
-    //Constructor Injection is Generally Preferred   
-    //1. Immutability
-    //2. Clear Dependencies & Guaranteed Availability
-    //3. Improved Testability:
-    //4. Avoids Circular Dependencies (Early Detection): 
-    //5. Less "Magic": It's a standard Java way of creating objects with their requirements.
+    // Constructor Injection is Generally Preferred
+    // 1. Immutability
+    // 2. Clear Dependencies & Guaranteed Availability
+    // 3. Improved Testability:
+    // 4. Avoids Circular Dependencies (Early Detection):
+    // 5. Less "Magic": It's a standard Java way of creating objects with their requirements.
 
     private final BookService service;
-    
+
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.ok(service.findAll());
     }
-} 
+}
 /*
 1. Immutability: Dependencies can be declared as final fields. This means once the bean is constructed, its core dependencies cannot be changed, leading to more robust and thread-safe objects.
     private final MyDependency myDependency;
@@ -48,4 +47,4 @@ public class BookController {
     // ... proceed with test
     4. Avoids Circular Dependencies (Early Detection): Constructor injection helps Spring detect circular dependencies (e.g., Bean A depends on Bean B, and Bean B depends on Bean A) during application startup, leading to a BeanCurrentlyInCreationException. While an error, it's better to catch this early than to encounter unexpected behavior at runtime.
     5. Less "Magic": It's a standard Java way of creating objects with their requirements.
-*/
+ */

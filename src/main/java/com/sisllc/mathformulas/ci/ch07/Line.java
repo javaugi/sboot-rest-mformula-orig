@@ -33,7 +33,9 @@ public class Line {
 
     public boolean isEquivalent(Object o) {
         Line l = (Line) o;
-        if (isEquivalent(l.slope, slope) && isEquivalent(l.intercept, intercept) && (infinite_slope == l.infinite_slope)) {
+        if (isEquivalent(l.slope, slope)
+                && isEquivalent(l.intercept, intercept)
+                && (infinite_slope == l.infinite_slope)) {
             return true;
         }
         return false;

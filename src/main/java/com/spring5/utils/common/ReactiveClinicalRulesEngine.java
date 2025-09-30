@@ -8,7 +8,6 @@ import com.spring5.aicloud.genaihealthcare.cccr.*;
 import reactor.core.publisher.Mono;
 
 /**
- *
  * @author javau
  */
 public class ReactiveClinicalRulesEngine {

@@ -4,12 +4,11 @@
  */
 
 /**
- *
  * @author javau
  */
 public class GCPConfig {
-    
 }
+
 /*
 Spring Boot & Google Cloud Pub/Sub Integration
 This document walks you through a complete example of integrating a Spring Boot application with Google Cloud Pub/Sub. You'll learn how to publish messages to a topic and subscribe to a subscription to receive messages.
@@ -79,4 +78,4 @@ Look at the console output of your running Spring Boot application. You should s
 INFO 12345 --- [sub-executor-0] c.e.pubsub.MessageSubscriber         : Message received! Payload: Hello-World
 
 This confirms that the entire publish-subscribe loop is working correctly.
-*/
+ */

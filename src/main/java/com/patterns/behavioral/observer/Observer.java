@@ -8,8 +8,6 @@
 package com.patterns.behavioral.observer;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

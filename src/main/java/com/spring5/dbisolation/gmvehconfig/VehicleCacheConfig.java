@@ -6,7 +6,6 @@ package com.spring5.dbisolation.gmvehconfig;
 
 import com.spring5.RedisBaseConfig;
 import java.time.Duration;
-//import javax.cache.expiry.Duration;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +18,13 @@ public class VehicleCacheConfig extends RedisBaseConfig {
 
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
-        return builder -> builder
-            .withCacheConfiguration("inventory",
-                RedisCacheConfiguration.defaultCacheConfig()
-                        .entryTtl(Duration.ofMinutes(5)))
-            .withCacheConfiguration("configurations", RedisCacheConfiguration.defaultCacheConfig()
-                    .entryTtl(Duration.ofHours(1L)))
-            ;
+        return builder
+                -> builder
+                        .withCacheConfiguration(
+                                "inventory",
+                                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)))
+                        .withCacheConfiguration(
+                                "configurations",
+                                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1L)));
     }
 }

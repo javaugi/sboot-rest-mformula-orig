@@ -4,13 +4,13 @@
  */
 package com.spring5.rediscache.rediskafka;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @Component
@@ -24,16 +24,15 @@ public class RedisBackedIdempotencyFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, 
-                                  HttpServletResponse response, 
-                                  FilterChain filterChain) 
-        throws ServletException, IOException {
-        
-        if ("POST".equalsIgnoreCase(request.getMethod()) || 
-            "PUT".equalsIgnoreCase(request.getMethod())) {
-            
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        if ("POST".equalsIgnoreCase(request.getMethod())
+                || "PUT".equalsIgnoreCase(request.getMethod())) {
+
             String idempotencyKey = request.getHeader(IDEMPOTENCY_KEY_HEADER);
-            
+
             if (idempotencyKey != null && !idempotencyKey.isEmpty()) {
                 if (idempotencyService.isDuplicate(idempotencyKey)) {
                     Object cachedResponse = idempotencyService.getResponse(idempotencyKey);
@@ -41,17 +40,16 @@ public class RedisBackedIdempotencyFilter extends OncePerRequestFilter {
                     response.getWriter().write(cachedResponse.toString());
                     return;
                 }
-                
-                ContentCachingResponseWrapper responseWrapper =  new ContentCachingResponseWrapper(response);                
+
+                ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
                 try {
                     filterChain.doFilter(request, responseWrapper);
-                    
-                    if (responseWrapper.getStatus() >= 200 && 
-                        responseWrapper.getStatus() < 300) {
+
+                    if (responseWrapper.getStatus() >= 200 && responseWrapper.getStatus() < 300) {
                         String responseBody = responseWrapper.toString();
                         idempotencyService.storeResponse(idempotencyKey, responseBody);
                     }
-                    
+
                     responseWrapper.copyBodyToResponse();
                 } finally {
                     responseWrapper.copyBodyToResponse();
@@ -59,7 +57,7 @@ public class RedisBackedIdempotencyFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        
+
         filterChain.doFilter(request, response);
     }
 }

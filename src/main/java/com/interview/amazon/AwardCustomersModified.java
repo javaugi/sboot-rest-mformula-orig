@@ -9,14 +9,14 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- *
  * @author javaugi
  */
 public class AwardCustomersModified {
+
     public static void main(String[] args) {
         int[] points = {10, 5, 20, 15, 30, 25}; // Example customer points
         System.out.println("Example customer points:" + Arrays.toString(points));
-        
+
         printFinalAwards(points);
     }
 
@@ -35,7 +35,7 @@ public class AwardCustomersModified {
         System.out.println("\n  reverse sorted customers: " + List.of(customers));
 
         // Assign awards to top 3 customers
-        customers[0].totalPoints = customers[0].points + points.length;     // 1st place
+        customers[0].totalPoints = customers[0].points + points.length; // 1st place
         customers[1].totalPoints = customers[1].points + (points.length - 1); // 2nd place
         customers[2].totalPoints = customers[2].points + (points.length - 2); // 3rd place
 
@@ -43,50 +43,79 @@ public class AwardCustomersModified {
         Arrays.sort(customers, 0, 3, Comparator.comparingInt(Customer::getTotalPoints).reversed());
 
         System.out.println("Final Champion Awards:");
-        System.out.println("1st Place: Customer " + customers[0].index + 
-                          " | Original Points: " + customers[0].points + 
-                          " | Award: +" + points.length + 
-                          " | Total: " + customers[0].totalPoints);
+        System.out.println(
+                "1st Place: Customer "
+                + customers[0].index
+                + " | Original Points: "
+                + customers[0].points
+                + " | Award: +"
+                + points.length
+                + " | Total: "
+                + customers[0].totalPoints);
 
-        System.out.println("2nd Place: Customer " + customers[1].index + 
-                          " | Original Points: " + customers[1].points + 
-                          " | Award: +" + (points.length - 1) + 
-                          " | Total: " + customers[1].totalPoints);
+        System.out.println(
+                "2nd Place: Customer "
+                + customers[1].index
+                + " | Original Points: "
+                + customers[1].points
+                + " | Award: +"
+                + (points.length - 1)
+                + " | Total: "
+                + customers[1].totalPoints);
 
-        System.out.println("3rd Place: Customer " + customers[2].index + 
-                          " | Original Points: " + customers[2].points + 
-                          " | Award: +" + (points.length - 2) + 
-                          " | Total: " + customers[2].totalPoints);
-        
+        System.out.println(
+                "3rd Place: Customer "
+                + customers[2].index
+                + " | Original Points: "
+                + customers[2].points
+                + " | Award: +"
+                + (points.length - 2)
+                + " | Total: "
+                + customers[2].totalPoints);
+
         Customer[] customersSub3 = Arrays.copyOfRange(customers, 0, 3);
         System.out.println("FROM COPY - Final Champion Awards:");
-        System.out.println("1st Place: Customer " + customersSub3[0].index + 
-                          " | Original Points: " + customersSub3[0].points + 
-                          " | Award: +" + points.length + 
-                          " | Total: " + customersSub3[0].totalPoints);
+        System.out.println(
+                "1st Place: Customer "
+                + customersSub3[0].index
+                + " | Original Points: "
+                + customersSub3[0].points
+                + " | Award: +"
+                + points.length
+                + " | Total: "
+                + customersSub3[0].totalPoints);
 
-        System.out.println("2nd Place: Customer " + customersSub3[1].index + 
-                          " | Original Points: " + customersSub3[1].points + 
-                          " | Award: +" + (points.length - 1) + 
-                          " | Total: " + customersSub3[1].totalPoints);
+        System.out.println(
+                "2nd Place: Customer "
+                + customersSub3[1].index
+                + " | Original Points: "
+                + customersSub3[1].points
+                + " | Award: +"
+                + (points.length - 1)
+                + " | Total: "
+                + customersSub3[1].totalPoints);
 
-        System.out.println("3rd Place: Customer " + customersSub3[2].index + 
-                          " | Original Points: " + customersSub3[2].points + 
-                          " | Award: +" + (points.length - 2) + 
-                          " | Total: " + customersSub3[2].totalPoints);
+        System.out.println(
+                "3rd Place: Customer "
+                + customersSub3[2].index
+                + " | Original Points: "
+                + customersSub3[2].points
+                + " | Award: +"
+                + (points.length - 2)
+                + " | Total: "
+                + customersSub3[2].totalPoints);
     }
 
-    
     /*
-Example customer points:[10, 5, 20, 15, 30, 25]
-Top 3 Customers (Indices) who receive awards:
-1st Place: Customer 4 (Award: 6 points) (Total Award: 36 points)
-2nd Place: Customer 5 (Award: 5 points) (Total Award: 30 points)
-3rd Place: Customer 2 (Award: 4 points) (Total Award: 24 points)    
-    */
-    
+  Example customer points:[10, 5, 20, 15, 30, 25]
+  Top 3 Customers (Indices) who receive awards:
+  1st Place: Customer 4 (Award: 6 points) (Total Award: 36 points)
+  2nd Place: Customer 5 (Award: 5 points) (Total Award: 30 points)
+  3rd Place: Customer 2 (Award: 4 points) (Total Award: 24 points)
+     */
     // Helper class to store customer index, original points, and total points
     static class Customer {
+
         int index;
         int points;
         int totalPoints;
@@ -107,10 +136,16 @@ Top 3 Customers (Indices) who receive awards:
 
         @Override
         public String toString() {
-            return "\n Customer{" + "index=" + index + ", points=" + points + ", totalPoints=" + totalPoints + '}';
+            return "\n Customer{"
+                    + "index="
+                    + index
+                    + ", points="
+                    + points
+                    + ", totalPoints="
+                    + totalPoints
+                    + '}';
         }
-        
-    }    
+    }
 }
 
 /*
@@ -144,7 +179,7 @@ import java.util.Comparator;
 public class AwardCustomersModified {
     public static void main(String[] args) {
         int[] points = {10, 5, 20, 15, 30, 25}; // Example customer points
-        
+
         printFinalAwards(points);
     }
 
@@ -169,19 +204,19 @@ public class AwardCustomersModified {
         Arrays.sort(customers, 0, 3, Comparator.comparingInt(Customer::getTotalPoints).reversed());
 
         System.out.println("Final Champion Awards:");
-        System.out.println("1st Place: Customer " + customers[0].index + 
-                          " | Original Points: " + customers[0].points + 
-                          " | Award: +" + points.length + 
+        System.out.println("1st Place: Customer " + customers[0].index +
+                          " | Original Points: " + customers[0].points +
+                          " | Award: +" + points.length +
                           " | Total: " + customers[0].totalPoints);
 
-        System.out.println("2nd Place: Customer " + customers[1].index + 
-                          " | Original Points: " + customers[1].points + 
-                          " | Award: +" + (points.length - 1) + 
+        System.out.println("2nd Place: Customer " + customers[1].index +
+                          " | Original Points: " + customers[1].points +
+                          " | Award: +" + (points.length - 1) +
                           " | Total: " + customers[1].totalPoints);
 
-        System.out.println("3rd Place: Customer " + customers[2].index + 
-                          " | Original Points: " + customers[2].points + 
-                          " | Award: +" + (points.length - 2) + 
+        System.out.println("3rd Place: Customer " + customers[2].index +
+                          " | Original Points: " + customers[2].points +
+                          " | Award: +" + (points.length - 2) +
                           " | Total: " + customers[2].totalPoints);
     }
 
@@ -245,4 +280,4 @@ Original points determine who gets into the top 3.
 Award points are added based on their ranks (points.length, points.length - 1, points.length - 2).
 
 Final ranking is based on the total points after adding awards.
-*/
+ */

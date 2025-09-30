@@ -16,11 +16,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DataJpaTest
 @Testcontainers
 public class UserRepositoryPostgresTest {
+
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15.3")
-        .withDatabaseName("RPG_MOCK")
-        .withUsername("postgres")
-        .withPassword("admin");
+            .withDatabaseName("RPG_MOCK")
+            .withUsername("postgres")
+            .withPassword("admin");
 
     @DynamicPropertySource
     public static void configure(DynamicPropertyRegistry registry) {

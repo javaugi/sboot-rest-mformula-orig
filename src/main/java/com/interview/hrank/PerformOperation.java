@@ -5,9 +5,9 @@
 package com.interview.hrank;
 
 /**
- *
  * @author javaugi
  */
 public interface PerformOperation {
-     boolean check(int a);
+
+    boolean check(int a);
 }

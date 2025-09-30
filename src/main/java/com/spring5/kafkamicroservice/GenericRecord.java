@@ -13,7 +13,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -38,7 +37,5 @@ public class GenericRecord {
         this.price = event.getPrice();
         this.currency = event.getCurrency();
         this.direction = event.getDirection();
-
     }
-
 }

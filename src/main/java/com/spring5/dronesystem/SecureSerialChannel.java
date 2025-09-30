@@ -5,14 +5,13 @@
 package com.spring5.dronesystem;
 
 /**
- *
  * @author javaugi
  */
-import javax.crypto.*;
-import javax.crypto.spec.*;
 import java.io.*;
 import java.security.*;
 import java.security.spec.KeySpec;
+import javax.crypto.*;
+import javax.crypto.spec.*;
 
 public class SecureSerialChannel {
 
@@ -51,7 +50,8 @@ public class SecureSerialChannel {
         return outputStream.toByteArray();
     }
 
-    public SensorData decrypt(byte[] encryptedData) throws IOException, GeneralSecurityException, ClassNotFoundException {
+    public SensorData decrypt(byte[] encryptedData)
+            throws IOException, GeneralSecurityException, ClassNotFoundException {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(encryptedData);
         byte[] iv = new byte[16];
         inputStream.read(iv);

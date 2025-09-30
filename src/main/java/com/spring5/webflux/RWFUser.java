@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RWFUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -21,5 +22,4 @@ public class RWFUser {
     private String name;
     private String lastName;
     private String firstName;
-
 }

@@ -8,29 +8,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- *
  * @author javau
  */
 public class W1BulkImportExternalTabParallelProcLoader {
 
     /*
-    External Tables with Parallel Processing
+  External Tables with Parallel Processing
      */
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public void loadFromExternalTable(String externalTableName, String targetTable) {
-        String sql = String.format("""
+        String sql
+                = String.format(
+                        """
             INSERT /*+ APPEND PARALLEL(8) */ INTO %s
             SELECT * FROM %s
             LOG ERRORS REJECT LIMIT UNLIMITED
-            """, targetTable, externalTableName);
+            """,
+                        targetTable, externalTableName);
 
         jdbcTemplate.execute(sql);
     }
 
     public void createExternalTable(String tableName, String directory, String filePattern) {
-        String sql = String.format("""
+        String sql
+                = String.format(
+                        """
             CREATE TABLE %s (
                 claim_id VARCHAR2(50),
                 patient_id VARCHAR2(50),
@@ -49,7 +53,8 @@ public class W1BulkImportExternalTabParallelProcLoader {
                 LOCATION ('%s')
             )
             REJECT LIMIT UNLIMITED
-            """, tableName, tableName, tableName, filePattern);
+            """,
+                        tableName, tableName, tableName, filePattern);
 
         jdbcTemplate.execute(sql);
     }

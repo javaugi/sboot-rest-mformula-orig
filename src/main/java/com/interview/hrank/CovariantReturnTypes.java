@@ -12,30 +12,30 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author javaugi
  */
 public class CovariantReturnTypes {
-    //1. DeekSeek solution
-    //2. Original assignemnt
-    //3. Covariance types - theory
-    //4. Covariance type theory from Google
+    // 1. DeekSeek solution
+    // 2. Original assignemnt
+    // 3. Covariance types - theory
+    // 4. Covariance type theory from Google
     // 5. ChatGPT with examples
+
     /*
-    Term  /Analogy
-    Covariance (? extends)      
-        Fruit basket where you can look (read) but can't put new fruits                 (can numbers.get(0) but cannot numbers.add(2)
-    Contravariance (? super)    
-        Trash bin where you can throw (write) things in but can't take them out easily  (cannot numbers.get(0) but can numbers.add(2)
-    Invariance                     
-        Fixed type box where everything must match exactly    
-    */
+  Term  /Analogy
+  Covariance (? extends)
+      Fruit basket where you can look (read) but can't put new fruits                 (can numbers.get(0) but cannot numbers.add(2)
+  Contravariance (? super)
+      Trash bin where you can throw (write) things in but can't take them out easily  (cannot numbers.get(0) but can numbers.add(2)
+  Invariance
+      Fixed type box where everything must match exactly
+     */
     public static void main(String[] args) throws IOException {
-        //readerMain();
-        printRegionStateFlower("AndhraPradesh"); //WestBengal
-        printRegionStateFlower("AndhraPradesh", "WestBengal"); //WestBengal
+        // readerMain();
+        printRegionStateFlower("AndhraPradesh"); // WestBengal
+        printRegionStateFlower("AndhraPradesh", "WestBengal"); // WestBengal
     }
-    
+
     private static void invarianceDemo() {
         List<Integer> integers = new ArrayList<>();
         integers.add(1);
@@ -43,11 +43,12 @@ public class CovariantReturnTypes {
 
         List<Number> numbers = new ArrayList<>();
         numbers.add(2.5); // ok, a Double
-        numbers.add(3);   // ok, an Integer
+        numbers.add(3); // ok, an Integer
     }
 
-    //(Reading only — ? extends)
-    // You allow a subtype relationship — List<? extends Number> can accept List<Integer>, List<Float>, etc.
+    // (Reading only — ? extends)
+    // You allow a subtype relationship — List<? extends Number> can accept List<Integer>,
+    // List<Float>, etc.
     // But you cannot add elements (except null) because you don't know the exact subtype.
     private static void covarianceDemo() {
         List<Integer> integers = Arrays.asList(1, 2, 3);
@@ -56,12 +57,11 @@ public class CovariantReturnTypes {
 
         // numbers.add(10); // ❌ Compilation error!
         // numbers.add(2.5); // ❌ Still error!
-
-        //✅ You can read elements safely as Number.
-        //❌ You cannot write elements because Java doesn't know what specific subtype the list expects.
+        // ✅ You can read elements safely as Number.
+        // ❌ You cannot write elements because Java doesn't know what specific subtype the list expects.
         System.out.println("n=" + n + "-all numbers=" + numbers); // prints 1
     }
-    
+
     private static void contravarianceDemo() {
         List<? super Integer> numbers = new ArrayList<>();
         numbers.add(1); // ✅ OK
@@ -70,9 +70,9 @@ public class CovariantReturnTypes {
         Object obj = numbers.get(0); // ✅ OK to read as Object
         // Integer num = numbers.get(0); // ❌ Not safe without cast
 
-        //✅ You can write Integer values.
-        //❌ You can only read as Object (not directly as Integer).
-        System.out.println(obj); // prints 1        
+        // ✅ You can write Integer values.
+        // ❌ You can only read as Object (not directly as Integer).
+        System.out.println(obj); // prints 1
     }
 
     private static void readerMain() throws IOException {
@@ -80,16 +80,20 @@ public class CovariantReturnTypes {
         String s = reader.readLine().trim();
         printRegionStateFlower(s);
     }
-    
+
     public static final GenericPrint doPrint = ele -> System.out.println(ele);
-    
+
     private static void printRegionStateFlower(String... args) {
-        Arrays.stream(args).forEach(s -> {
-            switch (s) {
-                case "WestBengal" -> System.out.println(new WestBengal().yourNationalFlower().whatsYourName());
-                case "AndhraPradesh" -> System.out.println(new AndhraPradesh().yourNationalFlower().whatsYourName());
-            }     
-        });
+        Arrays.stream(args)
+                .forEach(
+                        s -> {
+                            switch (s) {
+                                case "WestBengal" ->
+                                    System.out.println(new WestBengal().yourNationalFlower().whatsYourName());
+                                case "AndhraPradesh" ->
+                                    System.out.println(new AndhraPradesh().yourNationalFlower().whatsYourName());
+                            }
+                        });
     }
 
     private static void printRegionStateFlower(String s) {
@@ -105,8 +109,8 @@ public class CovariantReturnTypes {
         Flower flower = region.yourNationalFlower();
         System.out.println(flower.whatsYourName());
     }
-    
 }
+
 /*
 To solve this problem, we need to implement classes that demonstrate the use of covariant return types in Java. The task involves creating classes for different states and their respective national flowers, ensuring that the method overriding in the state classes returns the specific flower type, which is a subclass of the original return type.
 
@@ -188,14 +192,16 @@ State Class: This class has a method yourNationalFlower that returns a generic F
 State Subclasses (WestBengal, AndhraPradesh, Karnataka): Each state subclass overrides the yourNationalFlower method to return an instance of their respective flower class (Jasmine, Lily, or Lotus). This demonstrates covariant return types as each subclass returns a more specific type than the superclass method.
 
 When the main method (provided in the locked code) creates an instance of a state subclass and calls yourNationalFlower, it gets the specific flower instance, and calling whatsYourName on this instance returns the correct flower name, which is then printed. For example, if the input is "AndhraPradesh", the output is "Lily" because the yourNationalFlower method of AndhraPradesh returns a Lily instance, and its whatsYourName method returns "Lily".
-*/
+ */
 class Flower {
+
     String whatsYourName() {
         return "I have many names and types";
     }
 }
 
 class Jasmine extends Flower {
+
     @Override
     String whatsYourName() {
         return "Jasmine";
@@ -203,6 +209,7 @@ class Jasmine extends Flower {
 }
 
 class Lily extends Flower {
+
     @Override
     String whatsYourName() {
         return "Lily";
@@ -210,6 +217,7 @@ class Lily extends Flower {
 }
 
 class Lotus extends Flower {
+
     @Override
     String whatsYourName() {
         return "Lotus";
@@ -217,12 +225,14 @@ class Lotus extends Flower {
 }
 
 class Region {
+
     Flower yourNationalFlower() {
         return new Flower();
     }
 }
 
 class State extends Region {
+
     @Override
     Flower yourNationalFlower() {
         return new Flower();
@@ -230,6 +240,7 @@ class State extends Region {
 }
 
 class WestBengal extends State {
+
     @Override
     Jasmine yourNationalFlower() {
         return new Jasmine();
@@ -237,6 +248,7 @@ class WestBengal extends State {
 }
 
 class AndhraPradesh extends State {
+
     @Override
     Lily yourNationalFlower() {
         return new Lily();
@@ -244,6 +256,7 @@ class AndhraPradesh extends State {
 }
 
 class Karnataka extends State {
+
     @Override
     Lotus yourNationalFlower() {
         return new Lotus();
@@ -284,9 +297,9 @@ Lily
 Explanation 0
 
 An AndhraPradesh object's yourNationalFlower method returns an instance of the Lily class, and the Lily class' whatsYourName method returns Lily, which is printed by the hidden code checker.
-*/
+ */
 
-/*
+ /*
 Let's say that we are designing a programming language and we want type safety. One of the places that type safety crops up is in the area of method returns. If I have a method named clone, for instance, and it returns a reference to Object, everything is fine as anyone who gets the returned object expects it to be an Object, nothing more:
         // this example is not in Java, but I hijack the syntax..
 
@@ -323,12 +336,12 @@ By the way..
 
 would call the same clone: the one for Classy. Why? Because the object itself knows how to respond to clone. All the compiler has to do is permit the assignment when it can be determined to be safe. Assigning to a more general type reference is always safe.
 These are CovariantReturnTypes. The name comes from the fact that the type of the return is allowed to vary in the same direction that you subclass.
-*/
+ */
 
-/*
-Covariance in Java refers to the ability of a subtype to be used in place of its supertype, specifically in the context of generic types and arrays. It allows for more flexible and intuitive type relationships. In simpler terms, if B is a subtype of A, then K<B> is considered a subtype of K<A>. 
+ /*
+Covariance in Java refers to the ability of a subtype to be used in place of its supertype, specifically in the context of generic types and arrays. It allows for more flexible and intuitive type relationships. In simpler terms, if B is a subtype of A, then K<B> is considered a subtype of K<A>.
 Covariance in Arrays
-Arrays in Java are covariant. If B is a subtype of A, then B[] is also a subtype of A[]. 
+Arrays in Java are covariant. If B is a subtype of A, then B[] is also a subtype of A[].
 Java
 
 Integer[] intArray = {1, 2, 3};
@@ -361,9 +374,9 @@ class Dog extends Animal {
     }
 }
 In this case, the Dog class overrides the reproduce method and returns a Dog object, which is a subtype of Animal.
-*/
+ */
 
-/*
+ /*
 1. Invariance 🚫 (Default in Java Generics)
 Definition:
 If A is a subtype of B, it does NOT mean List<A> is a subtype of List<B>.
@@ -469,12 +482,12 @@ Producer Extends, Consumer Super
 
 
 Role	Wildcard
-If your generic produces objects → use extends	
-If your generic consumes objects → use super	
+If your generic produces objects → use extends
+If your generic consumes objects → use super
 🌟 Quick real-world analogy:
 
     Term                            Analogy
     Covariance (? extends)          Fruit basket where you can look (read) but can't put new fruits
     Contravariance (? super)        Trash bin where you can throw (write) things in but can't take them out easily
     Invariance                      Fixed type box where everything must match exactly
-*/
+ */

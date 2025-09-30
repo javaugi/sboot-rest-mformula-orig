@@ -4,10 +4,10 @@ package com.sisllc.mathformulas.impl;
  * A factorial of a non-negative integer n, denoted by n!, is the product of all
  * positive integers less than or equal to n.
  *
+ * <p>
  * Example: 5! = 5 * 4 * 3 * 2 * 1 = 120
  *
  * @author david
- *
  */
 public class FactorialRecursion {
 

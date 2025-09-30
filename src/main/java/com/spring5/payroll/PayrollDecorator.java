@@ -7,14 +7,15 @@ package com.spring5.payroll;
 import com.spring5.empbilpayroll.Employee;
 
 public abstract class PayrollDecorator implements PayrollRuleStrategy {
+
     protected PayrollRuleStrategy wrappedRule;
 
     public PayrollDecorator(PayrollRuleStrategy rule) {
         this.wrappedRule = rule;
     }
-    
+
     @Override
     public double calculateTax(Employee employee) {
         return wrappedRule.calculateTax(employee);
-    }  
+    }
 }

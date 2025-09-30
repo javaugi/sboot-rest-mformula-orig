@@ -16,15 +16,16 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor 
+@NoArgsConstructor
 public class UserPreferences {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String theme;
     private String language;
-    
+
     @OneToOne(mappedBy = "preferences")
-    private User user;    
+    private User user;
 }

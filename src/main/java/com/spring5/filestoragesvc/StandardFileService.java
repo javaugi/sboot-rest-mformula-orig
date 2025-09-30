@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 /**
- *
- *
  * @author bill
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -23,7 +21,8 @@ import org.springframework.context.ApplicationContext;
 public class StandardFileService implements FileService {
 
     private static final Logger log = LoggerFactory.getLogger(StandardFileService.class);
-    private static final String STORED_FILE_ID_WITH_TOTAL_BYTES_WRITTEN = "Stored file ID: {} with {} total bytes written";
+    private static final String STORED_FILE_ID_WITH_TOTAL_BYTES_WRITTEN
+            = "Stored file ID: {} with {} total bytes written";
     private static final String ERROR_STORING_FILE_ID = "Error storing file ID: {}";
     private static final String GETTING_FILE_ID_FAILED = "Getting File ID: {} failed ";
     private static final int BUFFER_SIZE = 1000;
@@ -59,7 +58,8 @@ public class StandardFileService implements FileService {
     }
 
     @Override
-    public boolean storeFile(String guid, String fileName, String contentType, InputStream inputStream) {
+    public boolean storeFile(
+            String guid, String fileName, String contentType, InputStream inputStream) {
         boolean fileStored = true;
         FileLocation fileLocation = new FileLocation(guid, fileName);
         byte[] buffer = new byte[BUFFER_SIZE];
@@ -106,7 +106,6 @@ public class StandardFileService implements FileService {
             log.error(GETTING_FILE_ID_FAILED, guid, ex);
             return null;
         }
-
     }
 
     @Override

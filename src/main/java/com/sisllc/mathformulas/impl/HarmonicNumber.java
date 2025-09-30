@@ -4,10 +4,10 @@ package com.sisllc.mathformulas.impl;
  * In mathematics, the n-th harmonic number is the sum of the reciprocals of the
  * first n natural numbers:
  *
+ * <p>
  * Hn = 1 + 1/2 + 1/3 + 1/4 + 1/5 + .... + 1/n
  *
  * @author david
- *
  */
 public class HarmonicNumber {
 
@@ -23,5 +23,4 @@ public class HarmonicNumber {
 
         System.out.println(sum);
     }
-
 }

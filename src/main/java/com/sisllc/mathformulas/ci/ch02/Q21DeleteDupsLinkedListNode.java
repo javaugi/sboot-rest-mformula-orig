@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -45,19 +43,19 @@ public class Q21DeleteDupsLinkedListNode {
                     previous.next = tmp;
                     current = tmp;
                     /* We know we can't have more than one dup preceding
-					 * our element since it would have been removed
-					 * earlier. */
+           * our element since it would have been removed
+           * earlier. */
                     break;
                 }
                 runner = runner.next;
             }
 
             /* If runner == current, then we didn't find any duplicate
-			 * elements in the previous for loop.  We then need to
-			 * increment current.
-			 * If runner != current, then we must have hit the ‘break’
-			 * condition, in which case we found a dup and current has
-			 * already been incremented.*/
+       * elements in the previous for loop.  We then need to
+       * increment current.
+       * If runner != current, then we must have hit the ‘break’
+       * condition, in which case we found a dup and current has
+       * already been incremented.*/
             if (runner == current) {
                 previous = current;
                 current = current.next;
@@ -86,7 +84,8 @@ public class Q21DeleteDupsLinkedListNode {
     }
 
     public static void main(String[] args) {
-        LinkedListNode first = new LinkedListNode(0, null, null); //AssortedMethods.randomLinkedList(1000, 0, 2);
+        LinkedListNode first
+                = new LinkedListNode(0, null, null); // AssortedMethods.randomLinkedList(1000, 0, 2);
         LinkedListNode head = first;
         LinkedListNode second = first;
         for (int i = 1; i < 8; i++) {

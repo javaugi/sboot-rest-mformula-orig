@@ -16,23 +16,22 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 /**
- *
  * @author javaugi
  */
 public class UserDaoNativeImpl extends UserDaoImpl {
-    
+
     @Autowired
     private EntityManager entityManager;
     @Autowired
     private SessionFactory sessionFactory;
-    
+
     @Override
     public Page<User> findAll(Pageable pageable) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
         int max = pageable.toLimit().max();
-        
+
         List<User> users = findAllList(startItem, max);
         System.out.println("user id list=" + findAllIdList(startItem, max));
         return convertListToPage(users, pageable, startItem);
@@ -45,7 +44,7 @@ public class UserDaoNativeImpl extends UserDaoImpl {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-    
+
     private List<User> findAllList(int offset, int limit) {
         @SuppressWarnings("unchecked")
         TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
@@ -53,7 +52,7 @@ public class UserDaoNativeImpl extends UserDaoImpl {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-    
+
     private Page<User> convertListToPage(List<User> list, Pageable pageable, int startItem) {
         List<User> pageContent;
         if (list.size() < startItem) {
@@ -64,5 +63,5 @@ public class UserDaoNativeImpl extends UserDaoImpl {
         }
 
         return new PageImpl<>(pageContent, pageable, list.size());
-    }    
+    }
 }

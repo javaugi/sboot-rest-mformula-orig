@@ -71,16 +71,17 @@ Best Practices in Java
         Use Kafka's single partition per key guarantee
         Implement sequence numbers in your events
 
-*/
+ */
 @Service
 @Slf4j
 public class MessageOrderingIdempotencyRetries {
 
-    //1. Message Ordering (Kafka Example)
+    // 1. Message Ordering (Kafka Example)
     public class OrderedKafkaProducer {
 
         public static void main(String[] args) {
-            MessageOrderingIdempotencyRetries.OrderedKafkaProducer main = new MessageOrderingIdempotencyRetries().new OrderedKafkaProducer();
+            MessageOrderingIdempotencyRetries.OrderedKafkaProducer main
+                    = new MessageOrderingIdempotencyRetries().new OrderedKafkaProducer();
             main.sendorderedMessages();
         }
 
@@ -101,22 +102,28 @@ public class MessageOrderingIdempotencyRetries {
                 ProducerRecord<String, String> record
                         = new ProducerRecord<>("ordered-topic", "key1", "Message " + i);
 
-                producer.send(record, (metadata, exception) -> {
-                    if (exception != null) {
-                        exception.printStackTrace();
-                    } else {
-                        System.out.println("Sent message to: " + metadata.topic()
-                                + " partition: " + metadata.partition()
-                                + " offset: " + metadata.offset());
-                    }
-                });
+                producer.send(
+                        record,
+                        (metadata, exception) -> {
+                            if (exception != null) {
+                                exception.printStackTrace();
+                            } else {
+                                System.out.println(
+                                        "Sent message to: "
+                                        + metadata.topic()
+                                        + " partition: "
+                                        + metadata.partition()
+                                        + " offset: "
+                                        + metadata.offset());
+                            }
+                        });
             }
 
             producer.close();
         }
     }
 
-    //2. Idempotency (Spring Boot with Deduplication)
+    // 2. Idempotency (Spring Boot with Deduplication)
     @Service
     public class IdempotentConsumer {
 
@@ -138,12 +145,13 @@ public class MessageOrderingIdempotencyRetries {
         }
 
         private boolean eventAlreadyProcessed(String eventId) {
-            return entityManager.createQuery(
-                    "SELECT 1 FROM ProcessedEvents WHERE eventId = :eventId", Integer.class)
+            return entityManager
+                    .createQuery("SELECT 1 FROM ProcessedEvents WHERE eventId = :eventId", Integer.class)
                     .setParameter("eventId", eventId)
                     .setMaxResults(1)
                     .getResultList()
-                    .size() > 0;
+                    .size()
+                    > 0;
         }
 
         private void processOrderIdempotently(OrderEvent event) {
@@ -175,19 +183,18 @@ public class MessageOrderingIdempotencyRetries {
         // constructor, getters, setters
     }
 
-    //3. Retries with Exponential Backoff (Spring Kafka)
+    // 3. Retries with Exponential Backoff (Spring Kafka)
     @Service
     public class RetryableConsumer {
 
         @Retryable(
                 value = {RuntimeException.class},
                 maxAttempts = 3,
-                backoff = @Backoff(delay = 1000, multiplier = 2, maxDelay = 5000)
-        )
+                backoff = @Backoff(delay = 1000, multiplier = 2, maxDelay = 5000))
         @KafkaListener(topics = "payments")
         public void processPayment(
                 String paymentData,
-                //@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
+                // @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
                 @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
                 @Header(KafkaHeaders.OFFSET) long offset) {
 
@@ -210,20 +217,19 @@ public class MessageOrderingIdempotencyRetries {
         private void processPayment(String paymentData) {
             // Your payment processing logic
         }
-    } 
-    
-    /*
-    Important Considerations
-        Storage: This example uses an in-memory map which is not suitable for production. In a real application, you should 
-                use a distributed cache or database.
-        Expiration: You should implement expiration for idempotency keys to prevent the store from growing indefinitely.
-        Request Matching: For a more robust solution, you might want to consider matching both the idempotency key AND the request content.
-        Error Handling: Consider how to handle cases where the same idempotency key is used with different request bodies.
-        HTTP Methods: While this example covers POST and PUT, you might want to include PATCH as well depending on your requirements.
-    This implementation ensures that multiple identical requ    
-    */
+    }
 
-    //Combined Approach (Event Sourcing with Deduplication)
+    /*
+  Important Considerations
+      Storage: This example uses an in-memory map which is not suitable for production. In a real application, you should
+              use a distributed cache or database.
+      Expiration: You should implement expiration for idempotency keys to prevent the store from growing indefinitely.
+      Request Matching: For a more robust solution, you might want to consider matching both the idempotency key AND the request content.
+      Error Handling: Consider how to handle cases where the same idempotency key is used with different request bodies.
+      HTTP Methods: While this example covers POST and PUT, you might want to include PATCH as well depending on your requirements.
+  This implementation ensures that multiple identical requ
+     */
+    // Combined Approach (Event Sourcing with Deduplication)
     public class EventProcessor {
         // Track last processed sequence number per aggregate
 

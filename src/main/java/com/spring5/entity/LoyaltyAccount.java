@@ -22,11 +22,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "LOYALTY_ACCOUNT")
 public class LoyaltyAccount {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
-    @OneToOne(fetch = FetchType.LAZY)  // Recommended default
+
+    @OneToOne(fetch = FetchType.LAZY) // Recommended default
     @JoinColumn(name = "customer_id")
-    private Customer customer;    
+    private Customer customer;
 }

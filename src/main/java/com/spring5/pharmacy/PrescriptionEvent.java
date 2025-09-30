@@ -11,22 +11,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import java.util.Objects;
 
-//@Getter
-//@Builder
-//@With // Provides copy() functionality
+// @Getter
+// @Builder
+// @With // Provides copy() functionality
 @Entity
 public class PrescriptionEvent {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;    
-    
+    private Long id;
+
     private final String eventId;
     private final String correlationId;
     private final String type;
-    
+
     @OneToOne
     private final PrescriptionData payload;
-    
+
     private final String status;
     private final String errorMessage;
 
@@ -53,6 +54,7 @@ public class PrescriptionEvent {
 
     // Builder class
     public static class Builder {
+
         private String eventId;
         private String correlationId;
         private String type;
@@ -95,35 +97,53 @@ public class PrescriptionEvent {
             Objects.requireNonNull(eventId, "eventId cannot be null");
             Objects.requireNonNull(correlationId, "correlationId cannot be null");
             Objects.requireNonNull(type, "type cannot be null");
-            
+
             return new PrescriptionEvent(this);
         }
     }
 
     // Getters
-    public long getId() {return id;}
-    public String getEventId() { return eventId; }
-    public String getCorrelationId() { return correlationId; }
-    public String getType() { return type; }
-    public PrescriptionData getPayload() { return payload; }
-    public String getStatus() { return status; }
-    public String getErrorMessage() { return errorMessage; }
+    public long getId() {
+        return id;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public PrescriptionData getPayload() {
+        return payload;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
     // Example usage
     public static void main(String[] args) {
-        PrescriptionEvent original = new PrescriptionEvent.Builder()
-                .eventId("event-123")
-                .correlationId("corr-456")
-                .type("PRESCRIPTION_CREATED")
-                .status("PENDING")
-                .build();
+        PrescriptionEvent original
+                = new PrescriptionEvent.Builder()
+                        .eventId("event-123")
+                        .correlationId("corr-456")
+                        .type("PRESCRIPTION_CREATED")
+                        .status("PENDING")
+                        .build();
 
-        PrescriptionEvent updated = original.copy()
-                .type("PATIENT_VALIDATED")
-                .status("SUCCESS")
-                .build();
+        PrescriptionEvent updated = original.copy().type("PATIENT_VALIDATED").status("SUCCESS").build();
 
         System.out.println("Original: " + original.getType()); // PRESCRIPTION_CREATED
-        System.out.println("Updated: " + updated.getType());   // PATIENT_VALIDATED
+        System.out.println("Updated: " + updated.getType()); // PATIENT_VALIDATED
     }
 }

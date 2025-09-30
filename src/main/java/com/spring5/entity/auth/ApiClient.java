@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApiClient {
+
     boolean active;
     String clientId;
     String apiKey;

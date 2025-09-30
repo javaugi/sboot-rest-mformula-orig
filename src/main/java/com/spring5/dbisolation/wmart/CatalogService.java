@@ -6,7 +6,6 @@ package com.spring5.dbisolation.wmart;
 
 import com.spring5.entity.Product;
 import com.spring5.repository.ProductRepository;
-//import jakarta.persistence.Cacheable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,7 +24,7 @@ public class CatalogService {
         // This method body is only executed if the cache miss occurs.
         Long id = Long.valueOf(productId);
         return productRepository.findById(id).orElse(Product.builder().build());
-        //.orElseThrow(() -> new ProductNotFoundException(productId));
+        // .orElseThrow(() -> new ProductNotFoundException(productId));
     }
 
     // @CacheEvict ensures the cache is cleared on an update.

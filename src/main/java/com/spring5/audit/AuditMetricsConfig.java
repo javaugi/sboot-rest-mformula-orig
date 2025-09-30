@@ -5,13 +5,10 @@
 package com.spring5.audit;
 
 /**
- *
  * @author javau
  */
 public class AuditMetricsConfig {
-    
 }
-
 
 /*
 Migrating Hibernate Audit Logging to a Dedicated Microservice
@@ -37,7 +34,7 @@ public class AuditEvent {
     private Map<String, Object> oldValues;
     private Map<String, Object> newValues;
     private String sourceApplication;
-    
+
     // Constructors, getters, setters
 }
 
@@ -49,27 +46,27 @@ java
 @Aspect
 @Component
 public class AuditLoggingAspect {
-    
+
     private final AuditEventPublisher eventPublisher;
-    
+
     @Autowired
     public AuditLoggingAspect(AuditEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
     }
-    
+
     @AfterReturning(
         pointcut = "execution(* org.springframework.data.repository.Repository+.save*(..)) && args(entity)",
         returning = "result")
     public void logCreateOrUpdate(Object entity, Object result) {
         if (entity != null) {
-            AuditAction action = entity instanceof Persistable && ((Persistable<?>) entity).isNew() 
-                ? AuditAction.CREATE 
+            AuditAction action = entity instanceof Persistable && ((Persistable<?>) entity).isNew()
+                ? AuditAction.CREATE
                 : AuditAction.UPDATE;
-                
+
             eventPublisher.publishEvent(entity, action);
         }
     }
-    
+
     @AfterReturning(
         pointcut = "execution(* org.springframework.data.repository.Repository+.delete*(..)) && args(entity)")
     public void logDelete(Object entity) {
@@ -82,21 +79,21 @@ Step 3: Create Event Publisher Service
 java
 @Service
 public class AuditEventPublisher {
-    
+
     private final KafkaTemplate<String, AuditEvent> kafkaTemplate;
     private final ObjectMapper objectMapper;
     private final SecurityContext securityContext;
-    
+
     public void publishEvent(Object entity, AuditAction action) {
         AuditEvent event = createAuditEvent(entity, action);
         kafkaTemplate.send("audit-events", event.getEntityType() + "-" + event.getEntityId(), event);
     }
-    
+
     private AuditEvent createAuditEvent(Object entity, AuditAction action) {
         try {
             String entityId = extractId(entity);
             Map<String, Object> currentState = objectMapper.convertValue(entity, new TypeReference<>() {});
-            
+
             return new AuditEvent(
                 UUID.randomUUID(),
                 action,
@@ -113,11 +110,11 @@ public class AuditEventPublisher {
             throw new AuditException("Audit event creation failed", e);
         }
     }
-    
+
     private String extractId(Object entity) {
         // Implementation using reflection or entity-specific ID access
     }
-    
+
     private Map<String, Object> fetchPreviousState(Object entity) {
         // For UPDATE actions, fetch previous state from DB if needed
     }
@@ -126,7 +123,7 @@ Step 4: Configure Kafka Producer
 java
 @Configuration
 public class KafkaConfig {
-    
+
     @Bean
     public ProducerFactory<String, AuditEvent> auditEventProducerFactory() {
         Map<String, Object> config = new HashMap<>();
@@ -137,7 +134,7 @@ public class KafkaConfig {
         config.put(ProducerConfig.RETRIES_CONFIG, 3);
         return new DefaultKafkaProducerFactory<>(config);
     }
-    
+
     @Bean
     public KafkaTemplate<String, AuditEvent> auditKafkaTemplate() {
         return new KafkaTemplate<>(auditEventProducerFactory());
@@ -149,15 +146,15 @@ java
 @RestController
 @RequestMapping("/api/audit")
 public class AuditController {
-    
+
     private final AuditService auditService;
-    
+
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void handleAuditEvent(@RequestBody AuditEvent event) {
         auditService.processEvent(event);
     }
-    
+
     @GetMapping("/entity/{type}/{id}")
     public List<AuditEvent> getEntityHistory(
             @PathVariable String type,
@@ -169,9 +166,9 @@ Kafka Consumer in Audit Service
 java
 @Service
 public class AuditEventConsumer {
-    
+
     private final AuditService auditService;
-    
+
     @KafkaListener(topics = "audit-events", groupId = "audit-service-group")
     public void consume(AuditEvent event) {
         auditService.processEvent(event);
@@ -181,20 +178,20 @@ Audit Service Implementation
 java
 @Service
 public class AuditService {
-    
+
     private final AuditRepository repository;
-    
+
     @Transactional
     public void processEvent(AuditEvent event) {
         // Transform and store in dedicated audit database
         AuditEntry entry = convertToEntry(event);
         repository.save(entry);
     }
-    
+
     private AuditEntry convertToEntry(AuditEvent event) {
         // Conversion logic
     }
-    
+
     public List<AuditEvent> getEntityHistory(String entityType, String entityId) {
         return repository.findByEntityTypeAndEntityIdOrderByTimestampDesc(entityType, entityId)
             .stream()
@@ -231,13 +228,13 @@ Error Handling & Reliability
 java
 @Configuration
 public class KafkaErrorConfig {
-    
+
     @Bean
     public DeadLetterPublishingRecoverer dlqRecoverer(
             KafkaOperations<String, Object> template) {
         return new DeadLetterPublishingRecoverer(template);
     }
-    
+
     @Bean
     public DefaultErrorHandler errorHandler(
             DeadLetterPublishingRecoverer dlqRecoverer) {
@@ -279,14 +276,14 @@ Monitoring
 java
 @Configuration
 public class AuditMetricsConfig {
-    
+
     @Bean
     public MeterBinder auditMetrics(AuditRepository repository) {
         return registry -> {
             Gauge.builder("audit.events.count", repository::count)
                 .description("Total audit events in system")
                 .register(registry);
-            
+
             Counter.builder("audit.events.received")
                 .description("Incoming audit events")
                 .tag("source", "kafka")
@@ -295,9 +292,9 @@ public class AuditMetricsConfig {
     }
 }
 This approach provides a scalable, decoupled audit logging solution that maintains data consistency while improving system performance and maintainability
-*/
+ */
 
-/*
+ /*
 How can this method work if the database record has been updated already  private Map<String, Object> fetchPreviousState(Object entity) {
         // For UPDATE actions, fetch previous state from DB if needed
     }
@@ -311,43 +308,43 @@ java
 @Aspect
 @Component
 public class AuditLoggingAspect {
-    
+
     private final ThreadLocal<Map<String, Object>> previousState = new ThreadLocal<>();
-    
+
     @Before("execution(* org.springframework.data.repository.Repository+.save*(..)) && args(entity)")
     public void captureBeforeState(Object entity) {
         if (entity != null && !isNewEntity(entity)) {
             previousState.set(fetchCurrentStateFromDb(entity));
         }
     }
-    
+
     @AfterReturning(
         pointcut = "execution(* org.springframework.data.repository.Repository+.save*(..)) && args(entity)",
         returning = "result")
     public void logCreateOrUpdate(Object entity, Object result) {
         if (entity != null) {
-            AuditAction action = isNewEntity(entity) 
-                ? AuditAction.CREATE 
+            AuditAction action = isNewEntity(entity)
+                ? AuditAction.CREATE
                 : AuditAction.UPDATE;
-                
-            Map<String, Object> oldValues = action == AuditAction.UPDATE 
-                ? previousState.get() 
+
+            Map<String, Object> oldValues = action == AuditAction.UPDATE
+                ? previousState.get()
                 : null;
-                
+
             eventPublisher.publishEvent(entity, action, oldValues);
             previousState.remove();
         }
     }
-    
+
     private boolean isNewEntity(Object entity) {
         return entity instanceof Persistable && ((Persistable<?>) entity).isNew();
     }
-    
+
     private Map<String, Object> fetchCurrentStateFromDb(Object entity) {
         Object id = entityManager.getEntityManagerFactory()
             .getPersistenceUnitUtil()
             .getIdentifier(entity);
-        
+
         Object dbEntity = entityManager.find(entity.getClass(), id);
         return objectMapper.convertValue(dbEntity, new TypeReference<>() {});
     }
@@ -373,15 +370,15 @@ java
 public class YourEntity {
     @Version
     private Long version;
-    
+
     @Transient
     private Map<String, Object> previousState;
-    
+
     @PreUpdate
     public void captureState() {
         this.previousState = // capture current state from DB
     }
-    
+
     @PostUpdate
     public void publishEvent() {
         if (previousState != null) {
@@ -409,24 +406,24 @@ Here's a complete solution combining several approaches:
 
 java
 public class AuditStateCapturer {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     private final ObjectMapper objectMapper;
-    
+
     public Map<String, Object> capturePreUpdateState(Object entity) {
         if (entity == null) return null;
-        
+
         Object id = entityManager.getEntityManagerFactory()
             .getPersistenceUnitUtil()
             .getIdentifier(entity);
-        
+
         if (id == null) return null; // New entity
-        
+
         Object dbEntity = entityManager.find(entity.getClass(), id);
         if (dbEntity == null) return null;
-        
+
         return objectMapper.convertValue(dbEntity, new TypeReference<>() {});
     }
 }
@@ -435,25 +432,25 @@ public class AuditStateCapturer {
 @Component
 @RequiredArgsConstructor
 public class AuditAspect {
-    
+
     private final AuditStateCapturer stateCapturer;
     private final AuditEventPublisher eventPublisher;
-    
+
     @Around("@annotation(com.yourpackage.Auditable)")
     public Object auditMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         if (args.length == 0) return joinPoint.proceed();
-        
+
         Object entity = args[0];
         Map<String, Object> oldState = stateCapturer.capturePreUpdateState(entity);
-        
+
         Object result = joinPoint.proceed();
-        
+
         if (entity != null) {
             AuditAction action = oldState == null ? AuditAction.CREATE : AuditAction.UPDATE;
             eventPublisher.publishEvent(entity, action, oldState);
         }
-        
+
         return result;
     }
 }
@@ -461,7 +458,7 @@ public class AuditAspect {
 // Usage on service methods:
 @Service
 public class YourService {
-    
+
     @Auditable
     public YourEntity updateEntity(YourEntity entity) {
         // your update logic
@@ -483,9 +480,9 @@ Error Handling: Implement proper error recovery for failed state captures
 Concurrency: Handle cases where entities are modified between state capture and update
 
 This approach gives you complete, accurate audit trails while maintaining good performance characteristics.
-*/
+ */
 
-/*
+ /*
 Transaction Management in Audit Logging
 Yes, you're absolutely correct to focus on transaction boundaries. For reliable audit logging, the state capture and the actual database update must occur within the same transaction. Here's how to properly handle this:
 
@@ -505,10 +502,10 @@ java
 @Aspect
 @Component
 public class AuditLoggingAspect {
-    
+
     @Autowired
     private EntityManager entityManager;
-    
+
     @Before("execution(* com.yourpackage..*.save*(..)) && args(entity)")
     public void captureBeforeState(Object entity) {
         if (entity != null && !isNewEntity(entity)) {
@@ -526,10 +523,10 @@ java
 @Aspect
 @Component
 public class AuditLoggingAspect {
-    
+
     @Autowired
     private PlatformTransactionManager transactionManager;
-    
+
     @Before("execution(* com.yourpackage..*.save*(..)) && args(entity)")
     public void captureBeforeState(Object entity) {
         TransactionSynchronizationManager.registerSynchronization(
@@ -551,15 +548,15 @@ java
 @Component
 @RequiredArgsConstructor
 public class AuditLoggingAspect {
-    
+
     private final EntityManager entityManager;
     private final AuditEventPublisher eventPublisher;
     private final ThreadLocal<Map<Object, Map<String, Object>>> previousStates = new ThreadLocal<>();
-    
+
     @Before("execution(* org.springframework.data.repository.Repository+.save*(..)) && args(entity)")
     public void captureBeforeState(Object entity) {
         if (entity == null || isNewEntity(entity)) return;
-        
+
         TransactionSynchronizationManager.registerSynchronization(
             new TransactionSynchronizationAdapter() {
                 @Override
@@ -569,44 +566,44 @@ public class AuditLoggingAspect {
                         stateMap = new HashMap<>();
                         previousStates.set(stateMap);
                     }
-                    
+
                     // Fetch current DB state within the transaction
                     Object id = entityManager.getEntityManagerFactory()
                         .getPersistenceUnitUtil()
                         .getIdentifier(entity);
                     Object dbEntity = entityManager.find(entity.getClass(), id);
-                    
+
                     stateMap.put(entity, convertToMap(dbEntity));
                 }
             }
         );
     }
-    
+
     @AfterReturning(
         pointcut = "execution(* org.springframework.data.repository.Repository+.save*(..)) && args(entity)",
         returning = "result")
     public void logCreateOrUpdate(Object entity, Object result) {
         if (entity == null) return;
-        
+
         try {
-            AuditAction action = isNewEntity(entity) 
-                ? AuditAction.CREATE 
+            AuditAction action = isNewEntity(entity)
+                ? AuditAction.CREATE
                 : AuditAction.UPDATE;
-            
-            Map<String, Object> oldValues = action == AuditAction.UPDATE 
-                ? previousStates.get().get(entity) 
+
+            Map<String, Object> oldValues = action == AuditAction.UPDATE
+                ? previousStates.get().get(entity)
                 : null;
-            
+
             eventPublisher.publishEvent(entity, action, oldValues);
         } finally {
             previousStates.remove();
         }
     }
-    
+
     private boolean isNewEntity(Object entity) {
         return entity instanceof Persistable && ((Persistable<?>) entity).isNew();
     }
-    
+
     private Map<String, Object> convertToMap(Object entity) {
         // Implementation using reflection or ObjectMapper
     }
@@ -637,9 +634,9 @@ java
 @Aspect
 @Component
 public class AuditLoggingAspect {
-    
+
     // ...
-    
+
     @AfterThrowing(
         pointcut = "execution(* org.springframework.data.repository.Repository+.save*(..))",
         throwing = "ex")
@@ -654,16 +651,16 @@ java
 @Aspect
 @Component
 public class AuditLoggingAspect {
-    
-    private final Cache<Object, Map<String, Object>> stateCache = 
+
+    private final Cache<Object, Map<String, Object>> stateCache =
         Caffeine.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .build();
-    
+
     // In beforeCommit:
     stateCache.put(entity, convertToMap(dbEntity));
-    
+
     // In logCreateOrUpdate:
     Map<String, Object> oldValues = stateCache.getIfPresent(entity);
 }
@@ -682,7 +679,7 @@ java
 @EnableTransactionManagement
 @EnableJpaRepositories
 public class PersistenceConfig {
-    
+
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
@@ -697,4 +694,4 @@ Audit events are only published if the transaction commits
 Resources are properly cleaned up on rollback
 
 The solution is performant even with high transaction volumes
-*/
+ */

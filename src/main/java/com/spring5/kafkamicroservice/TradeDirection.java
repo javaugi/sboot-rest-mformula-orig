@@ -5,9 +5,9 @@
 package com.spring5.kafkamicroservice;
 
 /**
- *
  * @author javaugi
  */
 public enum TradeDirection {
-    BUY, SELL;
+    BUY,
+    SELL;
 }

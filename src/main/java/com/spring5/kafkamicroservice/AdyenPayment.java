@@ -13,10 +13,11 @@ import lombok.Data;
 @Data
 @Entity
 public class AdyenPayment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     private String paymentId;
     private AdyenPaymentStatus status;
     private String pspReference;

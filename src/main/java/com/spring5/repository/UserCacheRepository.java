@@ -14,7 +14,10 @@ import org.springframework.stereotype.Repository;
 @CacheConfig(cacheNames = "users")
 @Repository
 public interface UserCacheRepository extends JpaRepository<User, Long> {
+
     void cacheUser(@Param("user") User user);
+
     void cacheUser(@Param("userDTO") UserDTO userDTO);
+
     User getUser(@Param("id") Long id);
 }

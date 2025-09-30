@@ -14,12 +14,15 @@ package com.patterns.misc.frontcontroller;
  * request and then pass the requests to corresponding handlers. Following are
  * the entities of this type of design pattern.
  *
+ * <p>
  * Front Controller - Single handler for all kinds of requests coming to the
  * application (either web based/ desktop based).
  *
+ * <p>
  * Dispatcher - Front Controller may use a dispatcher object which can dispatch
  * the request to corresponding specific handler.
  *
+ * <p>
  * View - Views are the object for which the requests are made.
  *
  * @author david

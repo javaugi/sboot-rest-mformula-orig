@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -50,7 +48,8 @@ public class MyTopic implements Subject2 {
     @Override
     public void notifyObservers() {
         List<Observer2> observersLocal = null;
-        //synchronization is used to make sure any observer registered after message is received is not notified
+        // synchronization is used to make sure any observer registered after message is received is not
+        // notified
         synchronized (MUTEX) {
             if (!changed) {
                 return;
@@ -61,7 +60,6 @@ public class MyTopic implements Subject2 {
         for (Observer2 obj : observersLocal) {
             obj.update();
         }
-
     }
 
     @Override
@@ -69,12 +67,11 @@ public class MyTopic implements Subject2 {
         return this.message;
     }
 
-    //method to post message to the topic
+    // method to post message to the topic
     public void postMessage(String msg) {
         System.out.println("Message Posted to Topic:" + msg);
         this.message = msg;
         this.changed = true;
         notifyObservers();
     }
-
 }

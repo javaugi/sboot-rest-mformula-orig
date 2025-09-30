@@ -5,11 +5,12 @@
 package com.spring5.controller;
 
 import org.springframework.http.HttpStatus;
+
 /**
- *
  * @author javaugi
  */
 public class HttpStatusConfig {
+
     private HttpStatus status;
 }
 /*
@@ -158,4 +159,4 @@ UPGRADE_REQUIRED
 426 Upgrade Required.
 URI_TOO_LONG
 414 URI Too Long.
-*/
+ */

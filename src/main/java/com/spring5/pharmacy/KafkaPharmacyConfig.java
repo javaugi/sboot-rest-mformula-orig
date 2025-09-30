@@ -12,12 +12,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
 public class KafkaPharmacyConfig extends KafkaBaseConfig {
-    
+
     @Bean(name = "pharmacyEventKafkaTemplate")
     public KafkaTemplate<String, PrescriptionEvent> pharmacyEventKafkaTemplate() {
         return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(baseAvroProducerConfigs()));
-    } 
-} 
+    }
+}
 /*
 Example:
 @RestController
@@ -186,4 +186,4 @@ Example Answer:
 ✅ Practice Coding: Focus on Java concurrency, Spring Boot, and GCP APIs.
 ✅ Review Case Studies: CVS likely uses GCP, Kafka, and microservices.
 ✅ Prepare Questions: Ask about their biggest tech debt challenges.
-*/
+ */

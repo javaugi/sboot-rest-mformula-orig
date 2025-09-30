@@ -14,27 +14,25 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author javaugi
  */
 @org.springframework.stereotype.Service
 public class AssessmentService {
+
     private final Map<Long, Assessment> assessments = new HashMap<>();
     private long nextId = 1;
 
     public Assessment save(Assessment assessment) {
-        Assessment newAssessment = new Assessment(nextId++, assessment.getPatientId(), assessment.getDate(), assessment.getStatus());
+        Assessment newAssessment
+                = new Assessment(
+                        nextId++, assessment.getPatientId(), assessment.getDate(), assessment.getStatus());
         assessments.put(newAssessment.getId(), newAssessment);
         return newAssessment;
     }
-    
+
     public static Assessment createAssessment(long patientId, LocalDate date, String status) {
-        return Assessment.builder()
-                .patientId(patientId)
-                .date(date)
-                .status(status)
-                .build();
-    }    
+        return Assessment.builder().patientId(patientId).date(date).status(status).build();
+    }
 
     public Assessment findById(Long id) {
         return assessments.get(id);
@@ -48,7 +46,13 @@ public class AssessmentService {
         if (!assessments.containsKey(id)) {
             return null;
         }
-        assessments.put(id, new Assessment(id, updatedAssessment.getPatientId(), updatedAssessment.getDate(), updatedAssessment.getStatus()));
+        assessments.put(
+                id,
+                new Assessment(
+                        id,
+                        updatedAssessment.getPatientId(),
+                        updatedAssessment.getDate(),
+                        updatedAssessment.getStatus()));
         return assessments.get(id);
     }
 
@@ -56,5 +60,5 @@ public class AssessmentService {
         return answerService.findAll().stream()
                 .filter(answer -> answer.getAssessmentId().equals(assessmentId))
                 .collect(Collectors.toList());
-    }   
+    }
 }

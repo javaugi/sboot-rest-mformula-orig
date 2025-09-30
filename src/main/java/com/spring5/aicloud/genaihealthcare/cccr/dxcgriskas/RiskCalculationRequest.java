@@ -6,10 +6,10 @@ package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-import java.util.List;
-import java.time.LocalDate;
 
 @Data
 @Builder(toBuilder = true)

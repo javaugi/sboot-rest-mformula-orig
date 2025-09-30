@@ -5,7 +5,9 @@ import java.util.LinkedList;
 public class Q42GraphSearch {
 
     public enum State {
-        Unvisited, Visited, Visiting;
+        Unvisited,
+        Visited,
+        Visiting;
     }
 
     public static void main(String a[]) {

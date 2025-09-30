@@ -15,8 +15,7 @@ public class FindMaintainMedianUsingPriorityQueue {
     public static void addNewNumber(int randomNumber) {
         /* Note: addNewNumber maintains a condition that maxHeap.size() >= minHeap.size() */
         if (maxHeap.size() == minHeap.size()) {
-            if ((minHeap.peek() != null)
-                    && randomNumber > minHeap.peek()) {
+            if ((minHeap.peek() != null) && randomNumber > minHeap.peek()) {
                 maxHeap.offer(minHeap.poll());
                 minHeap.offer(randomNumber);
             } else {
@@ -53,10 +52,8 @@ public class FindMaintainMedianUsingPriorityQueue {
     }
 
     public static void printMinHeapAndMaxHeap() {
-        Integer[] minHeapArray = minHeap.toArray(
-                new Integer[minHeap.size()]);
-        Integer[] maxHeapArray = maxHeap.toArray(
-                new Integer[maxHeap.size()]);
+        Integer[] minHeapArray = minHeap.toArray(new Integer[minHeap.size()]);
+        Integer[] maxHeapArray = maxHeap.toArray(new Integer[maxHeap.size()]);
 
         Arrays.sort(minHeapArray, maxHeapComparator);
         Arrays.sort(maxHeapArray, maxHeapComparator);
@@ -88,8 +85,7 @@ public class FindMaintainMedianUsingPriorityQueue {
     }
 
     private static void printPriorityQueue() {
-        PriorityQueue<String> pQueue
-                = new PriorityQueue<String>();
+        PriorityQueue<String> pQueue = new PriorityQueue<String>();
 
         // Adding items to the pQueue using add()
         pQueue.add("C");
@@ -98,8 +94,7 @@ public class FindMaintainMedianUsingPriorityQueue {
         pQueue.add("Python");
 
         // Printing the most priority element
-        System.out.println("Head value using peek function:"
-                + pQueue.peek());
+        System.out.println("Head value using peek function:" + pQueue.peek());
 
         // Printing all elements
         System.out.println("The queue elements:");
@@ -111,8 +106,7 @@ public class FindMaintainMedianUsingPriorityQueue {
         // Removing the top priority element (or head) and
         // printing the modified pQueue using poll()
         pQueue.poll();
-        System.out.println("After removing an element"
-                + "with poll function:");
+        System.out.println("After removing an element" + "with poll function:");
         Iterator<String> itr2 = pQueue.iterator();
         while (itr2.hasNext()) {
             System.out.println(itr2.next());
@@ -120,8 +114,7 @@ public class FindMaintainMedianUsingPriorityQueue {
 
         // Removing Java using remove()
         pQueue.remove("Java");
-        System.out.println("after removing Java with"
-                + " remove function:");
+        System.out.println("after removing Java with" + " remove function:");
         Iterator<String> itr3 = pQueue.iterator();
         while (itr3.hasNext()) {
             System.out.println(itr3.next());
@@ -129,8 +122,7 @@ public class FindMaintainMedianUsingPriorityQueue {
 
         // Check if an element is present using contains()
         boolean b = pQueue.contains("C");
-        System.out.println("Priority queue contains C "
-                + "or not?: " + b);
+        System.out.println("Priority queue contains C " + "or not?: " + b);
 
         // Getting objects from the queue using toArray()
         // in an array and print the array

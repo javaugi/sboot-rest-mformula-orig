@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class BonusMultiplier {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // ✅ Explicit and safe and recommended
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Explicit and safe and recommended
     Long id;
 
     @Column(name = "score", unique = true, nullable = false)

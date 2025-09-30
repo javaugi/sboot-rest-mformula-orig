@@ -9,9 +9,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javau
  */
 public interface ApiClientRepository extends JpaRepository<ApiClient, Long> {
+
     Optional<ApiClient> findByApiKey(String apiKey);
 }

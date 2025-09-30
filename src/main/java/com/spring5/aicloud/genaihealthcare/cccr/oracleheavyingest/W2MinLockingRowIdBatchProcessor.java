@@ -4,7 +4,7 @@
  */
 package com.spring5.aicloud.genaihealthcare.cccr.oracleheavyingest;
 
-//import jakarta.activation.DataSource;
+// import jakarta.activation.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,18 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- *
  * @author javau
  */
 public class W2MinLockingRowIdBatchProcessor {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private DataSource dataSource;
 
     public void processByRowIdBatches(String tableName, int batchSize) throws SQLException {
-        String baseQuery = "SELECT ROWID FROM " + tableName
-            + " WHERE process_status = 'PENDING'";
+        String baseQuery = "SELECT ROWID FROM " + tableName + " WHERE process_status = 'PENDING'";
 
         try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(baseQuery)) {
 
@@ -47,16 +46,20 @@ public class W2MinLockingRowIdBatchProcessor {
     }
 
     private void processBatch(List<String> rowIds, String tableName) {
-        String rowIdList = rowIds.stream()
-            .map(rid -> "'" + rid.replace("'", "''") + "'")
-            .collect(Collectors.joining(","));
+        String rowIdList
+                = rowIds.stream()
+                        .map(rid -> "'" + rid.replace("'", "''") + "'")
+                        .collect(Collectors.joining(","));
 
-        String updateSql = String.format("""
+        String updateSql
+                = String.format(
+                        """
             UPDATE %s
             SET process_status = 'PROCESSED',
                 process_date = SYSDATE
             WHERE ROWID IN (%s)
-            """, tableName, rowIdList);
+            """,
+                        tableName, rowIdList);
 
         jdbcTemplate.update(updateSql);
     }

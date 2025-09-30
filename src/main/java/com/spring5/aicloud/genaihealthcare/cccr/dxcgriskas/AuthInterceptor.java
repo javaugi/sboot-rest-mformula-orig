@@ -16,8 +16,8 @@ public class AuthInterceptor implements ClientHttpRequestInterceptor {
     private static final String apiSecret = "apiSecret";
 
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body,
-        ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(
+            HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         // Add Verisk-specific authentication headers
         request.getHeaders().add("X-API-Key", apiKey);
         request.getHeaders().add("X-API-Secret", apiSecret);

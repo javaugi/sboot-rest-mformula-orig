@@ -9,7 +9,6 @@ import java.util.List;
  * the numbers 1 to the given number.
  *
  * @author david
- *
  */
 // 1: 1
 // 2: 1 2

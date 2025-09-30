@@ -5,9 +5,7 @@
 package com.spring5;
 
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -25,13 +23,13 @@ public class DockerHelloWorldConfigurationTests {
     @LocalServerPort
     private int port;
 
-    //@Autowired
+    // @Autowired
     private TestRestTemplate restTemplate = new TestRestTemplate();
 
-    //@Test
+    // @Test
     public void testGreeting() throws Exception {
-        ResponseEntity<String> entity = restTemplate
-                .getForEntity("http://localhost:" + this.port + "/docker", String.class);
+        ResponseEntity<String> entity
+                = restTemplate.getForEntity("http://localhost:" + this.port + "/docker", String.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
 }

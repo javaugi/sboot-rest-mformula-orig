@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VehicleUpdateService {
- 
+
     public UpdateOperation initiateUpdate(String vin, UpdateRequest request) {
         return null;
     }
-    
+
     public UpdateOperation getOperationStatus(String operationId) {
         return null;
     }

@@ -4,14 +4,11 @@
  */
 package com.spring5.utils.common;
 
-import com.spring5.payroll.*;
-
 /**
- *
  * @author javaugi
  */
 public class ReactivePaymentService {
-    public void processPayment(ReactiveClaimEvent event) {
 
+    public void processPayment(ReactiveClaimEvent event) {
     }
 }

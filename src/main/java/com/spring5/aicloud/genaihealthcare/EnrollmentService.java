@@ -4,9 +4,9 @@
  */
 package com.spring5.aicloud.genaihealthcare;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EnrollmentService {
@@ -17,8 +17,12 @@ public class EnrollmentService {
     private final EnrollmentRepository repo;
     private final ResponsibleAIIndexService raiService;
 
-    public EnrollmentService(LLMClient llm, ConsentService consentService, HcareAuditService auditService,
-        EnrollmentRepository repo, ResponsibleAIIndexService raiService) {
+    public EnrollmentService(
+            LLMClient llm,
+            ConsentService consentService,
+            HcareAuditService auditService,
+            EnrollmentRepository repo,
+            ResponsibleAIIndexService raiService) {
         this.llm = llm;
         this.consentService = consentService;
         this.auditService = auditService;
@@ -26,7 +30,8 @@ public class EnrollmentService {
         this.raiService = raiService;
     }
 
-    public EnrollmentResult enrollPatient(String patientId, String consentId, String email, boolean acceptMarketing, String freeText) {
+    public EnrollmentResult enrollPatient(
+            String patientId, String consentId, String email, boolean acceptMarketing, String freeText) {
         // 1. Consent enforcement
         boolean consentOk = consentService.hasGivenConsent(patientId, consentId, "loyalty_enrollment");
         if (!consentOk) {
@@ -43,13 +48,21 @@ public class EnrollmentService {
         LLMResponse resp = llm.generate(prompt, meta);
 
         // 4. Audit
-        auditService.recordPrompt("LoyaltyEnrollment", patientId, prompt, resp.text, resp.modelName, resp.provenance);
+        auditService.recordPrompt(
+                "LoyaltyEnrollment", patientId, prompt, resp.text, resp.modelName, resp.provenance);
 
         // 5. Compute Responsible AI Index and persist
-        Map<String, Double> derived = raiService.deriveScoresFromResponse(prompt, resp.text, resp.confidence, consentOk);
+        Map<String, Double> derived
+                = raiService.deriveScoresFromResponse(prompt, resp.text, resp.confidence, consentOk);
         String notes = "auto-derived scores";
-        raiService.computeAndStore("LoyaltyEnrollment", resp.modelName, notes,
-            derived.get("transparency"), derived.get("fairness"), derived.get("privacy"), derived.get("regulatory"));
+        raiService.computeAndStore(
+                "LoyaltyEnrollment",
+                resp.modelName,
+                notes,
+                derived.get("transparency"),
+                derived.get("fairness"),
+                derived.get("privacy"),
+                derived.get("regulatory"));
 
         // 6. Interpret LLM response with a human-friendly explanation
         double confidence = resp.confidence;
@@ -66,9 +79,10 @@ public class EnrollmentService {
     }
 
     private String buildPrompt(String patientId, String safeFreeText, boolean acceptMarketing) {
-        String promptTemplate = "You are a healthcare-friendly assistant. Produce a short, respectful enrollment message to encourage loyalty program signup. "
-            + "PatientId: %s\nPreferences: acceptsMarketing=%s\nFreeText: %s\n"
-            + "Constraints: Do not ask for or reveal any PII, be concise (<=40 words), and include an opt-out line.";
+        String promptTemplate
+                = "You are a healthcare-friendly assistant. Produce a short, respectful enrollment message to encourage loyalty program signup. "
+                + "PatientId: %s\nPreferences: acceptsMarketing=%s\nFreeText: %s\n"
+                + "Constraints: Do not ask for or reveal any PII, be concise (<=40 words), and include an opt-out line.";
         return String.format(promptTemplate, patientId, acceptMarketing, safeFreeText);
     }
 
@@ -84,7 +98,8 @@ public class EnrollmentService {
         public final double confidence;
         public final String explanation;
 
-        private EnrollmentResult(boolean success, String idOrMessage, double confidence, String explanation) {
+        private EnrollmentResult(
+                boolean success, String idOrMessage, double confidence, String explanation) {
             this.success = success;
             this.idOrMessage = idOrMessage;
             this.confidence = confidence;

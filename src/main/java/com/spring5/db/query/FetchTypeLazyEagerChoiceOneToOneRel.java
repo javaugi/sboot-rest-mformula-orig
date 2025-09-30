@@ -18,7 +18,7 @@ import jakarta.persistence.PersistenceContext;
 
 /*
 FetchType.EAGER in One-to-One Relationships: When It Makes Sense
-    The choice between FetchType.EAGER and FetchType.LAZY for one-to-one relationships depends on several factors. Let me break down the 
+    The choice between FetchType.EAGER and FetchType.LAZY for one-to-one relationships depends on several factors. Let me break down the
         considerations with concrete examples.
 Default Behavior in JPA/Hibernate
     For one-to-one relationships:
@@ -58,116 +58,116 @@ Otherwise, prefer FetchType.LAZY and:
     Consider batch fetching for multiple entities
     Use entity graphs for complex scenarios
 
-Remember that with modern Hibernate versions, the performance difference between EAGER and properly managed LAZY loading with fetch joins is 
+Remember that with modern Hibernate versions, the performance difference between EAGER and properly managed LAZY loading with fetch joins is
     often minimal, while LAZY gives you more flexibility.
-*/
+ */
 public class FetchTypeLazyEagerChoiceOneToOneRel {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     /*
-    The Hibernate default FetchType is EAGER.
-        This means that by default, when you load an entity that has a relationship (like @OneToOne, @ManyToOne, @OneToMany, @ManyToMany), 
-            Hibernate will attempt to load the associated entities immediately along with the primary entity.
-    */
-    
-    
+  The Hibernate default FetchType is EAGER.
+      This means that by default, when you load an entity that has a relationship (like @OneToOne, @ManyToOne, @OneToMany, @ManyToMany),
+          Hibernate will attempt to load the associated entities immediately along with the primary entity.
+     */
     public void eagerWhenChildDataAlwaysNeeded() {
         /*
-        @Entity
-        public class User {
-            @Id
-            @GeneratedValue
-            private Long id;
-
-            @OneToOne(fetch = FetchType.EAGER)  // Makes sense here
-            @JoinColumn(name = "preferences_id")
-            private UserPreferences preferences;
-
-            // Other fields
-        }
-
-        @Entity
-        public class UserPreferences {
-            @Id
-            @GeneratedValue
-            private Long id;
-
-            private String theme;
-            private String language;
-
-            @OneToOne(mappedBy = "preferences")
-            private User user;
-        }        
-        */
-    }
-    
-    private void eagerWhenPerformanceImpactMinimal() {
-        //see below Order and shippingDetails
-    }
-    
     @Entity
-    public class Order {
+    public class User {
         @Id
         @GeneratedValue
         private Long id;
 
-        @OneToOne(fetch = FetchType.EAGER)  // Small table, always needed
+        @OneToOne(fetch = FetchType.EAGER)  // Makes sense here
+        @JoinColumn(name = "preferences_id")
+        private UserPreferences preferences;
+
+        // Other fields
+    }
+
+    @Entity
+    public class UserPreferences {
+        @Id
+        @GeneratedValue
+        private Long id;
+
+        private String theme;
+        private String language;
+
+        @OneToOne(mappedBy = "preferences")
+        private User user;
+    }
+         */
+    }
+
+    private void eagerWhenPerformanceImpactMinimal() {
+        // see below Order and shippingDetails
+    }
+
+    @Entity
+    public class Order {
+
+        @Id
+        @GeneratedValue
+        private Long id;
+
+        @OneToOne(fetch = FetchType.EAGER) // Small table, always needed
         @JoinColumn(name = "shipping_details_id")
         private ShippingDetails shippingDetails;
     }
-    
-    
+
     private void lazyWhenChildDataLargeOrRarelyNeeded() {
         /*
-        @Entity
-        public class Product {
-            @Id
-            @GeneratedValue
-            private Long id;
+    @Entity
+    public class Product {
+        @Id
+        @GeneratedValue
+        private Long id;
 
-            @OneToOne(fetch = FetchType.LAZY)  // Better approach here
-            @JoinColumn(name = "product_manual_id")
-            private ProductManual manual;
-        }        
-        */        
+        @OneToOne(fetch = FetchType.LAZY)  // Better approach here
+        @JoinColumn(name = "product_manual_id")
+        private ProductManual manual;
     }
-    
+         */
+    }
+
     private void lazyToAvoidCartesianProducts() {
         /*
-        @Entity
-        public class Employee {
-            @Id
-            @GeneratedValue
-            private Long id;
+    @Entity
+    public class Employee {
+        @Id
+        @GeneratedValue
+        private Long id;
 
-            @OneToOne(fetch = FetchType.LAZY)  // Prevents data multiplication
-            @JoinColumn(name = "parking_spot_id")
-            private ParkingSpot parkingSpot;
-        }        
-        */        
+        @OneToOne(fetch = FetchType.LAZY)  // Prevents data multiplication
+        @JoinColumn(name = "parking_spot_id")
+        private ParkingSpot parkingSpot;
     }
-    
+         */
+    }
+
     private void bestAppraochDefLazyFetchJoinWhenNeeded() {
-        //see method getCustomerWithLoyalty
+        // see method getCustomerWithLoyalty
     }
 
     // Then use fetch join when you need it
     public Customer getCustomerWithLoyalty(Long customerId) {
-        return entityManager.createQuery(
-            "SELECT c FROM Customer c LEFT JOIN FETCH c.loyaltyAccount WHERE c.id = :id", 
-            Customer.class)
-            .setParameter("id", customerId)
-            .getSingleResult();
+        return entityManager
+                .createQuery(
+                        "SELECT c FROM Customer c LEFT JOIN FETCH c.loyaltyAccount WHERE c.id = :id",
+                        Customer.class)
+                .setParameter("id", customerId)
+                .getSingleResult();
     }
-    
+
     private void bestApproachMapsId4SharedPrimaryKey() {
-    //see below Person and Persondetails
+        // see below Person and Persondetails
     }
-    
+
     @Entity
     public class Person {
+
         @Id
         @GeneratedValue
         private Long id;
@@ -178,8 +178,9 @@ public class FetchTypeLazyEagerChoiceOneToOneRel {
 
     @Entity
     public class PersonDetails {
+
         @Id
-        private Long id;  // Same as person ID
+        private Long id; // Same as person ID
 
         @MapsId
         @OneToOne(fetch = FetchType.LAZY)
@@ -187,31 +188,29 @@ public class FetchTypeLazyEagerChoiceOneToOneRel {
         private Person person;
 
         // Other fields
-    }    
-    
+    }
+
     private void realWorldEx() {
         /*
-        @Entity
-        public class BankAccount {
-            @Id
-            @GeneratedValue
-            private Long id;
+    @Entity
+    public class BankAccount {
+        @Id
+        @GeneratedValue
+        private Long id;
 
-            // EAGER makes sense - small table, always needed
-            @OneToOne(fetch = FetchType.EAGER)
-            @JoinColumn(name = "account_type_id")
-            private AccountType type;
+        // EAGER makes sense - small table, always needed
+        @OneToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "account_type_id")
+        private AccountType type;
 
-            // LAZY better - large data, not always needed
-            @OneToOne(fetch = FetchType.LAZY)
-            @JoinColumn(name = "monthly_statement_id")
-            private MonthlyStatement currentStatement;
-        }        
-        */
+        // LAZY better - large data, not always needed
+        @OneToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "monthly_statement_id")
+        private MonthlyStatement currentStatement;
     }
-    
+         */
+    }
 }
-
 
 /*
 what is the hibernate default value for FetchType and how to use it properly
@@ -365,4 +364,4 @@ Use JOIN FETCH or EntityGraph in your JPQL/HQL queries to eagerly fetch specific
 Understand transactional boundaries to prevent LazyInitializationException when working with LAZY fetched data.
 
 Profile your application to identify performance bottlenecks and adjust fetching strategies as needed. Don't guess; measure.
-*/
+ */

@@ -20,8 +20,10 @@ public class DatabaseBonusConfig implements BonusConfig {
     @Override
     public double getMultiplierForScore(String score) throws InvalidReviewScoreException {
         // Fetch the value from the database. If not found, throw exception.
-        return bonusRepo.findByScore(score)
-            //.map(BonusMultiplier::getMultiplier)
-            .orElseThrow(() -> new InvalidReviewScoreException("Invalid performance score: " + score)).getMultiplier();
+        return bonusRepo
+                .findByScore(score)
+                // .map(BonusMultiplier::getMultiplier)
+                .orElseThrow(() -> new InvalidReviewScoreException("Invalid performance score: " + score))
+                .getMultiplier();
     }
 }

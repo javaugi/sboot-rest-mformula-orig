@@ -12,10 +12,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- *
  * @author javau
  */
 public class TwoDimSongPairAdvFinder extends TwoDimSongPairFinder {
+
     /**
      * Finds all unique pairs including handling duplicates properly
      */
@@ -53,7 +53,8 @@ public class TwoDimSongPairAdvFinder extends TwoDimSongPairFinder {
         // Simple heuristic: choose the pair with the most well-known songs
         // In real implementation, you might use popularity data
         return pairs.stream()
-            .max(Comparator.comparing(pair
-                -> pair.getSong1().getTitle().length() + pair.getSong2().getTitle().length()));
+                .max(
+                        Comparator.comparing(
+                                pair -> pair.getSong1().getTitle().length() + pair.getSong2().getTitle().length()));
     }
 }

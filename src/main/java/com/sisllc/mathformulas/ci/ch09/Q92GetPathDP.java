@@ -36,7 +36,8 @@ public class Q92GetPathDP {
         return false;
     }
 
-    public static boolean getPath(int x, int y, ArrayList<Point> path, HashMap<Point, Boolean> cache) {
+    public static boolean getPath(
+            int x, int y, ArrayList<Point> path, HashMap<Point, Boolean> cache) {
         /* If out of bounds or not available, return.*/
         if (y < 0 || x < 0 || !isFree(x, y)) {
             return false;
@@ -75,5 +76,4 @@ public class Q92GetPathDP {
             System.out.println("No path exists.");
         }
     }
-
 }

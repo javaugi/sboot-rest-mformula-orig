@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -61,7 +59,6 @@ public class FabonacciFast {
         } catch (Exception e) {
             System.out.println(e);
         }
-
     } // end of main
 
     // The "fast" Fibonacci computation function. This is also recursive, but
@@ -94,5 +91,4 @@ public class FabonacciFast {
 
         return answers[n - 2].add(answers[n - 3]);
     }
-
 }

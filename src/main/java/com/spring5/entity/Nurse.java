@@ -19,7 +19,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
  * @author javaugi
  */
 @Entity
@@ -27,20 +26,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Nurse {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String name;
     private String firstName;
     private String lastName;
     private String licenseNumber;
     private String specialization;
-    
+
     @ManyToOne
     @JoinColumn(name = "supervising_physician_id")
     private Physician supervisingPhysician;
-    
-    @OneToMany(mappedBy = "physician", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Appointment.class)
+
+    @OneToMany(
+            mappedBy = "physician",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            targetEntity = Appointment.class)
     private List<Appointment> appointments;
 }

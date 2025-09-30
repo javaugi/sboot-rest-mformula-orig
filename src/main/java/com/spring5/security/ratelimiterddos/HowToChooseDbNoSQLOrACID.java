@@ -11,7 +11,7 @@ Sample Answer:
     Storing vehicle telemetry data that's high-volume and schema-less
     Caching update packages metadata that changes frequently
     Handling the eventual consistency requirements for update status reporting across regions
-However, for the core update tracking system where ACID properties are crucial (like ensuring an update 
+However, for the core update tracking system where ACID properties are crucial (like ensuring an update
     isn't sent twice), I'd stick with PostgreSQL. A hybrid approach might work best."
 
 CI/CD Pipeline Questions
@@ -27,7 +27,6 @@ For OTA specifically, I'd include:
     Special validation for update package metadata
     Performance testing under simulated mass update scenarios
     Security scanning of all artifacts"
-*/
+ */
 public class HowToChooseDbNoSQLOrACID {
-    
 }

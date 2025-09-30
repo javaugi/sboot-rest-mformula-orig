@@ -28,7 +28,6 @@ Sample Answer:
     Version compatibility - Ensure rollback versions are safe
     Status tracking - Clear records of which vehicles rolled back
 The database would track all these states to enable precise targeting of fixes."
-*/
+ */
 public class SecurityOTAupdatesRollbacks {
-    
 }

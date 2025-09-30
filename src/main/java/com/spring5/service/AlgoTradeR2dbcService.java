@@ -9,24 +9,22 @@ import com.spring5.repository.AlgoTradeR2dbcRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- *
  * @author javaugi
  */
-//@Service
+// @Service
 public class AlgoTradeR2dbcService {
-    
+
     private final AlgoTradeR2dbcRepository algoTradeRepository;
 
     public AlgoTradeR2dbcService(AlgoTradeR2dbcRepository algoAlgoTradeRepository) {
         this.algoTradeRepository = algoAlgoTradeRepository;
     }
-    
+
     public Mono<AlgoTrade> findById(Long id) {
         return algoTradeRepository.findById(id).defaultIfEmpty(AlgoTrade.builder().build());
     }
@@ -42,7 +40,7 @@ public class AlgoTradeR2dbcService {
     @Transactional
     public Mono<AlgoTrade> save(AlgoTrade trade) {
         return algoTradeRepository.save(trade);
-    }    
+    }
 
     @Transactional
     public Flux<AlgoTrade> saveAll(List<AlgoTrade> trades) {
@@ -61,7 +59,7 @@ public class AlgoTradeR2dbcService {
             return Flux.just(AlgoTrade.builder().build());
         }
     }
-    
+
     public Mono<Boolean> addMoney(Long userAccountId, BigDecimal amount) {
         try {
             algoTradeRepository.addMoney(userAccountId, amount);

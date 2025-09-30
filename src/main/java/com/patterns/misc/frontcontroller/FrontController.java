@@ -8,8 +8,6 @@
 package com.patterns.misc.frontcontroller;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -32,10 +30,10 @@ public class FrontController {
     }
 
     public void dispatchRequest(String request) {
-        //log each request
+        // log each request
         trackRequest(request);
 
-        //authenticate the user
+        // authenticate the user
         if (isAuthenticUser()) {
             dispatcher.dispatch(request);
         }

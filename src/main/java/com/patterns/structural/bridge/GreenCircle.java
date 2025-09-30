@@ -8,8 +8,6 @@
 package com.patterns.structural.bridge;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -18,6 +16,7 @@ public class GreenCircle implements DrawApiBridge {
 
     @Override
     public void drawCircle(int radius, int x, int y) {
-        System.out.println("Drawing Circle[ color: green, radius: " + radius + ", x: " + x + ", " + y + "]");
+        System.out.println(
+                "Drawing Circle[ color: green, radius: " + radius + ", x: " + x + ", " + y + "]");
     }
 }

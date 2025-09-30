@@ -13,15 +13,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
+
     @Autowired
     private BookRepository repository;
-    
+
     public List<Book> findAll() {
         return repository.findAll();
     }
-    
+
     public Book findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> 
-            new ResourceNotFoundException("Book not found"));
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
 }

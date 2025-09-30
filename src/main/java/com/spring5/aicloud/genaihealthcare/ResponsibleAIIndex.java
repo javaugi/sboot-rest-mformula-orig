@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class ResponsibleAIIndex {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

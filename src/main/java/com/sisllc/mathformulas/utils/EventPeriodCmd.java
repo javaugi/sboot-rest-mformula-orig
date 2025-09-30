@@ -2,11 +2,11 @@
  * Copyright (C) 2023 Center for Information Management, Inc.
  *
  * This program is proprietary.
- * Redistribution without permission is strictly prohibited.  
+ * Redistribution without permission is strictly prohibited.
  * For more information, contact <http://www.ciminc.com>
  */
-
 package com.sisllc.mathformulas.utils;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -14,13 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
- * @version $LastChangedRevision $LastChangedDate
- * Last Modified Author: $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author:
+ * $LastChangedBy
  */
 public class EventPeriodCmd {
+
     private static final Logger log = LoggerFactory.getLogger(EventPeriodCmd.class);
 
     int intervalByWeeks = 0;
@@ -35,11 +34,20 @@ public class EventPeriodCmd {
     LocalDate eventPeriodSunday;
     LocalDate eventPeriodSaturday;
 
-    public EventPeriodCmd(int intervalByWeeks, LocalDate initialStartDate, LocalDate targetPeriodStart, LocalDate targetPeriodEnd) {
+    public EventPeriodCmd(
+            int intervalByWeeks,
+            LocalDate initialStartDate,
+            LocalDate targetPeriodStart,
+            LocalDate targetPeriodEnd) {
         this(intervalByWeeks, initialStartDate, targetPeriodStart, targetPeriodEnd, null);
     }
 
-    public EventPeriodCmd(int intervalByWeeks, LocalDate initialStartDate, LocalDate targetPeriodStart, LocalDate targetPeriodEnd, LocalDate targetPeriodUntil) {
+    public EventPeriodCmd(
+            int intervalByWeeks,
+            LocalDate initialStartDate,
+            LocalDate targetPeriodStart,
+            LocalDate targetPeriodEnd,
+            LocalDate targetPeriodUntil) {
         this.intervalByWeeks = intervalByWeeks;
         this.initialStartDate = initialStartDate;
         this.targetPeriodStart = targetPeriodStart;
@@ -54,8 +62,18 @@ public class EventPeriodCmd {
         }
     }
 
-    public EventPeriodCmd(int intervalByWeeks, Date initialStartDate, Date targetPeriodStart, Date targetPeriodEnd, Date targetPeriodUntil) {
-        this(intervalByWeeks, userLocalDateOfDate(initialStartDate), userLocalDateOfDate(targetPeriodStart), userLocalDateOfDate(targetPeriodEnd), userLocalDateOfDate(targetPeriodUntil));
+    public EventPeriodCmd(
+            int intervalByWeeks,
+            Date initialStartDate,
+            Date targetPeriodStart,
+            Date targetPeriodEnd,
+            Date targetPeriodUntil) {
+        this(
+                intervalByWeeks,
+                userLocalDateOfDate(initialStartDate),
+                userLocalDateOfDate(targetPeriodStart),
+                userLocalDateOfDate(targetPeriodEnd),
+                userLocalDateOfDate(targetPeriodUntil));
     }
 
     private static LocalDate userLocalDateOfDate(Date date) {
@@ -159,5 +177,4 @@ public class EventPeriodCmd {
         sb.append('}');
         return sb.toString();
     }
-
 }

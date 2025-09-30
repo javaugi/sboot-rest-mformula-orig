@@ -14,9 +14,10 @@ package com.patterns.behavioral.command;
  * handle this command and passes the command to the corresponding object which
  * executes the command.
  *
- *
+ * <p>
  * Command Pattern
  *
+ * <p>
  * “An object that contains a symbol, name or key that represents a list of
  * commands, actions or keystrokes”. This is the definition of a macro, one that
  * should be familiar to any computer user. From this idea the Command design
@@ -27,29 +28,39 @@ package com.patterns.behavioral.command;
  * operation or the requesting object. Command design pattern provides the
  * options to queue commands, undo/redo actions and other manipulations.
  *
+ * <p>
  * Intent
  *
+ * <p>
  * - encapsulate a request in an object
  *
+ * <p>
  * - allows the parameterization of clients with different requests
  *
+ * <p>
  * - allows saving the requests in a queue
  *
- *
+ * <p>
  * The classes participating in the pattern are:
  *
+ * <p>
  * - Command - declares an interface for executing an operation;
  *
+ * <p>
  * - ConcreteCommand - extends the Command interface, implementing the Execute
  * method by invoking the corresponding operations on Receiver. It defines a
  * link between the Receiver and the action.
  *
+ * <p>
  * - Client - creates a ConcreteCommand object and sets its receiver;
  *
+ * <p>
  * - Invoker - asks the command to carry out the request;
  *
+ * <p>
  * - Receiver - knows how to perform the operations;
  *
+ * <p>
  * The Client asks for a command to be executed. The Invoker takes the command,
  * encapsulates it and places it in a queue, in case there is something else to
  * do first, and the ConcreteCommand that is in charge of the requested command,
@@ -61,7 +72,7 @@ package com.patterns.behavioral.command;
  */
 public class CommandPattern {
 
-    //this represent the client who ConcreteCommand object and sets its receiver;
+    // this represent the client who ConcreteCommand object and sets its receiver;
     public static void main(String[] args) {
         Stock abcStock = new Stock();
 

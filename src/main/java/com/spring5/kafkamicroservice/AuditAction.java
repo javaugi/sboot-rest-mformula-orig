@@ -5,9 +5,10 @@
 package com.spring5.kafkamicroservice;
 
 /**
- *
  * @author javaugi
  */
 public enum AuditAction {
-    CREATE, UPDATE, DELETE;
+    CREATE,
+    UPDATE,
+    DELETE;
 }

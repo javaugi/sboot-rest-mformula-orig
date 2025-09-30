@@ -17,8 +17,8 @@ import lombok.Data;
 @Entity
 @Table(name = "io_customers")
 public class IndexingOptimizationCustomer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
 }

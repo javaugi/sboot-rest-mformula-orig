@@ -5,12 +5,11 @@
 package com.interview.hrank.sql;
 
 /**
- *
  * @author javau
  */
 public class PostgreSqlPivot {
-
 }
+
 /*
 Here's the PostgreSQL equivalent query using CROSSTAB (tablefunc extension), which is PostgreSQL's equivalent of PIVOT:
 
@@ -61,6 +60,7 @@ FROM (
 ) final_result
 ORDER BY
     COALESCE(Doctor, Professor, Singer, Actor);
+
 Key differences between Oracle and PostgreSQL:
 PIVOT vs CROSSTAB: Oracle uses PIVOT, PostgreSQL uses crosstab() from the tablefunc extension
 
@@ -81,4 +81,4 @@ It's easier to read and maintain
 It produces the exact same output format as your Oracle query
 
 All solutions will give you the same result with four columns (Doctor, Professor, Singer, Actor) and names sorted alphabetically under each occupation.
-*/
+ */

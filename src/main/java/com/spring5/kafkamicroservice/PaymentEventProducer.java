@@ -20,34 +20,35 @@ public class PaymentEventProducer {
 
     private static final String PAYMENT_REQUESTS_TOPIC = "payment-requests";
     private static final Logger log = LoggerFactory.getLogger(PaymentEventProducer.class);
-    
-    private final @Qualifier("paymentKafkaTemplate") KafkaTemplate<String, PaymentRequestEvent> kafkaTemplate;
-    
+
+    private final @Qualifier("paymentKafkaTemplate")
+    KafkaTemplate<String, PaymentRequestEvent> kafkaTemplate;
+
     @Retry(name = "kafkaPublish", fallbackMethod = "publishFailed")
     public void publishPaymentRequest(PaymentRequestEvent event) {
-        CompletableFuture<SendResult<String, PaymentRequestEvent>> future = kafkaTemplate.send(PAYMENT_REQUESTS_TOPIC, event.paymentId(), event);
-        
-        future.thenAccept(result -> log.info("Published payment request {}", event.paymentId()))
-            .exceptionally(ex -> {
-                log.error("Failed to publish payment {}", event.paymentId(), ex);
-                return null; // Or a default value
-            });
+        CompletableFuture<SendResult<String, PaymentRequestEvent>> future
+                = kafkaTemplate.send(PAYMENT_REQUESTS_TOPIC, event.paymentId(), event);
+
+        future
+                .thenAccept(result -> log.info("Published payment request {}", event.paymentId()))
+                .exceptionally(
+                        ex -> {
+                            log.error("Failed to publish payment {}", event.paymentId(), ex);
+                            return null; // Or a default value
+                        });
     }
-    
+
     public void publishFailed(PaymentRequestEvent event, Exception ex) {
         log.error("All retries exhausted for payment {}", event.paymentId(), ex);
         // Store in DB for later retry or manual processing
     }
-    
+
     public void publishPaymentCompleted(PaymentResult result) {
-        
     }
+
     public void publishPaymentFailed(PaymentRequestEvent event, String error) {
-        
     }
-    
-    
-} 
+}
 
 /*
 Configuring ConcurrentKafkaListenerContainerFactory for Concurrent Processing
@@ -171,13 +172,13 @@ public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerCont
         new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory());
     factory.setConcurrency(concurrency);
-    
+
     // Configure error handler
     factory.setErrorHandler(new SeekToCurrentErrorHandler(
         new DeadLetterPublishingRecoverer(kafkaTemplate),
         new FixedBackOff(1000L, 2L) // 1 second interval, 2 attempts
     ));
-    
+
     // Configure retry template
     RetryTemplate retryTemplate = new RetryTemplate();
     ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
@@ -186,9 +187,9 @@ public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerCont
     backOffPolicy.setMaxInterval(10000);
     retryTemplate.setBackOffPolicy(backOffPolicy);
     retryTemplate.setRetryPolicy(new SimpleRetryPolicy(3));
-    
+
     factory.setRetryTemplate(retryTemplate);
-    
+
     return factory;
 }
 3.2. Batch Processing
@@ -200,11 +201,11 @@ public ConcurrentKafkaListenerContainerFactory<String, String> batchKafkaListene
     factory.setConsumerFactory(consumerFactory());
     factory.setConcurrency(concurrency);
     factory.setBatchListener(true); // Enable batch processing
-    
+
     // Configure batch properties
     factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.BATCH);
     factory.getContainerProperties().setIdleEventInterval(10000L); // 10 seconds
-    
+
     return factory;
 }
 
@@ -215,7 +216,7 @@ public ConcurrentKafkaListenerContainerFactory<String, String> batchKafkaListene
 )
 public void consumeBatch(List<ConsumerRecord<String, String>> records, Acknowledgment ack) {
     logger.info("Received batch of {} messages", records.size());
-    
+
     for (ConsumerRecord<String, String> record : records) {
         try {
             processMessage(record.value());
@@ -223,7 +224,7 @@ public void consumeBatch(List<ConsumerRecord<String, String>> records, Acknowled
             logger.error("Error processing message in batch: {}", record.value(), e);
         }
     }
-    
+
     ack.acknowledge(); // Acknowledge the entire batch
 }
 4. Dynamic Concurrency Adjustment
@@ -267,7 +268,7 @@ public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerCont
         new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory());
     factory.setConcurrency(concurrency);
-    
+
     // Custom partition assignment strategy
     factory.getContainerProperties().setConsumerRebalanceListener(new ConsumerRebalanceListener() {
         @Override
@@ -280,7 +281,7 @@ public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerCont
             logger.info("Partitions assigned: {}", partitions);
         }
     });
-    
+
     return factory;
 }
 Key Considerations for Concurrent Processing
@@ -295,4 +296,4 @@ Thread Safety: Ensure your message processing logic is thread-safe
 Error Handling: Implement robust error handling for concurrent scenarios
 
 This configuration provides a flexible foundation for concurrent Kafka message processing in Spring Boot, allowing you to scale your consumers horizontally while maintaining control over message processing behavior.
-*/
+ */

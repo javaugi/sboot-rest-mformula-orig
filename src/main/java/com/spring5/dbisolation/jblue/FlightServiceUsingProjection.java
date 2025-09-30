@@ -16,20 +16,23 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class FlightServiceUsingProjection {
+
     private final FlightEventRepository flightRepository;
 
     // Example 1: Get flight list for display (only needed fields)
     public List<FlightDisplay> getDepartureBoard(String airportCode) {
-        List<FlightProjection> projections = flightRepository.findByDepartureAirportProjection(airportCode);
+        List<FlightProjection> projections
+                = flightRepository.findByDepartureAirportProjection(airportCode);
 
         return projections.stream()
-            .map(proj -> new FlightDisplay(
-            proj.getFlightNumber(),
-            proj.getAirlineCode(),
-            proj.getDepartureTime(),
-            proj.getArrivalAirport()
-        ))
-            .collect(Collectors.toList());
+                .map(
+                        proj
+                        -> new FlightDisplay(
+                                proj.getFlightNumber(),
+                                proj.getAirlineCode(),
+                                proj.getDepartureTime(),
+                                proj.getArrivalAirport()))
+                .collect(Collectors.toList());
     }
 
     // Example 2: Get airline statistics
@@ -37,10 +40,9 @@ public class FlightServiceUsingProjection {
         List<AirlineFlightCount> counts = flightRepository.countFlightsByAirline(departureAirport);
 
         return counts.stream()
-            .collect(Collectors.toMap(
-                AirlineFlightCount::getAirlineCode,
-                AirlineFlightCount::getFlightCount
-            ));
+                .collect(
+                        Collectors.toMap(
+                                AirlineFlightCount::getAirlineCode, AirlineFlightCount::getFlightCount));
     }
 
     // Example 3: Using Spring Data's built-in projection

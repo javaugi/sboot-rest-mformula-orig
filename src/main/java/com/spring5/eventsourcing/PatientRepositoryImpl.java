@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class PatientRepositoryImpl implements PatientRepository {
+
     private final PatientEventStore eventStore;
 
     public PatientRepositoryImpl(PatientEventStore eventStore) {
@@ -19,14 +20,15 @@ public class PatientRepositoryImpl implements PatientRepository {
         List<Event> events = eventStore.getEventsForPatient(patientId);
         PatientRecord patientRecord = new PatientRecord(patientId);
         // Reconstruct patient record from events
-        events.forEach(event -> {
-            if (event instanceof DiagnosisAdded) {
-                // Handle DiagnosisAdded event
-            } else if (event instanceof TreatmentAdded) {
-                // Handle TreatmentAdded event
-            }
-            // Handle other events...
-        });
+        events.forEach(
+                event -> {
+                    if (event instanceof DiagnosisAdded) {
+                        // Handle DiagnosisAdded event
+                    } else if (event instanceof TreatmentAdded) {
+                        // Handle TreatmentAdded event
+                    }
+                    // Handle other events...
+                });
         return patientRecord;
     }
 

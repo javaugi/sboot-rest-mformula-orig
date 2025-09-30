@@ -5,12 +5,11 @@
 package com.interview.hrank.sql;
 
 /**
- *
  * @author javau
  */
 public class GroupConsecutiveTasks {
-
 }
+
 /*
 I'll provide solutions for both Oracle PL/SQL and PostgreSQL for this problem.
 
@@ -157,4 +156,4 @@ Tasks 4, 5 form another project (2 days)
 Tasks 6 and 7 are separate 1-day projects
 
 Both solutions order by duration (ascending) and then by start date (ascending) as required.
-*/
+ */

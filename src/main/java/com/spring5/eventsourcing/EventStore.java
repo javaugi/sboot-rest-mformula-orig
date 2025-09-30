@@ -9,16 +9,16 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
  * @author javau
  */
 public class EventStore {
+
     private final ConcurrentHashMap<String, List<Event>> map = new ConcurrentHashMap();
-    
+
     public void saveEvents(UUID patientId, List<Event> events) {
         map.put(patientId.toString(), events);
     }
-    
+
     public List<Event> getEventsForPatient(UUID patientId) {
         return map.get(patientId.toString());
     }

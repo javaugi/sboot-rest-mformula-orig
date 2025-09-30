@@ -22,73 +22,81 @@ public class ActuatorUiController {
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> allEndpoints() {
-        return webClient.get()
-            .uri("/actuator")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 
     @GetMapping(value = "/health", produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> health() {
-        return webClient.get()
-            .uri("/actuator/health")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator/health")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 
     @GetMapping(value = "/info", produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> info() {
-        return webClient.get()
-            .uri("/actuator/info")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator/info")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 
     @GetMapping(value = "/metrics", produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> metrics() {
-        return webClient.get()
-            .uri("/actuator/metrics")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator/metrics")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 
     @GetMapping(value = "/env", produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> env() {
-        return webClient.get()
-            .uri("/actuator/env")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator/env")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 
     @GetMapping(value = "/beans", produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> beans() {
-        return webClient.get()
-            .uri("/actuator/beans")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator/beans")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 
     @GetMapping(value = "/loggers", produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> loggers() {
-        return webClient.get()
-            .uri("/actuator/loggers")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator/loggers")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 
     @GetMapping(value = "/prometheus", produces = MediaType.TEXT_HTML_VALUE)
     public Mono<String> prometheus() {
-        return webClient.get()
-            .uri("/actuator/prometheus")
-            .retrieve()
-            .bodyToMono(Map.class)
-            .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
+        return webClient
+                .get()
+                .uri("/actuator/prometheus")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(body -> "<html><body><h1>Health</h1><pre>" + body + "</pre></body></html>");
     }
 }

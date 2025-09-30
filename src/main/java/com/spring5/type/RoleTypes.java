@@ -5,7 +5,6 @@
 package com.spring5.type;
 
 /**
- *
  * @author javaugi
  */
 public enum RoleTypes {

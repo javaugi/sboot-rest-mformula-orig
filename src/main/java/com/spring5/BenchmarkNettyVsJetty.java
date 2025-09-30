@@ -5,11 +5,9 @@
 package com.spring5;
 
 /**
- *
  * @author javau
  */
 public class BenchmarkNettyVsJetty {
-
 }
 
 /*
@@ -72,10 +70,9 @@ When to Use Which?
     Use CommandLineRunner if you need simple access to raw command-line arguments.
     Use ApplicationRunner if you want to work with parsed arguments (e.g., --key=value pairs).
     Both can coexist in the same application, and you can control their execution order using @Order
-*/
+ */
 
-
-/*
+ /*
 Yes I like a sample benchmark project to test locally
 Great! Below is a step-by-step guide to set up a Spring Boot benchmark project comparing Netty (WebFlux) vs. Jetty (MVC) locally. You'll be able to test throughput (RPS) and latency using wrk or JMeter.
 
@@ -382,5 +379,5 @@ Use Netty if you need high-scale WebSockets (e.g., chat apps, real-time dashboar
 
 Use Jetty if you need Servlet API integration (e.g., legacy WebSocket apps).
 
-Would you like a WebSocket chat demo to test manually in a browser? 
-*/
+Would you like a WebSocket chat demo to test manually in a browser?
+ */

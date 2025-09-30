@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * In Visitor pattern, we use a visitor class which changes the executing
  * algorithm of an element class. By this way, execution algorithm of element
  * can vary as and when visitor varies. This pattern comes under behavior
@@ -21,6 +20,7 @@ import org.slf4j.LoggerFactory;
  * group of similar kind of Objects. With the help of visitor pattern, we can
  * move the operational logic from the objects to another class.
  *
+ * <p>
  * For example, think of a Shopping cart where we can add different type of
  * items (Elements). When we click on checkout button, it calculates the total
  * amount to be paid. Now we can have the calculation logic in item classes or
@@ -41,8 +41,13 @@ public class VisitorPattern {
         computer.accept(new ComputerPartVisitorImpl());
 
         System.out.println("\n\n\n shoppingcart ...");
-        ItemElement[] items = new ItemElement[]{new Book(20, "1234"), new Book(100, "5678"),
-            new Fruit(10, 2, "Banana"), new Fruit(5, 5, "Apple")};
+        ItemElement[] items
+                = new ItemElement[]{
+                    new Book(20, "1234"),
+                    new Book(100, "5678"),
+                    new Fruit(10, 2, "Banana"),
+                    new Fruit(5, 5, "Apple")
+                };
 
         int total = calculatePrice(items);
         System.out.println("Total Cost = " + total);

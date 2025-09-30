@@ -31,7 +31,7 @@ public class TransactionValidator {
             long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
             if (daysBetween > MAX_QUERY_RANGE_DAYS) {
                 throw new QueryRangeTooLargeException(
-                    "Query range cannot exceed " + MAX_QUERY_RANGE_DAYS + " days");
+                        "Query range cannot exceed " + MAX_QUERY_RANGE_DAYS + " days");
             }
         }
     }

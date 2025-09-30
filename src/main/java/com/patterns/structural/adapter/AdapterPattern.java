@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * type of design pattern comes under structural pattern as this pattern
  * combines the capability of two independent interfaces.
  *
+ * <p>
  * This pattern involves a single class which is responsible to join
  * functionalities of independent or incompatible interfaces. A real life
  * example could be a case of card reader which acts as an adapter between

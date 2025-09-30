@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(1)
 public class RegionalAdjustmentRule implements PricingRule {
+
     @Override
     public BigDecimal apply(VehicleConfig config, BigDecimal basePrice) {
         // Apply region-based adjustments

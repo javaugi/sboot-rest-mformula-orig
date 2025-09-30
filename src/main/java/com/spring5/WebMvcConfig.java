@@ -25,8 +25,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 /*
 Key Features
 
-RESTful API with HATEOAS: - Hypermedia as the Engine of Application State, is a key concept in REST 
-        (Representational State Transfer) that dictates how clients and servers interact in a RESTful application. 
+RESTful API with HATEOAS: - Hypermedia as the Engine of Application State, is a key concept in REST
+        (Representational State Transfer) that dictates how clients and servers interact in a RESTful application.
     Resources include links to related resources
     Follows REST principles
     Self-descriptive messages
@@ -53,7 +53,7 @@ This implementation provides a solid foundation that can be extended with additi
     API documentation with Swagger
 
 
-Here are the Maven dependencies for integrating Swagger (OpenAPI) into a Spring Boot project. 
+Here are the Maven dependencies for integrating Swagger (OpenAPI) into a Spring Boot project.
     The recommended library is springdoc-openapi-starter-webmvc-ui.
 
 <dependency>
@@ -62,45 +62,43 @@ Here are the Maven dependencies for integrating Swagger (OpenAPI) into a Spring 
     <version>2.0.2</version>
 </dependency>
 
-This dependency includes everything needed to expose API documentation through Swagger UI. It automatically 
-    configures Swagger for your Spring Boot application, eliminating the need for manual configuration 
-    in most cases. After adding this dependency and rebuilding the project, 
+This dependency includes everything needed to expose API documentation through Swagger UI. It automatically
+    configures Swagger for your Spring Boot application, eliminating the need for manual configuration
+    in most cases. After adding this dependency and rebuilding the project,
     the Swagger UI can be accessed at http://localhost:8080/swagger-ui.html (the port may vary depending on your configuration).
 
-*/
-
+ */
 @Configuration
 @EnableWebMvc
-//http://localhost:8080/swagger-ui/index.html
-//-- @Param("category") is required in the Repository for swagger-ui to work
+// http://localhost:8080/swagger-ui/index.html
+// -- @Param("category") is required in the Repository for swagger-ui to work
 // io.swagger.core.v3 upgrade required
 public class WebMvcConfig implements WebMvcConfigurer {
-    
-    //*
+
+    // *
     @Bean(name = DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
     public DispatcherServlet dispatcherServlet() {
         return new DispatcherServlet();
-    }    
+    }
 
-    
     @Bean
     public ServletWebServerFactory servletWebServerFactory() {
         return new TomcatServletWebServerFactory(); // Explicit initialization
     }
-    
+
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
-    } 
-    // */
-    
-    /*
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-       registry.jsp("/WEB-INF/views/", ".jsp");
     }
+
     // */
-    
+
+    /*
+  @Override
+  public void configureViewResolvers(ViewResolverRegistry registry) {
+     registry.jsp("/WEB-INF/views/", ".jsp");
+  }
+  // */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**");
@@ -108,7 +106,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/v3/api-docs/**").allowedOrigins("*");
         registry.addMapping("/swagger-ui/**").allowedOrigins("*");
         registry.addMapping("/swagger-ui.html").allowedOrigins("*");
-    }    
+    }
 
     @Bean
     public InternalResourceViewResolver jspViewResolver() {
@@ -126,8 +124,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         resolver.setSuffix(".html");
         resolver.setOrder(1); // Set a higher order than the previous resolver
         return resolver;
-    }    
-    
+    }
+
     @Bean
     public InternalResourceViewResolver angularclientResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -135,7 +133,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         resolver.setSuffix(".*");
         resolver.setOrder(1); // Set a higher order than the previous resolver
         return resolver;
-    }    
+    }
 
     @Bean
     public MessageSource messageSource() {
@@ -154,32 +152,50 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Register resource handler for CSS and JS
-        registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/resources/", "classpath:/statics/")
+        registry
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("classpath:/resources/", "classpath:/statics/")
                 .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
 
         // Register resource handler for images
-        registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/images/")
+        registry
+                .addResourceHandler("/images/**")
+                .addResourceLocations("/WEB-INF/images/")
                 .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
 
-        registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/css/")
+        registry
+                .addResourceHandler("/css/**")
+                .addResourceLocations("/WEB-INF/css/")
                 .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
 
-        registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/js/")
+        registry
+                .addResourceHandler("/js/**")
+                .addResourceLocations("/WEB-INF/js/")
                 .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
 
-        registry.addResourceHandler("/tags/**").addResourceLocations("/WEB-INF/tags/")
+        registry
+                .addResourceHandler("/tags/**")
+                .addResourceLocations("/WEB-INF/tags/")
                 .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
 
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/angularclient/").setCachePeriod(0);        
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/angularclient/public/").setCachePeriod(0);        
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("classpath:/angularclient/")
+                .setCachePeriod(0);
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("classpath:/angularclient/public/")
+                .setCachePeriod(0);
 
-        //Configuring Caching for Static Assets
-        //Spring Boot serves static resources from src/main/resources/static by default.
-        registry.addResourceHandler("/**")
-            .addResourceLocations("classpath:/static/")
-            .setCachePeriod(3600) // in seconds -> 1 hour
-            .setCacheControl(org.springframework.http.CacheControl.maxAge(30, java.util.concurrent.TimeUnit.DAYS));
-        //alternatively spring.web.resources.cache.cachecontrol.max-age=30
+        // Configuring Caching for Static Assets
+        // Spring Boot serves static resources from src/main/resources/static by default.
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/")
+                .setCachePeriod(3600) // in seconds -> 1 hour
+                .setCacheControl(
+                        org.springframework.http.CacheControl.maxAge(30, java.util.concurrent.TimeUnit.DAYS));
+        // alternatively spring.web.resources.cache.cachecontrol.max-age=30
     }
 
     @Controller
@@ -198,53 +214,53 @@ public class WebMvcConfig implements WebMvcConfigurer {
         @ResponseBody
         void serviceWorker() {
         }
-    } 
-    
+    }
+
     private void curlCommands() {
         /*
- 1. GET Request - Used to retrieve data from a server.
-    curl -X GET "https://jsonplaceholder.typicode.com/posts/1" \
-      -H "Accept: application/json"
-        🔍 What it does:
-            -X GET — explicitly specifies the HTTP method (optional for GET).
-            -H — sets the header (here, asking for JSON response).
-            URL — target resource.
-✅ 2. POST Request - Used to create a new resource.
-        curl -X POST "https://jsonplaceholder.typicode.com/posts" \
-          -H "Content-Type: application/json" \
-          -d '{
-                "title": "foo",
-                "body": "bar",
-                "userId": 1
-              }'
-🔍 What it does:
-        -X POST — specifies POST method.
-        -H "Content-Type: application/json" — sets content type.
-        -d — sends the request body as JSON.
-✅ 3. PUT Request - Used to update/replace an existing resource.
-        curl -X PUT "https://jsonplaceholder.typicode.com/posts/1" \
-          -H "Content-Type: application/json" \
-          -d '{
-                "id": 1,
-                "title": "updated title",
-                "body": "updated body",
-                "userId": 1
-              }'
-    🔍 What it does: PUT replaces the entire resource.
-    JSON body contains all fields, including the ID.
-✅ 4. DELETE Request - Used to delete a resource.
-        curl -X DELETE "https://jsonplaceholder.typicode.com/posts/1"
-    Sends a request to delete the resource at the specified URL.
-✅ Optional Add-ons
-    🔐 Authorization Header (e.g., Bearer token):
-        -H "Authorization: Bearer <your_token_here>"
-    🌐 Add Query Parameters (for GET):
-            curl -G "https://api.example.com/items" \
-              --data-urlencode "type=book" \
-              --data-urlencode "limit=10"        
-        */
+     1. GET Request - Used to retrieve data from a server.
+        curl -X GET "https://jsonplaceholder.typicode.com/posts/1" \
+          -H "Accept: application/json"
+            🔍 What it does:
+                -X GET — explicitly specifies the HTTP method (optional for GET).
+                -H — sets the header (here, asking for JSON response).
+                URL — target resource.
+    ✅ 2. POST Request - Used to create a new resource.
+            curl -X POST "https://jsonplaceholder.typicode.com/posts" \
+              -H "Content-Type: application/json" \
+              -d '{
+                    "title": "foo",
+                    "body": "bar",
+                    "userId": 1
+                  }'
+    🔍 What it does:
+            -X POST — specifies POST method.
+            -H "Content-Type: application/json" — sets content type.
+            -d — sends the request body as JSON.
+    ✅ 3. PUT Request - Used to update/replace an existing resource.
+            curl -X PUT "https://jsonplaceholder.typicode.com/posts/1" \
+              -H "Content-Type: application/json" \
+              -d '{
+                    "id": 1,
+                    "title": "updated title",
+                    "body": "updated body",
+                    "userId": 1
+                  }'
+        🔍 What it does: PUT replaces the entire resource.
+        JSON body contains all fields, including the ID.
+    ✅ 4. DELETE Request - Used to delete a resource.
+            curl -X DELETE "https://jsonplaceholder.typicode.com/posts/1"
+        Sends a request to delete the resource at the specified URL.
+    ✅ Optional Add-ons
+        🔐 Authorization Header (e.g., Bearer token):
+            -H "Authorization: Bearer <your_token_here>"
+        🌐 Add Query Parameters (for GET):
+                curl -G "https://api.example.com/items" \
+                  --data-urlencode "type=book" \
+                  --data-urlencode "limit=10"
+         */
     }
-} 
+}
 
 /*
 why the error ? Spring MVC found on classpath, which is incompatible with Spring Cloud Gateway.
@@ -330,10 +346,10 @@ Edit
 If you see:	You're using:
 DispatcherServlet	MVC
 DispatcherHandler	WebFlux
-*/
+ */
 
-/*
-Swagger API refers to a suite of open-source tools that help developers design, document, test, and use REST APIs. These tools are built around the OpenAPI Specification, which defines a standard format for describing APIs. Swagger offers features like interactive documentation, code generation, and API testing. 
+ /*
+Swagger API refers to a suite of open-source tools that help developers design, document, test, and use REST APIs. These tools are built around the OpenAPI Specification, which defines a standard format for describing APIs. Swagger offers features like interactive documentation, code generation, and API testing.
 Here's a more detailed breakdown:
 Core Components of Swagger:
 OpenAPI Specification:
@@ -347,18 +363,18 @@ Swagger UI:
 An interactive HTML interface that displays API documentation and allows developers to test API endpoints directly within the UI.
 Swagger Codegen:
 .
-A tool that automatically generates server stubs and client libraries from an OpenAPI definition, saving developers time and effort. 
+A tool that automatically generates server stubs and client libraries from an OpenAPI definition, saving developers time and effort.
 Key Benefits of Using Swagger:
 Improved API Documentation:
 .
-Swagger provides a user-friendly and interactive way to document APIs, making them easier to understand and use. 
+Swagger provides a user-friendly and interactive way to document APIs, making them easier to understand and use.
 Simplified API Development:
 .
-Swagger tools automate tasks like code generation and API testing, streamlining the development process. 
+Swagger tools automate tasks like code generation and API testing, streamlining the development process.
 Enhanced API Collaboration:
 .
-By using a common API specification, Swagger facilitates collaboration between developers, testers, and other stakeholders. 
+By using a common API specification, Swagger facilitates collaboration between developers, testers, and other stakeholders.
 Faster API Testing:
 .
-Swagger UI allows developers to directly test API endpoints within the documentation, ensuring they function as expected before implementing them 
+Swagger UI allows developers to directly test API endpoints within the documentation, ensuring they function as expected before implementing them
  */

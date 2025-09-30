@@ -7,11 +7,10 @@ package com.spring5.aicloud.genaihealthcare;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author javau
  */
 public class PIIUtils {
-// Very simple patterns — replace with enterprise PII detection or libraries
+    // Very simple patterns — replace with enterprise PII detection or libraries
 
     private static final Pattern EMAIL = Pattern.compile("\\b[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,6}\\b");
     private static final Pattern PHONE = Pattern.compile("\\b\\+?\\d[\\d\\-\\s()]{6,}\\b");

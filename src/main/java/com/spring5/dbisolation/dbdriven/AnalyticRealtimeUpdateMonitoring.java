@@ -5,12 +5,11 @@
 package com.spring5.dbisolation.dbdriven;
 
 /**
- *
  * @author javau
  */
 public class AnalyticRealtimeUpdateMonitoring {
-    
 }
+
 /*
 Question: How would you implement a real-time dashboard for OTA update progress?
 
@@ -25,7 +24,7 @@ SELECT
     COUNT(vu.update_id) FILTER (WHERE vu.status IN ('downloading', 'installing')) AS in_progress,
     COUNT(vu.update_id) FILTER (WHERE vu.status = 'failed') AS failed,
     COUNT(vu.update_id) FILTER (WHERE vu.status = 'pending') AS pending,
-    ROUND(100.0 * COUNT(vu.update_id) FILTER (WHERE vu.status = 'success') / 
+    ROUND(100.0 * COUNT(vu.update_id) FILTER (WHERE vu.status = 'success') /
         NULLIF(COUNT(vu.update_id), 0), 2) AS completion_rate,
     MIN(vu.attempt_time) AS first_attempt,
     MAX(vu.completion_time) AS last_completion
@@ -58,4 +57,4 @@ SELECT
     COUNT(*) AS count
 FROM vehicle_updates
 GROUP BY deployment_id, hour_bucket, status;
-*/
+ */

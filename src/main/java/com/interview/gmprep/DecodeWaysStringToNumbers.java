@@ -8,21 +8,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DecodeWaysStringToNumbers {
-    
+
     private static final DecodeWaysStringToNumbers main = new DecodeWaysStringToNumbers();
-    
+
     public static void main(String[] args) {
         String str = "274759548";
         log.info("numDecodings {}", main.numDecodings(str));
     }
 
-    //Problem: Count how many ways a digit string can be decoded to letters (A=1, B=2,... Z=26).
+    // Problem: Count how many ways a digit string can be decoded to letters (A=1, B=2,... Z=26).
     /*
-    Key Insight:
-        Works backwards to avoid leading zero issues
-        Checks both single-digit and two-digit possibilities
-        Time: O(n), Space: O(n) (can be O(1) with variable optimization)    
-    */
+  Key Insight:
+      Works backwards to avoid leading zero issues
+      Checks both single-digit and two-digit possibilities
+      Time: O(n), Space: O(n) (can be O(1) with variable optimization)
+     */
     public int numDecodings(String s) {
         int n = s.length();
         int[] dp = new int[n + 1];

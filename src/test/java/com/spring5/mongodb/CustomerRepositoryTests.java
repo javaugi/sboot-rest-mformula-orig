@@ -7,9 +7,7 @@ package com.spring5.mongodb;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
-
 import org.junit.jupiter.api.BeforeEach;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,11 +21,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 public class CustomerRepositoryTests {
-    
-    
+
     @Autowired
     Environment env;
-    
+
     @Value("${app.mongodb.enabled}")
     protected boolean mongoDbEnabled;
 
@@ -44,7 +41,7 @@ public class CustomerRepositoryTests {
     public void setUp() {
         if (mongoDbEnabled) {
             container = new MongoDBContainer("mongo:7.0.2");
-            
+
             repository.deleteAll();
 
             dave = repository.save(new Customer("Dave", "Matthews"));
@@ -58,28 +55,28 @@ public class CustomerRepositoryTests {
         String id = null;
         if (mongoDbEnabled) {
             Customer dave = repository.save(new Customer("Dave", "Matthews"));
-            id= dave.id;
+            id = dave.id;
             assertThat(id).isNotNull();
         } else {
             assertThat(id).isNull();
         }
     }
 
-    //@Test
+    // @Test
     public void findsByLastName() {
 
         List<Customer> result = repository.findByLastName("Beauford");
 
-        //assertThat(result).extracting("firstName").contains("Carter");
+        // assertThat(result).extracting("firstName").contains("Carter");
     }
 
-    //@Test
+    // @Test
     public void findsByExample() {
 
         Customer probe = new Customer(null, "Matthews");
 
         List<Customer> result = repository.findAll(Example.of(probe));
 
-        //assertThat(result).hasSize(2).extracting("firstName").contains("Dave", "Oliver August");
+        // assertThat(result).hasSize(2).extracting("firstName").contains("Dave", "Oliver August");
     }
 }

@@ -24,10 +24,10 @@ public class TicTacToeConvertBoardToInt {
         char[][] board = {
             {'x', 'x', 'o'},
             {' ', 'x', ' '},
-            {' ', ' ', 'x'}};
+            {' ', ' ', 'x'}
+        };
 
         int v = convertBoardToInt(board);
         System.out.println(v);
     }
-
 }

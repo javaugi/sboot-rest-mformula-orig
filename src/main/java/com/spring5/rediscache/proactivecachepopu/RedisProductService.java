@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class RedisProductService {
 
     private final ProductRepository productRepository;
     private final ApplicationEventPublisher eventPublisher;
@@ -27,5 +27,4 @@ public class ProductService {
         eventPublisher.publishEvent(new ProductCacheUpdateEvent(this, product.getId()));
         return product;
     }
-
 }

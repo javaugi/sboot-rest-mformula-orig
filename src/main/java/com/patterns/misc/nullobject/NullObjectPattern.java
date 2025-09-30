@@ -13,6 +13,7 @@ package com.patterns.misc.nullobject;
  * nothing relationship. Such Null object can also be used to provide default
  * behaviour in case data is not available.
  *
+ * <p>
  * In Null Object pattern, we create an abstract class specifying various
  * operations to be done, concrete classes extending this class and a null
  * object class providing do nothing implemention of this class and will be used

@@ -8,8 +8,6 @@
 package com.patterns.behavioral.state;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -39,5 +37,4 @@ public class TVRemoteBasic {
         remote.setState("OFF");
         remote.doAction();
     }
-
 }

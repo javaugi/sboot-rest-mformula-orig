@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author javaugi
  */
 @RestController
@@ -69,7 +68,7 @@ Custom Validation:
 Integration with OAuth2 Providers:
     Works with Keycloak, Auth0, Okta, etc.
     Configurable via application properties
-    
+
 Deployment Considerations:
     Configure your OAuth2 provider (Keycloak, Auth0, etc.) with:
     Proper client setup
@@ -81,4 +80,4 @@ Ensure your JWT tokens include:
     Set up proper CORS policies if your frontend is separate
 
 This implementation provides a secure foundation for your healthcare application with proper role-based access control and OAuth2 integration.
-*/
+ */

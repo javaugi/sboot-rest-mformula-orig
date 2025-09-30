@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- *
  * @author javaugi
  */
 @Data
@@ -26,13 +25,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class Station {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
-    String city;    
-    String state;   
+
+    String city;
+    String state;
     BigDecimal latN;
     BigDecimal longW;
-
-} 
+}

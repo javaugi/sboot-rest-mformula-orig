@@ -7,17 +7,12 @@
  */
 package com.interview.shoppingcart.api;
 
-import java.util.List;
-
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public interface StoreRegister {
-
 
     public Receipt checkout(ShoppingCart cart);
 }

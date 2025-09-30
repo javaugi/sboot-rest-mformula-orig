@@ -50,5 +50,4 @@ public class Quicksort {
         quickSort(arr, 0, arr.length - 1);
         AssortedMethods.printIntArray(arr);
     }
-
 }

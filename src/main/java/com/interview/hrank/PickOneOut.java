@@ -5,7 +5,6 @@
 package com.interview.hrank;
 
 /**
- *
  * @author javau
  */
 public class PickOneOut {
@@ -19,6 +18,5 @@ public class PickOneOut {
     private void run() {
         String s1 = "jfafogg";
         String s2 = "jfaafogg";
-
     }
 }

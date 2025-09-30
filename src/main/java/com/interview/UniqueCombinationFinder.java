@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author javau
  */
 public class UniqueCombinationFinder {
+
     public static int[] findMinLengthWithKUnique(int[] nums, int k) {
         int n = nums.length;
         int[] result = new int[n];
@@ -55,7 +55,7 @@ public class UniqueCombinationFinder {
 
         for (int i = 0; i < n; i++) {
             result[i] = findExactKUniqueFromStart(nums, i, k);
-            //result[i] = slidingWindowApproach(nums, i, k);
+            // result[i] = slidingWindowApproach(nums, i, k);
         }
 
         return result;

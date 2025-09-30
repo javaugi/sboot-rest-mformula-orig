@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public class DiagnosisAdded extends Event {
+
     private final String diagnosis;
 
     public DiagnosisAdded(UUID patientId, String diagnosis, Instant timestamp) {

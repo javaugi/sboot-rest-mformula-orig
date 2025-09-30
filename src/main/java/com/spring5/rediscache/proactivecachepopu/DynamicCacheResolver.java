@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DynamicCacheResolver implements CacheResolver {
+
     private final CacheManager cacheManager;
 
     public DynamicCacheResolver(CacheManager cacheManager) {

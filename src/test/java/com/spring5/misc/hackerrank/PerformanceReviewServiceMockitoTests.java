@@ -61,12 +61,14 @@ public class PerformanceReviewServiceMockitoTests {
         String invalidScore = "Invalid";
         // Make the mock throw the exception
         when(mockBonusConfig.getMultiplierForScore(invalidScore))
-            .thenThrow(new InvalidReviewScoreException("Invalid score"));
+                .thenThrow(new InvalidReviewScoreException("Invalid score"));
 
         // Assert that the exception is thrown by the SERVICE, not just the mock
-        assertThrows(InvalidReviewScoreException.class, () -> {
-            service.calculateBonus(invalidScore);
-        });
+        assertThrows(
+                InvalidReviewScoreException.class,
+                () -> {
+                    service.calculateBonus(invalidScore);
+                });
         verify(mockBonusConfig).getMultiplierForScore(invalidScore);
     }
 

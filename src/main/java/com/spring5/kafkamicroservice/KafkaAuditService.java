@@ -14,7 +14,6 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
@@ -33,14 +32,14 @@ public class KafkaAuditService {
             KafkaAuditEvent event = record.value();
             logger.debug("Received audit event: {}", event);
 
-            AuditEntry entry = new AuditEntry(
-                event.getEntityId(),
-                event.getEntityType(),
-                event.getAction(),
-                event.getUserId(),
-                event.getTimestamp(),
-                event.getMetadata()
-            );
+            AuditEntry entry
+                    = new AuditEntry(
+                            event.getEntityId(),
+                            event.getEntityType(),
+                            event.getAction(),
+                            event.getUserId(),
+                            event.getTimestamp(),
+                            event.getMetadata());
 
             auditRepository.save(entry);
             ack.acknowledge();
@@ -57,23 +56,22 @@ public class KafkaAuditService {
             logger.debug("Received trade event for audit: {}", event);
 
             // Create additional audit entry for trade specifics
-            AuditEntry entry = new AuditEntry(
-                event.getTradeId(),
-                EntityType.TRADE,
-                AuditAction.UPDATE, // Default action for trade events
-                "system-user",
-                event.getTimestamp(),
-                Map.of(
-                    "instrument", event.getInstrumentId(),
-                    "quantity", event.getQuantity(),
-                    "price", event.getPrice()
-                )
-            );
+            AuditEntry entry
+                    = new AuditEntry(
+                            event.getTradeId(),
+                            EntityType.TRADE,
+                            AuditAction.UPDATE, // Default action for trade events
+                            "system-user",
+                            event.getTimestamp(),
+                            Map.of(
+                                    "instrument", event.getInstrumentId(),
+                                    "quantity", event.getQuantity(),
+                                    "price", event.getPrice()));
 
             auditRepository.save(entry);
             ack.acknowledge();
         } catch (Exception e) {
             logger.error("Error processing trade audit event: {}", e.getMessage());
         }
-    }    
+    }
 }

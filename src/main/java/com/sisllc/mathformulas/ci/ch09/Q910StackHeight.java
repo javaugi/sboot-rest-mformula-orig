@@ -40,7 +40,8 @@ public class Q910StackHeight {
         return max_stack;
     }
 
-    public static ArrayList<Box> createStackDP(Box[] boxes, Box bottom, HashMap<Box, ArrayList<Box>> stack_map) {
+    public static ArrayList<Box> createStackDP(
+            Box[] boxes, Box bottom, HashMap<Box, ArrayList<Box>> stack_map) {
         if (bottom != null && stack_map.containsKey(bottom)) {
             return (ArrayList<Box>) stack_map.get(bottom).clone();
         }
@@ -73,11 +74,10 @@ public class Q910StackHeight {
         Box[] boxes = {new Box(3, 4, 1), new Box(8, 6, 2), new Box(7, 8, 3)};
 
         ArrayList<Box> stack = createStackDP(boxes, null, new HashMap<Box, ArrayList<Box>>());
-        //ArrayList<Box> stack = createStackR(boxes, null);
+        // ArrayList<Box> stack = createStackR(boxes, null);
         for (int i = stack.size() - 1; i >= 0; i--) {
             Box b = stack.get(i);
             System.out.println(b.toString());
         }
     }
-
 }

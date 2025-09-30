@@ -14,5 +14,4 @@ public class Q56SwapOddEvenBits {
         int b = swapOddEvenBits(a);
         System.out.println(b + ": " + AssortedMethods.toFullBinaryString(b));
     }
-
 }

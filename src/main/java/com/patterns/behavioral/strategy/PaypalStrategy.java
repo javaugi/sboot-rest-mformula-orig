@@ -8,8 +8,6 @@
 package com.patterns.behavioral.strategy;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -28,5 +26,4 @@ public class PaypalStrategy implements PaymentStrategy {
     public void pay(int amount) {
         System.out.println(amount + " paid using Paypal.");
     }
-
 }

@@ -7,5 +7,5 @@ package com.spring5.kafkamicroservice;
 import java.time.Instant;
 
 public record AdyenPaymentFailedEvent(String paymentId, String reason, Instant instant) {
-    
+
 }

@@ -14,14 +14,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LLMResponse {
+
     public String text;
     public double confidence; // heuristic; many providers don't directly give this
     public String modelName;
     public String modelVersion;
     public String provenance; // e.g., prompt id or trace id
-    public String explanation;       // human-readable explanation of decisions
+    public String explanation; // human-readable explanation of decisions
 
-    public LLMResponse(String text, double confidence, String modelName, String modelVersion, String provenance) {
+    public LLMResponse(
+            String text, double confidence, String modelName, String modelVersion, String provenance) {
         this.text = text;
         this.confidence = confidence;
         this.modelName = modelName;

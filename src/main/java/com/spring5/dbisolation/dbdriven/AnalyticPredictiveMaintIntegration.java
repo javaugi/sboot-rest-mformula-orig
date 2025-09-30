@@ -5,12 +5,11 @@
 package com.spring5.dbisolation.dbdriven;
 
 /**
- *
  * @author javau
  */
 public class AnalyticPredictiveMaintIntegration {
-    
 }
+
 /*
 Question: How would you design a system to correlate OTA update failures with vehicle telemetry data?
 
@@ -34,15 +33,15 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
     WITH failed_updates AS (
-        SELECT 
+        SELECT
             vu.vehicle_id,
             vu.attempt_time,
             v.model_name,
-            (SELECT metrics 
-             FROM vehicle_telemetry vt 
-             WHERE vt.vehicle_id = vu.vehicle_id 
+            (SELECT metrics
+             FROM vehicle_telemetry vt
+             WHERE vt.vehicle_id = vu.vehicle_id
              AND vt.timestamp < vu.attempt_time
-             ORDER BY vt.timestamp DESC 
+             ORDER BY vt.timestamp DESC
              LIMIT 1) AS pre_update_metrics
         FROM vehicle_updates vu
         JOIN vehicles v ON vu.vehicle_id = v.vehicle_id
@@ -52,13 +51,13 @@ BEGIN
     SELECT
         fu.error_code AS failure_pattern,
         jsonb_object_agg(
-            k, 
+            k,
             ROUND(AVG((fu.pre_update_metrics->>k)::NUMERIC), 2)
         ) FILTER (WHERE k IS NOT NULL) AS common_metrics,
         ARRAY_AGG(DISTINCT fu.model_name) AS affected_models,
         ROUND(100.0 * COUNT(*) / (
-            SELECT COUNT(*) 
-            FROM vehicle_updates vu2 
+            SELECT COUNT(*)
+            FROM vehicle_updates vu2
             WHERE vu2.attempt_time >= NOW() - INTERVAL '90 days'
         ), 2) AS failure_rate
     FROM failed_updates fu
@@ -67,4 +66,4 @@ BEGIN
 END;
 $$;
 
-*/
+ */

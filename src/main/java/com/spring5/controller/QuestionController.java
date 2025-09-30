@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- *
  * @author javaugi
  */
 /*
@@ -141,18 +140,19 @@ java
 Copy
 public class QuestionModel extends RepresentationModel<QuestionModel> {
     private final Question question;
-    
+
     public QuestionModel(Question question) {
         this.question = question;
     }
-    
+
     // Getters and other methods
 }
-*/
+ */
 @RestController
 @RequestMapping("/questions")
 public class QuestionController {
-private final QuestionService questionService;
+
+    private final QuestionService questionService;
 
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
@@ -160,14 +160,17 @@ private final QuestionService questionService;
 
     @GetMapping
     public CollectionModel<QuestionModel> getAllQuestions() {
-         List<QuestionModel> questionModels = questionService.findAll().stream()
-            .map(question -> {
-                QuestionModel model = new QuestionModel(question);
-                model.add(linkTo(methodOn(QuestionController.class)
-                        .getQuestionById(question.getId())).withSelfRel());
-                return model;
-            })
-            .collect(Collectors.toList());
+        List<QuestionModel> questionModels
+                = questionService.findAll().stream()
+                        .map(
+                                question -> {
+                                    QuestionModel model = new QuestionModel(question);
+                                    model.add(
+                                            linkTo(methodOn(QuestionController.class).getQuestionById(question.getId()))
+                                                    .withSelfRel());
+                                    return model;
+                                })
+                        .collect(Collectors.toList());
 
         return CollectionModel.of(questionModels)
                 .add(linkTo(methodOn(QuestionController.class).getAllQuestions()).withSelfRel())
@@ -180,35 +183,43 @@ private final QuestionService questionService;
         if (question == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Question not found");
         }
-        //QuestionModel questionModel = new QuestionModel(question)
-        EntityModel<Question> questionModel = EntityModel.of(question)
-                .add(linkTo(methodOn(QuestionController.class).getQuestionById(id)).withSelfRel())
-                .add(linkTo(methodOn(QuestionController.class).getAllQuestions()).withRel("questions"))
-                .add(linkTo(methodOn(QuestionController.class).updateQuestion(id, null)).withRel("update"));
+        // QuestionModel questionModel = new QuestionModel(question)
+        EntityModel<Question> questionModel
+                = EntityModel.of(question)
+                        .add(linkTo(methodOn(QuestionController.class).getQuestionById(id)).withSelfRel())
+                        .add(linkTo(methodOn(QuestionController.class).getAllQuestions()).withRel("questions"))
+                        .add(
+                                linkTo(methodOn(QuestionController.class).updateQuestion(id, null))
+                                        .withRel("update"));
         return ResponseEntity.ok(questionModel);
     }
 
     @PostMapping
     public ResponseEntity<EntityModel<Question>> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.save(question);
-        //QuestionModel questionModel = new QuestionModel(createdQuestion)
-        EntityModel<Question> questionModel = EntityModel.of(question)
-                .add(linkTo(methodOn(QuestionController.class).getQuestionById(createdQuestion.getId())).withSelfRel())
-                .add(linkTo(methodOn(QuestionController.class).getAllQuestions()).withRel("questions"));
+        // QuestionModel questionModel = new QuestionModel(createdQuestion)
+        EntityModel<Question> questionModel
+                = EntityModel.of(question)
+                        .add(
+                                linkTo(methodOn(QuestionController.class).getQuestionById(createdQuestion.getId()))
+                                        .withSelfRel())
+                        .add(linkTo(methodOn(QuestionController.class).getAllQuestions()).withRel("questions"));
         return ResponseEntity.status(HttpStatus.CREATED).body(questionModel);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<Question>> updateQuestion(@PathVariable Long id, @RequestBody Question updatedQuestion) {
+    public ResponseEntity<EntityModel<Question>> updateQuestion(
+            @PathVariable Long id, @RequestBody Question updatedQuestion) {
         Question question = questionService.findById(id);
         if (question == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Question not found");
         }
         Question updated = questionService.save(new Question(id, updatedQuestion.getText()));
-        //QuestionModel questionModel = new QuestionModel(updated)
-        EntityModel<Question> questionModel = EntityModel.of(updated)
-                .add(linkTo(methodOn(QuestionController.class).getQuestionById(id)).withSelfRel())
-                .add(linkTo(methodOn(QuestionController.class).getAllQuestions()).withRel("questions"));
+        // QuestionModel questionModel = new QuestionModel(updated)
+        EntityModel<Question> questionModel
+                = EntityModel.of(updated)
+                        .add(linkTo(methodOn(QuestionController.class).getQuestionById(id)).withSelfRel())
+                        .add(linkTo(methodOn(QuestionController.class).getAllQuestions()).withRel("questions"));
         return ResponseEntity.ok(questionModel);
-    }    
+    }
 }

@@ -3,8 +3,6 @@ package com.sisllc.mathformulas.ci.ch02;
 import com.sisllc.mathformulas.ci.lib.LinkedListNode;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

@@ -5,19 +5,24 @@
 package com.spring5.audit;
 
 /**
- *
  * @author javaugi
  */
 public class PaymentProcessedEvent {
-    
+
     private String orderId;
     private double amount;
     private boolean success;
 
-    public PaymentProcessedEvent(String orderId){this.orderId = orderId;}
-    public PaymentProcessedEvent(double amount) { this.amount = amount; }
-    public PaymentProcessedEvent(String orderId, double amount, boolean success) { 
-        this.amount = amount; 
+    public PaymentProcessedEvent(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public PaymentProcessedEvent(double amount) {
+        this.amount = amount;
+    }
+
+    public PaymentProcessedEvent(String orderId, double amount, boolean success) {
+        this.amount = amount;
         this.orderId = orderId;
         this.success = success;
     }
@@ -45,6 +50,4 @@ public class PaymentProcessedEvent {
     public void setSuccess(boolean success) {
         this.success = success;
     }
-    
-    
 }

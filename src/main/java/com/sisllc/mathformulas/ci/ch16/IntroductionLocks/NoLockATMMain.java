@@ -26,5 +26,4 @@ public class NoLockATMMain {
         System.out.println("Should Be: " + v);
         System.out.println("Program terminating.");
     }
-
 }

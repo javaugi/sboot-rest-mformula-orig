@@ -4,7 +4,7 @@
  */
 package com.interview.cls.veh;
 
-//Complex Hierarchy Example
+// Complex Hierarchy Example
 // Complex sealed hierarchy
 public abstract sealed class Vehicle permits Car, Truck, Motorcycle {
 

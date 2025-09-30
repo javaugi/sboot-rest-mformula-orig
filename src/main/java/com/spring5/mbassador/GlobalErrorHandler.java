@@ -8,12 +8,11 @@ import net.engio.mbassy.listener.Handler;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * @author javaugi
  */
 @Component
 public class GlobalErrorHandler {
-    
+
     @Handler
     public void handleErrors(Throwable error) {
         System.err.println("Error in event handling: " + error.getMessage());
@@ -22,4 +21,4 @@ public class GlobalErrorHandler {
 /*
 8. Advanced Configuration (Optional)
 
-*/
+ */

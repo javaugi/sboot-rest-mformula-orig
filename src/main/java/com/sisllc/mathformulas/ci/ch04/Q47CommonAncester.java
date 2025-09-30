@@ -58,8 +58,7 @@ public class Q47CommonAncester {
                 return q;
             }
         }
-        if (nodesFromLeft == ONE_NODE_FOUND
-                && nodesFromRight == ONE_NODE_FOUND) {
+        if (nodesFromLeft == ONE_NODE_FOUND && nodesFromRight == ONE_NODE_FOUND) {
             return root;
         } else {
             return null;
@@ -74,5 +73,4 @@ public class Q47CommonAncester {
         TreeNode ancestor = commonAncestor(root, n3, n7);
         System.out.println(ancestor.data);
     }
-
 }

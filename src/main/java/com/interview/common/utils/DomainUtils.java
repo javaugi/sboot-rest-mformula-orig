@@ -18,16 +18,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author david
  */
 public class DomainUtils {
+
     private static final Logger log = LoggerFactory.getLogger(DomainUtils.class);
-    public static final String EMAIL_REG_EXPRESSION = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
-    public static final String US_PHONE_REG_EXPRESSION = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
+    public static final String EMAIL_REG_EXPRESSION
+            = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+    public static final String US_PHONE_REG_EXPRESSION
+            = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
     public static final String PHONE_INT_EXPRESSION = "^\\([0-9]{10})$";
-    public static final String LAST_NAME_SEARCH_STATE_WIDE_REG_EX = "'''|,|-| |SR.|SR|JR|JR.|DR|DR.|III|II|111|11|\\.|\\(.+?\\)'";
-    public static final String PO_BOX_REG_EXPRESSION = "((P(OST)?.?\\s*((O(FF(ICE)?)?)?.?\\s*(B(IN|OX|.?))|B(IN|OX))+))[\\w\\s*\\W]*";
+    public static final String LAST_NAME_SEARCH_STATE_WIDE_REG_EX
+            = "'''|,|-| |SR.|SR|JR|JR.|DR|DR.|III|II|111|11|\\.|\\(.+?\\)'";
+    public static final String PO_BOX_REG_EXPRESSION
+            = "((P(OST)?.?\\s*((O(FF(ICE)?)?)?.?\\s*(B(IN|OX|.?))|B(IN|OX))+))[\\w\\s*\\W]*";
     public static final String PHONE_NUMBER_ONLY_REGEX = "[^0-9]";
 
     public static String getMatchingLastName(String lastName) {
@@ -149,8 +153,12 @@ public class DomainUtils {
         }
 
         if (addressPoBoxVO.isPoBoxFound() && address.length() != addressPoBoxVO.length()) {
-            log.info("stringToSearch {} length {} \n return length {} return value {}", address, address.length(),
-                    addressPoBoxVO.length(), addressPoBoxVO);
+            log.info(
+                    "stringToSearch {} length {} \n return length {} return value {}",
+                    address,
+                    address.length(),
+                    addressPoBoxVO.length(),
+                    addressPoBoxVO);
         }
         return addressPoBoxVO;
     }

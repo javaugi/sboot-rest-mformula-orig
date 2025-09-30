@@ -24,5 +24,4 @@ public class PaymentResponse {
     private String paymentIntentId; // Stripe's PaymentIntent ID
     private String clientSecret; // Used by frontend for 3D Secure or other confirmations
     private String orderId; // Your internal order ID
-
 }

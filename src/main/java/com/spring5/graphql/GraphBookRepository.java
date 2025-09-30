@@ -6,7 +6,5 @@ package com.spring5.graphql;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-
-public interface GraphBookRepository  extends JpaRepository<GraphBook, String> {
-    
+public interface GraphBookRepository extends JpaRepository<GraphBook, String> {
 }

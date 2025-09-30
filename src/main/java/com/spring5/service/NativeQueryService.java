@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
@@ -30,11 +29,14 @@ public class NativeQueryService {
 
     @PostConstruct
     public void checkEntities() {
-        try{
-            System.out.println("EntityManagerFactory    Managed types: " + emf.getMetamodel().getEntities());
-            System.out.println("EntityManager           Managed types: " + entityManager.getMetamodel().getEntities());
-            System.out.println("SessionFactory          Managed types: " + sessionFactory.getMetamodel().getEntities());            
-        } catch(Exception ex) {
+        try {
+            System.out.println(
+                    "EntityManagerFactory    Managed types: " + emf.getMetamodel().getEntities());
+            System.out.println(
+                    "EntityManager           Managed types: " + entityManager.getMetamodel().getEntities());
+            System.out.println(
+                    "SessionFactory          Managed types: " + sessionFactory.getMetamodel().getEntities());
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -43,19 +45,19 @@ public class NativeQueryService {
     public List<String> doQuery(String qString) {
         List<String> returnValue = new ArrayList<>();
         Query query = entityManager.createNativeQuery(qString);
-        List<Object[]> list = (List<Object[]>)query.getResultList();
+        List<Object[]> list = (List<Object[]>) query.getResultList();
 
         StringBuilder sb;
-        for (Object[] obj: list) {
+        for (Object[] obj : list) {
             sb = new StringBuilder();
-            for (Object o: obj) {
+            for (Object o : obj) {
                 sb.append(String.valueOf(o));
                 sb.append("     ");
             }
-            
+
             returnValue.add(sb.toString());
-        }            
-        
+        }
+
         return returnValue;
-    }    
+    }
 }

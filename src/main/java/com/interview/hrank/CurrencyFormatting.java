@@ -8,23 +8,19 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- *
  * @author javaugi
  */
 public class CurrencyFormatting {
+
     public static void main(String[] args) {
         printCurrency();
     }
-    
-    
+
     private static void printCurrency() {
         double payment = 12324.134;
 
         // Create custom Locale for India
-        Locale localeIndia = new Locale.Builder()
-                .setLanguage("en")
-                .setRegion("IN")
-                .build();
+        Locale localeIndia = new Locale.Builder().setLanguage("en").setRegion("IN").build();
 
         // Format for different locales
         NumberFormat usFormat = NumberFormat.getCurrencyInstance(Locale.US);
@@ -42,6 +38,6 @@ public class CurrencyFormatting {
         System.out.println("US: " + us);
         System.out.println("India: " + india);
         System.out.println("China: " + china);
-        System.out.println("France: " + france);        
+        System.out.println("France: " + france);
     }
 }

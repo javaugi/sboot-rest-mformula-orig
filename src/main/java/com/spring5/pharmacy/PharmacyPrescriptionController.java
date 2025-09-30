@@ -5,7 +5,6 @@
 package com.spring5.pharmacy;
 
 // PharmacyPrescriptionController.java
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/prescriptions")
 public class PharmacyPrescriptionController {
-    
+
     @Autowired
     private PrescriptionOrchestrator orchestrator;
-    
+
     @PostMapping
     public ResponseEntity<PrescriptionResponse> createPrescription(
             @RequestBody PrescriptionRequest request) {
@@ -28,7 +27,7 @@ public class PharmacyPrescriptionController {
             return ResponseEntity.ok(response);
         } catch (PrescriptionException ex) {
             return ResponseEntity.status(ex.getStatus())
-                .body(new PrescriptionResponse("FAILED", ex.getMessage()));
+                    .body(new PrescriptionResponse("FAILED", ex.getMessage()));
         }
     }
-}   
+}

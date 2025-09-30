@@ -21,7 +21,6 @@ Query optimization involves:
     5. Caching frequently accessed data with Redis cache replications
     6. Scale DB horizontally and cache aggressively
     7. Denormalization carefully and used only if required and pay attention to data integrity with triigers setup properly
-*/
+ */
 public class DbPerformanceOptimization {
-    
 }

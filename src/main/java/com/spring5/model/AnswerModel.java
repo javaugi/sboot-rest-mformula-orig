@@ -8,16 +8,16 @@ import com.spring5.entity.Answer;
 import org.springframework.hateoas.EntityModel;
 
 /**
- *
  * @author javaugi
  */
 public class AnswerModel extends EntityModel<Answer> {
+
     private final Answer answer;
-    
+
     public AnswerModel(Answer answer) {
         this.answer = answer;
     }
-    
+
     public Long getId() {
         return answer.getId();
     }
@@ -33,6 +33,4 @@ public class AnswerModel extends EntityModel<Answer> {
     public String getAnswerText() {
         return answer.getAnswerText();
     }
-    
-    
 }

@@ -4,10 +4,6 @@
  */
 package com.spring5.dbisolation.dbdriven;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +16,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DatabaseProperties {
-    private String url;    
+
+    private String url;
     private String username;
     private String password;
 }

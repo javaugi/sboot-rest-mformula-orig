@@ -5,7 +5,6 @@
 package com.spring5.dronesystem;
 
 /**
- *
  * @author javaugi
  */
 import java.io.Serializable;
@@ -19,7 +18,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-//@NoArgsConstructor
+// @NoArgsConstructor
 public class SensorData implements Serializable {
 
     private final String droneId;
@@ -36,9 +35,19 @@ public class SensorData implements Serializable {
     private final double velocityZ;
     private final double batteryLevel;
 
-    public SensorData(String droneId, Instant timestamp, double latitude, double longitude,
-            double altitude, double temperature, double humidity, double pressure,
-            byte[] imageData, double velocityX, double velocityY, double velocityZ,
+    public SensorData(
+            String droneId,
+            Instant timestamp,
+            double latitude,
+            double longitude,
+            double altitude,
+            double temperature,
+            double humidity,
+            double pressure,
+            byte[] imageData,
+            double velocityX,
+            double velocityY,
+            double velocityZ,
             double batteryLevel) {
         this.droneId = droneId;
         this.timestamp = timestamp;

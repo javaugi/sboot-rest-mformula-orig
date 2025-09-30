@@ -17,7 +17,6 @@ public class BinarySearchTree {
         public String toString() {
             return "" + key;
         }
-
     }
 
     // Root of BST
@@ -73,11 +72,11 @@ public class BinarySearchTree {
         BinarySearchTree tree = new BinarySearchTree();
 
         /* Let us create following BST
-              50
-           /     \
-          30      70
-         /  \    /  \
-       20   40  60   80 */
+           50
+        /     \
+       30      70
+      /  \    /  \
+    20   40  60   80 */
         tree.insert(50);
         tree.insert(30);
         tree.insert(20);
@@ -108,5 +107,4 @@ public class BinarySearchTree {
         // val is less than root's key
         return search(root.right, key);
     }
-
 }

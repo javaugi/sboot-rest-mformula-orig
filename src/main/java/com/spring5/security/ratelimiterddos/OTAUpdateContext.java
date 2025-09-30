@@ -20,7 +20,6 @@ Key Challenges:
     Rollback mechanisms for failed updates
     Security and authentication
     Update prioritization and scheduling
-*/
+ */
 public class OTAUpdateContext {
-    
 }

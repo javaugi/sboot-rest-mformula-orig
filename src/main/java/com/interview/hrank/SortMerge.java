@@ -11,15 +11,16 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
  * @author javaugi
  */
 public class SortMerge {
 
     public static void main(String[] args) {
-        String[] strArr = {"33 Rumpa 3.68","85 Ashis 3.85","56 Samiha 3.75","19 Samara 3.75","22 Fahim 3.76"};
+        String[] strArr = {
+            "33 Rumpa 3.68", "85 Ashis 3.85", "56 Samiha 3.75", "19 Samara 3.75", "22 Fahim 3.76"
+        };
         List<Student> studentList = new ArrayList<>();
-        for (String str: strArr) {
+        for (String str : strArr) {
             String[] tokens = str.split("\\s+");
             int id = Integer.parseInt(tokens[0]);
             String fname = tokens[1];
@@ -27,12 +28,11 @@ public class SortMerge {
             Student student = new Student(id, fname, cgpa);
             studentList.add(student);
         }
-        
+
         sortStudents(studentList);
         for (Student st : studentList) {
             System.out.println(st.getFname());
         }
-
     }
 
     public static void scanner() {
@@ -59,7 +59,9 @@ public class SortMerge {
     }
 
     private static void sortStudents(List<Student> studentList) {
-        Collections.sort(studentList, new Comparator<Student>() {
+        Collections.sort(
+                studentList,
+                new Comparator<Student>() {
             @Override
             public int compare(Student a, Student b) {
                 int i = Double.compare(b.getCgpa(), a.getCgpa());
@@ -72,25 +74,26 @@ public class SortMerge {
                     return i;
                 }
 
-                return Integer.compare(a.getId(), b.getId());
-            }
-
+                        return Integer.compare(a.getId(), b.getId());
+                    }
         });
     }
 
     private static void sortByLambda(List<Student> studentList) {
-        Collections.sort(studentList, (Student a, Student b) -> {
-            int i = Double.compare(b.getCgpa(), a.getCgpa());
-            if (i != 0) {
-                return i;
-            }
+        Collections.sort(
+                studentList,
+                (Student a, Student b) -> {
+                    int i = Double.compare(b.getCgpa(), a.getCgpa());
+                    if (i != 0) {
+                        return i;
+                    }
 
-            i = a.getFname().compareTo(b.getFname());
-            if (i != 0) {
-                return i;
-            }
-            
-            return Integer.compare(a.getId(), b.getId());
-        });
+                    i = a.getFname().compareTo(b.getFname());
+                    if (i != 0) {
+                        return i;
+                    }
+
+                    return Integer.compare(a.getId(), b.getId());
+                });
     }
 }

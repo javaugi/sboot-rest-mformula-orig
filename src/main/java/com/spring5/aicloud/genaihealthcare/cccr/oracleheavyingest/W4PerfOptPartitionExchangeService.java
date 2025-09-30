@@ -8,16 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- *
  * @author javau
  */
 public class W4PerfOptPartitionExchangeService {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void loadViaExchangePartition(String stagingTable,
-        String targetTable,
-        String partitionName) {
+    public void loadViaExchangePartition(
+            String stagingTable, String targetTable, String partitionName) {
 
         // 1. Load data into staging table (no indexes)
         loadStagingTable(stagingTable);
@@ -26,10 +25,13 @@ public class W4PerfOptPartitionExchangeService {
         createStagingIndexes(stagingTable);
 
         // 3. Exchange partition
-        String exchangeSql = String.format("""
+        String exchangeSql
+                = String.format(
+                        """
             ALTER TABLE %s EXCHANGE PARTITION %s
             WITH TABLE %s INCLUDING INDEXES
-            """, targetTable, partitionName, stagingTable);
+            """,
+                        targetTable, partitionName, stagingTable);
 
         jdbcTemplate.execute(exchangeSql);
 
@@ -39,18 +41,20 @@ public class W4PerfOptPartitionExchangeService {
 
     private void loadStagingTable(String stagingTable) {
         // Use direct path load into staging
-        String sql = String.format("""
+        String sql
+                = String.format(
+                        """
             INSERT /*+ APPEND */ INTO %s
             SELECT * FROM external_claims
-            """, stagingTable);
+            """,
+                        stagingTable);
 
         jdbcTemplate.execute(sql);
     }
 
     private void createStagingIndexes(String stagingTable) {
-
     }
-    private void rebuildGlobalIndexes(String targetTable) {
 
+    private void rebuildGlobalIndexes(String targetTable) {
     }
 }

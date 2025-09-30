@@ -4,7 +4,7 @@
  */
 package com.spring5.dbisolation.jblue;
 
-//import com.spring5.aicloud.data.EventData;
+// import com.spring5.aicloud.data.EventData;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-
 @Slf4j
 @Service
 public class FlightEventProcessor {
@@ -34,54 +33,56 @@ public class FlightEventProcessor {
     private final Cache<String, EnrichedReference> refCache; // Redis or Caffeine
 
     /*
-    Notes:
-        Replace blocking Cosmos calls with CosmosAsyncContainer & reactive chains for throughput.
-        Use processBulkOperations for heavy writes during spikes.
-        Wrap external calls with Resilience4j circuit breakers and retries. Use CompletableFuture or Reactor for parallel enrichment lookups if necessary.
+  Notes:
+      Replace blocking Cosmos calls with CosmosAsyncContainer & reactive chains for throughput.
+      Use processBulkOperations for heavy writes during spikes.
+      Wrap external calls with Resilience4j circuit breakers and retries. Use CompletableFuture or Reactor for parallel enrichment lookups if necessary.
      */
-
-    public FlightEventProcessor(CosmosContainer cosmosContainer,
-        @Value("${eventhub.conn}") String conn,
-        @Value("${eventhub.hub}") String hub,
-        BlobContainerAsyncClient blobClient,
-        Cache<String, EnrichedReference> refCache) {
+    public FlightEventProcessor(
+            CosmosContainer cosmosContainer,
+            @Value("${eventhub.conn}") String conn,
+            @Value("${eventhub.hub}") String hub,
+            BlobContainerAsyncClient blobClient,
+            Cache<String, EnrichedReference> refCache) {
 
         this.cosmosContainer = cosmosContainer;
         this.refCache = refCache;
 
         BlobCheckpointStore checkpointStore = new BlobCheckpointStore(blobClient);
-        this.processorClient = new EventProcessorClientBuilder()
-            .connectionString(conn, hub)
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .processEvent(this::processEvent)
-            .processError(this::processError)
-            .checkpointStore(checkpointStore)
-            .buildEventProcessorClient();
+        this.processorClient
+                = new EventProcessorClientBuilder()
+                        .connectionString(conn, hub)
+                        .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                        .processEvent(this::processEvent)
+                        .processError(this::processError)
+                        .checkpointStore(checkpointStore)
+                        .buildEventProcessorClient();
 
-        //or the following
-
-        this.processorClient2 = new EventProcessorClientBuilder()
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .connectionString(conn, hub)
-            .processEvent(eventContext -> {
-                // Events for same partition arrive in order
-                String partitionId = eventContext.getPartitionContext().getPartitionId();
-            FlightEvent event = deserializeEvent(eventContext.getEventData().getBody());
-            processEvent(event);
-                System.out.println("Partition: " + partitionId + " Event: " + event);
-                eventContext.updateCheckpoint();
-            })
-            .processError(errorContext -> {
-                System.err.println("Error on partition " + errorContext.getPartitionContext().getPartitionId());
-            })
-            .buildEventProcessorClient();
-
+        // or the following
+        this.processorClient2
+                = new EventProcessorClientBuilder()
+                        .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                        .connectionString(conn, hub)
+                        .processEvent(
+                                eventContext -> {
+                                    // Events for same partition arrive in order
+                                    String partitionId = eventContext.getPartitionContext().getPartitionId();
+                                    FlightEvent event = deserializeEvent(eventContext.getEventData().getBody());
+                                    processEvent(event);
+                                    System.out.println("Partition: " + partitionId + " Event: " + event);
+                                    eventContext.updateCheckpoint();
+                                })
+                        .processError(
+                                errorContext -> {
+                                    System.err.println(
+                                            "Error on partition " + errorContext.getPartitionContext().getPartitionId());
+                                })
+                        .buildEventProcessorClient();
 
         this.processorClient.start();
     }
 
     private void processEvent(FlightEvent event) {
-
     }
 
     private FlightEvent deserializeEvent(byte[] value) {
@@ -103,7 +104,8 @@ public class FlightEventProcessor {
 
         // Idempotency: try to read by id, skip if exists
         try {
-            cosmosContainer.readItem(idempotencyKey, new PartitionKey(event.getFlightNumber()), EnrichedEvent.class);
+            cosmosContainer.readItem(
+                    idempotencyKey, new PartitionKey(event.getFlightNumber()), EnrichedEvent.class);
             // Already processed — checkpoint and return
             ctx.updateCheckpoint();
             return;
@@ -117,7 +119,7 @@ public class FlightEventProcessor {
         // Enrichment (cache first)
         EnrichedReference ref = refCache.getIfPresent(event.getAircraftId());
         if (ref == null) {
-            //ref = fetchReferenceFromCosmosOrApi(event.getAircraftId());
+            // ref = fetchReferenceFromCosmosOrApi(event.getAircraftId());
             if (ref != null) {
                 refCache.put(event.getAircraftId(), ref);
             }
@@ -125,21 +127,26 @@ public class FlightEventProcessor {
 
         EnrichedEvent enriched = new EnrichedEvent(event, ref);
         // Persist to Cosmos (upsert with id = eventId)
-        cosmosContainer.createItem(enriched, new PartitionKey(enriched.getEvent().getFlightNumber()), new CosmosItemRequestOptions());
+        cosmosContainer.createItem(
+                enriched,
+                new PartitionKey(enriched.getEvent().getFlightNumber()),
+                new CosmosItemRequestOptions());
 
         // Push to WebPubSub (pseudo)
-        //webPubSubClient.sendToSubscribers(enriched.getEvent().getFlightNumber(), enriched);
-
+        // webPubSubClient.sendToSubscribers(enriched.getEvent().getFlightNumber(), enriched);
         // Only checkpoint after success
         ctx.updateCheckpoint();
     }
 
     private void processError(ErrorContext ctx) {
-        log.error("Error partition {}: {}", ctx.getPartitionContext().getPartitionId(), ctx.getThrowable().getMessage(), ctx.getThrowable());
+        log.error(
+                "Error partition {}: {}",
+                ctx.getPartitionContext().getPartitionId(),
+                ctx.getThrowable().getMessage(),
+                ctx.getThrowable());
         // metrics and alerting logic
     }
 
     public void handle(FlightEvent evt) {
-
     }
 }

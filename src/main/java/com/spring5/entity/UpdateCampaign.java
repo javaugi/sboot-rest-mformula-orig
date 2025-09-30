@@ -13,12 +13,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data //it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor 
+@Data // it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class UpdateCampaign {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +27,4 @@ public class UpdateCampaign {
     private Long campaignId;
     private Long targetVersionId;
     private String rolloutStrategy;
-
-
 }

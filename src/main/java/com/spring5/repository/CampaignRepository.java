@@ -8,9 +8,7 @@ import com.spring5.entity.Campaign;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javau
  */
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
-    
 }

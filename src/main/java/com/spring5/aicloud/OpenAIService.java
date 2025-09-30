@@ -4,7 +4,6 @@
  */
 package com.spring5.aicloud;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +23,10 @@ import reactor.core.publisher.Flux;
 @Service
 public class OpenAIService {
 
-    private final static Logger log = LoggerFactory.getLogger(OpenAIService.class);
+    private static final Logger log = LoggerFactory.getLogger(OpenAIService.class);
 
-    private final String prompt = """
+    private final String prompt
+            = """
                 Give me a good French recipe for tonight's dinner.
                 """;
 
@@ -38,17 +38,19 @@ public class OpenAIService {
 
     private WebClient client;
 
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    private final ObjectMapper objectMapper
+            = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     @PostConstruct
     public void init() {
-        client = WebClient.builder()
-                .baseUrl(openAiUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader("api-key", openAiKey)
-                .build();
+        client
+                = WebClient.builder()
+                        .baseUrl(openAiUrl)
+                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .defaultHeader("api-key", openAiKey)
+                        .build();
     }
 
     public Flux<String> getData() throws JsonProcessingException {
@@ -64,19 +66,21 @@ public class OpenAIService {
         request.setStop(null);
 
         String requestValue = objectMapper.writeValueAsString(request);
-        return client.post()
+        return client
+                .post()
                 .bodyValue(requestValue)
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .retrieve()
                 .bodyToFlux(String.class)
-                .mapNotNull(event -> {
-                    try {
-                        String jsonData = event.substring(event.indexOf("{"), event.lastIndexOf("}") + 1);
-                        return objectMapper.readValue(jsonData, EventData.class);
-                    } catch (JsonProcessingException | StringIndexOutOfBoundsException e) {
-                        return null;
-                    }
-                })
+                .mapNotNull(
+                        event -> {
+                            try {
+                                String jsonData = event.substring(event.indexOf("{"), event.lastIndexOf("}") + 1);
+                                return objectMapper.readValue(jsonData, EventData.class);
+                            } catch (JsonProcessingException | StringIndexOutOfBoundsException e) {
+                                return null;
+                            }
+                        })
                 .skipUntil(event -> !event.getChoices().get(0).getText().equals("\n"))
                 .map(event -> event.getChoices().get(0).getText());
     }

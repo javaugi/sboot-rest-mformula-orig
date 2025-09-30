@@ -18,30 +18,29 @@ public class ReactorExample {
     public static Flux<String> getDatabaseRecords() {
         // Imagine this connects to a DB and streams results
         return Flux.range(1, 1000) // Simulate 1000 records
-            .map(i -> "Record_" + i);
+                .map(i -> "Record_" + i);
     }
 
     public static void main(String[] args) throws InterruptedException {
         getDatabaseRecords()
-            // Switch to a background scheduler for the I/O-bound operation
-            .subscribeOn(Schedulers.boundedElastic())
-            // Now, the subscriber can control the pace.
-            // Let's simulate a slow subscriber that can only process 10 items at a time.
-            .subscribe(
-                record -> {
-                    // Process each record
-                    System.out.println("Processing: " + record);
-                    try {
-                        Thread.sleep(10);
-                    } // Simulate slow processing
-                    catch (InterruptedException e) {
-                    }
-                },
-                error -> System.err.println("Error: " + error), // Error handler
-                () -> System.out.println("Stream completed!"), // Completion handler
-                // Backpressure request: initially ask for 10 items
-                subscription -> subscription.request(10)
-            );
+                // Switch to a background scheduler for the I/O-bound operation
+                .subscribeOn(Schedulers.boundedElastic())
+                // Now, the subscriber can control the pace.
+                // Let's simulate a slow subscriber that can only process 10 items at a time.
+                .subscribe(
+                        record -> {
+                            // Process each record
+                            System.out.println("Processing: " + record);
+                            try {
+                                Thread.sleep(10);
+                            } // Simulate slow processing
+                            catch (InterruptedException e) {
+                            }
+                        },
+                        error -> System.err.println("Error: " + error), // Error handler
+                        () -> System.out.println("Stream completed!"), // Completion handler
+                        // Backpressure request: initially ask for 10 items
+                        subscription -> subscription.request(10));
 
         // Keep the main thread alive long enough to see output
         Thread.sleep(5000);
@@ -63,4 +62,4 @@ public class ReactorExample {
         Functional Fluent API: Similar to Java Streams but for asynchronous data streams.
 
 Java Code Example (Project Reactor): Streaming a Database Result with Backpressure
-*/
+ */

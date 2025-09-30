@@ -4,16 +4,15 @@
  */
 package com.spring5.model;
 
-
 import com.spring5.entity.Patient;
 import java.time.LocalDate;
 import org.springframework.hateoas.RepresentationModel;
 
 /**
- *
  * @author javaugi
  */
 public class PatientModel extends RepresentationModel<PatientModel> {
+
     private final Patient patient;
 
     public PatientModel(Patient patient) {

@@ -19,8 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- *
- *
  * @author bill
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -50,5 +48,4 @@ public class StandardConfigProperties {
     public void setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
     }
-
 }

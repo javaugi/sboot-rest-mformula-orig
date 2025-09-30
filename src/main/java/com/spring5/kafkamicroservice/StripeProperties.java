@@ -7,8 +7,9 @@ package com.spring5.kafkamicroservice;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
-@Service 
+@Service
 @Data
 public class StripeProperties {
+
     private String apiKey;
 }

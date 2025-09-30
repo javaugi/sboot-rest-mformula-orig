@@ -7,5 +7,6 @@ package com.spring5.service;
 import com.spring5.validatorex.InvalidReviewScoreException;
 
 public interface BonusConfig {
+
     double getMultiplierForScore(String score) throws InvalidReviewScoreException;
 }

@@ -7,20 +7,17 @@
  */
 package com.mycompany.davidlee;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.interview.shoppingcart.api.Inventory;
 import com.interview.shoppingcart.api.Item.Category;
 import com.interview.shoppingcart.api.impl.InventoryImpl;
 import com.interview.shoppingcart.api.impl.ItemImpl;
 import com.interview.shoppingcart.api.impl.WeightItem;
 import com.spring5.ProjectTest;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

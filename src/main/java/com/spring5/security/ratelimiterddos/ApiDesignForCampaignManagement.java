@@ -21,7 +21,6 @@ The design would use:
     Pagination for large result sets
     ETags for optimistic concurrency control
     Comprehensive documentation with Swagger/OpenAPI"
-*/
+ */
 public class ApiDesignForCampaignManagement {
-    
 }

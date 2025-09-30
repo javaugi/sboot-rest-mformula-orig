@@ -24,9 +24,9 @@ public class PatientEngagementEvent {
     private Long id;
 
     private String patientId;
-    private String eventType;  // e.g., APPOINTMENT, CLAIM, LAB_RESULT
+    private String eventType; // e.g., APPOINTMENT, CLAIM, LAB_RESULT
     private Instant eventTime;
-    private String metadata;   // JSON string with additional details
+    private String metadata; // JSON string with additional details
 
     // getters, setters
 }

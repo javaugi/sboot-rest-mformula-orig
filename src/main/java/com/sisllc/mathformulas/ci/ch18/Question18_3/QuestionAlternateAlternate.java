@@ -55,5 +55,4 @@ public class QuestionAlternateAlternate {
         int[] set = pickMIteratively(cards, 4);
         System.out.println(AssortedMethods.arrayToString(set));
     }
-
 }

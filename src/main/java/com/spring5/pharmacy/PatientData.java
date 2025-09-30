@@ -18,7 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientData {
+
     Long id;
     String insuranceId;
-    
 }

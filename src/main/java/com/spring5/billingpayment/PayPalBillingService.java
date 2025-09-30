@@ -4,23 +4,22 @@
  */
 package com.spring5.billingpayment;
 
-import com.spring5.validatorex.BillingException;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import com.spring5.validatorex.BillingException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PayPalBillingService {
@@ -42,12 +41,12 @@ public class PayPalBillingService {
                 null,
                 "FAILED",
                 null,
-                "Service unavailable. Please try again later. Error: " + ex.getMessage()
-        );
+                "Service unavailable. Please try again later. Error: " + ex.getMessage());
     }
-    
-    //paypalService is the instance name defined in the application.yml
-    // Reuse Across Methods: Multiple methods in different classes can share the same circuit breaker instance if they use the same name.
+
+    // paypalService is the instance name defined in the application.yml
+    // Reuse Across Methods: Multiple methods in different classes can share the same circuit breaker
+    // instance if they use the same name.
     @Retry(name = "paypalService")
     @CircuitBreaker(name = "paypalService", fallbackMethod = "createBillingAgreementFallback")
     public BillingAgreementResponse createBillingAgreement(BillingPlanRequest request) {
@@ -57,7 +56,7 @@ public class PayPalBillingService {
             plan.setName(request.getPlanName());
             plan.setDescription(request.getDescription());
             plan.setType("INFINITE"); // For subscription model
-            
+
             List<PaymentDefinition> paymentDefinitions = createPaymentDefinitions(request);
             plan.setPaymentDefinitions(paymentDefinitions);
             // Create plan
@@ -88,20 +87,12 @@ public class PayPalBillingService {
                             .findFirst()
                             .map(Links::getHref)
                             .orElse(null),
-                    null
-            );
+                    null);
         } catch (PayPalRESTException e) {
             throw new BillingException(
-                    "PayPal API error: " + e.getMessage(),
-                    e,
-                    HttpStatus.valueOf(e.getResponsecode())
-            );
+                    "PayPal API error: " + e.getMessage(), e, HttpStatus.valueOf(e.getResponsecode()));
         } catch (MalformedURLException | UnsupportedEncodingException e) {
-            throw new BillingException(
-                    "PayPal API error: " + e.getMessage(),
-                    e,
-                    HttpStatus.BAD_GATEWAY
-            );
+            throw new BillingException("PayPal API error: " + e.getMessage(), e, HttpStatus.BAD_GATEWAY);
         }
     }
 
@@ -194,12 +185,12 @@ Class Usage:
 java
 @Service
 public class PayPalBillingService {
-  
+
   @CircuitBreaker(name = "paypalService", fallbackMethod = "fallback") // Uses the "paypalService" config
   public String createAgreement() {
     // Call PayPal API
   }
-  
+
   public String fallback(Exception ex) {
     return "Fallback response";
   }
@@ -223,4 +214,4 @@ The name is a logical identifier for the circuit breaker configuration.
 It’s defined in your Resilience4j config, not tied to class names (though you can align them for clarity).
 
 Multiple methods/classes can share the same circuit breaker instance by using the same name.
-*/
+ */

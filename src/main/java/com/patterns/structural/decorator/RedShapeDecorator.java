@@ -8,8 +8,6 @@
 package com.patterns.structural.decorator;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

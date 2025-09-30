@@ -14,6 +14,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Container(containerName = "airCrafts")
 public class Aircraft {
+
     private String aircraftType;
     private int capacity;
     private int ageYears;

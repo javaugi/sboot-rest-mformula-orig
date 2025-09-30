@@ -4,28 +4,27 @@
  */
 package com.spring5.aicloud.genaihealthcare.hapifhir;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
-//1. HMAC Pseudonymizer Utility
+// 1. HMAC Pseudonymizer Utility
 public class PatientIdPseudonymizer {
-    //PHIPseudonymizer
+    // PHIPseudonymizer
 
     /*
-3. Key Points
+  3. Key Points
 
-Per-Environment Key:
-    For dev, test, prod, use different keys (rotate periodically).
-    Store in Azure KeyVault, AWS Secrets Manager, or HashiCorp Vault.
+  Per-Environment Key:
+      For dev, test, prod, use different keys (rotate periodically).
+      Store in Azure KeyVault, AWS Secrets Manager, or HashiCorp Vault.
 
-HMAC-SHA256 ensures:
-    Deterministic mapping → Same input → Same pseudonym
-    Non-reversible outside your environment without the key
-    Base64 URL-safe encoding → No special characters in output
+  HMAC-SHA256 ensures:
+      Deterministic mapping → Same input → Same pseudonym
+      Non-reversible outside your environment without the key
+      Base64 URL-safe encoding → No special characters in output
      */
-
     private final String secretKey; // Per-environment key, e.g., loaded from Vault or KMS
 
     public PatientIdPseudonymizer(String secretKey) {
@@ -36,7 +35,8 @@ HMAC-SHA256 ensures:
         try {
             // Create HMAC-SHA256 instance
             Mac hmacSha256 = Mac.getInstance("HmacSHA256");
-            SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+            SecretKeySpec keySpec
+                    = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
             hmacSha256.init(keySpec);
 
             // Compute HMAC digest
@@ -50,7 +50,8 @@ HMAC-SHA256 ensures:
     }
 
     public static void main(String[] args) {
-        // Example: key should come from secure config (e.g., Spring Boot application.yml or Azure KeyVault)
+        // Example: key should come from secure config (e.g., Spring Boot application.yml or Azure
+        // KeyVault)
         String envKey = "MY_ENV_SPECIFIC_SECRET_KEY_2025";
 
         PatientIdPseudonymizer pseudonymizer = new PatientIdPseudonymizer(envKey);

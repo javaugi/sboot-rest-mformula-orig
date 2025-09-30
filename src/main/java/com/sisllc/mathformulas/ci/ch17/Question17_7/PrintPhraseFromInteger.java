@@ -4,9 +4,23 @@ import com.sisllc.mathformulas.ci.lib.AssortedMethods;
 
 public class PrintPhraseFromInteger {
 
-    public static String[] digits = {"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
-    public static String[] teens = {"Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
-    public static String[] tens = {"Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    public static String[] digits = {
+        "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"
+    };
+    public static String[] teens = {
+        "Eleven",
+        "Twelve",
+        "Thirteen",
+        "Fourteen",
+        "Fifteen",
+        "Sixteen",
+        "Seventeen",
+        "Eighteen",
+        "Nineteen"
+    };
+    public static String[] tens = {
+        "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"
+    };
     public static String[] bigs = {"", "Thousand", "Million", "Billion"};
 
     public static String numToString(int number) {

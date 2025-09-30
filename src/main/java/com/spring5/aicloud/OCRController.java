@@ -41,8 +41,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class OCRController {
 
     @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file,
-            @RequestParam(defaultValue = "pdf") String format) throws Exception {
+    public ResponseEntity<?> upload(
+            @RequestParam("file") MultipartFile file, @RequestParam(defaultValue = "pdf") String format)
+            throws Exception {
         // Step 1: Send image to OpenAI
         String extractedText = callOpenAIVision(file);
 
@@ -67,10 +68,12 @@ public class OCRController {
         request.setHeader("Authorization", "Bearer YOUR_OPENAI_API_KEY");
 
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.addBinaryBody("file", file.getBytes(), ContentType.IMAGE_JPEG, file.getOriginalFilename());
+        builder.addBinaryBody(
+                "file", file.getBytes(), ContentType.IMAGE_JPEG, file.getOriginalFilename());
 
         // For GPT-4-vision you structure the request like this:
-        String jsonPayload = """
+        String jsonPayload
+                = """
         {
           "model": "gpt-4o",
           "messages": [
@@ -80,7 +83,9 @@ public class OCRController {
                 {
                   "type": "image_url",
                   "image_url": {
-                    "url": "data:image/jpeg;base64,""" + Base64.getEncoder().encodeToString(file.getBytes()) + """
+                    "url": "data:image/jpeg;base64,"""
+                + Base64.getEncoder().encodeToString(file.getBytes())
+                + """
                   }
                 },
                 {
@@ -126,7 +131,7 @@ public class OCRController {
 
         PDPageContentStream content = new PDPageContentStream(doc, page);
         content.beginText();
-        
+
         PDFont font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
         content.setFont(font, 12);
         content.setLeading(14.5f);
@@ -146,5 +151,4 @@ public class OCRController {
 
         return output;
     }
-
 }

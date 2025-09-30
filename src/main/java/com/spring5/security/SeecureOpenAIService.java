@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
- *
  * @author javaugi
  */
 @Service
 public class SeecureOpenAIService {
+
     @Value("${application.openai.url}")
     private String apiUrl;
 
@@ -31,18 +31,18 @@ public class SeecureOpenAIService {
     private String modelVersion;
 
     @Autowired
-    private @Qualifier(AiConfig.REST_TEMPLATE)RestTemplate restTemplate;    
+    private @Qualifier(AiConfig.REST_TEMPLATE)
+    RestTemplate restTemplate;
 
     /**
      * @param prompt - the question you are expecting to ask ChatGPT
      * @return the response in JSON format
      */
     public String ask(String prompt) {
-        HttpEntity<String> entity = new HttpEntity<>(buildMessageBody(modelVersion, prompt), buildOpenAIHeaders());
-        
-        return restTemplate
-                .exchange(apiUrl, HttpMethod.POST, entity, String.class)
-                .getBody();
+        HttpEntity<String> entity
+                = new HttpEntity<>(buildMessageBody(modelVersion, prompt), buildOpenAIHeaders());
+
+        return restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class).getBody();
     }
 
     private HttpHeaders buildOpenAIHeaders() {
@@ -53,8 +53,10 @@ public class SeecureOpenAIService {
     }
 
     private String buildMessageBody(String modelVersion, String prompt) {
-        return String.format("{ \"model\": \"%s\", \"messages\": [{\"role\": \"user\", \"content\": \"%s\"}]}", modelVersion, prompt);
-    }    
+        return String.format(
+                "{ \"model\": \"%s\", \"messages\": [{\"role\": \"user\", \"content\": \"%s\"}]}",
+                modelVersion, prompt);
+    }
 }
 
 /*
@@ -139,4 +141,4 @@ Key Takeaways
     It precedes the actual token (JWT, API key, etc.).
     Always combine with HTTPS and proper token validation.
     For JWT-specific flows, you’d typically validate the token’s signature and claims on the server. Would you like an example of JWT validation in Spring Security?
-*/
+ */

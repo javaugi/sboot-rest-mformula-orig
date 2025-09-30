@@ -13,7 +13,8 @@ import reactor.core.publisher.Mono;
 
 public interface MedicalDocumentRepository extends R2dbcRepository<MedicalDocument, String> {
 
-    @Query("""
+    @Query(
+            """
         SELECT id, title, text_content, specialty, document_type, publication_date,
                embeddding
         FROM medicalDocuments
@@ -22,7 +23,8 @@ public interface MedicalDocumentRepository extends R2dbcRepository<MedicalDocume
         """)
     Flux<MedicalDocument> findSimilarDocuments(float[] embedding);
 
-    @Query("""
+    @Query(
+            """
         SELECT id, title, text_content, specialty, document_type, publication_date,
                embeddding
         FROM medicalDocuments
@@ -31,29 +33,31 @@ public interface MedicalDocumentRepository extends R2dbcRepository<MedicalDocume
         """)
     Flux<MedicalDocument> findSimilarDocuments(float[] embedding, Integer limit);
 
-    @Query("""
+    @Query(
+            """
         INSERT INTO medicalDocuments
         (title, text_content, specialty, document_type, publication_date, embeddding)
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id
         """)
     Mono<Long> saveDocument(
-        String title,
-        String textContent,
-        String specialty,
-        String documentType,
-        OffsetDateTime publicationDate,
-        float[] embedding
-    );
+            String title,
+            String textContent,
+            String specialty,
+            String documentType,
+            OffsetDateTime publicationDate,
+            float[] embedding);
 
-    @Query("""
+    @Query(
+            """
         SELECT * FROM medical_documents
         WHERE id = $1
         FOR UPDATE SKIP LOCKED
         """)
     Mono<MedicalDocument> findByIdForUpdate(String id);
 
-    @Query("""
+    @Query(
+            """
         SELECT * FROM medical_documents
         WHERE id = $1
         FOR UPDATE NOWAIT

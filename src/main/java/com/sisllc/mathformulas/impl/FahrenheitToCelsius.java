@@ -4,9 +4,7 @@ package com.sisllc.mathformulas.impl;
  * Converting Fahrenheit to Celsius Deduct 32, then multiply by 5, then divide
  * by 9
  *
- *
  * @author david
- *
  */
 public class FahrenheitToCelsius {
 

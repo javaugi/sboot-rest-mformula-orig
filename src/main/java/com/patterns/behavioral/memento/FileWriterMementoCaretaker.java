@@ -8,7 +8,6 @@
 package com.patterns.behavioral.memento;
 
 /**
- *
  * Notice that caretaker object contains the saved state in the form of Object,
  * so it can’t alter its data and also it has no knowledge of it’s structure.
  *

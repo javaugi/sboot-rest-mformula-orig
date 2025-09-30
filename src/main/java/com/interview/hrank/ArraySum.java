@@ -12,43 +12,45 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- *
  * @author javaugi
  */
 public class ArraySum {
 
     public static void main(String[] args) {
         int[] arr = {1, -2, 4, -5, 1};
-        System.out.println("\n Calling totalNegative=" + totalNegative(arr) + " with array=" + Arrays.toString(arr));
-        //total negative = 9
+        System.out.println(
+                "\n Calling totalNegative=" + totalNegative(arr) + " with array=" + Arrays.toString(arr));
+        // total negative = 9
 
         System.out.println("arr[3] value=" + arr[3] + " from arr=" + Arrays.toString(arr));
-        List<Integer> intList = Arrays.stream(arr)
-                .boxed()
-                //.sorted()
-                .collect(Collectors.toList());
+        List<Integer> intList
+                = Arrays.stream(arr)
+                        .boxed()
+                        // .sorted()
+                        .collect(Collectors.toList());
         System.out.println("get(3) value=" + intList.get(3) + " from list=" + intList);
 
-        int[] arr2 = {255, -77, 601, 89, -993, -307, 300, 452, -312, 400, -993, 831, 790, 236, 981, 274, 167, 676, -134, -906, 139, -537, -159, 483, 398, 253, 583, 348, 582, 481, 398, -504, 459, 39, 650, 424, 511, 581, 303, 142, -300, 796, 183, -609, 432, 33, -846, -101, 421, 602, -789, 214, 692, -971, 212, 752, -564, -747, -396, 217, 448, 364, -139, 304, -309, 337, 989, 751, 698, 381, 892, -774, 34, 557, 231, 612, -377, -677, 497, -781, -944, 608, 21, 967, 787, -334, 835, 136, 335, -4, -468, -301, -296, 65, -664, -303, 317, 893, 624, 115};
-        System.out.println("\n Calling totalNegative=" + totalNegative(arr2) + " with array=" + Arrays.toString(arr2));
-        //total negative = 425
-        
-        List<Integer> intList2 = Arrays.stream(arr2)
-                .boxed()
-                .collect(Collectors.toList());
-        
-        int total = intList2
-            .stream()
-            .collect(Collectors.summingInt(Integer::intValue));
-        total = intList2
-            .stream()
-            .mapToInt(Integer::intValue).sum();
-        
-        total = Arrays.stream(arr2)
-                .boxed()
-                .collect(Collectors.toList())
-                .stream()
-                .mapToInt(Integer::intValue).sum();
+        int[] arr2 = {
+            255, -77, 601, 89, -993, -307, 300, 452, -312, 400, -993, 831, 790, 236, 981, 274, 167, 676,
+            -134, -906, 139, -537, -159, 483, 398, 253, 583, 348, 582, 481, 398, -504, 459, 39, 650, 424,
+            511, 581, 303, 142, -300, 796, 183, -609, 432, 33, -846, -101, 421, 602, -789, 214, 692, -971,
+            212, 752, -564, -747, -396, 217, 448, 364, -139, 304, -309, 337, 989, 751, 698, 381, 892,
+            -774, 34, 557, 231, 612, -377, -677, 497, -781, -944, 608, 21, 967, 787, -334, 835, 136, 335,
+            -4, -468, -301, -296, 65, -664, -303, 317, 893, 624, 115
+        };
+        System.out.println(
+                "\n Calling totalNegative=" + totalNegative(arr2) + " with array=" + Arrays.toString(arr2));
+        // total negative = 425
+
+        List<Integer> intList2 = Arrays.stream(arr2).boxed().collect(Collectors.toList());
+
+        int total = intList2.stream().collect(Collectors.summingInt(Integer::intValue));
+        total = intList2.stream().mapToInt(Integer::intValue).sum();
+
+        total
+                = Arrays.stream(arr2).boxed().collect(Collectors.toList()).stream()
+                        .mapToInt(Integer::intValue)
+                        .sum();
     }
 
     public static void scannerWithPrinter() {
@@ -94,40 +96,42 @@ public class ArraySum {
 
         List<List<Integer>> list = new ArrayList<>();
 
-        java.util.stream.IntStream.range(0, n).forEach(i -> {
-            String line = scan.nextLine();
-            if (line != null && !line.isEmpty()) {
-                String[] tokens = line.split(" ");
-                if (!"0".equals(tokens[0])) {
-                    String[] tokensUpd = Arrays.copyOfRange(tokens, 1, tokens.length);
-                    List<Integer> list0 = new ArrayList<>();
-                    for (String str : tokensUpd) {
-                        list0.add(Integer.parseInt(str));
-                    }
-                    list.add(list0);
-                } else {
-                    list.add(new ArrayList<>());
-                }
-            }
-        }
-        );
+        java.util.stream.IntStream.range(0, n)
+                .forEach(
+                        i -> {
+                            String line = scan.nextLine();
+                            if (line != null && !line.isEmpty()) {
+                                String[] tokens = line.split(" ");
+                                if (!"0".equals(tokens[0])) {
+                                    String[] tokensUpd = Arrays.copyOfRange(tokens, 1, tokens.length);
+                                    List<Integer> list0 = new ArrayList<>();
+                                    for (String str : tokensUpd) {
+                                        list0.add(Integer.parseInt(str));
+                                    }
+                                    list.add(list0);
+                                } else {
+                                    list.add(new ArrayList<>());
+                                }
+                            }
+                        });
 
         int q = scan.nextInt();
         scan.nextLine();
         List<List<Integer>> queries = new ArrayList<>();
-        
-        java.util.stream.IntStream.range(0, q).forEach(i -> {
-            String line = scan.nextLine();
-            if (line != null && !line.isEmpty()) {
-                String[] tokens = line.split(" ");
-                List<Integer> list0 = new ArrayList<>();
-                for (String str : tokens) {
-                    list0.add(Integer.parseInt(str));
-                }
-                queries.add(list0);
-            }
-        }
-        );
+
+        java.util.stream.IntStream.range(0, q)
+                .forEach(
+                        i -> {
+                            String line = scan.nextLine();
+                            if (line != null && !line.isEmpty()) {
+                                String[] tokens = line.split(" ");
+                                List<Integer> list0 = new ArrayList<>();
+                                for (String str : tokens) {
+                                    list0.add(Integer.parseInt(str));
+                                }
+                                queries.add(list0);
+                            }
+                        });
 
         for (List<Integer> qList : queries) {
             int x = qList.get(0);
@@ -139,27 +143,34 @@ public class ArraySum {
                 System.out.println("ERROR!");
             }
         }
-
     }
 
     private static void dim2ArrayToList() {
-        int[][] arr2d = {{1, 1, 1, 0, 0, 0}, {0, 1, 0, 0, 0, 0}, {1, 1, 1, 0, 0, 0,}, {0, 0, 2, 4, 4, 0}, {0, 0, 0, 2, 0, 0}, {0, 0, 1, 2, 4, 0}};
-        List<List<Integer>> listList1 = Arrays.stream(arr2d)
-                .map(row -> IntStream.of(row)
-                    .boxed()
-                    .collect(Collectors.toList())
-                )
-                .collect(Collectors.toList());
+        int[][] arr2d = {
+            {1, 1, 1, 0, 0, 0},
+            {0, 1, 0, 0, 0, 0},
+            {
+                1, 1, 1, 0, 0, 0,},
+            {0, 0, 2, 4, 4, 0},
+            {0, 0, 0, 2, 0, 0},
+            {0, 0, 1, 2, 4, 0}
+        };
+        List<List<Integer>> listList1
+                = Arrays.stream(arr2d)
+                        .map(row -> IntStream.of(row).boxed().collect(Collectors.toList()))
+                        .collect(Collectors.toList());
 
         int[] arr = {1, -2, 4, -5, 1};
-        System.out.println("\n Calling totalNegative=" + totalNegative(arr) + " with array=" + Arrays.toString(arr));
-        //total negative = 9        
+        System.out.println(
+                "\n Calling totalNegative=" + totalNegative(arr) + " with array=" + Arrays.toString(arr));
+        // total negative = 9
         System.out.println("arr[3] value=" + arr[3] + " from arr=" + Arrays.toString(arr));
 
-        List<Integer> intList = Arrays.stream(arr)
-                .boxed()
-                //.sorted()
-                .collect(Collectors.toList());
+        List<Integer> intList
+                = Arrays.stream(arr)
+                        .boxed()
+                        // .sorted()
+                        .collect(Collectors.toList());
         System.out.println("get(3) value=" + intList.get(3) + " from list=" + intList);
     }
 
@@ -179,14 +190,15 @@ public class ArraySum {
         int tNegative = 0;
         for (int i = 0; i < arr.length; i++) {
             for (int j = i; j < arr.length; j++) {
-                //both work
+                // both work
                 int[] sub = Arrays.copyOfRange(arr, i, j);
-                //int[] sub = Arrays.copyOfRange(arr, i, (j + 1));
+                // int[] sub = Arrays.copyOfRange(arr, i, (j + 1));
                 int t = totalSum(sub);
                 if (t < 0) {
                     tNegative++;
                 }
-                //System.out.println("Looping     i=" + i  + "    -j=" + j  + "   -t=" + t+ " -tNegative=" + tNegative + "    - with array=" + Arrays.toString(sub));
+                // System.out.println("Looping     i=" + i  + "    -j=" + j  + "   -t=" + t+ " -tNegative="
+                // + tNegative + "    - with array=" + Arrays.toString(sub));
             }
         }
 

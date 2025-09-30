@@ -4,16 +4,13 @@
  */
 package com.spring5;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
-//https://dev.to/mongodb/how-to-make-a-rag-application-with-langchain4j-1mad#:~:text=LangChain4J%20for%20RAG,components%20in%20your%20AI%20applications.
+// https://dev.to/mongodb/how-to-make-a-rag-application-with-langchain4j-1mad#:~:text=LangChain4J%20for%20RAG,components%20in%20your%20AI%20applications.
 @Configuration
 public class MongoDBConfig {
-    //spring.data.mongodb.uri=disabled causes running validation erro
-    
+    // spring.data.mongodb.uri=disabled causes running validation erro
+
 }
 /*
 The error you're seeing (MongoSocketOpenException: Connection refused) indicates that your application is trying to connect to a MongoDB instance, but it can't reach it—likely because MongoDB isn't running, is misconfigured, or the hostname/port is incorrect.
@@ -78,4 +75,4 @@ This spins up an in-memory MongoDB instance during tests so you don't need the r
 Make sure MongoDB is actually running (mongod) on the correct port.
 
 Or mock MongoDB repositories/services in test configurations using tools like @MockBean or Mockito
-*/
+ */

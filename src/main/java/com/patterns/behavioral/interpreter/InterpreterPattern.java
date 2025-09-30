@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
  * particular context. This pattern is used in SQL parsing, symbol processing
  * engine etc.
  *
+ * <p>
  * The best example of interpreter design pattern is java compiler that
  * interprets the java source code into byte code that is understandable by JVM.
  * Google Translator is also an example of interpreter pattern where the input
  * can be in any language and we can get the output interpreted in another
  * language.
- *
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
@@ -55,14 +55,14 @@ public class InterpreterPattern {
 
     private static final Logger log = LoggerFactory.getLogger(InterpreterPattern.class);
 
-    //Rule: Robert and John are male
+    // Rule: Robert and John are male
     public static Expression getMaleExpression() {
         Expression robert = new TerminalExpression("Robert");
         Expression john = new TerminalExpression("John");
         return new OrExpression(robert, john);
     }
 
-    //Rule: Julie is a married women
+    // Rule: Julie is a married women
     public static Expression getMarriedWomanExpression() {
         Expression julie = new TerminalExpression("Julie");
         Expression married = new TerminalExpression("Married");
@@ -93,7 +93,7 @@ public class InterpreterPattern {
 
     public String interpret(String str) {
         Expression1 exp = null;
-        //create rules for expressions
+        // create rules for expressions
         if (str.contains("Hexadecimal")) {
             exp = new IntToHexExpression(Integer.parseInt(str.substring(0, str.indexOf(" "))));
         } else if (str.contains("Binary")) {

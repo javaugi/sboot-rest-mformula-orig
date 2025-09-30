@@ -6,7 +6,6 @@ package com.spring5.dbisolation.wmart.validrule;
 
 import com.spring5.dbisolation.wmart.FraudService;
 import com.spring5.kafkamicroservice.Payment;
-//import jakarta.persistence.Cacheable;
 import lombok.AllArgsConstructor;
 import static org.eclipse.jdt.internal.compiler.ReadManager.THRESHOLD;
 import org.springframework.cache.annotation.Cacheable;

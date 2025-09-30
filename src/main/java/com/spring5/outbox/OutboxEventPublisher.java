@@ -13,26 +13,27 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class OutboxEventPublisher {
-    
-    private final @Qualifier("outboxKafkaTemplate") KafkaTemplate<String, Outbox> kafkaTemplate;
+
+    private final @Qualifier("outboxKafkaTemplate")
+    KafkaTemplate<String, Outbox> kafkaTemplate;
+
     /*
-    For most Spring Boot/Spring applications, KafkaTemplate is the clear winner. It abstracts away the complexities of the 
-        native KafkaProducer while providing powerful features.
-    Always prefer KafkaTemplate.send() for its simplicity, flexibility (you specify the topic), and integration with Spring's asynchronous features.
-    Consider KafkaTemplate.sendDefault() if you have a primary topic and want to reduce boilerplate.
-    Only use KafkaProducer directly if you are not using Spring or if you have a very specific, low-level requirement 
-        that KafkaTemplate cannot meet.
-    Reserve KafkaTemplate.execute() for advanced scenarios where you need to interact directly with the KafkaProducer's methods 
-        that KafkaTemplate doesn't directly expose or for custom transaction management patterns.
-    
-    # Configure the default topic for KafkaTemplate
-    spring.kafka.template.default-topic=my-default-topic
-    */
-    
+  For most Spring Boot/Spring applications, KafkaTemplate is the clear winner. It abstracts away the complexities of the
+      native KafkaProducer while providing powerful features.
+  Always prefer KafkaTemplate.send() for its simplicity, flexibility (you specify the topic), and integration with Spring's asynchronous features.
+  Consider KafkaTemplate.sendDefault() if you have a primary topic and want to reduce boilerplate.
+  Only use KafkaProducer directly if you are not using Spring or if you have a very specific, low-level requirement
+      that KafkaTemplate cannot meet.
+  Reserve KafkaTemplate.execute() for advanced scenarios where you need to interact directly with the KafkaProducer's methods
+      that KafkaTemplate doesn't directly expose or for custom transaction management patterns.
+
+  # Configure the default topic for KafkaTemplate
+  spring.kafka.template.default-topic=my-default-topic
+     */
     public void publish(Outbox event) {
-        //my-default-topic
+        // my-default-topic
         this.kafkaTemplate.sendDefault(event);
-        //or the specific kafka topic
+        // or the specific kafka topic
         this.kafkaTemplate.send(KAFKA_OUTBOX_TOPIC, event.getAggregateId(), event);
         // Publish the event to message broker
     }
@@ -170,4 +171,4 @@ Summary and Recommendation:
     Consider KafkaTemplate.sendDefault() if you have a primary topic and want to reduce boilerplate.
     Only use KafkaProducer directly if you are not using Spring or if you have a very specific, low-level requirement that KafkaTemplate cannot meet.
     Reserve KafkaTemplate.execute() for advanced scenarios where you need to interact directly with the KafkaProducer's methods that KafkaTemplate doesn't directly expose or for custom transaction management patterns.
-*/
+ */

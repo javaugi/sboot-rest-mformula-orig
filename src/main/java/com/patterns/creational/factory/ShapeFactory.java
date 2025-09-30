@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -21,7 +19,7 @@ public class ShapeFactory {
 
     private static final Logger log = LoggerFactory.getLogger(ShapeFactory.class);
 
-    //use getShape method to get object of type shape
+    // use getShape method to get object of type shape
     public Shape getShape(String shapeType) {
         if (shapeType == null) {
             return null;

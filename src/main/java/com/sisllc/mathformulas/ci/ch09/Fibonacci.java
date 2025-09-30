@@ -31,5 +31,4 @@ public class Fibonacci {
             System.out.println(j + ": " + times[j] / trials + "ms");
         }
     }
-
 }

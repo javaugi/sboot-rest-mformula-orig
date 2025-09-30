@@ -5,6 +5,7 @@
 package com.spring5;
 
 import com.spring5.graphql.Neo4jPerson;
+import com.spring5.graphql.Neo4jPersonRepository;
 import java.util.Arrays;
 import java.util.List;
 import org.neo4j.driver.Driver;
@@ -14,43 +15,42 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.neo4j.config.EnableNeo4jAuditing;
 import org.springframework.stereotype.Component;
-import com.spring5.graphql.Neo4jPersonRepository;
 
 /**
- *
  * @author javaugi
  */
 @Component
 @EnableNeo4jAuditing
-//@EnableNeo4jRepositories(basePackages = {MyApplication.PACKAGES_TO_SCAN})
+// @EnableNeo4jRepositories(basePackages = {MyApplication.PACKAGES_TO_SCAN})
 public class Neo4jConnectionChecker implements CommandLineRunner {
 
-    private final static Logger log = LoggerFactory.getLogger(Neo4jConnectionChecker.class);
-    
+    private static final Logger log = LoggerFactory.getLogger(Neo4jConnectionChecker.class);
+
     @Value("${app.neo4j.enabled}")
-    private Boolean neo4jDbEnabled;    
+    private Boolean neo4jDbEnabled;
 
     private final Driver driver;
     private final Neo4jPersonRepository personRepository;
+
     public Neo4jConnectionChecker(Driver driver, Neo4jPersonRepository personRepository) {
         this.driver = driver;
         this.personRepository = personRepository;
     }
-    
+
     @Override
     public void run(String... args) throws Exception {
-        
-        log.info("Neo4jConnectionChecker neo4jDbEnabled {}", neo4jDbEnabled);        
+
+        log.info("Neo4jConnectionChecker neo4jDbEnabled {}", neo4jDbEnabled);
         if (neo4jDbEnabled) {
             boolean neo4jRunning = neo4jDbConnectedRunning();
-            log.info("Checking Neo4j database connectivity neo4jRunning {}", neo4jRunning);        
+            log.info("Checking Neo4j database connectivity neo4jRunning {}", neo4jRunning);
             if (neo4jRunning) {
                 runNeo4jDemo();
             }
         }
     }
 
-    private boolean neo4jDbConnectedRunning() {        
+    private boolean neo4jDbConnectedRunning() {
         try {
             driver.verifyConnectivity();
             log.info("Neo4j database is running and connected.");
@@ -61,7 +61,7 @@ public class Neo4jConnectionChecker implements CommandLineRunner {
             // SpringApplication.exit(SpringApplicationContext.getAppContext(), () -> 1);
             // System.exit(1);
         }
-        
+
         return false;
     }
 
@@ -94,8 +94,9 @@ public class Neo4jConnectionChecker implements CommandLineRunner {
 
         // We already know craig works with roy and greg
         log.info("Lookup each person by name...");
-        team.stream().forEach(person -> log.info(
-                "\t" + personRepository.findByName(person.getName()).toString()));
+        team.stream()
+                .forEach(
+                        person -> log.info("\t" + personRepository.findByName(person.getName()).toString()));
 
         List<Neo4jPerson> teammates = personRepository.findByTeammatesName(greg.getName());
         log.info("The following have Greg as a teammate...");

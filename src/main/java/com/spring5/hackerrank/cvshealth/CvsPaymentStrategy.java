@@ -6,5 +6,6 @@ package com.spring5.hackerrank.cvshealth;
 
 // 1. Strategy Interface
 public interface CvsPaymentStrategy {
+
     void processPayment(double amount);
 }

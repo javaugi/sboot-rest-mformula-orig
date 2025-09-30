@@ -12,12 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * https://medium.com/@codingfreak/top-50-dynamic-programming-practice-problems-4208fed71aa3
  * https://www.geeksforgeeks.org/dynamic-programming/
  *
+ * <p>
  * Dynamic Programming
  *
+ * <p>
  * Dynamic Programming is mainly an optimization over plain recursion. Wherever
  * we see a recursive solution that has repeated calls for same inputs, we can
  * optimize it using Dynamic Programming. The idea is to simply store the
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
  * for Fibonacci Numbers, we get exponential time complexity and if we optimize
  * it by storing solutions of subproblems, time complexity reduces to linear.
  *
+ * <p>
  * Dynamic programming (usually referred to as DP ) is a very powerful technique
  * to solve a particular class of problems. It demands very elegant formulation
  * of the approach and simple thinking and the coding part is very easy. The
@@ -39,32 +41,39 @@ import org.slf4j.LoggerFactory;
  * solutions to the subproblems contribute to the optimal solution of the given
  * problem
  *
+ * <p>
  * There are two ways of doing this.
  *
+ * <p>
  * 1.) Top-Down : Start solving the given problem by breaking it down. If you
  * see that the problem has been solved already, then just return the saved
  * answer. If it has not been solved, solve it and save the answer. This is
  * usually easy to think of and very intuitive. This is referred to as
  * Memoization.
  *
+ * <p>
  * 2.) Bottom-Up : Analyze the problem and see the order in which the
  * sub-problems are solved and start solving from the trivial subproblem, up
  * towards the given problem. In this process, it is guaranteed that the
  * subproblems are solved before solving the problem. This is referred to as
  * Dynamic Programming.
  *
+ * <p>
  * Note that divide and conquer is slightly a different technique. In that, we
  * divide the problem in to non-overlapping subproblems and solve them
  * independently, like in mergesort and quick sort.
  *
+ * <p>
  * Complementary to Dynamic Programming are Greedy Algorithms which make a
  * decision once and for all every time they need to make a choice, in such a
  * way that it leads to a near-optimal solution. A Dynamic Programming solution
  * is based on the principal of Mathematical Induction greedy algorithms require
  * other kinds of proof.
  *
+ * <p>
  * Cold War between Systematic Recursion and Dynamic programming
  *
+ * <p>
  * Recursion uses the top-down approach to solve the problem i.e. It begin with
  * core(main) problem then breaks it into subproblems and solve these
  * subproblems similarily. In this approach same subproblem can occur multiple
@@ -73,30 +82,39 @@ import org.slf4j.LoggerFactory;
  * the prior result will be used to optimise the solution. eg. In fibonacci
  * series :-
  *
- *
+ * <p>
  * Fib(4) = Fib(3) + Fib(2)
  *
+ * <p>
  * = (Fib(2) + Fib(1)) + Fib(2)
  *
+ * <p>
  * l"> =((Fib(1) + Fib(0)) + Fib(1)) + Fib(2)
  *
+ * <p>
  * =((Fib(1) + Fib(0)) + Fib(1)) + (Fib(1) + Fib(0))
  *
+ * <p>
  * Here, call to Fib(1) and Fib(0) is made multiple times.In the case of
  * Fib(100) these calls would be count for million times. Hence there is lots of
  * wastage of resouces(CPU cycles & Memory for storing information on stack).
  *
+ * <p>
  * In dynamic Programming all the subproblems are solved even those which are
  * not needed, but in recursion only required subproblem are solved. So solution
  * by dynamic programming should be properly framed to remove this ill-effect.
  *
+ * <p>
  * Fibonacci solve this problem:
  *
+ * <p>
  * There are n stairs, you can clime one stair or two-satairs at a time. How
  * many way are there to clime the stairs?
  *
+ * <p>
  * There are n -1 ways to clime the n-stairs for one-stair at a time
  *
+ * <p>
  * There are n -2 ways to clime the n-stairs for two-stairs at a time
  *
  * @author david
@@ -111,7 +129,7 @@ public class FibonacciDynamicPrograming {
         FibonacciDynamicPrograming fib = new FibonacciDynamicPrograming();
         System.out.println("    Calling fib.printFib1(8) ");
         fib.printFib1(8);
-        //*
+        // *
         System.out.println("\n  Calling fib.printFib2(8) ");
         fib.printFib2(8);
         System.out.println("\n  Calling fib2(8) ");

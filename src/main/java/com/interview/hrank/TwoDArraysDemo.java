@@ -17,54 +17,56 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- *
  * @author javaugi
  */
 public class TwoDArraysDemo {
 
     public static void main(String[] args) {
-        //scannerJ8HourGlassSum();
-        int[][] arr = {{1, 1, 1, 0, 0, 0}, {0, 1, 0, 0, 0, 0}, {1, 1, 1, 0, 0, 0,}, {0, 0, 2, 4, 4, 0}, {0, 0, 0, 2, 0, 0}, {0, 0, 1, 2, 4, 0}};
+        // scannerJ8HourGlassSum();
+        int[][] arr = {
+            {1, 1, 1, 0, 0, 0},
+            {0, 1, 0, 0, 0, 0},
+            {
+                1, 1, 1, 0, 0, 0,},
+            {0, 0, 2, 4, 4, 0},
+            {0, 0, 0, 2, 0, 0},
+            {0, 0, 1, 2, 4, 0}
+        };
 
         System.out.println("1. j8HourGlassSum(arr) ");
         System.out.println("1 Results from int[][] maxSum=" + j8HourGlassSum(arr));
-        
-        List<List<Integer>> list = Arrays.stream(arr)
-            .map(row -> IntStream.of(row)
-                .boxed()
-                .collect(Collectors.toList()))
-            .collect(Collectors.toList());
+
+        List<List<Integer>> list
+                = Arrays.stream(arr)
+                        .map(row -> IntStream.of(row).boxed().collect(Collectors.toList()))
+                        .collect(Collectors.toList());
         System.out.println("2. j8HourGlassSum(List<List<Integer>>) ");
-        System.out.println("2 Results from j8HourGlassSum(List<List<Integer>>) maxSum=" + j8HourGlassSum(list));
-        
-        List<List<Integer>> list2 = Arrays.stream(arr)
-                .map(row -> Arrays.stream(row)
-                        .boxed()
-                        .collect(Collectors.toList())
-                ).collect(Collectors.toList());
-        
+        System.out.println(
+                "2 Results from j8HourGlassSum(List<List<Integer>>) maxSum=" + j8HourGlassSum(list));
+
+        List<List<Integer>> list2
+                = Arrays.stream(arr)
+                        .map(row -> Arrays.stream(row).boxed().collect(Collectors.toList()))
+                        .collect(Collectors.toList());
+
         int[] arr2 = {3, 4, 6, 8};
-        List<Integer> integerList = Arrays.stream(arr2)
-                .boxed()
-                .collect(Collectors.toList());
-        
-        List<Integer> integerList2 = IntStream.of(arr2)
-                .boxed()
-                .collect(Collectors.toList());
+        List<Integer> integerList = Arrays.stream(arr2).boxed().collect(Collectors.toList());
+
+        List<Integer> integerList2 = IntStream.of(arr2).boxed().collect(Collectors.toList());
     }
-    
+
     private static void arrayPopulationMethod() {
-        try{
-            //Scanner
+        try {
+            // Scanner
             Scanner scanner = new Scanner(System.in);
-            int[][] arr1 = new int[6][6];  // Using 'var' from Java 10
+            int[][] arr1 = new int[6][6]; // Using 'var' from Java 10
             // Read input
             for (int i = 0; i < 6; i++) {
                 for (int j = 0; j < 6; j++) {
                     arr1[i][j] = scanner.nextInt();
                 }
             }
-            
+
             List<List<Integer>> listList1 = new ArrayList<>();
             // Read input into List<List<Integer>>
             for (int i = 0; i < 6; i++) {
@@ -73,51 +75,59 @@ public class TwoDArraysDemo {
                     row.add(scanner.nextInt());
                 }
                 listList1.add(row);
-            }         
-            
-            //BufferedReader
+            }
+
+            // BufferedReader
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             List<List<Integer>> listListInt = new ArrayList<>();
-            IntStream.range(0, 6).forEach(i -> {
-                try {
-                    listListInt.add(Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-                                    .map(Integer::parseInt)
-                                    .collect(toList())
-                    );
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-            bufferedReader.close();       
-            
-            //Java 15
-            IntStream.range(0, 6).forEach(i -> {
-                var row = new ArrayList<Integer>();
-                IntStream.range(0, 6).forEach(j -> row.add(scanner.nextInt()));
-                listListInt.add(row);
-            });
-            
-            //Java 8
-            IntStream.range(0, 6).forEach(i -> {
-                List<Integer> row = new ArrayList<Integer>();
-                IntStream.range(0, 6).forEach(j -> row.add(scanner.nextInt()));
-                listListInt.add(row);
-            });
-            
-            //Java 8
-            IntStream.range(0, 6).forEach(i -> {
-                List<Integer> row = new ArrayList<Integer>();
-                IntStream.range(0, 6).forEach(j -> row.add(arr1[i][j]));
-                listListInt.add(row);
-            });
-        } catch(Exception e) {
-            
+            IntStream.range(0, 6)
+                    .forEach(
+                            i -> {
+                                try {
+                                    listListInt.add(
+                                            Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                                                    .map(Integer::parseInt)
+                                                    .collect(toList()));
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            });
+            bufferedReader.close();
+
+            // Java 15
+            IntStream.range(0, 6)
+                    .forEach(
+                            i -> {
+                                var row = new ArrayList<Integer>();
+                                IntStream.range(0, 6).forEach(j -> row.add(scanner.nextInt()));
+                                listListInt.add(row);
+                            });
+
+            // Java 8
+            IntStream.range(0, 6)
+                    .forEach(
+                            i -> {
+                                List<Integer> row = new ArrayList<Integer>();
+                                IntStream.range(0, 6).forEach(j -> row.add(scanner.nextInt()));
+                                listListInt.add(row);
+                            });
+
+            // Java 8
+            IntStream.range(0, 6)
+                    .forEach(
+                            i -> {
+                                List<Integer> row = new ArrayList<Integer>();
+                                IntStream.range(0, 6).forEach(j -> row.add(arr1[i][j]));
+                                listListInt.add(row);
+                            });
+        } catch (Exception e) {
+
         }
     }
 
     private static void scannerJ15HourGlassSum() {
         Scanner scanner = new Scanner(System.in);
-        var arr = new int[6][6];  // Using 'var' from Java 10
+        var arr = new int[6][6]; // Using 'var' from Java 10
 
         // Read input
         for (int i = 0; i < 6; i++) {
@@ -153,22 +163,24 @@ public class TwoDArraysDemo {
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             List<List<Integer>> arr = new ArrayList<>();
-            IntStream.range(0, 6).forEach(i -> {
-                try {
-                    arr.add(Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-                                    .map(Integer::parseInt)
-                                    .collect(toList())
-                    );
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+            IntStream.range(0, 6)
+                    .forEach(
+                            i -> {
+                                try {
+                                    arr.add(
+                                            Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                                                    .map(Integer::parseInt)
+                                                    .collect(toList()));
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            });
             bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     private static void scannerArrayPopulation() {
         Scanner scanner = new Scanner(System.in);
         List<List<Integer>> arr = new ArrayList<>();
@@ -180,29 +192,33 @@ public class TwoDArraysDemo {
                 row.add(scanner.nextInt());
             }
             arr.add(row);
-        }        
-        
-        IntStream.range(0, 6).forEach(i -> {
-            var row = new ArrayList<Integer>();
-            IntStream.range(0, 6).forEach(j -> row.add(scanner.nextInt()));
-            arr.add(row);
-        });
+        }
+
+        IntStream.range(0, 6)
+                .forEach(
+                        i -> {
+                            var row = new ArrayList<Integer>();
+                            IntStream.range(0, 6).forEach(j -> row.add(scanner.nextInt()));
+                            arr.add(row);
+                        });
     }
 
     private static void readerJ8ArrayPopulation() {
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             List<List<Integer>> arr = new ArrayList<>();
-            IntStream.range(0, 6).forEach(i -> {
-                try {
-                    arr.add(Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-                                    .map(Integer::parseInt)
-                                    .collect(toList())
-                    );
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+            IntStream.range(0, 6)
+                    .forEach(
+                            i -> {
+                                try {
+                                    arr.add(
+                                            Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                                                    .map(Integer::parseInt)
+                                                    .collect(toList()));
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            });
             bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -210,65 +226,75 @@ public class TwoDArraysDemo {
     }
 
     /*
-    Key Differences:
-    Variable Declaration:
-        Java 8: Explicit type declaration (int[][] arr)
-        Java 15: Can use var for local variables (var arr = new int[6][6])
-    Modern Features:
-        Java 15 can use text blocks (though not utilized in this solution)
-        Both versions use the same algorithm for hourglass calculation
-    Algorithm:
-        Iterates through all possible 3x3 hourglass patterns in the 6x6 array
-        Calculates the sum of each hourglass pattern
-        Tracks the maximum sum found
-    How It Works:
-    Input Reading:
-        Reads 6 lines of 6 space-separated integers
-        Stores them in a 6x6 2D array
-    Hourglass Pattern:
-        a b c
-          d
-        e f g
-        Sum = a + b + c + d + e + f + g
-    Calculation:
-        Nested loops iterate through all possible top-left positions of hourglasses
-        For each position (i,j), calculates the sum of the 7 elements forming the hourglass
-        Keeps track of the maximum sum encountered
-    Output:
-        Prints the maximum hourglass sum found
-    Both solutions will produce the correct output of 19 for the given sample input. The Java 15 version uses some modern language features but implements the same core algorithm.    
+  Key Differences:
+  Variable Declaration:
+      Java 8: Explicit type declaration (int[][] arr)
+      Java 15: Can use var for local variables (var arr = new int[6][6])
+  Modern Features:
+      Java 15 can use text blocks (though not utilized in this solution)
+      Both versions use the same algorithm for hourglass calculation
+  Algorithm:
+      Iterates through all possible 3x3 hourglass patterns in the 6x6 array
+      Calculates the sum of each hourglass pattern
+      Tracks the maximum sum found
+  How It Works:
+  Input Reading:
+      Reads 6 lines of 6 space-separated integers
+      Stores them in a 6x6 2D array
+  Hourglass Pattern:
+      a b c
+        d
+      e f g
+      Sum = a + b + c + d + e + f + g
+  Calculation:
+      Nested loops iterate through all possible top-left positions of hourglasses
+      For each position (i,j), calculates the sum of the 7 elements forming the hourglass
+      Keeps track of the maximum sum encountered
+  Output:
+      Prints the maximum hourglass sum found
+  Both solutions will produce the correct output of 19 for the given sample input. The Java 15 version uses some modern language features but implements the same core algorithm.
      */
     private static int j8HourGlassSum(int[][] arr) {
         int maxSum = Integer.MIN_VALUE;
         // Calculate hourglass sums
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                int sum = arr[i][j] + arr[i][j + 1] + arr[i][j + 2]
+                int sum
+                        = arr[i][j]
+                        + arr[i][j + 1]
+                        + arr[i][j + 2]
                         + arr[i + 1][j + 1]
-                        + arr[i + 2][j] + arr[i + 2][j + 1] + arr[i + 2][j + 2];
+                        + arr[i + 2][j]
+                        + arr[i + 2][j + 1]
+                        + arr[i + 2][j + 2];
 
-                //if (sum > maxSum) {
+                // if (sum > maxSum) {
                 //    maxSum = sum;
-                //}
+                // }
                 maxSum = Math.max(maxSum, sum);
             }
         }
         return maxSum;
     }
-    /* the hour glass sum format
-        1 1 1     1 1 0     1 0 0
-          1         0         0
-        1 1 1     1 1 0     1 0 0    
-    */
 
+    /* the hour glass sum format
+      1 1 1     1 1 0     1 0 0
+        1         0         0
+      1 1 1     1 1 0     1 0 0
+     */
     private static int j8HourGlassSum(List<List<Integer>> arr) {
         int maxSum = Integer.MIN_VALUE;
         // Calculate hourglass sums
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                int sum = arr.get(i).get(j) + arr.get(i).get(j+1) + arr.get(i).get(j+2)
-                        + arr.get(i+1).get(j+1)
-                        + arr.get(i+2).get(j) + arr.get(i+2).get(j+1) + arr.get(i+2).get(j+2);
+                int sum
+                        = arr.get(i).get(j)
+                        + arr.get(i).get(j + 1)
+                        + arr.get(i).get(j + 2)
+                        + arr.get(i + 1).get(j + 1)
+                        + arr.get(i + 2).get(j)
+                        + arr.get(i + 2).get(j + 1)
+                        + arr.get(i + 2).get(j + 2);
 
                 maxSum = Math.max(maxSum, sum);
             }

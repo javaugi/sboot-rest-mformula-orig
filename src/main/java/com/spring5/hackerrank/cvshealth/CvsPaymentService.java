@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CvsPaymentService {
+
     private CvsPaymentStrategy paymentStrategy;
 
     // Setter for dynamic strategy change
@@ -45,5 +46,5 @@ public class CvsPaymentService {
         // public class ApplePayPayment implements PaymentStrategy { ... }
         // service.setPaymentStrategy(new ApplePayPayment(...));
         // service.checkout(75.00);
-    }    
+    }
 }

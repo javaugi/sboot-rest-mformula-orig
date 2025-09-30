@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class Level8SerializationRead {
-    
+
     private final InventoryRepository inventoryRepository;
-    
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateInventory(Long productId, int quantity) {
         // This transaction will be completely isolated from others
@@ -24,5 +24,4 @@ public class Level8SerializationRead {
         inventory.setQuantity(inventory.getQuantity() - quantity);
         inventoryRepository.save(inventory);
     }
-    
 }

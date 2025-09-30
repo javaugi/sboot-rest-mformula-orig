@@ -17,23 +17,24 @@ public class PaintShopScheduling {
     private static final PaintShopScheduling m = new PaintShopScheduling();
 
     public static void main(String[] args) {
-        //red = 0; brown = 2, yellow = 3, green = 4, blue = 5, purple = 6
+        // red = 0; brown = 2, yellow = 3, green = 4, blue = 5, purple = 6
         int[] carSequence = {1, 4, 2, 7, 5, 9, 3, 6};
         int cleanTime = 2;
 
         log.info("1          minColorSwitches {}", m.minColorSwitches(carSequence, cleanTime));
-        log.info("2 Optimized minColorSwitches {}", m.minColorSwitchesOptimized(carSequence, cleanTime));
+        log.info(
+                "2 Optimized minColorSwitches {}", m.minColorSwitchesOptimized(carSequence, cleanTime));
         log.info("3     minColorSwitchesStream {}", m.minColorSwitchesStream(carSequence, cleanTime));
     }
 
     /*
-    4. Paint Shop Scheduling
-        Problem: Minimize color changeovers in GM's paint shops (where color switches require cleaning).    
+  4. Paint Shop Scheduling
+      Problem: Minimize color changeovers in GM's paint shops (where color switches require cleaning).
      */
     public int minColorSwitches(int[] carSequence, int cleanTime) {
         int lastColor = -1;
         int switches = 0;
-        
+
         for (int color : carSequence) {
             if (color != lastColor) {
                 switches++;
@@ -46,19 +47,22 @@ public class PaintShopScheduling {
     public int minColorSwitchesStream(int[] carSequence, int cleanTime) {
         final AtomicInteger lastColor = new AtomicInteger(-1);
         final AtomicInteger switches = new AtomicInteger(0);
-        Arrays.stream(carSequence).forEach(e -> {
-            if (e != lastColor.get()) {
-                switches.getAndIncrement();
-                lastColor.set(e);
-            }
-        });
+
+        Arrays.stream(carSequence)
+                .forEach(
+                        e -> {
+                            if (e != lastColor.get()) {
+                                switches.getAndIncrement();
+                                lastColor.set(e);
+                            }
+                        });
 
         return switches.decrementAndGet() * cleanTime;
     }
 
     /*
-    Optimization:
-        Batch Processing: Group same-color cars first using a priority queue:
+  Optimization:
+      Batch Processing: Group same-color cars first using a priority queue:
      */
     public int minColorSwitchesOptimized(int[] carSequence, int cleanTime) {
         Map<Integer, Integer> colorCount = new HashMap<>();
@@ -66,7 +70,8 @@ public class PaintShopScheduling {
             colorCount.put(color, colorCount.getOrDefault(color, 0) + 1);
         }
 
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> colorCount.get(b) - colorCount.get(a));
+        PriorityQueue<Integer> maxHeap
+                = new PriorityQueue<>((a, b) -> colorCount.get(b) - colorCount.get(a));
         maxHeap.addAll(colorCount.keySet());
 
         int switches = 0;
@@ -84,5 +89,4 @@ public class PaintShopScheduling {
         }
         return (switches - 1) * cleanTime;
     }
-
 }

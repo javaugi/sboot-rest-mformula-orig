@@ -8,7 +8,6 @@
 package com.patterns.creational.builder;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,8 +33,8 @@ public class StripeWebhookController {
     }
 
     @PostMapping("/stripe")
-    public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload,
-            @RequestHeader("Stripe-Signature") String sigHeader) {
+    public ResponseEntity<String> handleStripeWebhook(
+            @RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
         Event event;
 
         try {
@@ -55,9 +54,11 @@ public class StripeWebhookController {
 
         switch (eventType) {
             case "payment_intent.succeeded":
-                PaymentIntent piSucceeded = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
+                PaymentIntent piSucceeded
+                        = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
                 if (piSucceeded != null) {
-                    String orderId = piSucceeded.getMetadata() != null ? piSucceeded.getMetadata().get("order_id") : null;
+                    String orderId
+                            = piSucceeded.getMetadata() != null ? piSucceeded.getMetadata().get("order_id") : null;
                     if (orderId != null) {
                         stripePaymentService.updateOrderStatus(orderId, PaymentStatus.SUCCEEDED);
                     }
@@ -66,20 +67,28 @@ public class StripeWebhookController {
                 }
                 break;
             case "payment_intent.payment_failed":
-                PaymentIntent piFailed = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
+                PaymentIntent piFailed
+                        = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
                 if (piFailed != null) {
-                    String orderId = piFailed.getMetadata() != null ? piFailed.getMetadata().get("order_id") : null;
+                    String orderId
+                            = piFailed.getMetadata() != null ? piFailed.getMetadata().get("order_id") : null;
                     if (orderId != null) {
                         stripePaymentService.updateOrderStatus(orderId, PaymentStatus.FAILED);
                     }
-                    System.out.println("PaymentIntent failed: " + piFailed.getId() + " - " + piFailed.getLastPaymentError().getMessage());
+                    System.out.println(
+                            "PaymentIntent failed: "
+                            + piFailed.getId()
+                            + " - "
+                            + piFailed.getLastPaymentError().getMessage());
                     // Notify customer, mark order as failed, initiate retry process if applicable
                 }
                 break;
             case "payment_intent.canceled":
-                PaymentIntent piCanceled = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
+                PaymentIntent piCanceled
+                        = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
                 if (piCanceled != null) {
-                    String orderId = piCanceled.getMetadata() != null ? piCanceled.getMetadata().get("order_id") : null;
+                    String orderId
+                            = piCanceled.getMetadata() != null ? piCanceled.getMetadata().get("order_id") : null;
                     if (orderId != null) {
                         stripePaymentService.updateOrderStatus(orderId, PaymentStatus.CANCELED);
                     }
@@ -87,7 +96,8 @@ public class StripeWebhookController {
                     // Handle cancellation
                 }
                 break;
-            // Add more cases for other relevant events (e.g., 'charge.refunded', 'charge.dispute.created')
+            // Add more cases for other relevant events (e.g., 'charge.refunded',
+            // 'charge.dispute.created')
             default:
                 System.out.println("Unhandled event type: " + eventType);
                 break;

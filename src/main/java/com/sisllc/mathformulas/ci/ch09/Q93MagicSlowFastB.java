@@ -65,5 +65,4 @@ public class Q93MagicSlowFastB {
             }
         }
     }
-
 }

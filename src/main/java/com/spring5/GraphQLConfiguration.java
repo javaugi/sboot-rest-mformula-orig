@@ -6,9 +6,8 @@ package com.spring5;
 
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
-public class GraphQLConfiguration {     
+public class GraphQLConfiguration {
 }
 
 /*
@@ -72,9 +71,9 @@ type Author {
 }
 
 GraphQL Java Overview​
-    GraphQL Java is the Java (server) implementation for GraphQL. There are several repositories in the GraphQL Java Github org. 
+    GraphQL Java is the Java (server) implementation for GraphQL. There are several repositories in the GraphQL Java Github org.
         The most important one is the GraphQL Java Engine which is the basis for everything else.
-    The GraphQL Java Engine is only concerned with executing queries. It doesn't deal with any HTTP or JSON related topics. 
+    The GraphQL Java Engine is only concerned with executing queries. It doesn't deal with any HTTP or JSON related topics.
         For these aspects, we will use Spring for GraphQL which takes care of exposing our API via Spring Boot over HTTP.
 
 The main steps of creating a GraphQL Java server are:
@@ -85,4 +84,4 @@ Our example API: getting book details​
     This schema defines one top level field (in the type Query): bookById which returns the details of a specific book.
     It also defines the type Book which has the fields: id, name, pageCount and author. author is of type Author, which is defined after Book.
     The Domain Specific Language (shown above) used to describe a schema is called the Schema Definition Language
-*/
+ */

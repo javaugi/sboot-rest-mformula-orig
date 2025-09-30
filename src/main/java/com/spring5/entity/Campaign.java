@@ -16,22 +16,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedDate;
 
-@Data //it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor 
+@Data // it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Campaign {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String name;
     private String targetVersion;
-    
+
     @Version
     private Long version;
-    
+
     @LastModifiedDate
-    private LocalDateTime lastModified;   
+    private LocalDateTime lastModified;
 }

@@ -11,33 +11,34 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 
-//s@Service
+// s@Service
 public class FlightEventProducer {
-    //Recommended Architecture
-    //[HTTP Client] → [Controller] → [Service Layer] → [FlightEventProducer] → [Azure Event Hubs]
-    /*
-        Controller: Handles HTTP, validates input.
-        Service: Orchestrates business logic, may do retries, transformations.
-        Producer: Handles low-level Event Hub calls.
+    // Recommended Architecture
+    // [HTTP Client] → [Controller] → [Service Layer] → [FlightEventProducer] → [Azure Event Hubs]
 
-    Why This Is Better
-        Async: Client isn’t blocked waiting for Event Hubs publish.
-        Service Layer: Allows logging, validation, retries, metrics before sending.
-        Extensible: Can replace Event Hubs with Kafka, Service Bus, etc., without touching controllers.
+    /*
+      Controller: Handles HTTP, validates input.
+      Service: Orchestrates business logic, may do retries, transformations.
+      Producer: Handles low-level Event Hub calls.
+
+  Why This Is Better
+      Async: Client isn’t blocked waiting for Event Hubs publish.
+      Service Layer: Allows logging, validation, retries, metrics before sending.
+      Extensible: Can replace Event Hubs with Kafka, Service Bus, etc., without touching controllers.
      */
 
     private final EventHubProducerClient producerClient;
 
     public FlightEventProducer() {
-        this.producerClient = new EventHubClientBuilder()
-            .connectionString("<EVENT_HUB_CONNECTION_STRING>", "flight-events")
-            .buildProducerClient();
+        this.producerClient
+                = new EventHubClientBuilder()
+                        .connectionString("<EVENT_HUB_CONNECTION_STRING>", "flight-events")
+                        .buildProducerClient();
     }
 
     public void sendEvent(FlightEvent event) {
-        EventDataBatch batch = producerClient.createBatch(
-            new CreateBatchOptions().setPartitionKey(event.getId())
-        );
+        EventDataBatch batch
+                = producerClient.createBatch(new CreateBatchOptions().setPartitionKey(event.getId()));
         batch.tryAdd(new EventData(event.toString()));
         producerClient.send(batch);
         System.out.println("Sent event: " + event);

@@ -29,49 +29,48 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import io.github.resilience4j.retry.Retry;
-//import io.github.resilience4j.retry.Retry;
 import java.time.Duration;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-//import static org.apache.kafka.common.serialization.Serdes.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
-//import reactor.retry.Retry;
 
+// import reactor.retry.Retry;
 @Slf4j
 public class CosmosClientMiscBestPractice {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /*
-    Anti-patterns to call out
-        • Cross-partition queries without good filters.
-        • Low-cardinality partition keys (hot partitions).
-        • Unbounded item size (>1MB).
-        • Overusing Stored Procedures/Triggers for app logic.
+  Anti-patterns to call out
+      • Cross-partition queries without good filters.
+      • Low-cardinality partition keys (hot partitions).
+      • Unbounded item size (>1MB).
+      • Overusing Stored Procedures/Triggers for app logic.
      */
-
     public CosmosAsyncClient asynncClient() {
-        CosmosAsyncClient client = new CosmosClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(System.getenv("COSMOS_ENDPOINT"))
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .contentResponseOnWriteEnabled(true)
-            .directMode(DirectConnectionConfig.getDefaultConfig()
-                .setIdleEndpointTimeout(Duration.ofMinutes(2))
-                .setIdleConnectionTimeout(Duration.ofMinutes(2)))
-            .gatewayMode() // remove if you prefer Direct; choose one
-            .clientTelemetryEnabled(true)
-            .key("")
-            .multipleWriteRegionsEnabled(true)
-            .buildAsyncClient();
+        CosmosAsyncClient client
+                = new CosmosClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .endpoint(System.getenv("COSMOS_ENDPOINT"))
+                        .consistencyLevel(ConsistencyLevel.SESSION)
+                        .contentResponseOnWriteEnabled(true)
+                        .directMode(
+                                DirectConnectionConfig.getDefaultConfig()
+                                        .setIdleEndpointTimeout(Duration.ofMinutes(2))
+                                        .setIdleConnectionTimeout(Duration.ofMinutes(2)))
+                        .gatewayMode() // remove if you prefer Direct; choose one
+                        .clientTelemetryEnabled(true)
+                        .key("")
+                        .multipleWriteRegionsEnabled(true)
+                        .buildAsyncClient();
         return client;
     }
 
     public CosmosAsyncContainer asyncContainer(String database, String container) {
-        CosmosAsyncContainer asyncContainer = asynncClient().getDatabase(database).getContainer(container);
+        CosmosAsyncContainer asyncContainer
+                = asynncClient().getDatabase(database).getContainer(container);
         return asyncContainer;
     }
 
@@ -79,51 +78,62 @@ public class CosmosClientMiscBestPractice {
         FlightEvent event = FlightEvent.builder().flightNumber("12345").build();
 
         Mono<CosmosItemResponse<FlightEvent>> write
-            = container.createItem(event, new PartitionKey(event.getFlightNumber()), new CosmosItemRequestOptions())
-                .doOnNext(resp -> {
-                    CosmosDiagnostics d = resp.getDiagnostics();
-                    System.out.println("RU=" + resp.getRequestCharge() + " | " + d.toString());
-                })
-                .retryWhen(Retry.backoff(3, Duration.ofMillis(200))
-                    .filter(ex -> ex instanceof CosmosException ce && ce.getStatusCode() == 429));
+                = container
+                        .createItem(
+                                event, new PartitionKey(event.getFlightNumber()), new CosmosItemRequestOptions())
+                        .doOnNext(
+                                resp -> {
+                                    CosmosDiagnostics d = resp.getDiagnostics();
+                                    System.out.println("RU=" + resp.getRequestCharge() + " | " + d.toString());
+                                })
+                        .retryWhen(
+                                Retry.backoff(3, Duration.ofMillis(200))
+                                        .filter(ex -> ex instanceof CosmosException ce && ce.getStatusCode() == 429));
 
         write.block();
     }
 
     public void bulkOperations(CosmosAsyncContainer container, List<FlightEvent> items) {
         CosmosBulkExecutionOptions opts = new CosmosBulkExecutionOptions();
-        Flux<CosmosItemOperation> ops = Flux.fromIterable(items)
-            .map(o -> CosmosBulkOperations.getCreateItemOperation(o, new PartitionKey(o.getFlightNumber())));
+        Flux<CosmosItemOperation> ops
+                = Flux.fromIterable(items)
+                        .map(
+                                o
+                                -> CosmosBulkOperations.getCreateItemOperation(
+                                        o, new PartitionKey(o.getFlightNumber())));
 
-        container.executeBulkOperations(ops, opts)
-            .collectList()
-            .block();
+        container.executeBulkOperations(ops, opts).collectList().block();
     }
 
-    public void changeFeedProcessor(CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer, String hostname) {
+    public void changeFeedProcessor(
+            CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer, String hostname) {
 
-        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
-            .hostName(hostname)
-            .feedContainer(feedContainer)
-            .leaseContainer(leaseContainer)
-            .handleChanges((List<JsonNode> changes) -> {
-            changes.forEach(change -> {
-                processFlightEvent(change);
-                // Convert JsonNode to FlightEvent
-                /*
-                    try {
-                        FlightEvent flightEvent = objectMapper.readValue(change.toString(), FlightEvent.class);
-                        log.info("" + flightEvent);
-                    } catch (JsonProcessingException ex) {
+        ChangeFeedProcessor changeFeedProcessor
+                = new ChangeFeedProcessorBuilder()
+                        .hostName(hostname)
+                        .feedContainer(feedContainer)
+                        .leaseContainer(leaseContainer)
+                        .handleChanges(
+                                (List<JsonNode> changes) -> {
+                                    changes.forEach(
+                                            change -> {
+                                                processFlightEvent(change);
+                                                // Convert JsonNode to FlightEvent
+                                                /*
+                        try {
+                            FlightEvent flightEvent = objectMapper.readValue(change.toString(), FlightEvent.class);
+                            log.info("" + flightEvent);
+                        } catch (JsonProcessingException ex) {
 
-                    }
-                    // */
-                });
-            })
-            .options(new ChangeFeedProcessorOptions()
-                .setStartFromBeginning(true)
-                .setLeaseRenewInterval(Duration.ofSeconds(10)))
-            .buildChangeFeedProcessor();
+                        }
+                        // */
+                                            });
+                                })
+                        .options(
+                                new ChangeFeedProcessorOptions()
+                                        .setStartFromBeginning(true)
+                                        .setLeaseRenewInterval(Duration.ofSeconds(10)))
+                        .buildChangeFeedProcessor();
 
         changeFeedProcessor.start().block();
     }
@@ -139,17 +149,20 @@ public class CosmosClientMiscBestPractice {
     }
 
     public void ADLSGen2WithManagedId() {
-        BlobServiceClient svc = new BlobServiceClientBuilder()
-            .endpoint(System.getenv("ADLS_BLOB_ENDPOINT")) // e.g., https://account.dfs.core.windows.net
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+        BlobServiceClient svc
+                = new BlobServiceClientBuilder()
+                        .endpoint(
+                                System.getenv("ADLS_BLOB_ENDPOINT")) // e.g., https://account.dfs.core.windows.net
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .buildClient();
 
         BlobContainerClient cont = svc.getBlobContainerClient("curated");
-        BlockBlobClient blob = cont.getBlobClient("tenantA/2025/09/03/file.parquet").getBlockBlobClient();
+        BlockBlobClient blob
+                = cont.getBlobClient("tenantA/2025/09/03/file.parquet").getBlockBlobClient();
 
         BlockBlobAsyncClient asyncClient;
         byte[] data = loadBytes();
-        //asyncClient.upload(Flux.just(ByteBuffer.wrap(data)), data.length, true).block();
+        // asyncClient.upload(Flux.just(ByteBuffer.wrap(data)), data.length, true).block();
     }
 
     private byte[] loadBytes() {
@@ -286,4 +299,4 @@ Cascading failures
 Potential data loss in change feed scenarios
 
 The Azure Cosmos DB Java SDK has built-in retry logic, but for change feed processors, you might need additional handling for downstream processing operations.
-*/
+ */

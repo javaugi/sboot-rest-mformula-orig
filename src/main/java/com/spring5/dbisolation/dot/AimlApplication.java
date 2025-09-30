@@ -9,7 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
 
-//@SpringBootApplication
+// @SpringBootApplication
 public class AimlApplication {
 
     public static void main(String[] args) {

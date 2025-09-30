@@ -5,8 +5,6 @@
 package com.interview.shoppingcart.api;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -14,18 +12,20 @@ package com.interview.shoppingcart.api;
 public interface Product {
 
     static enum ProductCategory {
-        Bagged, Counted, Weighted;
+        Bagged,
+        Counted,
+        Weighted;
     }
 
     /*
-    private String id;
-    private String name;
-    private ProductCategory category;
-    private double unitPrice;
-    private double perUnit;
-    private double totalUnit;
-    private double price;
-    // */
+  private String id;
+  private String name;
+  private ProductCategory category;
+  private double unitPrice;
+  private double perUnit;
+  private double totalUnit;
+  private double price;
+  // */
     String getId();
 
     void setId(String id);

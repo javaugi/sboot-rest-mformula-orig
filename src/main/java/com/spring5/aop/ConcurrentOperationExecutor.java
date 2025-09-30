@@ -45,8 +45,8 @@ public class ConcurrentOperationExecutor implements Ordered {
         throw lockFailureException;
     }
 
-    @Around("execution(* com.spring5.service.*.*(..)) && "
-            + "@annotation(com.xyz.service.Idempotent)")
+    @Around(
+            "execution(* com.spring5.service.*.*(..)) && " + "@annotation(com.xyz.service.Idempotent)")
     public Object doConcurrentOperationIdempotent(ProceedingJoinPoint pjp) throws Throwable {
         // ...
         return pjp.proceed(pjp.getArgs());
@@ -59,11 +59,11 @@ Now that you have seen how all the constituent parts work, we can put them toget
 
 The execution of business services can sometimes fail due to concurrency issues (for example, a deadlock loser). If the operation is retried,
     it is likely to succeed on the next try. For business services where it is appropriate to retry in such conditions (idempotent operations
-    that do not need to go back to the user for conflict resolution), we want to transparently retry the operation to avoid the client seeing 
-    a PessimisticLockingFailureException. This is a requirement that clearly cuts across multiple services in the service layer and, hence, 
+    that do not need to go back to the user for conflict resolution), we want to transparently retry the operation to avoid the client seeing
+    a PessimisticLockingFailureException. This is a requirement that clearly cuts across multiple services in the service layer and, hence,
     is ideal for implementing through an aspect.
 
-Because we want to retry the operation, we need to use around advice so that we can call proceed multiple times. The following listing shows the 
+Because we want to retry the operation, we need to use around advice so that we can call proceed multiple times. The following listing shows the
     basic aspect implementation:
 
 Java
@@ -108,9 +108,9 @@ public class ConcurrentOperationExecutor implements Ordered {
 }
 @Around("com.xyz.CommonPointcuts.businessService()") references the businessService named pointcut defined in Sharing Named Pointcut Definitions.
 
-Note that the aspect implements the Ordered interface so that we can set the precedence of the aspect higher than the transaction advice 
-    (we want a fresh transaction each time we retry). The maxRetries and order properties are both configured by Spring. The main action 
-    happens in the doConcurrentOperation around advice. Notice that, for the moment, we apply the retry logic to each businessService. We 
+Note that the aspect implements the Ordered interface so that we can set the precedence of the aspect higher than the transaction advice
+    (we want a fresh transaction each time we retry). The maxRetries and order properties are both configured by Spring. The main action
+    happens in the doConcurrentOperation around advice. Notice that, for the moment, we apply the retry logic to each businessService. We
     try to proceed, and if we fail with a PessimisticLockingFailureException, we try again, unless we have exhausted all of our retry attempts.
 
 The corresponding Spring configuration follows:
@@ -144,7 +144,7 @@ Kotlin
 // marker annotation
 public @interface Idempotent {
 }
-We can then use the annotation to annotate the implementation of service operations. The change to the aspect to retry only idempotent operations 
+We can then use the annotation to annotate the implementation of service operations. The change to the aspect to retry only idempotent operations
 involves refining the pointcut expression so that only @Idempotent operations match, as follows:
 
 Java
@@ -157,4 +157,4 @@ public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
 	// ...
 	return pjp.proceed(pjp.getArgs());
 }
-*/
+ */

@@ -4,16 +4,15 @@
  */
 package com.spring5.mongodb;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -31,7 +30,7 @@ public class SparkApiController {
 
     @Autowired
     Mysql mysql;
-    
+
     @Autowired
     private MySparkService sparkService;
 
@@ -47,7 +46,8 @@ public class SparkApiController {
     }
 
     @RequestMapping(value = "mongodb", method = RequestMethod.POST)
-    public ResponseEntity<Long> MongoDB(@RequestParam(value = "Database") String Database,
+    public ResponseEntity<Long> MongoDB(
+            @RequestParam(value = "Database") String Database,
             @RequestParam(value = "Collection") String Collection) {
 
         long responsce = mongo.count(Database, Collection);
@@ -55,11 +55,12 @@ public class SparkApiController {
     }
 
     @RequestMapping(value = "mysql", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> MYSQl(@RequestParam(value = "JDBC_URI") String JDBC_URI,
-        @RequestParam(value = "JDBC_username") String JDBC_username, @RequestParam(value = "JDBC_password") String JDBC_password) {
+    public ResponseEntity<List<String>> MYSQl(
+            @RequestParam(value = "JDBC_URI") String JDBC_URI,
+            @RequestParam(value = "JDBC_username") String JDBC_username,
+            @RequestParam(value = "JDBC_password") String JDBC_password) {
         List<String> responsce = mysql.getTableNames(JDBC_URI, JDBC_username, JDBC_password);
 
         return new ResponseEntity<List<String>>(responsce, HttpStatus.OK);
     }
-
 }

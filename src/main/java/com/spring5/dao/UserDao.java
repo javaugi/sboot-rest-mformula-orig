@@ -2,7 +2,6 @@ package com.spring5.dao;
 
 import com.spring5.entity.User;
 import java.util.List;
-
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

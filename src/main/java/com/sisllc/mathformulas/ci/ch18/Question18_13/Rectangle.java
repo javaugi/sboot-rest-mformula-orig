@@ -15,9 +15,9 @@ public class Rectangle {
     }
 
     /* Construct a rectangular array of letters of the specified length
-     * and height, and backed by the specified matrix of letters. (It is
-     * assumed that the length and height specified as arguments are
-     * consistent with the array argument's dimensions.)
+   * and height, and backed by the specified matrix of letters. (It is
+   * assumed that the length and height specified as arguments are
+   * consistent with the array argument's dimensions.)
      */
     public Rectangle(int length, int height, char[][] letters) {
         this.height = letters.length;
@@ -68,9 +68,9 @@ public class Rectangle {
     }
 
     /* If the length of the argument s is consistent with that of this
-     * Rectangle object, then return a Rectangle whose matrix is constructed by
-     * appending s to the underlying matrix. Otherwise, return null. The
-     * underlying matrix of this Rectangle object is /not/ modified.
+   * Rectangle object, then return a Rectangle whose matrix is constructed by
+   * appending s to the underlying matrix. Otherwise, return null. The
+   * underlying matrix of this Rectangle object is /not/ modified.
      */
     public Rectangle append(String s) {
         if (s.length() == length) {

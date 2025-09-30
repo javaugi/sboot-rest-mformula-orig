@@ -7,41 +7,39 @@
  */
 package com.spring5.entity;
 
-import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
+import java.math.BigDecimal;
+import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 @Data
 @Builder(toBuilder = true)
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "PRODUCT")
 public class Product {
-    
-    //*
-    public Product() {        
-    }
 
-    public Product(long id, String name) {        
+    public Product(long id, String name) {
         this.id = id;
         this.name = name;
     }
-    
-    public Product(long id, String name, BigDecimal price, int quantity, String description, boolean status) {
+
+    public Product(
+            long id, String name, BigDecimal price, int quantity, String description, boolean status) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -49,10 +47,24 @@ public class Product {
         this.description = description;
         this.status = status;
     }
-    // */
+
+    public Product(
+            Long id,
+            String name,
+            String category,
+            String description,
+            double basePrice,
+            Map<String, String[]> variants) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.basePrice = basePrice;
+        this.variants = variants;
+    }
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private long id;
 
@@ -71,51 +83,7 @@ public class Product {
     @Column
     private boolean status;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+    private String category;
+    private double basePrice;
+    private Map<String, String[]> variants;
 }

@@ -12,8 +12,8 @@ public class Board {
 
     public void initialize() {
         /* initial board has a grid like the following in the center:
-		 *     WB
-		 *     BW
+     *     WB
+     *     BW
          */
         int middleRow = board.length / 2;
         int middleColumn = board[middleRow].length / 2;
@@ -58,7 +58,7 @@ public class Board {
 
     private int flipSection(int row, int column, Color color, Direction d) {
         /* Compute the delta for the row and the column. At all times, only the row or the column
-		 * will have a delta, since we're only moving in one direction at a time.
+     * will have a delta, since we're only moving in one direction at a time.
          */
         int r = 0;
         int c = 0;
@@ -78,7 +78,11 @@ public class Board {
         }
 
         /* If out of bounds, or nothing to flip, return an error (-1) */
-        if (row < 0 || row >= board.length || column < 0 || column >= board[row].length || board[row][column] == null) {
+        if (row < 0
+                || row >= board.length
+                || column < 0
+                || column >= board[row].length
+                || board[row][column] == null) {
             return -1;
         }
 
@@ -88,8 +92,8 @@ public class Board {
         }
 
         /* Recursively flip the remainder of the row. If -1 is returned, then we know we hit the boundary
-		 * of the row (or a null piece) before we found our own color, so there's nothing to flip. Return
-		 * the error code.
+     * of the row (or a null piece) before we found our own color, so there's nothing to flip. Return
+     * the error code.
          */
         int flipped = flipSection(row + r, column + c, color, d);
         if (flipped < 0) {
@@ -111,7 +115,7 @@ public class Board {
 
     public void updateScore(Color newColor, int newPieces) {
         /* If we added x pieces of a color, then we actually removed x - 1 pieces of the other
-		 * color. The -1 is because one of the new pieces was the just-placed one.
+     * color. The -1 is because one of the new pieces was the just-placed one.
          */
         if (newColor == Color.Black) {
             whiteCount -= newPieces - 1;

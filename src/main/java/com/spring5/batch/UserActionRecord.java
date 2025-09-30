@@ -7,5 +7,6 @@ package com.spring5.batch;
 import lombok.Builder;
 
 @Builder
-public record UserActionRecord(String actionType, long timestamp) {  
+public record UserActionRecord(String actionType, long timestamp) {
+
 }

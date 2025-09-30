@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -25,50 +25,54 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @AutoConfigureMockMvc
 @DataJpaTest
 public class BatteryTestProcessorTest {
-    
-    private BatteryTestRepository repository;    
+
+    private BatteryTestRepository repository;
     private BatteryTestProcessor processor;
 
     @BeforeEach
-    public void setUp() { 
+    public void setUp() {
         repository = mock(BatteryTestRepository.class);
         processor = new BatteryTestProcessor(repository);
     }
-    
-    //@Test
+
+    // @Test
     public void processTestDataWithValidDataShouldPass() {
-        BatteryTestData testData = BatteryTestData.builder()
-                .testId("test123")
-                .ratedCapacity(5.0)
-                .dischargeCurrent(1.0)
-                .dischargeTimeSeconds(18000)
-                .measurements(List.of(
-                    BatteryMeasurement.builder().voltage(3.7).temperature(25).build(),
-                    BatteryMeasurement.builder().voltage(3.6).temperature(26).build()
-            )).build();
+        BatteryTestData testData
+                = BatteryTestData.builder()
+                        .testId("test123")
+                        .ratedCapacity(5.0)
+                        .dischargeCurrent(1.0)
+                        .dischargeTimeSeconds(18000)
+                        .measurements(
+                                List.of(
+                                        BatteryMeasurement.builder().voltage(3.7).temperature(25).build(),
+                                        BatteryMeasurement.builder().voltage(3.6).temperature(26).build()))
+                        .build();
 
         BatteryTestResult result = processor.processTestData(testData);
-        
+
         assertTrue(result.isPassed());
         assertEquals(0, CommonUtils.stringTokensize(result.getAnomalies()));
         assertEquals(5.0, CommonUtils.convertJsonToMap(result.getMetrics()).get("measuredCapacity"));
     }
-    
-    //@Test
+
+    // @Test
     public void processTestDataWithHighTempShouldFail() {
-        BatteryTestData testData = BatteryTestData.builder()
-                .testId("test456")
-                .ratedCapacity(5.0)
-                .dischargeCurrent(1.0)
-                .dischargeTimeSeconds(18000)
-                .measurements(List.of(
-                    BatteryMeasurement.builder().voltage(3.7).temperature(50).build()
-            )).build();
+        BatteryTestData testData
+                = BatteryTestData.builder()
+                        .testId("test456")
+                        .ratedCapacity(5.0)
+                        .dischargeCurrent(1.0)
+                        .dischargeTimeSeconds(18000)
+                        .measurements(
+                                List.of(BatteryMeasurement.builder().voltage(3.7).temperature(50).build()))
+                        .build();
 
         BatteryTestResult result = processor.processTestData(testData);
-        
+
         assertFalse(result.isPassed());
         assertEquals(1, CommonUtils.stringTokensize(result.getAnomalies()));
-        assertTrue(CommonUtils.stringToList(result.getAnomalies()).get(0).contains("Temperature exceeded"));
-    }    
+        assertTrue(
+                CommonUtils.stringToList(result.getAnomalies()).get(0).contains("Temperature exceeded"));
+    }
 }

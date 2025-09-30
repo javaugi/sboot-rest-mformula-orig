@@ -16,31 +16,29 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Builder;
 import lombok.Data;
 
 /**
- *
  * @author javaugi
  */
 public class Code1WarmUpArrayManipulation {
 
     /*
-        Problem 1: Warm-Up (Easy) – Array Manipulation
-        Task: Given an array of integers, return the second-largest distinct value. If none, return -1.
+      Problem 1: Warm-Up (Easy) – Array Manipulation
+      Task: Given an array of integers, return the second-largest distinct value. If none, return -1.
 
-        Example:
-        Input: [5, 5, 4, 2, 3] → Output: 4
-        Input: [1, 1, 1] → Output: -1    
-    
-    
-    Key Points:
-        Single-pass O(N) time, O(1) space.
-        Handles duplicates and edge cases (all identical values).
-    // */
+      Example:
+      Input: [5, 5, 4, 2, 3] → Output: 4
+      Input: [1, 1, 1] → Output: -1
+
+
+  Key Points:
+      Single-pass O(N) time, O(1) space.
+      Handles duplicates and edge cases (all identical values).
+  // */
     public static void main(String[] args) {
         Code1WarmUpArrayManipulation main = new Code1WarmUpArrayManipulation();
-        //*
+        // *
         main.testArrayManipulation();
         main.testObjManipulation();
         main.stringListManipulation();
@@ -50,69 +48,66 @@ public class Code1WarmUpArrayManipulation {
         main.testObjListManipulation();
         main.testStringListManipulation();
     }
-    
+
     private void testStringListManipulation() {
-        List<String> myList = new ArrayList(List.of("Smith", "Mannone", "Thurn", "Smith","Peterson"));
-        
-        List<String> filtered = myList.stream()
-            .filter(name -> !"Smith".equals(name))
-            .collect(Collectors.toList());
+        List<String> myList = new ArrayList(List.of("Smith", "Mannone", "Thurn", "Smith", "Peterson"));
+
+        List<String> filtered
+                = myList.stream().filter(name -> !"Smith".equals(name)).collect(Collectors.toList());
         System.out.println("1. filtered list " + filtered);
-        
-        myList = List.of("Smith", "Mannone", "Thurn", "Smith","Peterson");
-        filtered = myList.stream()
-            .filter(name -> !"Smith".equals(name))
-            .collect(Collectors.toList());
+
+        myList = List.of("Smith", "Mannone", "Thurn", "Smith", "Peterson");
+        filtered = myList.stream().filter(name -> !"Smith".equals(name)).collect(Collectors.toList());
         System.out.println("2. filtered list " + filtered);
 
-        
-        myList = Arrays.asList("Smith", "Mannone", "Thurn", "Smith","Peterson");
-        filtered = myList.stream()
-            .filter(name -> !"Smith".equals(name))
-            .collect(Collectors.toList());
+        myList = Arrays.asList("Smith", "Mannone", "Thurn", "Smith", "Peterson");
+        filtered = myList.stream().filter(name -> !"Smith".equals(name)).collect(Collectors.toList());
         System.out.println("3. filtered list " + filtered);
     }
-    
+
     private void testObjListManipulation() {
-        List<Person> myList = new ArrayList(List.of(
-                new Person("Smith", "John", 40),
-                new Person("Mannone", "Shannon", 40),
-                new Person("Thurn", "Anita", 45),
-                new Person("Smith", "Kevin", 43),
-                new Person("Peterson", "Gary", 60)
-        ));
-        
-        List<Person> filtered = myList.stream()
-            .filter(person -> !"Smith".equals(person.getLastName()))
-            .collect(Collectors.toList());
+        List<Person> myList
+                = new ArrayList(
+                        List.of(
+                                new Person("Smith", "John", 40),
+                                new Person("Mannone", "Shannon", 40),
+                                new Person("Thurn", "Anita", 45),
+                                new Person("Smith", "Kevin", 43),
+                                new Person("Peterson", "Gary", 60)));
+
+        List<Person> filtered
+                = myList.stream()
+                        .filter(person -> !"Smith".equals(person.getLastName()))
+                        .collect(Collectors.toList());
         System.out.println("1. filtered list " + filtered);
-        
-        myList = List.of(
-                new Person("Smith", "John", 40),
-                new Person("Mannone", "Shannon", 40),
-                new Person("Thurn", "Anita", 45),
-                new Person("Smith", "Kevin", 43),
-                new Person("Peterson", "Gary", 60)
-        );
-        filtered = myList.stream()
-            .filter(person -> !"Smith".equals(person.getLastName()))
-            .collect(Collectors.toList());
+
+        myList
+                = List.of(
+                        new Person("Smith", "John", 40),
+                        new Person("Mannone", "Shannon", 40),
+                        new Person("Thurn", "Anita", 45),
+                        new Person("Smith", "Kevin", 43),
+                        new Person("Peterson", "Gary", 60));
+        filtered
+                = myList.stream()
+                        .filter(person -> !"Smith".equals(person.getLastName()))
+                        .collect(Collectors.toList());
         System.out.println("2. filtered list " + filtered);
 
-        
-        myList = Arrays.asList(
-                new Person("Smith", "John", 40),
-                new Person("Mannone", "Shannon", 40),
-                new Person("Thurn", "Anita", 45),
-                new Person("Smith", "Kevin", 43),
-                new Person("Peterson", "Gary", 60)
-        );
-        filtered = myList.stream()
-            .filter(person -> !"Smith".equals(person.getLastName()))
-            .collect(Collectors.toList());
+        myList
+                = Arrays.asList(
+                        new Person("Smith", "John", 40),
+                        new Person("Mannone", "Shannon", 40),
+                        new Person("Thurn", "Anita", 45),
+                        new Person("Smith", "Kevin", 43),
+                        new Person("Peterson", "Gary", 60));
+        filtered
+                = myList.stream()
+                        .filter(person -> !"Smith".equals(person.getLastName()))
+                        .collect(Collectors.toList());
         System.out.println("3. filtered list " + filtered);
     }
-    
+
     private void stringListIndex() {
         // Define an ArrayList and a string
         ArrayList<Integer> myList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
@@ -130,7 +125,7 @@ public class Code1WarmUpArrayManipulation {
         System.out.println("3 stringListIndex concatenateList=" + concatenateList);
         String concatenateString = myString + ", world!"; // "Hello, world!"
         System.out.println("4 stringListIndex concatenateString=" + concatenateString);
-        
+
         // Finding the index of an element in a list or a string
         // indexOf returns the first occurrence index of the element
         // returns -1 if the list or the string doesn't contain the element
@@ -141,10 +136,10 @@ public class Code1WarmUpArrayManipulation {
 
         // Sorting items in ArrayList in non-increasing order
         ArrayList<Integer> sortedList = new ArrayList<>(myList);
-        sortedList.sort(Collections.reverseOrder()); // [5, 4, 3, 2, 1]        
+        sortedList.sort(Collections.reverseOrder()); // [5, 4, 3, 2, 1]
         System.out.println("7 stringListIndex sortedList=" + sortedList);
     }
-    
+
     private void listManipulation() {
         // Creating an ArrayList
         ArrayList<String> fruits = new ArrayList<>(Arrays.asList("apple", "banana", "cherry"));
@@ -161,7 +156,8 @@ public class Code1WarmUpArrayManipulation {
         System.out.println("3-2 listManipulation sorted fruits=" + fruits);
         fruits.sort(Collections.reverseOrder());
         System.out.println("3-3 listManipulation sorted reverse fruits=" + fruits);
-        List<String> filtered = fruits.stream().filter(name -> !"apple".equals(name)).collect(Collectors.toList());
+        List<String> filtered
+                = fruits.stream().filter(name -> !"apple".equals(name)).collect(Collectors.toList());
         System.out.println("3-4 listManipulation filtered fruits=" + filtered);
 
         // Removing a particular element
@@ -177,10 +173,10 @@ public class Code1WarmUpArrayManipulation {
         System.out.println("5 listManipulation fruits=" + Arrays.toString(fruitArray));
         ArrayList<String> fruitList = new ArrayList<>(Arrays.asList(fruitArray));
         System.out.println("6 listManipulation fruits=" + fruitList);
-        String[] newFruitArray = fruitList.toArray(new String[0]);        
+        String[] newFruitArray = fruitList.toArray(new String[0]);
         System.out.println("7 listManipulation fruits=" + Arrays.toString(newFruitArray));
     }
-    
+
     private void stringListManipulation() {
         // Defining an ArrayList and a String
         // <Integer> specifies the type of Objects the ArrayList will hold
@@ -196,12 +192,12 @@ public class Code1WarmUpArrayManipulation {
         myString.replace('h', 'H');
         // So it is possible to obtain a new string like this:
         String newString = myString.replace('h', 'H');
-        
+
         System.out.println(myList); // prints [100, 2, 3, 4]
         System.out.println(myString); // prints hello
-        System.out.println(newString); // prints Hello        
+        System.out.println(newString); // prints Hello
     }
-    
+
     private void testObjManipulation() {
         List<Person> people = createPersons();
         System.out.println("1 testObjManipulation original : \n" + people);
@@ -215,15 +211,16 @@ public class Code1WarmUpArrayManipulation {
         System.out.println("5 testObjManipulation sorted age : \n" + people);
         Collections.sort(people, Comparator.comparingInt(Person::getAge).reversed());
         System.out.println("5-2 testObjManipulation reversed sorted age : \n" + people);
-        
-        List<Person> filteredPeople = people.stream()
-            .filter(person -> !"Smith".equals(person.getLastName()))
-            .collect(Collectors.toList());
+
+        List<Person> filteredPeople
+                = people.stream()
+                        .filter(person -> !"Smith".equals(person.getLastName()))
+                        .sorted(Comparator.comparing(Person::getLastName))
+                        .collect(Collectors.toList());
         System.out.println("6 testObjManipulation filtered people: \n" + filteredPeople);
     }
-    
-    
-   private void testPerson2Manipulation() {
+
+    private void testPerson2Manipulation() {
         List<Person2> people = createPersons2();
         System.out.println("Person2 1 testPerson2Manipulation original : \n" + people);
         Collections.sort(people, Collections.reverseOrder());
@@ -236,33 +233,38 @@ public class Code1WarmUpArrayManipulation {
         System.out.println("Person2 5 testPerson2Manipulation sorted age : \n" + people);
         Collections.sort(people, Comparator.comparingInt(Person2::getAge).reversed());
         System.out.println("Person2 5-2 testPerson2Manipulation reversed sorted age : \n" + people);
-        
-        List<Person2> filteredPeople = people.stream()
-            .filter(person -> !"Smith".equals(person.getLastName()))
-            .collect(Collectors.toList());
+        Collections.sort(
+                people,
+                Comparator.comparingInt(Person2::getAge).thenComparing(Person2::getLastName).reversed());
+        System.out.println("Person2 5-3 testPerson2Manipulation reversed sorted age : \n" + people);
+
+        List<Person2> filteredPeople
+                = people.stream()
+                        .filter(person -> !"Smith".equals(person.getLastName()))
+                        .collect(Collectors.toList());
         System.out.println("6 testObjManipulation filtered people: \n" + filteredPeople);
-    } 
-   
-    private List<Person> createPersons() {                
-        return new ArrayList(List.of(
-                new Person("Smith", "John", 40),
-                new Person("Mannone", "Shannon", 40),
-                new Person("Thurn", "Anita", 45),
-                new Person("Smith", "Kevin", 43),
-                new Person("Peterson", "Gary", 60)
-        ));
     }
-    
-    private List<Person2> createPersons2() {                
-        return new ArrayList(List.of(
-                new Person2("Smith", "John", 40),
-                new Person2("Mannone", "Shannon", 40),
-                new Person2("Thurn", "Anita", 45),
-                new Person2("Smith", "Kevin", 43),
-                new Person2("Peterson", "Gary", 60)
-        ));
-    }    
-    
+
+    private List<Person> createPersons() {
+        return new ArrayList(
+                List.of(
+                        new Person("Smith", "John", 40),
+                        new Person("Mannone", "Shannon", 40),
+                        new Person("Thurn", "Anita", 45),
+                        new Person("Smith", "Kevin", 43),
+                        new Person("Peterson", "Gary", 60)));
+    }
+
+    private List<Person2> createPersons2() {
+        return new ArrayList(
+                List.of(
+                        new Person2("Smith", "John", 40),
+                        new Person2("Mannone", "Shannon", 40),
+                        new Person2("Thurn", "Anita", 45),
+                        new Person2("Smith", "Kevin", 43),
+                        new Person2("Peterson", "Gary", 60)));
+    }
+
     private void testArrayManipulation() {
         int[] intArr = {1, 2, 3, 4, 5};
         System.out.println("1-1 the original array: " + Arrays.toString(intArr));
@@ -271,36 +273,36 @@ public class Code1WarmUpArrayManipulation {
 
         int[] intArr2 = {5, 5, 4, 2, 3};
         System.out.println("2-1 the original array: " + Arrays.toString(intArr2));
-        List<Integer> intList = Arrays.stream(intArr2)
-                .boxed() 
-                .sorted()
-                .collect(Collectors.toList());
+        List<Integer> intList = Arrays.stream(intArr2).boxed().sorted().collect(Collectors.toList());
         System.out.println("2-2 the converted list: " + intList);
         Collections.sort(intList);
         System.out.println("2-3 the sorted list: " + intList);
-        intList.sort(Collections.reverseOrder());        
-        Collections.sort(intList, Collections.reverseOrder());        
+        intList.sort(Collections.reverseOrder());
+        Collections.sort(intList, Collections.reverseOrder());
         System.out.println("2-4 the sorted in reverse order list: " + intList);
 
-        intArr2 = intList.stream().mapToInt(Integer::intValue) // Convert Integer to int
-                .toArray();
+        intArr2
+                = intList.stream()
+                        .mapToInt(Integer::intValue) // Convert Integer to int
+                        .toArray();
         System.out.println("2-5 the sorted array: " + Arrays.toString(intArr2));
         result = secondLargest(intArr2);
         System.out.println("2-6 The secondLargest result is: " + result);
 
         int[] intArr3 = {1, 1, 1};
         result = secondLargest(intArr3);
-        System.out.println("3 The secondLargest result is: " + result + " from input: " + Arrays.toString(intArr3));
+        System.out.println(
+                "3 The secondLargest result is: " + result + " from input: " + Arrays.toString(intArr3));
     }
-    
+
     public int secondLargest(int[] nums) {
         if (nums.length < 1) {
-            //throw new IllegalArgumentException("Array cannot be empty");
+            // throw new IllegalArgumentException("Array cannot be empty");
         }
         if (nums.length > 0 && nums.length < 2) {
             throw new IllegalArgumentException("Array must have two elements to find the second largest");
         }
-        
+
         int first = Integer.MIN_VALUE, second = Integer.MIN_VALUE;
         for (int num : nums) {
             if (num > first) {
@@ -312,14 +314,15 @@ public class Code1WarmUpArrayManipulation {
         }
         return second != Integer.MIN_VALUE ? second : -1;
     }
-    
+
     @Data
     public static class Person2 {
+
         private long id;
         private String firstName;
         private String lastName;
-        private int age;      
-        
+        private int age;
+
         public Person2(String lastName, String firstName, int age) {
             this.lastName = lastName;
             this.firstName = firstName;
@@ -376,7 +379,7 @@ public class Code1WarmUpArrayManipulation {
         public void setAge(int age) {
             this.age = age;
         }
-        
+
         @Override
         public int compareTo(Person other) {
             // Sort by name (alphabetically)
@@ -384,20 +387,20 @@ public class Code1WarmUpArrayManipulation {
 
             // To sort by age (ascending):
             // return Integer.compare(this.age, other.age);
-        }        
-        
+        }
+
         public Person() {
         }
-        
+
         public Person(String lastName, String firstName, int age) {
             this();
             this.lastName = lastName;
             this.firstName = firstName;
             this.age = age;
         }
-        
+
         public Person builder(String lastName, String firstName, int age) {
-            return  new Person(lastName, firstName, age);            
+            return new Person(lastName, firstName, age);
         }
 
         @Override
@@ -411,6 +414,5 @@ public class Code1WarmUpArrayManipulation {
             sb.append('}');
             return sb.toString();
         }
-        
     }
 }

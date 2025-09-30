@@ -14,26 +14,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
- *
  * @author javau
  */
 public class EventHubProducerService {
 
     /*
-    4) Azure Event Hubs: producer & EventProcessorClient consumer
-        Event Hubs uses partition keys similarly: messages with same partition key go to same partition.
-        Producer (Event Hubs)
-        Dependencies: com.azure:azure-messaging-eventhubs
-    EventHubProducerService.java
+  4) Azure Event Hubs: producer & EventProcessorClient consumer
+      Event Hubs uses partition keys similarly: messages with same partition key go to same partition.
+      Producer (Event Hubs)
+      Dependencies: com.azure:azure-messaging-eventhubs
+  EventHubProducerService.java
      */
     private final EventHubProducerClient producerClient;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public EventHubProducerService(@Value("${eventhub.connection}") String conn,
-        @Value("${eventhub.name}") String hubName) {
-        this.producerClient = new EventHubClientBuilder()
-            .connectionString(conn, hubName)
-            .buildProducerClient();
+    public EventHubProducerService(
+            @Value("${eventhub.connection}") String conn, @Value("${eventhub.name}") String hubName) {
+        this.producerClient
+                = new EventHubClientBuilder().connectionString(conn, hubName).buildProducerClient();
     }
 
     public void sendFlightEvent(FlightEvent evt) {
@@ -60,5 +58,4 @@ public class EventHubProducerService {
             throw new RuntimeException(e);
         }
     }
-
 }

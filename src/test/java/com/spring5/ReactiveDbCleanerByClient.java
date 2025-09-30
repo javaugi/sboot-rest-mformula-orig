@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 @Component
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReactiveDbCleanerByClient {
+
     @Autowired
     private DatabaseClient databaseClient;
 
@@ -29,10 +30,10 @@ public class ReactiveDbCleanerByClient {
             FROM pg_tables
             WHERE schemaname = 'public'
         """)
-            .map(row -> row.get("tablename", String.class))
-            .all()
-            .collectList()
-            .block();
+                .map(row -> row.get("tablename", String.class))
+                .all()
+                .collectList()
+                .block();
     }
 
     @AfterEach
@@ -42,8 +43,8 @@ public class ReactiveDbCleanerByClient {
         }
 
         Flux.fromIterable(tableNames)
-            .flatMap(table -> databaseClient.sql("TRUNCATE TABLE " + table + " RESTART IDENTITY CASCADE").fetch().rowsUpdated())
-            .then()
-            .block();
+                .flatMap(table -> databaseClient.sql("TRUNCATE TABLE " + table + " RESTART IDENTITY CASCADE").fetch().rowsUpdated())
+                .then()
+                .block();
     }
 }

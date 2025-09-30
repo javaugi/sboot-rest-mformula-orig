@@ -10,8 +10,6 @@ package com.patterns.misc.filtercriteria;
 import java.util.List;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

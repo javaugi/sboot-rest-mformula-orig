@@ -5,10 +5,10 @@
 package com.spring5.validatorex;
 
 /**
- *
  * @author javau
  */
 public class InsufficientStockException extends RuntimeException {
+
     public InsufficientStockException(String message) {
         super(message);
     }

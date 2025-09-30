@@ -44,26 +44,25 @@ public class HibernateFetchJoinCascadeLazyLoading {
     public HibernateFetchJoinCascadeLazyLoading() {
         session = sessionFactory.getCurrentSession();
         /*
-        String sql = "";
-        entityManager.createQuery(sql);
-        entityManager.getCriteriaBuilder();
-        entityManager.createNativeQuery(sql);
-        entityManager.createNamedQuery(sql);
-        entityManager.createNamedStoredProcedureQuery(sql);
-        // */
+    String sql = "";
+    entityManager.createQuery(sql);
+    entityManager.getCriteriaBuilder();
+    entityManager.createNativeQuery(sql);
+    entityManager.createNamedQuery(sql);
+    entityManager.createNamedStoredProcedureQuery(sql);
+    // */
     }
 
     // Without Fetch Join (N+1 Problem)
     private void n1ProblemWithoutFetchJoin() {
         // This will cause N+1 queries (1 for departments + N for employees of each department)
-        List<Department> departments = session.createQuery(
-                "FROM Department d", Department.class)
-                .getResultList();
+        List<Department> departments
+                = session.createQuery("FROM Department d", Department.class).getResultList();
 
         // When you access employees, a new query is executed for each department
         for (Department dept : departments) {
             System.out.println("Department: " + dept.getName());
-            for (Employee emp : dept.getEmployees()) {  // Triggers new query
+            for (Employee emp : dept.getEmployees()) { // Triggers new query
                 System.out.println(" - Employee: " + emp.getName());
             }
         }
@@ -72,20 +71,22 @@ public class HibernateFetchJoinCascadeLazyLoading {
     //    With Fetch Join (Solves N+1)
     private void n1ProblemResolvedWithFetchJoin() {
         // Single query that fetches both departments and their employees
-        List<Department> departments = session.createQuery(
-                "SELECT DISTINCT d FROM Department d LEFT JOIN FETCH d.employees", Department.class)
-                .getResultList();
+        List<Department> departments
+                = session
+                        .createQuery(
+                                "SELECT DISTINCT d FROM Department d LEFT JOIN FETCH d.employees", Department.class)
+                        .getResultList();
 
         // No additional queries when accessing employees
         for (Department dept : departments) {
             System.out.println("Department: " + dept.getName());
-            for (Employee emp : dept.getEmployees()) {  // Already loaded
+            for (Employee emp : dept.getEmployees()) { // Already loaded
                 System.out.println(" - Employee: " + emp.getName());
             }
         }
     }
 
-    //Cascade Type in Action
+    // Cascade Type in Action
     @Transactional
     public void createDepartmentWithEmployees() {
         Department itDept = new Department();
@@ -108,7 +109,7 @@ public class HibernateFetchJoinCascadeLazyLoading {
         // No need to explicitly persist emp1 and emp2
     }
 
-    //Lazy Loading with Proper Session Management
+    // Lazy Loading with Proper Session Management
     // Service method with open session
     @Transactional
     public void printDepartmentEmployees(Long deptId) {
@@ -124,58 +125,63 @@ public class HibernateFetchJoinCascadeLazyLoading {
     // Without transaction (would throw LazyInitializationException)
     public void printDepartmentEmployeesProblematic(Long deptId) {
         Department department = session.get(Department.class, deptId);
-        session.close();  // Session is closed
+        session.close(); // Session is closed
 
         // This will throw exception because employees weren't loaded
         for (Employee emp : department.getEmployees()) {
             System.out.println(" - " + emp.getName());
         }
     }
-    
+
     private void bestPracticeWithcascadeFetchMode() {
         /*
-        4. Best Practices
-        Default to LAZY loading for all associations to avoid loading unnecessary data
-        Use fetch joins when you know you'll need the associated data
-        Be careful with CascadeType.ALL - it can lead to unintended deletions
-        Manage transactions properly to avoid LazyInitializationException
-        Consider batch fetching for large collections:
-        // */
-        /*
-        @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-        @BatchSize(size = 10)
-        private List<Employee> employees;
-        // */
+    4. Best Practices
+    Default to LAZY loading for all associations to avoid loading unnecessary data
+    Use fetch joins when you know you'll need the associated data
+    Be careful with CascadeType.ALL - it can lead to unintended deletions
+    Manage transactions properly to avoid LazyInitializationException
+    Consider batch fetching for large collections:
+    // */
+ /*
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+    @BatchSize(size = 10)
+    private List<Employee> employees;
+    // */
     }
-    
-    
+
     /*
-    Remember that fetch joins and cascade types serve different purposes:
-        Fetch joins are about query performance (loading strategy for a specific use case)
-        Cascade types are about object lifecycle management (what operations should propagate)
-        Lazy loading is about default loading behavior (when data should be loaded)    
-    */
+  Remember that fetch joins and cascade types serve different purposes:
+      Fetch joins are about query performance (loading strategy for a specific use case)
+      Cascade types are about object lifecycle management (what operations should propagate)
+      Lazy loading is about default loading behavior (when data should be loaded)
+     */
     private void complexQueryWithMultipleFetchJoins() {
         // Complex query with multiple fetch joins
-        List<Department> departments = session.createQuery(
-            "SELECT DISTINCT d FROM Department d " +
-            "LEFT JOIN FETCH d.employees e " +
-            "LEFT JOIN FETCH e.profile " +
-            "WHERE d.name LIKE :deptName", Department.class)
-            .setParameter("deptName", "%IT%")
-            .getResultList();        
+        List<Department> departments
+                = session
+                        .createQuery(
+                                "SELECT DISTINCT d FROM Department d "
+                                + "LEFT JOIN FETCH d.employees e "
+                                + "LEFT JOIN FETCH e.profile "
+                                + "WHERE d.name LIKE :deptName",
+                                Department.class)
+                        .setParameter("deptName", "%IT%")
+                        .getResultList();
     }
-    
+
     // Transactional method showing cascading behavior
     @Transactional
     public void updateDepartmentWithEmployees(Long deptId) {
         Department department = session.find(Department.class, deptId);
 
         // Because of CascadeType.ALL, these changes will be cascaded
-        department.getEmployees().forEach(emp -> {
-            emp.setSalary(emp.getSalary() * 1.1);  // Give everyone a 10% raise
-        });
+        department
+                .getEmployees()
+                .forEach(
+                        emp -> {
+                            emp.setSalary(emp.getSalary() * 1.1); // Give everyone a 10% raise
+                        });
 
         // No need to explicitly save each employee
-    }    
+    }
 }

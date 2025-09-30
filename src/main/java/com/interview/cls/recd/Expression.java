@@ -4,7 +4,7 @@
  */
 package com.interview.cls.recd;
 
-//Sealed Class with Records
+// Sealed Class with Records
 // Sealed class with record subclasses
 public sealed interface Expression permits Constant, Plus, Minus, Multiply {
 

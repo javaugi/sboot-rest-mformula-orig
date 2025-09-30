@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-//2. Realistic DxCG Integration Implementation
-//Here's how you would actually integrate with DxCG services:
-//A. SOAP Client Implementation
+// 2. Realistic DxCG Integration Implementation
+// Here's how you would actually integrate with DxCG services:
+// A. SOAP Client Implementation
 @Configuration
 public class DxcgSoapConfig {
 
@@ -22,13 +22,13 @@ public class DxcgSoapConfig {
     }
 
     /*
-    @Bean
-    public DxcgSoapClient dxcgSoapClient(Jaxb2Marshaller marshaller) {
-        DxcgSoapClient client = new DxcgSoapClient();
-        client.setDefaultUri("https://ws.verisk.com/DxcgService");
-        client.setMarshaller(marshaller);
-        client.setUnmarshaller(marshaller);
-        return client;
-    }
-    // */
+  @Bean
+  public DxcgSoapClient dxcgSoapClient(Jaxb2Marshaller marshaller) {
+      DxcgSoapClient client = new DxcgSoapClient();
+      client.setDefaultUri("https://ws.verisk.com/DxcgService");
+      client.setMarshaller(marshaller);
+      client.setUnmarshaller(marshaller);
+      return client;
+  }
+  // */
 }

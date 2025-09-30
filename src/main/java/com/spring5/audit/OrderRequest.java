@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class OrderRequest {
+
     Long itemId;
     double quantity;
     String paymentDetails;

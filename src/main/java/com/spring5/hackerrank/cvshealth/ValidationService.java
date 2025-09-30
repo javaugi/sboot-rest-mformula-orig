@@ -4,16 +4,14 @@
  */
 package com.spring5.hackerrank.cvshealth;
 
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ValidationService {
 
     // In a real application, these would interact with databases, external APIs, etc.
-
     public ValidationResult validatePrescription(PrescriptionRequest request) {
         List<String> messages = new ArrayList<>();
         ValidationResult.Status status = ValidationResult.Status.APPROVED;
@@ -58,12 +56,15 @@ public class ValidationService {
 
     private boolean simulateDrugInteractionCheck(PrescriptionRequest request) {
         // Mock external API call or database lookup
-        return request.getMedications().size() > 1 && request.getMedications().get(0).getDrugCode().equals("DRUG_A") && request.getMedications().get(1).getDrugCode().equals("DRUG_B");
+        return request.getMedications().size() > 1
+                && request.getMedications().get(0).getDrugCode().equals("DRUG_A")
+                && request.getMedications().get(1).getDrugCode().equals("DRUG_B");
     }
 
     private boolean simulatePatientAllergyCheck(PrescriptionRequest request) {
         // Mock external patient history API call
-        return request.getPatientId().equals("PAT_XYZ") && request.getMedications().stream().anyMatch(m -> m.getDrugCode().equals("DRUG_C"));
+        return request.getPatientId().equals("PAT_XYZ")
+                && request.getMedications().stream().anyMatch(m -> m.getDrugCode().equals("DRUG_C"));
     }
 
     private boolean simulateInsuranceCoverageCheck(PrescriptionRequest request) {

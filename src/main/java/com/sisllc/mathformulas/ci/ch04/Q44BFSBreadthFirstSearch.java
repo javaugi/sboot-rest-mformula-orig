@@ -54,5 +54,4 @@ public class Q44BFSBreadthFirstSearch {
         ArrayList<LinkedList<TreeNode>> list = createLevelLinkedList(root);
         printResult(list);
     }
-
 }

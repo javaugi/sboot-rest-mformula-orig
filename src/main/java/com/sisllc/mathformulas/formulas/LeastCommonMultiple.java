@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -31,15 +29,15 @@ public class LeastCommonMultiple {
     }
 
     public static int lcm0(int a, int b) {
-        //set lvm to the larger of the a and b
+        // set lvm to the larger of the a and b
         int lcm = (a > b) ? a : b;
 
-        //check to see if lcm can be divided by both
+        // check to see if lcm can be divided by both
         while (true) {
             if (lcm % a == 0 && lcm % b == 0) {
                 break;
             }
-            //if not divisible by either increase lcm by = and keep looping
+            // if not divisible by either increase lcm by = and keep looping
             ++lcm;
         }
         return lcm;

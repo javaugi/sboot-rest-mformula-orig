@@ -44,8 +44,8 @@ public class PaymentKafkaConfig extends KafkaBaseConfig {
 
     @Bean
     public DeadLetterPublishingRecoverer dlqRecoverer() {
-        return new DeadLetterPublishingRecoverer(kafkaTemplate(),
-                (record, ex) -> new TopicPartition("payment-requests-dlq", -1));
+        return new DeadLetterPublishingRecoverer(
+                kafkaTemplate(), (record, ex) -> new TopicPartition("payment-requests-dlq", -1));
     }
 
     @Bean

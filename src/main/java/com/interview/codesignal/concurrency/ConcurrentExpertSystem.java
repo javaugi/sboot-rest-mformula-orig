@@ -14,9 +14,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- *
  * Explanation:
  *
+ * <p>
  * 1. Expert System Design: Fact Class: Represents a piece of information or a
  * condition. It has a name (e.g., "temperature", "cough") and a value. Rule
  * Interface: Defines the contract for a rule. It has two methods:
@@ -27,6 +27,7 @@ import java.util.concurrent.Future;
  * of the Rule interface. They define specific conditions based on the input
  * facts and provide a corresponding conclusion.
  *
+ * <p>
  * 2. Concurrency: DiagnosisRequest Class: Represents a single request for
  * diagnosis, containing a unique requestId and a Set of symptoms (represented
  * as Fact objects). DiagnosisTask Class: Implements the Callable interface,
@@ -83,22 +84,27 @@ public class ConcurrentExpertSystem {
 
     // --- Expert System Setup ---
     // --- Multiple Rules ---
-    private final List<Rule> diagnosticRules = List.of(
-                new PossibleFluRule(),
-                new PossibleCommonColdRule()
-        );
+    private final List<Rule> diagnosticRules
+            = List.of(new PossibleFluRule(), new PossibleCommonColdRule());
     // --- Concurrent Processing of Multiple Diagnosis Requests ---
-    private final List<DiagnosisRequest> requests = List.of(
-                new DiagnosisRequest(1, Set.of(new Fact("temperature", 39.2), new Fact("cough", true))),
-                new DiagnosisRequest(2, Set.of(new Fact("soreThroat", true), new Fact("runnyNose", true))),
-                new DiagnosisRequest(3, Set.of(new Fact("temperature", 37.0), new Fact("cough", false))),
-                new DiagnosisRequest(4, Set.of(new Fact("temperature", 38.5), new Fact("cough", true), new Fact("soreThroat", false)))
-        );
-    private final int numberOfThreads = Math.min(requests.size(), Runtime.getRuntime().availableProcessors());
+    private final List<DiagnosisRequest> requests
+            = List.of(
+                    new DiagnosisRequest(1, Set.of(new Fact("temperature", 39.2), new Fact("cough", true))),
+                    new DiagnosisRequest(
+                            2, Set.of(new Fact("soreThroat", true), new Fact("runnyNose", true))),
+                    new DiagnosisRequest(3, Set.of(new Fact("temperature", 37.0), new Fact("cough", false))),
+                    new DiagnosisRequest(
+                            4,
+                            Set.of(
+                                    new Fact("temperature", 38.5),
+                                    new Fact("cough", true),
+                                    new Fact("soreThroat", false))));
+    private final int numberOfThreads
+            = Math.min(requests.size(), Runtime.getRuntime().availableProcessors());
     private final ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
-    
+
     private final List<Future<String>> futures = new ArrayList<>();
-    
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         ConcurrentExpertSystem main = new ConcurrentExpertSystem();
         main.run();
@@ -129,5 +135,4 @@ public class ConcurrentExpertSystem {
             System.out.println(future.get()); // Blocking call to get the result
         }
     }
-
 }

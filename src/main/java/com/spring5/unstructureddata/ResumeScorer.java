@@ -14,14 +14,15 @@ Assign scores based on:
     Skills Match (e.g., "Java" = +10 points)
     Experience Years (e.g., "5+ years" = +20 points)
     Education (e.g., "Master’s Degree" = +15 points)
-*/
+ */
 public class ResumeScorer {
-    private static final Map<String, Integer> SKILL_WEIGHTS = Map.of(
-        "Java", 10,
-        "Python", 8,
-        "AWS", 12,
-        "Spring", 10
-    );
+
+    private static final Map<String, Integer> SKILL_WEIGHTS
+            = Map.of(
+                    "Java", 10,
+                    "Python", 8,
+                    "AWS", 12,
+                    "Spring", 10);
 
     private static final int YEAR_MULTIPLIER = 5; // 5 points per year
 
@@ -33,10 +34,11 @@ public class ResumeScorer {
         if (skills != null) {
             for (JsonNode skill : skills) {
                 String skillName = skill.asText().toLowerCase();
-                score += SKILL_WEIGHTS.entrySet().stream()
-                    .filter(e -> skillName.contains(e.getKey().toLowerCase()))
-                    .mapToInt(Map.Entry::getValue)
-                    .sum();
+                score
+                        += SKILL_WEIGHTS.entrySet().stream()
+                                .filter(e -> skillName.contains(e.getKey().toLowerCase()))
+                                .mapToInt(Map.Entry::getValue)
+                                .sum();
             }
         }
 
@@ -71,7 +73,8 @@ public class ResumeScorer {
     }
 
     public static void main(String[] args) throws Exception {
-        String resumeJson = """
+        String resumeJson
+                = """
             {
                 "skills": ["Java", "Spring Boot"],
                 "work_experience": [
@@ -81,6 +84,8 @@ public class ResumeScorer {
             }
             """;
         JsonNode resume = new ObjectMapper().readTree(resumeJson);
-        System.out.println("Resume Score: " + calculateScore(resume)); // Output: 45 (Java=10, Spring=10, 3y*5=15, Education=10)
+        System.out.println(
+                "Resume Score: "
+                + calculateScore(resume)); // Output: 45 (Java=10, Spring=10, 3y*5=15, Education=10)
     }
 }

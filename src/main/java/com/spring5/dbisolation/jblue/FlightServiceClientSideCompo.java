@@ -23,17 +23,22 @@ Query tips:
 @RequiredArgsConstructor
 @Service
 public class FlightServiceClientSideCompo {
+
     private final FlightEventRepository flightRepository;
     private final AirlineRepository airlineRepository;
 
     public FlightDetails getFlightWithAirlineDetails(String flightNumber) {
         // 1. Get flight data
-        FlightEvent flight = flightRepository.findByFlightNumber(flightNumber)
-            .orElseThrow(() -> new RuntimeException("Flight not found"));
+        FlightEvent flight
+                = flightRepository
+                        .findByFlightNumber(flightNumber)
+                        .orElseThrow(() -> new RuntimeException("Flight not found"));
 
         // 2. Get airline data separately
-        Airline airline = airlineRepository.findByAirlineCode(flight.getAirlineCode())
-            .orElseThrow(() -> new RuntimeException("Airline not found"));
+        Airline airline
+                = airlineRepository
+                        .findByAirlineCode(flight.getAirlineCode())
+                        .orElseThrow(() -> new RuntimeException("Airline not found"));
 
         // 3. Compose results on client side
         return new FlightDetails(flight, airline);
@@ -44,18 +49,17 @@ public class FlightServiceClientSideCompo {
         List<FlightEvent> flights = flightRepository.findByDepartureAirport(departureAirport);
 
         // 2. Get unique airline codes
-        Set<String> airlineCodes = flights.stream()
-            .map(FlightEvent::getAirlineCode)
-            .collect(Collectors.toSet());
+        Set<String> airlineCodes
+                = flights.stream().map(FlightEvent::getAirlineCode).collect(Collectors.toSet());
 
         // 3. Batch get all airlines
-        Map<String, Airline> airlinesMap = airlineRepository.findByAirlineCodeIn(airlineCodes)
-            .stream()
-            .collect(Collectors.toMap(Airline::getAirlineCode, Function.identity()));
+        Map<String, Airline> airlinesMap
+                = airlineRepository.findByAirlineCodeIn(airlineCodes).stream()
+                        .collect(Collectors.toMap(Airline::getAirlineCode, Function.identity()));
 
         // 4. Compose results
         return flights.stream()
-            .map(flight -> new FlightDetails(flight, airlinesMap.get(flight.getAirlineCode())))
-            .collect(Collectors.toList());
+                .map(flight -> new FlightDetails(flight, airlinesMap.get(flight.getAirlineCode())))
+                .collect(Collectors.toList());
     }
 }

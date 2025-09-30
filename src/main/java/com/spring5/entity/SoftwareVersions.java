@@ -14,12 +14,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data //it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor 
+@Data // it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class SoftwareVersions {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +28,4 @@ public class SoftwareVersions {
     private LocalDateTime releaseDate;
     private String changelog;
     private boolean critical;
-         
 }

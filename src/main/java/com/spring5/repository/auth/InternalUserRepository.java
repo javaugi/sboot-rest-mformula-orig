@@ -9,9 +9,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javau
  */
 public interface InternalUserRepository extends JpaRepository<InternalUser, Long> {
+
     Optional<InternalUser> findByUsername(String username);
 }

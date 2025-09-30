@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -15,8 +13,8 @@ import org.slf4j.LoggerFactory;
 public class Q14CharArrayToString {
 
     private static final Logger log = LoggerFactory.getLogger(Q14CharArrayToString.class);
-    // Assume string has sufficient free space at the end
 
+    // Assume string has sufficient free space at the end
     public static void replaceSpaces(char[] str, int length) {
         int spaceCount = 0, index, i = 0;
         for (i = 0; i < length; i++) {
@@ -47,7 +45,8 @@ public class Q14CharArrayToString {
         }
         replaceSpaces(arr, str.length());
         System.out.println("\"" + AssortedMethods.charArrayToString(arr) + "\"");
-        System.out.println("charArrayToString " + charArrayToString(arr) + ", original arr=" + Arrays.toString(arr));
+        System.out.println(
+                "charArrayToString " + charArrayToString(arr) + ", original arr=" + Arrays.toString(arr));
     }
 
     public static String charArrayToString(char[] arr) {

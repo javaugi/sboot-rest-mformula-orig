@@ -10,21 +10,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
 public record OrchestrationContext(
-    String correlationId,
-    ReactiveClaimEvent claimEvent,
-    Map<String, Object> processVariables,
-    LocalDateTime timestamp ,
-    List<OrchestrationStep> completedSteps,  // Track progress
-    OrchestrationStatus status // IN_PROGRESS, COMPLETED, FAILED
+        String correlationId,
+        ReactiveClaimEvent claimEvent,
+        Map<String, Object> processVariables,
+        LocalDateTime timestamp,
+        List<OrchestrationStep> completedSteps, // Track progress
+        OrchestrationStatus status // IN_PROGRESS, COMPLETED, FAILED
+        ) {
 
+    public OrchestrationContext      {
 
-    ) {
-
-    public OrchestrationContext
-
-    {
         // Default values in compact constructor
         if (processVariables == null) {
             processVariables = new ConcurrentHashMap<>();
@@ -43,13 +39,12 @@ public record OrchestrationContext(
         newVariables.put(key, value);
 
         return new OrchestrationContext(
-            this.correlationId,
-            this.claimEvent,
-            newVariables,
-            this.timestamp,
-            this.completedSteps,
-            this.status
-        );
+                this.correlationId,
+                this.claimEvent,
+                newVariables,
+                this.timestamp,
+                this.completedSteps,
+                this.status);
     }
 
     // Helper method to add a completed step
@@ -58,24 +53,22 @@ public record OrchestrationContext(
         newSteps.add(new OrchestrationStep(stepName, LocalDateTime.now()));
 
         return new OrchestrationContext(
-            this.correlationId,
-            this.claimEvent,
-            this.processVariables,
-            this.timestamp,
-            newSteps,
-            this.status
-        );
+                this.correlationId,
+                this.claimEvent,
+                this.processVariables,
+                this.timestamp,
+                newSteps,
+                this.status);
     }
 
     // Helper method to create a new instance with updated status
     public OrchestrationContext withStatus(OrchestrationStatus newStatus) {
         return new OrchestrationContext(
-            this.correlationId,
-            this.claimEvent,
-            this.processVariables,
-            this.timestamp,
-            this.completedSteps,
-            newStatus
-        );
+                this.correlationId,
+                this.claimEvent,
+                this.processVariables,
+                this.timestamp,
+                this.completedSteps,
+                newStatus);
     }
 }

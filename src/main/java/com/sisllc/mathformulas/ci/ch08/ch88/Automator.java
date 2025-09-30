@@ -3,7 +3,6 @@ package com.sisllc.mathformulas.ci.ch08.ch88;
 import com.sisllc.mathformulas.ci.lib.AssortedMethods;
 import java.util.ArrayList;
 
-
 /* A helper class to automate this game. This is just used for testing purposes. */
 public class Automator {
 
@@ -66,7 +65,8 @@ public class Automator {
             boolean success = lastPlayer.playPiece(loc.getRow(), loc.getColumn());
 
             if (success) {
-                System.out.println("Success: " + color + " move at (" + loc.getRow() + ", " + loc.getColumn() + ")");
+                System.out.println(
+                        "Success: " + color + " move at (" + loc.getRow() + ", " + loc.getColumn() + ")");
                 board.printBoard();
                 printScores();
                 return true;
@@ -84,6 +84,14 @@ public class Automator {
     }
 
     public void printScores() {
-        System.out.println("Score: " + players[0].getColor().toString() + ": " + players[0].getScore() + ", " + players[1].getColor().toString() + ": " + players[1].getScore());
+        System.out.println(
+                "Score: "
+                + players[0].getColor().toString()
+                + ": "
+                + players[0].getScore()
+                + ", "
+                + players[1].getColor().toString()
+                + ": "
+                + players[1].getScore());
     }
 }

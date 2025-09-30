@@ -7,11 +7,10 @@ package com.spring5.dbisolation.wmart.validrule;
 import com.spring5.kafkamicroservice.Payment;
 
 /**
- *
  * @author javau
  */
 public interface ValidationRule {
-// Returns true if the payment passes the rule, false otherwise
+    // Returns true if the payment passes the rule, false otherwise
 
     boolean validate(Payment payment);
 

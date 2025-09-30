@@ -56,11 +56,17 @@ public class Q57FindMissingFromBitIntegerList {
         int n = rand.nextInt(300000) + 1;
         int missing = rand.nextInt(n + 1);
         ArrayList<BitInteger> array = initialize(n, missing);
-        System.out.println("The array contains all numbers but one from 0 to " + n + ", except for " + missing);
+        System.out.println(
+                "The array contains all numbers but one from 0 to " + n + ", except for " + missing);
 
         int result = findMissing(array);
         if (result != missing) {
-            System.out.println("Error in the algorithm!\n" + "The missing number is " + missing + ", but the algorithm reported " + result);
+            System.out.println(
+                    "Error in the algorithm!\n"
+                    + "The missing number is "
+                    + missing
+                    + ", but the algorithm reported "
+                    + result);
         } else {
             System.out.println("The missing number is " + result);
         }

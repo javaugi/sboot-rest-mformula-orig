@@ -24,19 +24,20 @@ public class LogAnalyzer {
 
         // Use streams for readability and parallel processing capability
         return logs.parallelStream() // Parallel stream for large datasets
-            .filter(Objects::nonNull) // Filter out null log entries
-            .filter(LogEntry::isError) // Only process ERROR level logs
-            .map(LogEntry::getMessage)
-            .filter(Objects::nonNull) // Filter out null messages
-            .filter(message -> !message.trim().isEmpty()) // Filter empty messages
-            .map(this::extractErrorPattern) // Extract error pattern (e.g., exception type)
-            .filter(Objects::nonNull) // Filter null patterns
-            .collect(Collectors.toConcurrentMap(
-                Function.identity(), // Key: error pattern
-                pattern -> 1, // Value: count 1 for each occurrence
-                Integer::sum, // Merge function: sum counts
-                ConcurrentHashMap::new // Thread-safe map for parallel streams
-            ));
+                .filter(Objects::nonNull) // Filter out null log entries
+                .filter(LogEntry::isError) // Only process ERROR level logs
+                .map(LogEntry::getMessage)
+                .filter(Objects::nonNull) // Filter out null messages
+                .filter(message -> !message.trim().isEmpty()) // Filter empty messages
+                .map(this::extractErrorPattern) // Extract error pattern (e.g., exception type)
+                .filter(Objects::nonNull) // Filter null patterns
+                .collect(
+                        Collectors.toConcurrentMap(
+                                Function.identity(), // Key: error pattern
+                                pattern -> 1, // Value: count 1 for each occurrence
+                                Integer::sum, // Merge function: sum counts
+                                ConcurrentHashMap::new // Thread-safe map for parallel streams
+                        ));
     }
 
     /**
@@ -56,7 +57,7 @@ public class LogAnalyzer {
 
             // Check if it contains exception class name
             if (firstPart.contains(".")
-                && (firstPart.endsWith("Exception") || firstPart.endsWith("Error"))) {
+                    && (firstPart.endsWith("Exception") || firstPart.endsWith("Error"))) {
                 // Extract just the class name without package
                 int lastDotIndex = firstPart.lastIndexOf('.');
                 if (lastDotIndex != -1 && lastDotIndex < firstPart.length() - 1) {
@@ -69,7 +70,7 @@ public class LogAnalyzer {
         // Pattern 2: Extract error codes (e.g., "ERROR_404", "ERR-500")
         if (logMessage.matches(".*[A-Z]+_?\\d{3,}.*")) {
             java.util.regex.Matcher matcher
-                = java.util.regex.Pattern.compile("([A-Z]+_?\\d{3,})").matcher(logMessage);
+                    = java.util.regex.Pattern.compile("([A-Z]+_?\\d{3,})").matcher(logMessage);
             if (matcher.find()) {
                 return matcher.group(1);
             }
@@ -81,14 +82,14 @@ public class LogAnalyzer {
 
     private String extractKeyPhrase(String message) {
         String[] words = message.split("\\s+");
-        List<String> meaningfulWords = Arrays.stream(words)
-            .filter(word -> word.length() > 3) // Filter short words
-            .filter(word -> !isCommonWord(word)) // Filter common words
-            .limit(3) // Take first 3 meaningful words
-            .collect(Collectors.toList());
+        List<String> meaningfulWords
+                = Arrays.stream(words)
+                        .filter(word -> word.length() > 3) // Filter short words
+                        .filter(word -> !isCommonWord(word)) // Filter common words
+                        .limit(3) // Take first 3 meaningful words
+                        .collect(Collectors.toList());
 
-        return meaningfulWords.isEmpty() ? "UnknownError"
-            : String.join(" ", meaningfulWords);
+        return meaningfulWords.isEmpty() ? "UnknownError" : String.join(" ", meaningfulWords);
     }
 
     private boolean isCommonWord(String word) {

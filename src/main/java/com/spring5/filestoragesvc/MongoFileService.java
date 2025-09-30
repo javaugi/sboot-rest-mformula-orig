@@ -10,22 +10,20 @@ import com.mongodb.client.gridfs.*;
 import com.mongodb.client.gridfs.model.*;
 import com.mongodb.client.model.Filters;
 import com.spring5.filestoragesvc.websvc.MongoConfigProperties;
-import org.bson.Document;
-import org.bson.types.ObjectId;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
+import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 /**
- *
- *
  * @author bill
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -34,10 +32,14 @@ public class MongoFileService implements FileService {
 
     private static final Logger log = LoggerFactory.getLogger(MongoFileService.class);
 
-    private static final String ERROR_STORING_FILE = "Error storing file with guid - {} - file exists already";
-    private static final String ERROR_GETTING_OBJECT_ID = "Error getting ObjectId for guid - {} - too many ObjectIds returned";
-    private static final String ERROR_GETTING_FILE = "Error getting file with guid - {} - file not returned";
-    private static final String ERROR_DELETING_FILE = "Error deleting file with guid - {} - file not deleted";
+    private static final String ERROR_STORING_FILE
+            = "Error storing file with guid - {} - file exists already";
+    private static final String ERROR_GETTING_OBJECT_ID
+            = "Error getting ObjectId for guid - {} - too many ObjectIds returned";
+    private static final String ERROR_GETTING_FILE
+            = "Error getting file with guid - {} - file not returned";
+    private static final String ERROR_DELETING_FILE
+            = "Error deleting file with guid - {} - file not deleted";
     private static final String INIT_MONGO_FILE_SERVICE = "Init - MongoFileService";
     private static final String DESTOY_MONGO_FILE_SERVICE = "Destoy - MongoFileService";
     private static final String DOC_METADATA_ID_FIELD = "_id";
@@ -77,7 +79,8 @@ public class MongoFileService implements FileService {
     }
 
     @Override
-    public boolean storeFile(String guid, String fileName, String contentType, InputStream inputStream) {
+    public boolean storeFile(
+            String guid, String fileName, String contentType, InputStream inputStream) {
         ObjectId foundObject = getObjectId(guid);
         if (foundObject != null) {
             log.error(ERROR_STORING_FILE, guid);
@@ -86,9 +89,7 @@ public class MongoFileService implements FileService {
             Document doc = new Document(DOC_METADATA_ID_FIELD, guid);
             doc.put(CONTENT_TYPE, contentType);
 
-            GridFSUploadOptions options = new GridFSUploadOptions()
-                    .chunkSizeBytes(358400)
-                    .metadata(doc);
+            GridFSUploadOptions options = new GridFSUploadOptions().chunkSizeBytes(358400).metadata(doc);
 
             gridFSBucket.uploadFromStream(fileName, inputStream, options);
             return true;
@@ -158,26 +159,33 @@ public class MongoFileService implements FileService {
         log.info(INIT_MONGO_FILE_SERVICE);
         MongoConfigProperties mongoConfigProperties = context.getBean(MongoConfigProperties.class);
         mongoClient = getMongoClient(mongoConfigProperties);
-        MongoDatabase mongoDatabase = mongoClient.getDatabase(mongoConfigProperties.getMongoRepositoryName());
+        MongoDatabase mongoDatabase
+                = mongoClient.getDatabase(mongoConfigProperties.getMongoRepositoryName());
         gridFSBucket = GridFSBuckets.create(mongoDatabase);
     }
 
     private MongoClient getMongoClient(MongoConfigProperties mongoConfigProperties) {
         List<ServerAddress> serverAddressList = new ArrayList();
         for (String serverName : mongoConfigProperties.getMongoServerList()) {
-            serverAddressList.add(new ServerAddress(serverName, mongoConfigProperties.getMongoServerPort()));
+            serverAddressList.add(
+                    new ServerAddress(serverName, mongoConfigProperties.getMongoServerPort()));
         }
-        MongoCredential mongoCredential = MongoCredential.createCredential(mongoConfigProperties.getMongoUsername(), MONGO_AUTHENTICATION_DATABASE, mongoConfigProperties.getMongoPassword().toCharArray());
+        MongoCredential mongoCredential
+                = MongoCredential.createCredential(
+                        mongoConfigProperties.getMongoUsername(),
+                        MONGO_AUTHENTICATION_DATABASE,
+                        mongoConfigProperties.getMongoPassword().toCharArray());
 
-        MongoClientSettings settings = MongoClientSettings.builder()
-                    .credential(mongoCredential) // Set the credential
-                    .applyToClusterSettings(builder -> builder.hosts(serverAddressList)) // Set the server address(es)
-                    // You can add other configurations here (e.g., connection pool settings, SSL)
-                    // .applyToConnectionPoolSettings(...)
-                    // .applyToSslSettings(...)
-                    .build();
+        MongoClientSettings settings
+                = MongoClientSettings.builder()
+                        .credential(mongoCredential) // Set the credential
+                        .applyToClusterSettings(
+                                builder -> builder.hosts(serverAddressList)) // Set the server address(es)
+                        // You can add other configurations here (e.g., connection pool settings, SSL)
+                        // .applyToConnectionPoolSettings(...)
+                        // .applyToSslSettings(...)
+                        .build();
 
         return MongoClients.create(settings);
     }
-
 }

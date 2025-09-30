@@ -1,6 +1,5 @@
 package com.sisllc.mathformulas.ci.ch08;
 
-
 /* Represents a call from a user. Calls have a minimum rank and are assigned to the
  * first employee who can handle that call.
  */

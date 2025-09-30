@@ -5,12 +5,11 @@
 package com.spring5.graphql;
 
 /**
- *
  * @author javaugi
  */
 public class DockerNeo4jComposer {
-    
 }
+
 /*
 Installing Neo4j Using docker-compose
 For this example, we are installing Neo4j in Docker, but you can also install it on a physical machine. To install it on a physical machine please click here.
@@ -38,4 +37,4 @@ services:
 3. Connect a Neo4j database to the workbench application.
 
 Visit http://localhost:7474/browser
-*/
+ */

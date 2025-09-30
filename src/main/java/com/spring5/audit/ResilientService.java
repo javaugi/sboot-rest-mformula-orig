@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class ResilientService {
 
@@ -32,15 +31,15 @@ public class ResilientService {
         logger.warn("Executing fallback method due to: " + t.getMessage());
         return "Fallback response: External service is currently unavailable.";
     }
-    
-     @Retry(name = "externalService")
-     public String callBackendWithRetry() {
+
+    @Retry(name = "externalService")
+    public String callBackendWithRetry() {
         if (Math.random() < 0.3) {
             throw new RuntimeException("Retryable failure");
         }
         return "Call with retry successful";
-     }
-     
+    }
+
     @RateLimiter(name = "externalService")
     public String callWithRateLimit() {
         return "Call within rate limit";

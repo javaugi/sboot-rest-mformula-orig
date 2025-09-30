@@ -6,7 +6,6 @@ package com.spring5.dbisolation.jblue;
 
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,8 @@ public class FlightRepositoryMaxCountPagingImpl implements FlightRepositoryCusto
     private final CosmosTemplate cosmosTemplate;
 
     @Override
-    public List<FlightEvent> findLargeDatasetWithPagination(String query, int maxItemCount, String continuationToken) {
+    public List<FlightEvent> findLargeDatasetWithPagination(
+            String query, int maxItemCount, String continuationToken) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxBufferedItemCount(maxItemCount); // Control RU spikes
 
@@ -36,15 +36,15 @@ public class FlightRepositoryMaxCountPagingImpl implements FlightRepositoryCusto
         do {
             // Execute query with pagination
             /*
-            CosmosPagedIterable<FlightEvent> pagedIterable = cosmosTemplate.runQuery(
-                querySpec, FlightEvent.class, FlightEvent.class);
+      CosmosPagedIterable<FlightEvent> pagedIterable = cosmosTemplate.runQuery(
+          querySpec, FlightEvent.class, FlightEvent.class);
 
-            // Process current page
-            pagedIterable.iterableByPage(currentContinuationToken).forEach(page -> {
-                results.addAll(page.getResults());
-                currentContinuationToken = page.getContinuationToken();
-            });
-            // */
+      // Process current page
+      pagedIterable.iterableByPage(currentContinuationToken).forEach(page -> {
+          results.addAll(page.getResults());
+          currentContinuationToken = page.getContinuationToken();
+      });
+      // */
 
         } while (currentContinuationToken != null && results.size() < 1000); // Safety limit
 
@@ -62,19 +62,22 @@ public class FlightRepositoryMaxCountPagingImpl implements FlightRepositoryCusto
 
         for (int i = 0; i < parallelism; i++) {
             final int threadIndex = i;
-            futures.add(executor.submit(() -> {
-                processBatch(query, threadIndex * itemsPerThread, batchSize);
-            }));
+            futures.add(
+                    executor.submit(
+                            () -> {
+                                processBatch(query, threadIndex * itemsPerThread, batchSize);
+                            }));
         }
 
         // Wait for completion
-        futures.forEach(future -> {
-            try {
-                future.get();
-            } catch (Exception e) {
-                // Handle exception
-            }
-        });
+        futures.forEach(
+                future -> {
+                    try {
+                        future.get();
+                    } catch (Exception e) {
+                        // Handle exception
+                    }
+                });
 
         executor.shutdown();
     }
@@ -85,21 +88,21 @@ public class FlightRepositoryMaxCountPagingImpl implements FlightRepositoryCusto
         options.setMaxBufferedItemCount(100); // Small batches to avoid RU spikes
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Pageable pageable = Pageable.ofSize(100);//new Pageable();
+        Pageable pageable = Pageable.ofSize(100); // new Pageable();
 
-        cosmosTemplate.runQuery(querySpec, FlightEvent.class, FlightEvent.class)
-            .forEach(this::processFlight);
-
+        cosmosTemplate
+                .runQuery(querySpec, FlightEvent.class, FlightEvent.class)
+                .forEach(this::processFlight);
     }
 
     private long getApproximateCount(String query) {
         /*
-        String countQuery = "SELECT VALUE COUNT(1) FROM (" + query + ")";
-        return cosmosTemplate.runQuery(new SqlQuerySpec(countQuery), Long.class, Long.class)
-            .stream()
-            .findFirst()
-            .orElse(0L);
-        // */
+    String countQuery = "SELECT VALUE COUNT(1) FROM (" + query + ")";
+    return cosmosTemplate.runQuery(new SqlQuerySpec(countQuery), Long.class, Long.class)
+        .stream()
+        .findFirst()
+        .orElse(0L);
+    // */
         return 0L;
     }
 

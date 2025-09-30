@@ -35,7 +35,7 @@ public class Q47CommonAncesterBad {
         int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         TreeNode root = TreeNode.createMinimalBST(array);
         TreeNode n3 = root.find(9);
-        TreeNode n7 = new TreeNode(6);//root.find(10);
+        TreeNode n7 = new TreeNode(6); // root.find(10);
         TreeNode ancestor = commonAncestorBad(root, n3, n7);
         if (ancestor != null) {
             System.out.println(ancestor.data);
@@ -43,5 +43,4 @@ public class Q47CommonAncesterBad {
             System.out.println("null");
         }
     }
-
 }

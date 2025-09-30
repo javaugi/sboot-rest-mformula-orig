@@ -18,7 +18,8 @@ public class IdempotencyInterceptor implements HandlerInterceptor {
     private final Map<String, ResponseEntity<?>> cache = new ConcurrentHashMap<>();
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(
+            HttpServletRequest request, HttpServletResponse response, Object handler) {
         if ("POST".equalsIgnoreCase(request.getMethod())) {
             String key = request.getHeader("Idempotency-Key");
             if (key != null && cache.containsKey(key)) {
@@ -32,7 +33,8 @@ public class IdempotencyInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    public void afterCompletion(
+            HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         if ("POST".equalsIgnoreCase(request.getMethod())) {
             String key = request.getHeader("Idempotency-Key");
             if (key != null && !cache.containsKey(key)) {

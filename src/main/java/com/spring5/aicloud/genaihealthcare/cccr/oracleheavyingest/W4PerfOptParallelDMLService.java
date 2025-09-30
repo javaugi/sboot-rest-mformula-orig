@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- *
  * @author javau
  */
 public class W4PerfOptParallelDMLService {
+
     /*
-    4. Performance Optimization Techniques
-    Parallel DML and Query
+  4. Performance Optimization Techniques
+  Parallel DML and Query
      */
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -24,7 +24,9 @@ public class W4PerfOptParallelDMLService {
     }
 
     public void bulkMerge(String targetTable, String sourceTable) {
-        String sql = String.format("""
+        String sql
+                = String.format(
+                        """
             MERGE /*+ PARALLEL(8) */ INTO %s t
             USING %s s
             ON (t.claim_id = s.claim_id)
@@ -37,7 +39,8 @@ public class W4PerfOptParallelDMLService {
             VALUES
                 (s.claim_id, s.patient_id, s.amount, s.status)
             LOG ERRORS REJECT LIMIT UNLIMITED
-            """, targetTable, sourceTable);
+            """,
+                        targetTable, sourceTable);
 
         jdbcTemplate.execute(sql);
     }

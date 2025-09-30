@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/mongordb")
 public class MongoRDBProductController {
+
     @Autowired
     private MongoRDBRepository productRepo;
 
@@ -27,8 +28,8 @@ public class MongoRDBProductController {
     @PostMapping("/product")
     public Mono<MongoRDBProduct> addProduct(@RequestBody MongoRDBProduct product) {
         return productRepo.save(product);
-    }    
-    
+    }
+
     @PostMapping
     public Mono<MongoRDBProduct> create(@RequestBody MongoRDBProduct product) {
         return productRepo.save(product);

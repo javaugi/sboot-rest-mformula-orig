@@ -18,5 +18,4 @@ public class LockFactoryMain {
         System.out.println(lf.getLock(1, 2));
         System.out.println(lf.getLock(2, 4));
     }
-
 }

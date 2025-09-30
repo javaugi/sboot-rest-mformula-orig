@@ -7,8 +7,8 @@ package com.spring5.eventsourcing;
 import java.time.Instant;
 import java.util.UUID;
 
-
 public abstract class Event {
+
     private final UUID patientId;
     private final Instant timestamp;
 
@@ -23,5 +23,5 @@ public abstract class Event {
 
     public Instant getTimestamp() {
         return timestamp;
-    } 
+    }
 }

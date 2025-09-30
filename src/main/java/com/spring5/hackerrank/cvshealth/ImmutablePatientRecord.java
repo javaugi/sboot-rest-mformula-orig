@@ -6,8 +6,8 @@ package com.spring5.hackerrank.cvshealth;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Date; // Date is a mutable class
+import java.util.List;
 
 public final class ImmutablePatientRecord {
 
@@ -16,7 +16,8 @@ public final class ImmutablePatientRecord {
     private final Date dateOfBirth; // Mutable field
     private final List<String> allergies; // Mutable collection
 
-    public ImmutablePatientRecord(String patientId, String name, Date dateOfBirth, List<String> allergies) {
+    public ImmutablePatientRecord(
+            String patientId, String name, Date dateOfBirth, List<String> allergies) {
         // 1. Assign final fields
         this.patientId = patientId;
         this.name = name;
@@ -29,7 +30,6 @@ public final class ImmutablePatientRecord {
     }
 
     // No setter methods
-
     public String getPatientId() {
         return patientId;
     }
@@ -46,18 +46,25 @@ public final class ImmutablePatientRecord {
     public List<String> getAllergies() {
         // 5. Return immutable view of the list or a defensive copy
         // Collections.unmodifiableList() is often preferred for performance if the list is large.
-        // If the list itself needs to be copied when returned, then new ArrayList<>(this.allergies) is needed.
+        // If the list itself needs to be copied when returned, then new ArrayList<>(this.allergies) is
+        // needed.
         return Collections.unmodifiableList(allergies);
     }
 
     @Override
     public String toString() {
-        return "ImmutablePatientRecord{" +
-               "patientId='" + patientId + '\'' +
-               ", name='" + name + '\'' +
-               ", dateOfBirth=" + dateOfBirth +
-               ", allergies=" + allergies +
-               '}';
+        return "ImmutablePatientRecord{"
+                + "patientId='"
+                + patientId
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", dateOfBirth="
+                + dateOfBirth
+                + ", allergies="
+                + allergies
+                + '}';
     }
 
     public static void main(String[] args) {
@@ -65,7 +72,8 @@ public final class ImmutablePatientRecord {
         List<String> patientAllergies = new ArrayList<>();
         patientAllergies.add("Peanuts");
 
-        ImmutablePatientRecord record = new ImmutablePatientRecord("P123", "Alice Smith", dob, patientAllergies);
+        ImmutablePatientRecord record
+                = new ImmutablePatientRecord("P123", "Alice Smith", dob, patientAllergies);
         System.out.println("Original Record: " + record);
 
         // Try to modify the 'mutable' fields passed in or returned
@@ -84,6 +92,7 @@ public final class ImmutablePatientRecord {
             System.out.println("Attempted to modify returned list: " + e.getMessage());
         }
 
-        System.out.println("After attempting to modify returned objects: " + record); // Record remains unchanged!
+        System.out.println(
+                "After attempting to modify returned objects: " + record); // Record remains unchanged!
     }
 }

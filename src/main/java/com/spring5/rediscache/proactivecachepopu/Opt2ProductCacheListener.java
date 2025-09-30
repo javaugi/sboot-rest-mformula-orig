@@ -15,15 +15,17 @@ import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-//Option 2 Listener Example
+// Option 2 Listener Example
 @Component
 @RequiredArgsConstructor
 public class Opt2ProductCacheListener {
+
     private final Cache<Long, Boolean> debounceCache;
     private final ProductRepository repo;
-    private final @Qualifier(REDIS_TPL_PRODUCT) RedisTemplate<String, Product> redis;
+    private final @Qualifier(REDIS_TPL_PRODUCT)
+    RedisTemplate<String, Product> redis;
     private final Opt3RedisDebounceService debounceService;
-    
+
     public static boolean option3 = false;
 
     @EventListener
@@ -32,7 +34,7 @@ public class Opt2ProductCacheListener {
             onUpdateOpt3(event);
             return;
         }
-        
+
         Long productId = event.getProductId();
         if (debounceCache.getIfPresent(productId) != null) {
             System.out.println("⏳ Skipped duplicate update for: " + productId);
@@ -46,8 +48,8 @@ public class Opt2ProductCacheListener {
         Product product = repo.findById(productId).orElseThrow();
         redis.opsForValue().set("product:" + productId, product, Duration.ofMinutes(30));
         System.out.println("✅ Cache written for: " + productId);
-    }    
-    
+    }
+
     public void onUpdateOpt3(ProductCacheUpdateEvent event) {
         Long productId = event.getProductId();
         if (!debounceService.shouldUpdate(productId, Duration.ofSeconds(10))) {
@@ -58,6 +60,5 @@ public class Opt2ProductCacheListener {
         Product product = repo.findById(productId).orElseThrow();
         redis.opsForValue().set("product:" + productId, product, Duration.ofMinutes(30));
         System.out.println("✅ Redis cache updated for " + productId);
-    }    
-    
+    }
 }

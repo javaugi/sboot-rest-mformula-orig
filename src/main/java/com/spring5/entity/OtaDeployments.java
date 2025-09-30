@@ -5,12 +5,11 @@
 package com.spring5.entity;
 
 /**
- *
  * @author javau
  */
 public class OtaDeployments {
-    
 }
+
 /*
 CREATE TABLE ota_deployments (
     deployment_id UUID PRIMARY KEY,
@@ -21,4 +20,4 @@ CREATE TABLE ota_deployments (
     rollout_strategy JSONB NOT NULL, -- Phased rollout parameters
     status VARCHAR(20) NOT NULL CHECK (status IN ('scheduled', 'in_progress', 'completed', 'paused'))
 );
-*/
+ */

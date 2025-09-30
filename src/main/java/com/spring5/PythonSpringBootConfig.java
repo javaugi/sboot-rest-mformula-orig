@@ -4,10 +4,10 @@
  */
 package com.spring5;
 
-//https://github.com/javaugi/Spring-Jython
+// https://github.com/javaugi/Spring-Jython
 public class PythonSpringBootConfig {
-    
 }
+
 /*
 It can make sense to use Java Spring Boot with a Python tech stack, depending on the specific needs of the project. Here's a breakdown of when and why this combination might be beneficial:
 When it makes sense:
@@ -44,4 +44,4 @@ Python with FastAPI or Django:
 If you need to build a web application, Python frameworks like FastAPI and Django can be used instead of Spring Boot.
 Conclusion:
 Using Java Spring Boot with a Python tech stack can be a powerful combination if the project requirements align with their respective strengths. However, it's crucial to carefully assess the potential complexities and overhead before making a decision.
-*/
+ */

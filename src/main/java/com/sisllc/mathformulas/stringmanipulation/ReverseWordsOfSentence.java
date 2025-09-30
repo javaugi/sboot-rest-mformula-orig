@@ -4,14 +4,12 @@
  */
 package com.sisllc.mathformulas.stringmanipulation;
 
+import static com.sisllc.mathformulas.stringmanipulation.CapitalizeFirstLetter.SENTENCE;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import static com.sisllc.mathformulas.stringmanipulation.CapitalizeFirstLetter.SENTENCE;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -28,23 +26,26 @@ public class ReverseWordsOfSentence {
 
         words = sentence.split("\\s+");
         reverseRecursive(words, 0, words.length - 1);
-        System.out.println(Arrays.toString(words).replaceAll(", ", " ").replace('[', ' ').replace(']', ' '));
+        System.out.println(
+                Arrays.toString(words).replaceAll(", ", " ").replace('[', ' ').replace(']', ' '));
 
         words = sentence.split("\\s+");
         reverseSwap(words, 0, words.length - 1);
-        System.out.println(Arrays.toString(words).replaceAll(", ", " ").replace('[', ' ').replace(']', ' '));
-        //*
+        System.out.println(
+                Arrays.toString(words).replaceAll(", ", " ").replace('[', ' ').replace(']', ' '));
+        // *
         String[] words2 = {"Loop", "Through", "Many", "Times"};
         reverseSwap(words, 0, words.length - 1);
-        System.out.println(Arrays.toString(words).replaceAll(", ", " ").replace('[', ' ').replace(']', ' '));
+        System.out.println(
+                Arrays.toString(words).replaceAll(", ", " ").replace('[', ' ').replace(']', ' '));
         // */
         /*
-        StringBuilder sb = new StringBuilder();
-        for (String word : words) {
-            sb.append(word + " ");
-        }
-        System.out.println(sb.toString());
-        // */
+    StringBuilder sb = new StringBuilder();
+    for (String word : words) {
+        sb.append(word + " ");
+    }
+    System.out.println(sb.toString());
+    // */
     }
 
     public static void reverse(String[] words) {
@@ -52,7 +53,7 @@ public class ReverseWordsOfSentence {
             return;
         }
         reverseRecursive(words, 0, words.length - 1);
-        //swap(words, 0, words.length - 1);
+        // swap(words, 0, words.length - 1);
     }
 
     public static void reverseSwap(String[] words, int i, int j) {

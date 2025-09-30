@@ -5,9 +5,7 @@
 package com.spring5.dbisolation.gmvehconfig;
 
 /**
- *
  * @author javau
  */
 public class PriceCalculation {
-    
 }

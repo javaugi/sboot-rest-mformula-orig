@@ -9,9 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javau
  */
 public interface OutboxRepository extends JpaRepository<Outbox, Long> {
+
     List<Outbox> findUnpublished(PageRequest pageRequest);
 }

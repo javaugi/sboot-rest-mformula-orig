@@ -4,18 +4,17 @@
  */
 package com.interview.hrank.sort;
 
-import lombok.Builder;
-import lombok.Data;
-import java.util.List;
 import java.util.Comparator;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import lombok.Builder;
+import lombok.Data;
 
 /**
- *
  * @author javau
  */
 public class VehicleGroupSort {
@@ -29,12 +28,14 @@ public class VehicleGroupSort {
         Integer[] rtn = new Integer[2];
 
         Map<String, List<Vehicle>> grouped
-            = list.stream()
-                .sorted(Comparator.comparing(Vehicle::getMake)
-                .thenComparing(Vehicle::getCost)
-                .thenComparing(Vehicle::getRating).reversed()
-                .thenComparing(Vehicle::getModel)
-                ).collect(Collectors.groupingBy(Vehicle::getMake));
+                = list.stream()
+                        .sorted(
+                                Comparator.comparing(Vehicle::getMake)
+                                        .thenComparing(Vehicle::getCost)
+                                        .thenComparing(Vehicle::getRating)
+                                        .reversed()
+                                        .thenComparing(Vehicle::getModel))
+                        .collect(Collectors.groupingBy(Vehicle::getMake));
         List<String> keys = grouped.keySet().stream().sorted(Comparator.reverseOrder()).toList();
         for (String key : keys) {
             System.out.println("Make=" + key);
@@ -50,12 +51,10 @@ public class VehicleGroupSort {
         ExecutorService executorService = Executors.newFixedThreadPool(20);
         List<Vehicle> list = getVehicles();
 
-        List<CompletableFuture<Vehicle>> futures = list.stream()
-            .map(v -> CompletableFuture.supplyAsync(()
-            -> process(v), executorService))
-            .collect(Collectors.toList());
-
-
+        List<CompletableFuture<Vehicle>> futures
+                = list.stream()
+                        .map(v -> CompletableFuture.supplyAsync(() -> process(v), executorService))
+                        .collect(Collectors.toList());
     }
 
     private static Vehicle process(Vehicle v) {
@@ -63,14 +62,14 @@ public class VehicleGroupSort {
     }
 
     public static List<Vehicle> getVehicles() {
-        return List.of(Vehicle.builder().make("Ford").model("F1").build(),
-            Vehicle.builder().make("Ford").model("F2").build(),
-            Vehicle.builder().make("Ford").model("F3").build(),
-            Vehicle.builder().make("Ford").model("F4").build(),
-            Vehicle.builder().make("GM").model("G1").build(),
-            Vehicle.builder().make("GM").model("G2").build(),
-            Vehicle.builder().make("GM").model("G3").build()
-        );
+        return List.of(
+                Vehicle.builder().make("Ford").model("F1").build(),
+                Vehicle.builder().make("Ford").model("F2").build(),
+                Vehicle.builder().make("Ford").model("F3").build(),
+                Vehicle.builder().make("Ford").model("F4").build(),
+                Vehicle.builder().make("GM").model("G1").build(),
+                Vehicle.builder().make("GM").model("G2").build(),
+                Vehicle.builder().make("GM").model("G3").build());
     }
 
     @Data
@@ -88,5 +87,4 @@ public class VehicleGroupSort {
             return "    mkae=" + make + "   :model=" + model;
         }
     }
-
 }

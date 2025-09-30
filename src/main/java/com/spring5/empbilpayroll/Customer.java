@@ -5,10 +5,10 @@
 package com.spring5.empbilpayroll;
 
 /**
- *
  * @author javaugi
  */
 public class Customer {
+
     private String name;
     private String type;
     private double totalPurchase;
@@ -21,10 +21,23 @@ public class Customer {
         this.discount = 0.0;
     }
 
-    public String getName() { return name; }
-    public String getType() { return type; }
-    public double getTotalPurchase() { return totalPurchase; }
-    public double getDiscount() { return discount; }
+    public String getName() {
+        return name;
+    }
 
-    public void setDiscount(double discount) { this.discount = discount; }    
+    public String getType() {
+        return type;
+    }
+
+    public double getTotalPurchase() {
+        return totalPurchase;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
 }

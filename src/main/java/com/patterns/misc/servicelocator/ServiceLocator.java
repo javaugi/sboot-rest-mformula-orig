@@ -8,8 +8,6 @@
 package com.patterns.misc.servicelocator;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

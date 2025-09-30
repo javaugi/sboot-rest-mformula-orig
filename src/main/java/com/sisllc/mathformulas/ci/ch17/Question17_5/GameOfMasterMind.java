@@ -52,7 +52,7 @@ public class GameOfMasterMind {
                 res.hits++;
             } else {
                 /* Only increment the frequency table (which will be used for pseudo-hits) if
-				 * it's not a hit. If it's a hit, the slot has already been "used." */
+         * it's not a hit. If it's a hit, the slot has already been "used." */
                 int code = code(solution.charAt(i));
                 if (code >= 0) {
                     frequencies[code]++;
@@ -140,7 +140,8 @@ public class GameOfMasterMind {
         if (res1.hits == res2.hits && res1.pseudoHits == res2.pseudoHits) {
             return true;
         } else {
-            System.out.println("FAIL: (" + guess + ", " + solution + "): " + res1.toString() + " | " + res2.toString());
+            System.out.println(
+                    "FAIL: (" + guess + ", " + solution + "): " + res1.toString() + " | " + res2.toString());
             return false;
         }
     }

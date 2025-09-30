@@ -8,14 +8,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
-
 @Repository
 public interface DepartmentRepository extends CrudRepository<Department, Long> {
-
 }

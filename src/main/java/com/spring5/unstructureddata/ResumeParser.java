@@ -4,24 +4,24 @@
  */
 package com.spring5.unstructureddata;
 
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import opennlp.tools.namefind.*;
-import opennlp.tools.tokenize.SimpleTokenizer;
-import opennlp.tools.util.Span;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.*;
+import opennlp.tools.namefind.*;
+import opennlp.tools.tokenize.SimpleTokenizer;
+import opennlp.tools.util.Span;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 public class ResumeParser {
+
     private static final String INPUT_DIR = "resumes/David Lee_res25f6.pdf";
-    private static final String OUTPUT_DIR = "outputres/resume25f6_poi_data.json" ;
-    
+    private static final String OUTPUT_DIR = "outputres/resume25f6_poi_data.json";
+
     public static void main(String[] args) {
         String docxPath = INPUT_DIR;
         String jsonPath = OUTPUT_DIR;
@@ -74,9 +74,10 @@ public class ResumeParser {
     private static String extractName(String text) {
         // Simple NLP-based name extraction (for better accuracy, train a model)
         try {
-            NameFinderME nameFinder = new NameFinderME(
-                new TokenNameFinderModel(new File("en-ner-person.bin")) // Download from OpenNLP
-            );
+            NameFinderME nameFinder
+                    = new NameFinderME(
+                            new TokenNameFinderModel(new File("en-ner-person.bin")) // Download from OpenNLP
+                    );
             String[] tokens = SimpleTokenizer.INSTANCE.tokenize(text);
             Span[] names = nameFinder.find(tokens);
             return names.length > 0 ? tokens[names[0].getStart()] : "Unknown";
@@ -86,23 +87,30 @@ public class ResumeParser {
     }
 
     private static String extractEmail(String text) {
-        Matcher matcher = Pattern.compile(
-            "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
-        ).matcher(text);
+        Matcher matcher
+                = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}").matcher(text);
         return matcher.find() ? matcher.group() : "Not Found";
     }
 
     private static String extractPhone(String text) {
-        Matcher matcher = Pattern.compile(
-            "(\\+\\d{1,3}[- ]?)?\\d{10}"  // Supports +91 1234567890
-        ).matcher(text);
+        Matcher matcher
+                = Pattern.compile(
+                        "(\\+\\d{1,3}[- ]?)?\\d{10}" // Supports +91 1234567890
+                )
+                        .matcher(text);
         return matcher.find() ? matcher.group() : "Not Found";
     }
 
     private static List<String> extractSkills(String text) {
-        Set<String> skills = new HashSet<>(Arrays.asList(
-            "Java", "Python", "SQL", "Spring", "Machine Learning", "AWS"
-        )); // Add more skills here
+        Set<String> skills
+                = new HashSet<>(
+                        Arrays.asList(
+                                "Java",
+                                "Python",
+                                "SQL",
+                                "Spring",
+                                "Machine Learning",
+                                "AWS")); // Add more skills here
         List<String> foundSkills = new ArrayList<>();
         for (String skill : skills) {
             if (text.toLowerCase().contains(skill.toLowerCase())) {
@@ -113,11 +121,13 @@ public class ResumeParser {
     }
 
     private static String extractExperience(String text) {
-        Matcher matcher = Pattern.compile(
-            "(\\d+)(\\+)?\\s*(years?|yrs?)"  // Matches "5 years", "3+ yrs"
-        ).matcher(text);
+        Matcher matcher
+                = Pattern.compile(
+                        "(\\d+)(\\+)?\\s*(years?|yrs?)" // Matches "5 years", "3+ yrs"
+                )
+                        .matcher(text);
         return matcher.find() ? matcher.group() : "Not Specified";
-    }    
+    }
 }
 /*
 Java Program: Resume Parser for Candidate Filtering
@@ -284,4 +294,4 @@ Parse Tables in DOCX (common in resumes) using XWPFTable.
 Integrate with a Database to store candidate profiles.
 
 Add a Scoring System to rank candidates based on skills/experience.
-*/
+ */

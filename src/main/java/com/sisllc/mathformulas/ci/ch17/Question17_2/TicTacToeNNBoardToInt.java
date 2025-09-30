@@ -5,7 +5,9 @@ import com.sisllc.mathformulas.ci.lib.AssortedMethods;
 public class TicTacToeNNBoardToInt {
 
     enum Piece {
-        Empty, Red, Blue
+        Empty,
+        Red,
+        Blue
     };
 
     public enum Check {
@@ -216,17 +218,16 @@ public class TicTacToeNNBoardToInt {
                     board[i][j] = convertIntToPiece(board_t[i][j]);
                 }
             }
-            //AssortedMethods.printMatrix(board_t);
+            // AssortedMethods.printMatrix(board_t);
             Piece p1 = hasWon1(board);
             Piece p2 = hasWon2(board);
             Piece p3 = hasWon3(board);
             Piece p4 = hasWon4(board);
-            //System.out.println(p + " " + p2);
+            // System.out.println(p + " " + p2);
             if (p1 != p2 || p2 != p3 || p3 != p4) {
                 System.out.println(p1 + " " + p2 + " " + p3 + " " + p4);
                 AssortedMethods.printMatrix(board_t);
             }
         }
     }
-
 }

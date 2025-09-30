@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -54,11 +52,11 @@ public class LambdaExpression {
     }
 
     public static Printer p = (prn) -> System.out.println(prn);
-    
+
     public static void main(String args[]) {
-        
+
         p.print("This is the generic Printer.print test");
-        
+
         NumericTest isEven = (n) -> (n % 2) == 0;
         NumericTest isNegative = (n) -> (n < 0);
         // Output: false
@@ -73,93 +71,97 @@ public class LambdaExpression {
         // Output: Good Evening Jessica!
         System.out.println(eveningGreeting.processName("Jessica"));
 
-        MyString reverseStr = (str) -> {
-            String result = "";
+        MyString reverseStr
+                = (str) -> {
+                    String result = "";
 
             for (int i = str.length() - 1; i >= 0; i--) {
                 result += str.charAt(i);
             }
 
-            return result;
-        };
+                    return result;
+                };
         // Output: omeD adbmaL
         System.out.println(reverseStr.myStringFunction("Lambda Demo"));
 
-        MyString reverseStr2 = (str) -> {
-            return new StringBuilder(str).reverse().toString();
-        };
+        MyString reverseStr2
+                = (str) -> {
+                    return new StringBuilder(str).reverse().toString();
+                };
         // Output: omeD adbmaL
         System.out.println(reverseStr2.myStringFunction("Lambda Demo"));
 
-        MyGeneric<String> reverse = (str) -> {
-            String result = "";
+        MyGeneric<String> reverse
+                = (str) -> {
+                    String result = "";
 
             for (int i = str.length() - 1; i >= 0; i--) {
                 result += str.charAt(i);
             }
 
-            return result;
-        };
+                    return result;
+                };
         // Output: omeD adbmaL
         System.out.println(reverse.compute("Lambda Demo"));
 
-        MyGeneric<String> reverse2 = (str) -> {
-            StringBuilder sb = new StringBuilder();
+        MyGeneric<String> reverse2
+                = (str) -> {
+                    StringBuilder sb = new StringBuilder();
 
             for (int i = str.length() - 1; i >= 0; i--) {
                 sb.append(str.charAt(i));
             }
 
-            return sb.toString();
-        };
+                    return sb.toString();
+                };
         // Output: omeD adbmaL
         System.out.println(reverse2.compute("Lambda Demo"));
 
-
         // Integer version of MyGeneric
-        MyGeneric<Integer> factorial = (Integer n) -> {
-            int result = 1;
+        MyGeneric<Integer> factorial
+                = (Integer n) -> {
+                    int result = 1;
 
             for (int i = 1; i <= n; i++) {
                 result = i * result;
                 System.out.println("factorial calc n=" + i + "-result=" + result);
             }
 
-            return result;
-        };
+                    return result;
+                };
         // Output: 120
         System.out.println(factorial.compute(5));
-        
-        
-        //Factorial
+
+        // Factorial
         // Integer version of MyGeneric
-        Factorial<Integer> factorial2 = (Integer n) -> {
-            int result = 1;
+        Factorial<Integer> factorial2
+                = (Integer n) -> {
+                    int result = 1;
 
             for (int i = 1; i <= n; i++) {
                 result = i * result;
                 System.out.println("factorial calc n=" + i + "-result=" + result);
             }
 
-            return result;
-        };
+                    return result;
+                };
         // Output: 720
         System.out.println(factorial2.compute(6));
 
-        
-        //Factorial
+        // Factorial
         // Integer version of MyGeneric
-        Factorial<BigInteger> factorial3 = (BigInteger n) -> {
-            BigInteger result = BigInteger.ONE;
+        Factorial<BigInteger> factorial3
+                = (BigInteger n) -> {
+                    BigInteger result = BigInteger.ONE;
 
             for (BigInteger i = BigInteger.ONE; i.compareTo(n) <= 0; i = i.add(BigInteger.ONE)) {
                 result = result.multiply(i);
-                //result = i * result;
+                // result = i * result;
                 System.out.println("factorial calc n=" + i + "-result=" + result);
             }
 
-            return result;
-        };
+                    return result;
+                };
         // Output: 5040
         System.out.println("factorial3  for 7=" + factorial3.compute(BigInteger.valueOf(7)));
     }

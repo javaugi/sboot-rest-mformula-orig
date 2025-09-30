@@ -17,5 +17,4 @@ public class AnalysisResult {
 
     ClinicalData clinicalData;
     FinancialData financialData;
-
 }

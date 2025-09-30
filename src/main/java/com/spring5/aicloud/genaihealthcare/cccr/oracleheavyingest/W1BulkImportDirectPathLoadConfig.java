@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
-//import org.apache.spark.sql.execution.columnar.ARRAY;
-//import org.apache.spark.sql.execution.columnar.ARRAY;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -32,6 +30,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
+
 /*
 Key Points:
     Method Signature: The write method should accept List<? extends ClaimRecord> and not declare checked exceptions
@@ -46,9 +45,9 @@ Key Points:
 public class W1BulkImportDirectPathLoadConfig {
 
     /*
-    1. Bulk Import Strategies
-        Direct Path Load (SQL*Loader External Tables)
-        Use Case: Initial data loads, large batch imports
+  1. Bulk Import Strategies
+      Direct Path Load (SQL*Loader External Tables)
+      Use Case: Initial data loads, large batch imports
      */
     private final JobRepository jobRepository;
     private final DataSource dataSource;
@@ -58,19 +57,20 @@ public class W1BulkImportDirectPathLoadConfig {
     @Bean
     public JdbcCursorItemReader<ClaimRecord> claimReader() {
         return new JdbcCursorItemReaderBuilder<ClaimRecord>()
-            .dataSource(dataSource)
-            .name("claimReader")
-            .sql("SELECT claim_id, patient_id, amount FROM external_claims")
-            .rowMapper(new BeanPropertyRowMapper<>(ClaimRecord.class))
-            .fetchSize(10000)
-            .build();
+                .dataSource(dataSource)
+                .name("claimReader")
+                .sql("SELECT claim_id, patient_id, amount FROM external_claims")
+                .rowMapper(new BeanPropertyRowMapper<>(ClaimRecord.class))
+                .fetchSize(10000)
+                .build();
     }
 
     @Bean
     public ItemWriter<ClaimRecord> directPathItemWriter() {
         return items -> {
-            String sql = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) "
-                + "VALUES (?, ?, ?)";
+            String sql
+                    = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) "
+                    + "VALUES (?, ?, ?)";
 
             try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -90,12 +90,12 @@ public class W1BulkImportDirectPathLoadConfig {
         };
     }
 
-
-    //Solution 2: Using JdbcBatchItemWriter (Recommended)
+    // Solution 2: Using JdbcBatchItemWriter (Recommended)
     @Bean
     public JdbcBatchItemWriter<ClaimRecord> directPathBatchItemWriter() {
-        String sql = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) "
-            + "VALUES (:claimId, :patientId, :amount)";
+        String sql
+                = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) "
+                + "VALUES (:claimId, :patientId, :amount)";
 
         JdbcBatchItemWriter<ClaimRecord> writer = new JdbcBatchItemWriter<>();
         writer.setDataSource(dataSource);
@@ -107,12 +107,13 @@ public class W1BulkImportDirectPathLoadConfig {
         return writer;
     }
 
-    //Solution 3: Oracle-Specific Direct Path Writer
+    // Solution 3: Oracle-Specific Direct Path Writer
     @Bean
     public ItemWriter<ClaimRecord> oracleDirectPathWriter() {
         return items -> {
-            try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(
-                "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) VALUES (?, ?, ?)")) {
+            try (Connection conn = dataSource.getConnection(); PreparedStatement ps
+                    = conn.prepareStatement(
+                            "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) VALUES (?, ?, ?)")) {
 
                 // Disable auto-commit for batch processing
                 conn.setAutoCommit(false);
@@ -134,20 +135,17 @@ public class W1BulkImportDirectPathLoadConfig {
     }
 
     @Bean
-    public Step bulkImportStep(ItemReader<ClaimRecord> reader,
-        ItemWriter<ClaimRecord> writer) {
+    public Step bulkImportStep(ItemReader<ClaimRecord> reader, ItemWriter<ClaimRecord> writer) {
         return new StepBuilder("bulkImportStep", jobRepository)
-            .<ClaimRecord, ClaimRecord>chunk(1000, transactionManager)
-            .reader(reader)
-            .writer(writer)
-            .build();
+                .<ClaimRecord, ClaimRecord>chunk(1000, transactionManager)
+                .reader(reader)
+                .writer(writer)
+                .build();
     }
 
     @Bean
     public Job bulkImportJob(Step bulkImportStep) {
-        return new JobBuilder("bulkImportJob", jobRepository)
-            .start(bulkImportStep)
-            .build();
+        return new JobBuilder("bulkImportJob", jobRepository).start(bulkImportStep).build();
     }
 
     @Bean
@@ -171,10 +169,8 @@ public class W1BulkImportDirectPathLoadConfig {
 
             @Override
             public void afterJob(JobExecution jobExecution) {
-                System.out.println("Bulk import job completed with status: "
-                    + jobExecution.getStatus());
+                System.out.println("Bulk import job completed with status: " + jobExecution.getStatus());
             }
         };
     }
-
 }

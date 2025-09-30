@@ -4,12 +4,17 @@
  */
 package com.interview;
 
+import com.interview.TwoDimSongPairFinder.SongPair;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /*
 Key Features:
@@ -22,7 +27,7 @@ Key Features:
     Extensible Design: Easy to modify for different target durations
  */
 public class TwoDimSongPairFinder {
-// Realistic song titles with various durations
+    // Realistic song titles with various durations
 
     private static final String[][] playtimes = {
         {"Bohemian Rhapsody", "5.55"},
@@ -68,14 +73,49 @@ public class TwoDimSongPairFinder {
             }
         }
 
+        System.out.println("===NEW Song Pair Finder ===\n");
+        System.out.println("Looking for song pairs that sum to exactly 7 minutes (420 seconds)\n");
+        pairs = finder.findSongPairs2(playtimes);
+        if (pairs.isEmpty()) {
+            System.out.println("No pairs found that sum to exactly 7 minutes.");
+        } else {
+            System.out.println("Found " + pairs.size() + " pair(s):\n");
+            for (int i = 0; i < pairs.size(); i++) {
+                SongPair pair = pairs.get(i);
+                System.out.println((i + 1) + ". " + pair);
+            }
+        }
+
         // Additional analysis
         finder.analyzeSongs(playtimes);
     }
 
-    public SongPair findSongPairs2(String[][] playtimes) {
+    public List<SongPair> findSongPairs2(String[][] playtimes) {
         List<SongPair> result = new ArrayList<>();
 
-        return doFindSongPairs(playtimes).getFirst();
+        List<Song> songs = new ArrayList<>();
+        // Parse songs and count occurrences
+        for (String[] songData : playtimes) {
+            if (songData.length != 2) {
+                continue;
+            }
+
+            int duration = parseDuration(songData[1]);
+            Song song = new Song(songData[0], songData[1], duration);
+            songs.add(song);
+        }
+
+        System.out.println("findSongPairs2 songs=" + songs);
+        for (int i = 0; i < songs.size(); i++) {
+            for (int j = i + 1; j < songs.size(); j++) {
+                if ((songs.get(i).durationInSeconds + songs.get(j).getDurationInSeconds()) == 420) {
+                    SongPair pair = new SongPair(songs.get(i), songs.get(j));
+                    result.add(pair);
+                }
+            }
+        }
+
+        return result;
     }
 
     public List<SongPair> doFindSongPairs(String[][] playtimes) {
@@ -155,8 +195,7 @@ public class TwoDimSongPairFinder {
         int right = songs.size() - 1;
 
         while (left < right) {
-            int sum = songs.get(left).getDurationInSeconds()
-                + songs.get(right).getDurationInSeconds();
+            int sum = songs.get(left).getDurationInSeconds() + songs.get(right).getDurationInSeconds();
 
             if (sum == TARGET_DURATION) {
                 // Found a pair, but need to handle duplicates
@@ -165,14 +204,14 @@ public class TwoDimSongPairFinder {
 
                 // Handle multiple songs with same duration on left
                 while (currentRight > currentLeft
-                    && songs.get(currentRight).getDurationInSeconds()
-                    == songs.get(right).getDurationInSeconds()) {
+                        && songs.get(currentRight).getDurationInSeconds()
+                        == songs.get(right).getDurationInSeconds()) {
 
                     // Handle multiple songs with same duration on right
                     int tempLeft = currentLeft;
                     while (tempLeft < currentRight
-                        && songs.get(tempLeft).getDurationInSeconds()
-                        == songs.get(left).getDurationInSeconds()) {
+                            && songs.get(tempLeft).getDurationInSeconds()
+                            == songs.get(left).getDurationInSeconds()) {
 
                         result.add(new SongPair(songs.get(tempLeft), songs.get(currentRight)));
                         tempLeft++;
@@ -233,9 +272,8 @@ public class TwoDimSongPairFinder {
 
         // Songs that are exactly half of target
         int halfTarget = TARGET_DURATION / 2;
-        List<Song> halfDurationSongs = songs.stream()
-            .filter(song -> song.getDurationInSeconds() == halfTarget)
-            .toList();
+        List<Song> halfDurationSongs
+                = songs.stream().filter(song -> song.getDurationInSeconds() == halfTarget).toList();
 
         if (!halfDurationSongs.isEmpty()) {
             System.out.println("\nSongs that are exactly 3.5 minutes:");
@@ -244,11 +282,15 @@ public class TwoDimSongPairFinder {
     }
 
     // Song class to represent song data
+    @Data
+    @Builder(toBuilder = true)
+    // @NoArgsConstructor
+    // @AllArgsConstructor
     public static class Song {
 
-        private final String title;
-        private final String originalDuration;
-        private final int durationInSeconds;
+        private String title;
+        private String originalDuration;
+        private int durationInSeconds;
 
         public Song(String title, String originalDuration, int durationInSeconds) {
             this.title = title;
@@ -282,8 +324,7 @@ public class TwoDimSongPairFinder {
                 return false;
             }
             Song song = (Song) o;
-            return durationInSeconds == song.durationInSeconds
-                && Objects.equals(title, song.title);
+            return durationInSeconds == song.durationInSeconds && Objects.equals(title, song.title);
         }
 
         @Override
@@ -293,11 +334,15 @@ public class TwoDimSongPairFinder {
     }
 
     // SongPair class to represent a pair of songs
+    @Data
+    @Builder(toBuilder = true)
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class SongPair {
 
-        private final Song song1;
-        private final Song song2;
-        private final int totalDuration;
+        private Song song1;
+        private Song song2;
+        private int totalDuration;
 
         public SongPair(Song song1, Song song2) {
             this.song1 = song1;
@@ -319,9 +364,18 @@ public class TwoDimSongPairFinder {
 
         @Override
         public String toString() {
-            return song1.getTitle() + " (" + song1.getOriginalDuration() + ") + "
-                + song2.getTitle() + " (" + song2.getOriginalDuration() + ") = "
-                + formatDuration(totalDuration) + " (" + totalDuration + " seconds)";
+            return song1.getTitle()
+                    + " ("
+                    + song1.getOriginalDuration()
+                    + ") + "
+                    + song2.getTitle()
+                    + " ("
+                    + song2.getOriginalDuration()
+                    + ") = "
+                    + formatDuration(totalDuration)
+                    + " ("
+                    + totalDuration
+                    + " seconds)";
         }
 
         @Override
@@ -334,7 +388,7 @@ public class TwoDimSongPairFinder {
             }
             SongPair songPair = (SongPair) o;
             return (Objects.equals(song1, songPair.song1) && Objects.equals(song2, songPair.song2))
-                || (Objects.equals(song1, songPair.song2) && Objects.equals(song2, songPair.song1));
+                    || (Objects.equals(song1, songPair.song2) && Objects.equals(song2, songPair.song1));
         }
 
         @Override

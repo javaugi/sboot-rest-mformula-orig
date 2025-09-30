@@ -7,9 +7,7 @@ package com.spring5.dbisolation.wmart;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javau
  */
 public interface WmOrderRepository extends JpaRepository<Order, Long> {
-
 }

@@ -20,7 +20,7 @@ public class PseudonymService {
     }
 
     public String getPseudonym(String patientId) {
-        //5. Optional: Adding a Salt or Context
+        // 5. Optional: Adding a Salt or Context
         String contextSpecificPseudonym = pseudonymizer.pseudonymize(patientId + "|modelA");
         return pseudonymizer.pseudonymize(patientId);
     }

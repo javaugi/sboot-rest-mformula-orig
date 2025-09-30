@@ -25,9 +25,10 @@ import lombok.ToString;
 @Entity
 @Cacheable
 public class Medication {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;    
-    
+    Long id;
+
     String name;
 }

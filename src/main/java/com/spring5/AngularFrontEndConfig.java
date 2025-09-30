@@ -4,23 +4,22 @@
  */
 package com.spring5;
 
-//https://www.baeldung.com/spring-boot-angular-web
-//https://github.com/javaugi/full-stack-with-angular-and-spring-boot
+// https://www.baeldung.com/spring-boot-angular-web
+// https://github.com/javaugi/full-stack-with-angular-and-spring-boot
 public class AngularFrontEndConfig {
-    //see sample github spring boot with Angular projects
-    
-    //download and intall node.js   
-    //node -v
-    //npm -v
-    //npm install -g @angular/cli
-    //update
-    //npm install -g @angular/cli@latest
-    //ng update @angular/core @angular/cli
-    //ng new angularclient in the dir /e/springtutorial/cimathformulas/src/main/webapp
-    
+    // see sample github spring boot with Angular projects
+
+    // download and intall node.js
+    // node -v
+    // npm -v
+    // npm install -g @angular/cli
+    // update
+    // npm install -g @angular/cli@latest
+    // ng update @angular/core @angular/cli
+    // ng new angularclient in the dir /e/springtutorial/cimathformulas/src/main/webapp
 }
-//npm install -g @angular/cli@19.2.9  (npm uninstall -g @angular/cli@19.2.9 to remove)
-//ng new angularclient after cd to project/src/main/webapp
+// npm install -g @angular/cli@19.2.9  (npm uninstall -g @angular/cli@19.2.9 to remove)
+// ng new angularclient after cd to project/src/main/webapp
 
 /*
 Installing Node.js and Angular (2+):Here's a step-by-step guide to install Node.js and set up an Angular 2+ development environment:
@@ -87,13 +86,12 @@ Troubleshooting
     bash
     sudo chown -R $USER /usr/local/lib/node_modules
     If you get command not found errors, ensure Node.js is in your PATH.
-*/
+ */
 
-
-/*
-For a Spring Boot and Angular project structured as a single Maven project, the angularclient directory typically resides within 
-    the src/main directory. A common approach is to place it under src/main/frontend or src/main/webapp, keeping client-side code 
-\   separate from the Java backend. The pom.xml file should be configured to build the Angular application and include the compiled 
+ /*
+For a Spring Boot and Angular project structured as a single Maven project, the angularclient directory typically resides within
+    the src/main directory. A common approach is to place it under src/main/frontend or src/main/webapp, keeping client-side code
+\   separate from the Java backend. The pom.xml file should be configured to build the Angular application and include the compiled
     output in the Spring Boot application's static resources, usually under src/main/resources/public.
 Code
 
@@ -126,9 +124,9 @@ Code
 │                   └── app
 │                       └── ... (Spring Boot tests)
 ├── pom.xml
-*/
+ */
 
-/*
+ /*
 Here are some examples of full-stack applications using Java Spring Boot and Angular:
 1. User Management Application:
 Features:
@@ -170,4 +168,4 @@ Additional Resources:
 Many tutorials and courses are available online for building full-stack applications with Spring Boot and Angular.
 GitHub repositories provide open-source examples for reference and learning.
 These examples demonstrate the versatility of using Spring Boot and Angular together for building various types of full-stack web applications.
-*/
+ */

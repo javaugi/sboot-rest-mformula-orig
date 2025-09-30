@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -21,11 +19,11 @@ public class SingleObject {
 
     private static final Logger log = LoggerFactory.getLogger(SingleObject.class);
 
-    //create an object of SingleObject
+    // create an object of SingleObject
     private static SingleObject instance = new SingleObject();
 
-    //make the constructor private so that this class cannot be
-    //instantiated
+    // make the constructor private so that this class cannot be
+    // instantiated
     private SingleObject() {
     }
 
@@ -37,12 +35,13 @@ public class SingleObject {
     //  When the singleton class is loaded, inner class is not loaded and hence
     //  doesn’t create object when loading the class. Inner class is created only
     //  when getInstance() method is called. So it may seem like eager initialization
-    //  but it is lazy initialization. This is the most widely used approach as it doesn’t use synchronization.
+    //  but it is lazy initialization. This is the most widely used approach as it doesn’t use
+    // synchronization.
     public static SingleObject getInstancePrefered() {
         return CreateSingleton.INSTANCE;
     }
 
-    //Get the only object available
+    // Get the only object available
     public static SingleObject getInstance() {
         if (instance == null) {
             synchronized (SingleObject.class) {

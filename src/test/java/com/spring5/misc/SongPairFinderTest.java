@@ -8,17 +8,17 @@ import com.interview.TwoDimSongPairFinder;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.jupiter.api.Test; //Junit 5
-//import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+// import org.junit.Test;
 /**
- *
  * @author javau
  */
 public class SongPairFinderTest {
+
     private TwoDimSongPairFinder finder = new TwoDimSongPairFinder();
 
-    //@Test
+    // @Test
     public void testFindSongPairsWithExactMatches() {
         String[][] testPlaytimes = {
             {"Song A", "3.30"}, // 210 seconds
@@ -34,7 +34,7 @@ public class SongPairFinderTest {
         assertEquals(420, pairs.get(0).getTotalDuration());
     }
 
-    //@Test
+    // @Test
     public void testFindSongPairsWithDifferentDurations() {
         String[][] testPlaytimes = {
             {"Song A", "4.00"}, // 240 seconds
@@ -52,10 +52,10 @@ public class SongPairFinderTest {
 
     @Test
     public void testParseDuration() {
-        assertEquals(335, finder.parseDuration("5.35"));  // 5*60 + 35 = 335
-        assertEquals(95, finder.parseDuration("1.35"));   // 1*60 + 35 = 95
-        assertEquals(275, finder.parseDuration("4.35"));  // 4*60 + 35 = 275
-        assertEquals(420, finder.parseDuration("7.00"));  // 7*60 + 00 = 420
+        assertEquals(335, finder.parseDuration("5.35")); // 5*60 + 35 = 335
+        assertEquals(95, finder.parseDuration("1.35")); // 1*60 + 35 = 95
+        assertEquals(275, finder.parseDuration("4.35")); // 4*60 + 35 = 275
+        assertEquals(420, finder.parseDuration("7.00")); // 7*60 + 00 = 420
     }
 
     @Test

@@ -13,20 +13,20 @@ public class InventoryClientImpl implements InventoryClient {
 
     @Override
     public CompletableFuture<Boolean> reserveItems(String orderId, List<AuditOrder> items) {
-        return CompletableFuture.supplyAsync(() -> {
-            // Simulate API call / DB operation
-            try {
-                Thread.sleep(500); // Simulate delay
-                // Here you'd check inventory, update DB, etc.
-                return true; // or false if failed
-            } catch (InterruptedException e) {
-                throw new RuntimeException("Reservation failed", e);
-            }
-        });
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    // Simulate API call / DB operation
+                    try {
+                        Thread.sleep(500); // Simulate delay
+                        // Here you'd check inventory, update DB, etc.
+                        return true; // or false if failed
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException("Reservation failed", e);
+                    }
+                });
     }
-    
+
     @Override
     public void cancelReservation(String orderId) {
-        
     }
 }

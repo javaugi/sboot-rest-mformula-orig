@@ -14,15 +14,19 @@ package com.patterns.misc.compositeentity;
  * automatically as being managed by EJB entity bean. Following are the
  * participants in Composite Entity Bean.
  *
+ * <p>
  * Composite Entity - It is primary entity bean. It can be coarse grained or can
  * contain a coarse grained object to be used for persistence purpose.
  *
+ * <p>
  * Coarse-Grained Object - This object contains dependent objects. It has its
  * own life cycle and also manages life cycle of dependent objects.
  *
+ * <p>
  * Dependent Object - Dependent object is an object which depends on coarse
  * grained object for its persistence lifecycle.
  *
+ * <p>
  * Strategies - Strategies represents how to implement a Composite Entity.
  *
  * @author david

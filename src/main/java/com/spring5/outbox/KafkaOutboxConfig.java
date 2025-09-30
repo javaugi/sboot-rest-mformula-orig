@@ -14,16 +14,14 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
 public class KafkaOutboxConfig extends KafkaBaseConfig {
+
     public static final String KAFKA_OUTBOX_TOPIC = "my-outbox-topic";
 
     @Bean
     public NewTopic defaultTopic() {
-        return TopicBuilder.name(KAFKA_DEF_TOPIC)
-                .partitions(3)
-                .replicas(1)
-                .build();
+        return TopicBuilder.name(KAFKA_DEF_TOPIC).partitions(3).replicas(1).build();
     }
-    
+
     @Bean
     public NewTopic outboxTopic() {
         return TopicBuilder.name(KAFKA_OUTBOX_TOPIC)
@@ -33,12 +31,12 @@ public class KafkaOutboxConfig extends KafkaBaseConfig {
                 .config("cleanup.policy", "compact") // Compacted topic for outbox pattern
                 .build();
     }
-    
+
     @Bean(name = "outboxKafkaTemplate")
     public KafkaTemplate<String, Outbox> outboxKafkaTemplate() {
         return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(baseAvroProducerConfigs()));
-    } 
-} 
+    }
+}
 /*
 Example:
 @RestController
@@ -207,4 +205,4 @@ Example Answer:
 ✅ Practice Coding: Focus on Java concurrency, Spring Boot, and GCP APIs.
 ✅ Review Case Studies: CVS likely uses GCP, Kafka, and microservices.
 ✅ Prepare Questions: Ask about their biggest tech debt challenges.
-*/
+ */

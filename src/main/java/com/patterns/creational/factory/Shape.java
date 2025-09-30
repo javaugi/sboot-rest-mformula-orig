@@ -7,11 +7,7 @@
  */
 package com.patterns.creational.factory;
 
-import com.patterns.creational.abstractfactory.*;
-
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

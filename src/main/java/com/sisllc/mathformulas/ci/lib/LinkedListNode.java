@@ -3,8 +3,6 @@ package com.sisllc.mathformulas.ci.lib;
 import java.util.HashSet;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -64,7 +62,7 @@ public class LinkedListNode {
         LinkedListNode listNode = node.createPrintForward();
         listNode = node.deleteDups(listNode);
         System.out.println(listNode.printForward());
-        //node.createPrintBackward();
+        // node.createPrintBackward();
     }
 
     public String printbackward() {
@@ -89,7 +87,6 @@ public class LinkedListNode {
                 }
                 node = node.next;
             }
-
         }
 
         System.out.println(orig.printForward());
@@ -129,5 +126,4 @@ public class LinkedListNode {
 
         return end;
     }
-
 }

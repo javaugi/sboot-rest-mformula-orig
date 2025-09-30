@@ -7,18 +7,18 @@ import org.slf4j.LoggerFactory;
 Big-O:
 
     Describes how the algorithm scales and performs, in terms of either the execution time required or the space used.
-    Is relative representation of complexity. This allows you to reduce an algorithm to a variable which in turn allows 
+    Is relative representation of complexity. This allows you to reduce an algorithm to a variable which in turn allows
     you to easily compare it to another.
     Describes an upper limit on the growth of a function, in the other words the “worst case scenario”.
 
-    There is also Big-Omega notation which looks at the lower bound / “best case scenario” stating that the algorithm will 
+    There is also Big-Omega notation which looks at the lower bound / “best case scenario” stating that the algorithm will
     take at least X amount of time and Big-Theta which is tight bound to both lower and upper / “average”.
 
 Some quick observations in determining Big-O:
 
     A Sequence of statements, or things like conditional checks are constant: O(1)
     A loop of statements result in : O(n) n being the number of loop executions.
-    Nested loops are multiplied together: O(n2) where n is the times the outer loop executes and m is the times the inner 
+    Nested loops are multiplied together: O(n2) where n is the times the outer loop executes and m is the times the inner
     loop executes.
 
 Comparing the common notation examples:
@@ -44,8 +44,6 @@ TreeSet         O(log n)    O(log n)	O(log n)    O(log n)
 
  */
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -79,14 +77,12 @@ public class BigOExamples {
         int sum = 0;
         for (int j = 0; j < n; j++) {
             sum += j;
-
         }
         return sum;
     }
 
     /**
-     * Quadratic. O(n^2)
-     * sum of sq1 + sq2 + sq33 + sq4 + ....
+     * Quadratic. O(n^2) sum of sq1 + sq2 + sq33 + sq4 + ....
      *
      * @param n the n
      * @return the int
@@ -159,5 +155,4 @@ public class BigOExamples {
 
         return data[0];
     }
-
 }

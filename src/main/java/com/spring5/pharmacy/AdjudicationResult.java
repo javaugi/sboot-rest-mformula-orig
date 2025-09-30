@@ -18,11 +18,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdjudicationResult {
+
     String status;
     String message;
     String reason;
-    
-    
+
     public boolean isApproved() {
         return true;
     }

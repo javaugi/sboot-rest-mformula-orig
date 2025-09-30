@@ -15,10 +15,11 @@ import lombok.Data;
 @Builder(toBuilder = true)
 @Entity
 public class Inventory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     Long itemId;
     double quantity;
     long productId;

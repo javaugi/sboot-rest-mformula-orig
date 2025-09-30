@@ -9,11 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
- *
  * @author javaugi
  */
 public interface FileProcessedRepository extends JpaRepository<FileProcessedRecord, Long> {
-    
+
     @Query("SELECT f FROM FileProcessedRecord f  WHERE f.eventId=(:eventId)")
     boolean existsByEventId(@Param("eventId") String eventId);
 }

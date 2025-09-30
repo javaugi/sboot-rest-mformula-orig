@@ -44,5 +44,4 @@ public class ShuffleDeckOfCards {
         shuffleArrayRecursively(cards, 5);
         System.out.println(cards);
     }
-
 }

@@ -13,12 +13,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-import java.math.BigDecimal;
+import java.time.Instant;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import java.time.Instant;
 
 @Data
 @Builder(toBuilder = true)
@@ -38,8 +37,10 @@ public class AlgoTrade {
     @ManyToOne
     @JoinColumn(name = "user_account_id")
     private UserAccount userAccount;
+
     @JoinColumn(name = "order_id")
     private String orderId;
+
     private String symbol;
 
     @Column(name = "instrument_id")
@@ -51,6 +52,7 @@ public class AlgoTrade {
 
     @Column(name = "execution_time")
     private Instant executionTime;
+
     @Column(name = "trade_type")
     private String tradeType;
 
@@ -59,6 +61,7 @@ public class AlgoTrade {
 
     @Column(name = "create_date")
     private Instant createDate;
+
     @Column(name = "update_date")
     private Instant updateDate;
 }

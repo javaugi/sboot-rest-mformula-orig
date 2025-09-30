@@ -15,5 +15,4 @@ public class ClaimRecord {
     String claimId;
     String patientId;
     BigDecimal amount;
-
 }

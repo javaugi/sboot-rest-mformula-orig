@@ -23,12 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author david
  */
-public class PhoneNumberExtensionTest  extends ProjectTest {
+public class PhoneNumberExtensionTest extends ProjectTest {
+
     private static final Logger log = LoggerFactory.getLogger(PhoneNumberExtensionTest.class);
-        
+
     private static final String CIM_PHONE_REG_EX = "^(\\(\\d{3}\\))[ ]\\d{3}-\\d{4}$";
     private static final Pattern pattern = Pattern.compile(CIM_PHONE_REG_EX);
 
@@ -37,15 +37,15 @@ public class PhoneNumberExtensionTest  extends ProjectTest {
         String phone = "(231) 734-6552";
         Matcher matcher = pattern.matcher(phone);
         assertTrue(matcher.find());
-        
+
         phone = "(231)734-6552";
         matcher = pattern.matcher(phone);
         assertTrue(!matcher.find());
-        
+
         phone = "(734) 734-6552";
         matcher = pattern.matcher(phone);
         assertTrue(matcher.find());
-        
+
         phone = "(734)  734-6552";
         matcher = pattern.matcher(phone);
         assertTrue(!matcher.find());
@@ -192,7 +192,7 @@ public class PhoneNumberExtensionTest  extends ProjectTest {
             PhoneNumberExtensionVO phoneNumberExtensionVO = extractUsPhoneExtension(phoneExtension);
             if (phoneNumberExtensionVO.isValid()) {
                 assertTrue(StringUtils.isNotEmpty(phoneNumberExtensionVO.getPhoneNumber()));
-                //System.out.println("" + phoneNumberExtensionVO);
+                // System.out.println("" + phoneNumberExtensionVO);
             } else {
                 assertTrue(StringUtils.isEmpty(phoneNumberExtensionVO.getPhoneNumber()));
                 System.out.println("\n ****** " + phoneNumberExtensionVO + " ****** \n ");

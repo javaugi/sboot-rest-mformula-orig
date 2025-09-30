@@ -16,7 +16,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -27,9 +26,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class KafkaDocument {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String text;
 
+    String text;
 }

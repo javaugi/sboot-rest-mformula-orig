@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -7,42 +7,42 @@ package com.spring5.mbassador;
 import com.spring5.EventBusConfig;
 import jakarta.annotation.PostConstruct;
 import net.engio.mbassy.bus.MBassador;
-import net.engio.mbassy.bus.config.BusConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
 /**
- *
  * @author javaugi
  */
 public class MbassadorDemoAppMain {
+
     private static final MbassadorDemoAppMain main = new MbassadorDemoAppMain();
-    
+
     @Autowired
-    private @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus;
+    private @Qualifier(EventBusConfig.MB_EVENT_BUS)
+    MBassador<Object> eventBus;
+
     @Autowired
     private MBassadorOrderService orderService;
     @Autowired
     private MbassadorPaymentService paymentService;
-    
+
     public static void main(String[] args) {
         main.run();
         main.demo();
-    }    
-    
-    
+    }
+
     private void run() {
         // Initialize
         NotificationService notifications = new NotificationService();
-        
+
         // Subscribe listeners
         eventBus.subscribe(notifications);
-        
+
         // Publish events
         eventBus.publish(new OrderCreatedEvent("123"));
-        eventBus.publish(new PaymentProcessedEvent(99.99));        
+        eventBus.publish(new PaymentProcessedEvent(99.99));
     }
-    
-    
+
     @PostConstruct
     public void demo() {
         orderService.createOrder("ORD-123", "customer@example.com");
@@ -111,10 +111,10 @@ public class Main {
         // Initialize
         MBassador<Object> bus = new MBassador<>();
         NotificationService notifications = new NotificationService();
-        
+
         // Subscribe listeners
         bus.subscribe(notifications);
-        
+
         // Publish events
         bus.publish(new OrderCreatedEvent("123"));
         bus.publish(new PaymentProcessedEvent(99.99));
@@ -165,7 +165,7 @@ Pattern 1: Event-Driven Microservices
 // OrderService.java
 public class OrderService {
     private MBassador<Object> bus;
-    
+
     public void createOrder(String orderId) {
         // Business logic...
         bus.publish(new OrderCreatedEvent(orderId));
@@ -338,4 +338,4 @@ Would you like me to extend this example with any specific features like:
     Performance monitoring
     Spring Boot Actuator integration?
 
-*/
+ */

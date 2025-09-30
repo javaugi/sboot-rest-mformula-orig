@@ -7,15 +7,18 @@ package com.interview.gmprep;
 import java.util.Arrays;
 
 /**
- *
  * @author javau
  */
 public class JustInTimeJITPartsDelivery {
 
+    public static void main(String[] args) {
+    }
+
     /*
-    Problem: Minimize warehouse costs by scheduling parts deliveries to match assembly line consumption (critical for GM's inventory management).
-    */
-    public int minDeliveryCost(int[] demand, int[] deliveryDays, int holdingCost, int deliveryCost) {
+  Problem: Minimize warehouse costs by scheduling parts deliveries to match assembly line consumption (critical for GM's inventory management).
+     */
+    public static int minDeliveryCost(
+            int[] demand, int[] deliveryDays, int holdingCost, int deliveryCost) {
         int n = demand.length;
         int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
@@ -32,12 +35,13 @@ public class JustInTimeJITPartsDelivery {
     }
 
     /*
-    Optimization:
-        Prefix Sum: Precompute demand sums to avoid nested loops:
-            int[] prefixSum = new int[n+1];
-            for (int i = 1; i <= n; i++) prefixSum[i] = prefixSum[i-1] + demand[i-1];
-    */
-    public int minDeliveryCostOptimized(int[] demand, int[] deliveryDays, int holdingCost, int deliveryCost) {
+  Optimization:
+      Prefix Sum: Precompute demand sums to avoid nested loops:
+          int[] prefixSum = new int[n+1];
+          for (int i = 1; i <= n; i++) prefixSum[i] = prefixSum[i-1] + demand[i-1];
+     */
+    public static int minDeliveryCostOptimized(
+            int[] demand, int[] deliveryDays, int holdingCost, int deliveryCost) {
         int n = demand.length;
         int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
@@ -47,7 +51,8 @@ public class JustInTimeJITPartsDelivery {
             int sumDemand = 0;
             for (int j = i; j >= 1 && (i - j) < deliveryDays.length; j--) {
                 sumDemand += demand[j - 1];
-                dp[i] = Math.min(dp[i], dp[j - 1] + deliveryCost + sumDemand * holdingCost * (i - j));
+                int ijCost = dp[j - 1] + deliveryCost + sumDemand * holdingCost * (i - j);
+                dp[i] = Math.min(dp[i], ijCost);
             }
         }
         return dp[n];

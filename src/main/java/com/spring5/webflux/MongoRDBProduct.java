@@ -5,7 +5,6 @@
 package com.spring5.webflux;
 
 // Document
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,9 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Data
 public class MongoRDBProduct {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     private String name;
-    private double price;    
+    private double price;
 }

@@ -8,8 +8,6 @@
 package com.patterns.behavioral.observer;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -37,5 +35,4 @@ public class MyTopicSubscriber implements Observer2 {
     public void setSubject(Subject2 sub) {
         this.topic = sub;
     }
-
 }

@@ -4,17 +4,18 @@
  */
 package com.spring5.unstructureddata;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.structured.StructuredPrompt;
 import dev.langchain4j.model.input.structured.StructuredPromptProcessor;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@StructuredPrompt("""
+@StructuredPrompt(
+        """
           Extract the following from the resume:
         - Name: {{name}}
         - Email: {{email}}
@@ -25,16 +26,18 @@ import org.springframework.stereotype.Service;
     """)
 @Service
 public class LLMService {
-    //private static final OpenAiChatModel model = OpenAiChatModel.withApiKey(OPENAI_API_KEY);    
+    // private static final OpenAiChatModel model = OpenAiChatModel.withApiKey(OPENAI_API_KEY);
+
     @Autowired
-    private  @Qualifier("deekseekOpenAiChatModel") OpenAiChatModel model;
-    
+    private @Qualifier("deekseekOpenAiChatModel")
+    OpenAiChatModel model;
+
     public JsonNode extractStructuredData(String resumeText) throws Exception {
         Prompt prompt = new Prompt(resumeText);
         String llmResponse = model.call(prompt.text());
         return new ObjectMapper().readValue(llmResponse, JsonNode.class);
     }
-    
+
     public JsonNode extractStructuredData2(String resumeText) throws Exception {
         // Create structured prompt
         ResumeExtractionPrompt prompt = new ResumeExtractionPrompt(resumeText);
@@ -43,5 +46,5 @@ public class LLMService {
         // Call LLM
         String llmResponse = model.call(structuredPrompt);
         return new ObjectMapper().readValue(llmResponse, JsonNode.class);
-    }    
+    }
 }

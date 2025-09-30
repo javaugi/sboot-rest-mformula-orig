@@ -11,15 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentService {
     // Never log full payment details
-    //Security - PCI DSS Compliance:
+    // Security - PCI DSS Compliance:
+
     private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
-    
+
     public void process(PaymentRequest request) {
-        log.info("Processing payment {} for amount {}", 
-            maskPaymentId(request.getId()), // Shows only last 4 digits
-            request.getAmount());
+        log.info(
+                "Processing payment {} for amount {}",
+                maskPaymentId(request.getId()), // Shows only last 4 digits
+                request.getAmount());
     }
-    
+
     private String maskPaymentId(String id) {
         return "****" + id.substring(id.length() - 4);
     }

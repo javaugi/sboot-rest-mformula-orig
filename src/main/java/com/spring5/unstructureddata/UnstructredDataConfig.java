@@ -5,12 +5,11 @@
 package com.spring5.unstructureddata;
 
 /**
- *
  * @author javaugi
  */
 public class UnstructredDataConfig {
+
     public static final String RES_UD = "unstructureddata/resume052025.docx";
-    
 }
 /*
 DeepSeek Chat (including DeepSeek-V3) can process Word (.docx) and PDF documents. You can upload these files, and I'll read and analyze
@@ -27,9 +26,9 @@ Limitations:
 ❌ Scanned PDFs/images (if text isn't selectable, I can't read it)
 ❌ Handwritten documents (requires OCR, which I don't support yet)
 ❌ Password-protected/encrypted files
-*/
+ */
 
-/*
+ /*
 After processing a Word, PDF, or other document, DeepSeek Chat can provide the extracted or analyzed information in several practical output formats, depending on your needs. Here are the common ways you can use the output:
 
 1. Text-Based Output (Directly in Chat)
@@ -52,4 +51,4 @@ You can request the output in:
     Translation – Convert extracted text into another language.
     Reformatted Content – Change style (e.g., formal to casual).
     Would you like me to process a document in a specific output style?
-*/
+ */

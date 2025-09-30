@@ -19,11 +19,12 @@ import redis.clients.jedis.Jedis;
 @Slf4j
 public class WithPartitionOrderProcessingSystem {
     // Kafka Producer - partitions orders by customer ID
-    
+
     private final WithPartitionRedisPartitionerConsistentHashing redisPartitioner;
-    private final @Qualifier(KafkaBaseConfig.KAFKA_TMPL_STR) KafkaTemplate kafkaTemplate;
+    private final @Qualifier(KafkaBaseConfig.KAFKA_TMPL_STR)
+    KafkaTemplate kafkaTemplate;
     private final WithPartitionOrderService orderService;
-    
+
     public void processOrder(WithPartitionOrder order) {
         // Send to partition based on customerId for ordering
         kafkaTemplate.send("orders", order.getCustomerId(), order.toJson());

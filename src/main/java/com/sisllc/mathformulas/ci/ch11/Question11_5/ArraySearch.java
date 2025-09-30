@@ -83,12 +83,15 @@ public class ArraySearch {
     }
 
     public static void main(String[] args) {
-        String[] stringList = {"apple", "", "", "banana", "", "", "", "carrot", "duck", "", "", "eel", "", "flower"};
+        String[] stringList = {
+            "apple", "", "", "banana", "", "", "", "carrot", "duck", "", "", "eel", "", "flower"
+        };
         System.out.println(search(stringList, "ac"));
 
-        //for (String s : stringList) {
+        // for (String s : stringList) {
         //	String cloned = new String(s);
-        //	System.out.println("<" + cloned + "> " + " appears at location " + search(stringList, cloned));
-        //}
+        //	System.out.println("<" + cloned + "> " + " appears at location " + search(stringList,
+        // cloned));
+        // }
     }
 }

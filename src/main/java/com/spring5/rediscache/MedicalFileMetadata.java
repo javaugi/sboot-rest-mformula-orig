@@ -15,7 +15,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
  * @author javaugi
  */
 @Data
@@ -23,12 +22,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class MedicalFileMetadata {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String name;
-    
+
     @OneToOne
     @JoinColumn(name = "medicalFile_id")
     private MedicalFile medicalFile;

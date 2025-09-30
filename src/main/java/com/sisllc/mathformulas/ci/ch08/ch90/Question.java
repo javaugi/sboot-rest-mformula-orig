@@ -30,5 +30,4 @@ public class Question {
             System.out.println("Dummy named " + name + ": " + dummy.toString());
         }
     }
-
 }

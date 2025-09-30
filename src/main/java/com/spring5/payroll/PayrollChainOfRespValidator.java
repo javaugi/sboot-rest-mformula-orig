@@ -8,10 +8,10 @@ import com.spring5.empbilpayroll.Employee;
 import com.spring5.empbilpayroll.PayrollData;
 
 /**
- *
  * @author javaugi
  */
-public abstract  class PayrollChainOfRespValidator {
+public abstract class PayrollChainOfRespValidator {
+
     private PayrollChainOfRespValidator next;
 
     public PayrollChainOfRespValidator linkWith(PayrollChainOfRespValidator next) {
@@ -23,5 +23,5 @@ public abstract  class PayrollChainOfRespValidator {
 
     protected boolean validateNext(Employee employee, PayrollData data) throws Exception {
         return (next == null) || next.validate(employee, data);
-    }    
+    }
 }

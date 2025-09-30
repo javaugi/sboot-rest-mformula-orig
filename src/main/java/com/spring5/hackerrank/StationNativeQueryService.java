@@ -29,12 +29,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
 @org.springframework.core.annotation.Order(12)
-public class StationNativeQueryService implements CommandLineRunner{
+public class StationNativeQueryService implements CommandLineRunner {
+
     private static final Logger log = LoggerFactory.getLogger(StationNativeQueryService.class);
 
     @Autowired
@@ -49,9 +49,12 @@ public class StationNativeQueryService implements CommandLineRunner{
     @PostConstruct
     public void checkEntities() {
         try {
-            System.out.println("EntityManagerFactory    Managed types: " + emf.getMetamodel().getEntities());
-            System.out.println("EntityManager           Managed types: " + entityManager.getMetamodel().getEntities());
-            System.out.println("SessionFactory          Managed types: " + sessionFactory.getMetamodel().getEntities());
+            System.out.println(
+                    "EntityManagerFactory    Managed types: " + emf.getMetamodel().getEntities());
+            System.out.println(
+                    "EntityManager           Managed types: " + entityManager.getMetamodel().getEntities());
+            System.out.println(
+                    "SessionFactory          Managed types: " + sessionFactory.getMetamodel().getEntities());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -61,38 +64,42 @@ public class StationNativeQueryService implements CommandLineRunner{
     public List<String> doQuery(String qString) {
         List<String> returnValue = new ArrayList<>();
         Query query = entityManager.createNativeQuery(qString);
-        List<Object[]> list = (List<Object[]>)query.getResultList();
+        List<Object[]> list = (List<Object[]>) query.getResultList();
 
         StringBuilder sb;
-        for (Object[] obj: list) {
+        for (Object[] obj : list) {
             sb = new StringBuilder();
-            for (Object o: obj) {
+            for (Object o : obj) {
                 sb.append(String.valueOf(o));
                 sb.append("     ");
             }
-            
+
             returnValue.add(sb.toString());
-        }            
-        
+        }
+
         return returnValue;
     }
-    
+
     @Override
     public void run(String... args) throws Exception {
-        log.info("StationNativeQueryService with args {}", Arrays.toString(args)); 
+        log.info("StationNativeQueryService with args {}", Arrays.toString(args));
         createRecords();
         printRecords();
     }
-    
+
     private void printRecords() {
         List<Station> list = stationDaoNativeImpl.findAll();
-        list.stream().forEach(r -> {System.out.println(r);});
+        list.stream()
+                .forEach(
+                        r -> {
+                            System.out.println(r);
+                        });
     }
 
     private List<Station> createRecords() {
         List<Station> returnValue = new ArrayList();
-        List<StateCities> cities = getData();    
-        //List<StateCities> cities = getDataJacksonConverter();
+        List<StateCities> cities = getData();
+        // List<StateCities> cities = getDataJacksonConverter();
         Station station = null;
         for (int i = 0; i < 20; i++) {
             station = new Station();
@@ -113,10 +120,15 @@ public class StationNativeQueryService implements CommandLineRunner{
         List<StateCities> returnValue = new ArrayList<>();
         StateCities sc = null;
 
-        try (CSVReader reader = new CSVReader(new FileReader(
-                StationNativeQueryService.class.getClassLoader().getResource("us_city_state_names.csv").getFile()))) {
+        try (CSVReader reader
+                = new CSVReader(
+                        new FileReader(
+                                StationNativeQueryService.class
+                                        .getClassLoader()
+                                        .getResource("us_city_state_names.csv")
+                                        .getFile()))) {
             List<String[]> records = reader.readAll();
-            for (String[] record : records) {                
+            for (String[] record : records) {
                 sc = new StateCities(record);
                 System.out.println("line=" + record + "\n" + sc);
                 returnValue.add(sc);
@@ -124,43 +136,45 @@ public class StationNativeQueryService implements CommandLineRunner{
         } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
-        
+
         return returnValue;
     }
-    
-    
+
     private static List<StateCities> getDataJacksonConverter() {
         List<StateCities> returnValue = new ArrayList<>();
 
         try {
             File csvFile = new File("us_city_state_names.csv");
             CsvMapper mapper = new CsvMapper();
-            CsvSchema schema = CsvSchema.builder()
-                    .addColumn("state")
-                    .addColumn("stateCode")
-                    .addColumn("stateCapital")
-                    .addColumn("city")
-                    .build().withHeader();
-                        
+            CsvSchema schema
+                    = CsvSchema.builder()
+                            .addColumn("state")
+                            .addColumn("stateCode")
+                            .addColumn("stateCapital")
+                            .addColumn("city")
+                            .build()
+                            .withHeader();
+
             StateCities sc = null;
-            MappingIterator<StateCities> it = mapper.readerFor(StateCities.class)
-                    .with(schema)
-                    .readValues(csvFile);
+            MappingIterator<StateCities> it
+                    = mapper.readerFor(StateCities.class).with(schema).readValues(csvFile);
             while (it.hasNext()) {
                 sc = it.next();
                 System.out.println(sc);
                 returnValue.add(sc);
-            }      
-            
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
-        }      
-        
+        }
+
         return returnValue;
     }
 
     static class StateCities {
+
         String[] strArr;
+
         public StateCities(String[] strArr) {
             this.strArr = strArr;
             if (strArr.length > 0 && strArr[0] != null) {
@@ -176,6 +190,7 @@ public class StationNativeQueryService implements CommandLineRunner{
                 this.city = strArr[3].trim();
             }
         }
+
         String state;
         String stateCode;
         String stateCapital;
@@ -221,14 +236,20 @@ public class StationNativeQueryService implements CommandLineRunner{
             this.city = city;
         }
 
-        
-
         @Override
         public String toString() {
-            return "StateCities{" + "state=" + state + ", stateCode=" + stateCode + ", stateCapital=" + stateCapital + ", city=" + city + "\n" + Arrays.toString(strArr) + '}';
+            return "StateCities{"
+                    + "state="
+                    + state
+                    + ", stateCode="
+                    + stateCode
+                    + ", stateCapital="
+                    + stateCapital
+                    + ", city="
+                    + city
+                    + "\n"
+                    + Arrays.toString(strArr)
+                    + '}';
         }
-        
-        
     }
-
 }

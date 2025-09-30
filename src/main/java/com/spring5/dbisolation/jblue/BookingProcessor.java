@@ -5,13 +5,10 @@
 package com.spring5.dbisolation.jblue;
 
 /**
- *
  * @author javau
  */
 public class BookingProcessor {
 
     public void handle(BookingEvent evt) {
-
     }
-
 }

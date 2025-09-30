@@ -9,8 +9,7 @@ public class JukeBox {
     private Set<CD> cdCollection;
     private SongSelector ts;
 
-    public JukeBox(CDPlayer cdPlayer, Q83User user, Set<CD> cdCollection,
-            SongSelector ts) {
+    public JukeBox(CDPlayer cdPlayer, Q83User user, Set<CD> cdCollection, SongSelector ts) {
         super();
         this.cdPlayer = cdPlayer;
         this.user = user;

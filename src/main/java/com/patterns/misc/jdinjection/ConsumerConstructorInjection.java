@@ -8,8 +8,6 @@
 package com.patterns.misc.jdinjection;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -24,7 +22,7 @@ public class ConsumerConstructorInjection implements Consumer {
 
     @Override
     public void processMessages(String msg, String rec) {
-        //do some msg validation, manipulation logic etc
+        // do some msg validation, manipulation logic etc
         this.service.sendMessage(msg, rec);
     }
 }

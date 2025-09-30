@@ -24,16 +24,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class FileProcessedRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     String eventId;
     Instant timestamp;
-    
+
     public FileProcessedRecord(String eventId, Instant timestamp) {
         this.eventId = eventId;
-        this.timestamp = timestamp;        
+        this.timestamp = timestamp;
     }
-    
 }

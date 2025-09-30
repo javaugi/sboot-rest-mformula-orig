@@ -5,12 +5,11 @@
 package com.spring5.aicloud.genaihealthcare;
 
 /**
- *
  * @author javau
  */
 public class GenAiHealthcareReadme {
-
 }
+
 /*
 Project Structure
 text
@@ -97,4 +96,4 @@ Implement a Consent Management Platform (CMP) integration and store consent arte
 Add end-to-end tests and red-team checks: adversarial prompt injection tests, PII leakage tests, hallucination regression tests.
 
 Add rate-limiting and cost controls to model usage.
-*/
+ */

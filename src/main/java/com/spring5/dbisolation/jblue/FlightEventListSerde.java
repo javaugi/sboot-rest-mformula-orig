@@ -6,24 +6,22 @@ package com.spring5.dbisolation.jblue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serializer;
-
-import java.util.List;
-import java.io.IOException;
 
 public class FlightEventListSerde implements Serde<List<FlightEvent>> {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /*
-    3. How It Fits In
-        Now Kafka Streams knows how to:
-            Serialize List<FlightEvent> into JSON for the state store or topic.
-            Deserialize List<FlightEvent> back into objects when reading.
+  3. How It Fits In
+      Now Kafka Streams knows how to:
+          Serialize List<FlightEvent> into JSON for the state store or topic.
+          Deserialize List<FlightEvent> back into objects when reading.
      */
-
     @Override
     public Serializer<List<FlightEvent>> serializer() {
         return (topic, data) -> {

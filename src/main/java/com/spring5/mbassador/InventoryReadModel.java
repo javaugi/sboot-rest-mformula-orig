@@ -7,12 +7,12 @@ package com.spring5.mbassador;
 import net.engio.mbassy.listener.Handler;
 
 /**
- *
  * @author javaugi
  */
 public class InventoryReadModel {
+
     @Handler
     public void onInventoryUpdate(InventoryUpdatedEvent event) {
         // Update cached view
-    }    
+    }
 }

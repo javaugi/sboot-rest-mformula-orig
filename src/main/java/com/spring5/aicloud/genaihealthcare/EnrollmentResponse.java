@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnrollmentResponse {
+
     public String enrollmentId;
     public boolean success;
     public String message;
-    public double confidenceScore;   // from LLM or heuristics
-    public String explanation;       // human-readable explanation of decisions
+    public double confidenceScore; // from LLM or heuristics
+    public String explanation; // human-readable explanation of decisions
 }

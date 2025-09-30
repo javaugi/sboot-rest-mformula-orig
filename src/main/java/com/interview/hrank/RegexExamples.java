@@ -29,14 +29,16 @@ public class RegexExamples {
 
     public static void main(String[] args) throws Exception {
         // ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$;
-        
+
         Solution.runDiffTest();
 
-        List<String> lists = Arrays.asList("Goodbye bye bye world world world\n",
-                "Sam went went to to to his business\n",
-                "Reya is is the the best player in eye eye game\n",
-                "in inthe\n",
-                "Hello hello Ab aB");
+        List<String> lists
+                = Arrays.asList(
+                        "Goodbye bye bye world world world\n",
+                        "Sam went went to to to his business\n",
+                        "Reya is is the the best player in eye eye game\n",
+                        "in inthe\n",
+                        "Hello hello Ab aB");
 
         System.out.println("\n 1 run removeRepeatedWordsExceptFirst with data=" + lists);
         for (String token : lists) {
@@ -54,7 +56,8 @@ public class RegexExamples {
         PatternMatching.matchingHtmlTags(input, patternValue);
         PatternMatching.matchingIp(input, patternValue);
         PatternMatching.matchingIp2(input, patternValue);
-        PatternMatching.replacingPatterns(input, patternValue);;
+        PatternMatching.replacingPatterns(input, patternValue);
+        ;
         PatternMatching.splittingStrings(input, patternValue);
         PatternMatching.validateUsername(input, patternValue);
 
@@ -71,7 +74,7 @@ public class RegexExamples {
                 String pattern2 = new MyRegex2().pattern;
 
                 StringDiff.printDiffApacheCommon(pattern1, pattern2);
-                //StringDiff.printDiffWithLibrary(pattern1, pattern2);
+                // StringDiff.printDiffWithLibrary(pattern1, pattern2);
                 StringDiff.printStringDifferences(pattern1, pattern2);
                 StringDiff.printWordDifferences(pattern1, pattern2);
 
@@ -82,7 +85,14 @@ public class RegexExamples {
 
         public static void runTests() {
 
-            List<String> lists = Arrays.asList("000.12.12.034", "121.234.12.12", "23.45.12.56", "00.12.123.123123.123", "122.23", "Hell.ip");
+            List<String> lists
+                    = Arrays.asList(
+                            "000.12.12.034",
+                            "121.234.12.12",
+                            "23.45.12.56",
+                            "00.12.123.123123.123",
+                            "122.23",
+                            "Hell.ip");
             String patternValue = new MyRegex().pattern;
             System.out.println("\n 1 run with data=" + lists + "\n      patternValue" + patternValue);
             for (String ip : lists) {
@@ -127,10 +137,12 @@ public class RegexExamples {
 
         private String patternBuilder() {
             StringBuilder sb = new StringBuilder();
-            sb.append("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+            sb.append(
+                    "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
 
-            //"^((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})$";
-            //Explanation: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+            // "^((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})$";
+            // Explanation:
+            // "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
             return sb.toString();
         }
     }
@@ -145,95 +157,96 @@ public class RegexExamples {
 
         private String patternBuilder() {
             StringBuilder sb = new StringBuilder();
-            //250-255   200-249     0-199   . (250-255/200-249/0-199)
-            sb.append("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+            // 250-255   200-249     0-199   . (250-255/200-249/0-199)
+            sb.append(
+                    "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
             return sb.toString();
         }
     }
 
     /*
-        Explanation: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-            25[0-5] → Matches 250 to 255.
-            2[0-4][0-9] → Matches 200 to 249.
-            [01]?[0-9][0-9]? → Matches 0 to 199 (with optional leading zero).
-            \\. → Escaped . (literal dot).
-            {3} → Repeats the previous group 3 times (for the first 3 octets).        
+     Explanation: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+         25[0-5] → Matches 250 to 255.
+         2[0-4][0-9] → Matches 200 to 249.
+         [01]?[0-9][0-9]? → Matches 0 to 199 (with optional leading zero).
+         \\. → Escaped . (literal dot).
+         {3} → Repeats the previous group 3 times (for the first 3 octets).
 
-            ✅ 1. Valid IPv4 Address Format - A valid IPv4 address: Consists of 4 octets (bytes) separated by dots: x.x.x.x. Each octet is in the range 0–255
+         ✅ 1. Valid IPv4 Address Format - A valid IPv4 address: Consists of 4 octets (bytes) separated by dots: x.x.x.x. Each octet is in the range 0–255
 
-            Examples of valid IPv4 addresses:
-                192.168.1.1
-                10.0.0.5
-                172.16.254.3
-                8.8.8.8
-                127.0.0.1 (loopback)
-            ✅ 2. Private vs Public IP Address Ranges
-                Type            IP Range                        Use Case
-                Private         10.0.0.0 – 10.255.255.255       Internal networks
-                                172.16.0.0 – 172.31.255.255     Internal networks
-                                192.168.0.0 – 192.168.255.255   Home/office routers
-                Loopback        127.0.0.1 – 127.255.255.255     Localhost testing
-                Public          Any IP not in the above         Internet-facing addresses
-            ✅ 3. Reserved & Invalid Ranges
-                Range               Description
-                0.0.0.0/8           "This" network (non-routable)
-                169.254.0.0/16      Link-local (auto-assign)
-                255.255.255.255     Broadcast
-            ✅ 4. IP Address Regex Validation (Java Example)
-                public static boolean isValidIPv4(String ip) {
-                    String pattern = 
-                        "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}"
-                        + "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-                    return ip.matches(pattern);
-                }        
+         Examples of valid IPv4 addresses:
+             192.168.1.1
+             10.0.0.5
+             172.16.254.3
+             8.8.8.8
+             127.0.0.1 (loopback)
+         ✅ 2. Private vs Public IP Address Ranges
+             Type            IP Range                        Use Case
+             Private         10.0.0.0 – 10.255.255.255       Internal networks
+                             172.16.0.0 – 172.31.255.255     Internal networks
+                             192.168.0.0 – 192.168.255.255   Home/office routers
+             Loopback        127.0.0.1 – 127.255.255.255     Localhost testing
+             Public          Any IP not in the above         Internet-facing addresses
+         ✅ 3. Reserved & Invalid Ranges
+             Range               Description
+             0.0.0.0/8           "This" network (non-routable)
+             169.254.0.0/16      Link-local (auto-assign)
+             255.255.255.255     Broadcast
+         ✅ 4. IP Address Regex Validation (Java Example)
+             public static boolean isValidIPv4(String ip) {
+                 String pattern =
+                     "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}"
+                     + "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+                 return ip.matches(pattern);
+             }
      */
  /*
-    what is the correct IP pattern if the following is true: IP address is a string in the form "A.B.C.D", where the value 
-        of A, B, C, and D may range from 0 to 255. Leading zeros are allowed. The length of A, B, C, or D can't be greater than 3
+  what is the correct IP pattern if the following is true: IP address is a string in the form "A.B.C.D", where the value
+      of A, B, C, and D may range from 0 to 255. Leading zeros are allowed. The length of A, B, C, or D can't be greater than 3
 
-    Correct IP Address Regex Pattern
-        Given the requirements:
-            Format: "A.B.C.D" where A,B,C,D are 0-255
-            Leading zeros allowed (e.g., "001", "012")
-            Each segment length ≤ 3 characters
-    Here's the corrected Java regex pattern:
-        String ipPattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})$";
+  Correct IP Address Regex Pattern
+      Given the requirements:
+          Format: "A.B.C.D" where A,B,C,D are 0-255
+          Leading zeros allowed (e.g., "001", "012")
+          Each segment length ≤ 3 characters
+  Here's the corrected Java regex pattern:
+      String ipPattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})$";
 
-    Breakdown of the Pattern:
-        1. 25[0-5]          Matches 250-255 Covers the upper range of valid numbers
-        2. 2[0-4][0-9]      Matches 200-249
-        3. [01]?[0-9]{1,2}
-                [01]?       → Optional 0 or 1 (for numbers like 012)
-                [0-9]{1,2}  → 1-2 digits (0-99)
-                    Combined matches 0-199 (with leading zeros)
-        4. \\.              Escaped dot (literal '.' separator)
-        5. {3}              Repeats the pattern exactly 3 times (for A.B.C)
-        6. Final Segment    Same pattern as before but without trailing dot (for D)
+  Breakdown of the Pattern:
+      1. 25[0-5]          Matches 250-255 Covers the upper range of valid numbers
+      2. 2[0-4][0-9]      Matches 200-249
+      3. [01]?[0-9]{1,2}
+              [01]?       → Optional 0 or 1 (for numbers like 012)
+              [0-9]{1,2}  → 1-2 digits (0-99)
+                  Combined matches 0-199 (with leading zeros)
+      4. \\.              Escaped dot (literal '.' separator)
+      5. {3}              Repeats the pattern exactly 3 times (for A.B.C)
+      6. Final Segment    Same pattern as before but without trailing dot (for D)
 
-    Key Improvements Over Previous Version:
-        Changed [01]?[0-9][0-9]? to [01]?[0-9]{1,2} for better clarity
-        Maintained leading zero support explicitly
-        Ensured each segment is exactly 1-3 digits
+  Key Improvements Over Previous Version:
+      Changed [01]?[0-9][0-9]? to [01]?[0-9]{1,2} for better clarity
+      Maintained leading zero support explicitly
+      Ensured each segment is exactly 1-3 digits
 
-    Test Cases:
-        // Valid IPs
-        "0.0.0.0"         // true
-        "255.255.255.255" // true
-        "001.012.123.254" // true (leading zeros allowed)
-        "192.168.1.1"     // true
+  Test Cases:
+      // Valid IPs
+      "0.0.0.0"         // true
+      "255.255.255.255" // true
+      "001.012.123.254" // true (leading zeros allowed)
+      "192.168.1.1"     // true
 
-        // Invalid IPs
-        "256.1.1.1"       // false (256 > 255)
-        "1.1.1."          // false (incomplete)
-        "1.1.1.1.1"       // false (too many segments)
-        "1234.1.1.1"      // false (segment too long)
-        "1.1.1.01a"       // false (invalid characters)
+      // Invalid IPs
+      "256.1.1.1"       // false (256 > 255)
+      "1.1.1."          // false (incomplete)
+      "1.1.1.1.1"       // false (too many segments)
+      "1234.1.1.1"      // false (segment too long)
+      "1.1.1.01a"       // false (invalid characters)
 
-    Java Implementation Example:
-        public boolean isValidIP(String ip) {
-            String ipPattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})$";
-            return ip.matches(ipPattern);
-        }    
+  Java Implementation Example:
+      public boolean isValidIP(String ip) {
+          String ipPattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})$";
+          return ip.matches(ipPattern);
+      }
      */
     static class PracticalExamples {
 
@@ -245,7 +258,13 @@ public class RegexExamples {
                 patternValue = "\\s+";
             }
             int wordCount = input.split(patternValue).length;
-            System.out.println("countingWords               return wordCount=" + wordCount + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "countingWords               return wordCount="
+                    + wordCount
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return wordCount;
         }
 
@@ -258,7 +277,13 @@ public class RegexExamples {
             }
 
             int wordCount = input.split(patternValue).length;
-            System.out.println("validateDateDDMMYYYY        return wordCount=" + wordCount + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "validateDateDDMMYYYY        return wordCount="
+                    + wordCount
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return wordCount;
         }
 
@@ -273,7 +298,13 @@ public class RegexExamples {
             Pattern numberPattern = Pattern.compile(patternValue);
             Matcher m = numberPattern.matcher(input);
             int count = m.groupCount();
-            System.out.println("extractAllNumbers           return count=" + count + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "extractAllNumbers           return count="
+                    + count
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             while (m.find()) {
                 System.out.println(m.group());
             }
@@ -286,11 +317,11 @@ public class RegexExamples {
     static class PatternMatching {
 
         /*
-        Explanation:
-            ^ - Asserts the start of the string.
-            Hello - Matches the exact word "Hello".
-            \\d+ - Matches one or more digits (\d is a digit, + means "one or more").
-            $ - Asserts the end of the string.
+    Explanation:
+        ^ - Asserts the start of the string.
+        Hello - Matches the exact word "Hello".
+        \\d+ - Matches one or more digits (\d is a digit, + means "one or more").
+        $ - Asserts the end of the string.
          */
         public static boolean matchingHelloWithDigits(String input, String patternValue) {
             if (input == null || input.isEmpty()) {
@@ -299,18 +330,25 @@ public class RegexExamples {
             if (patternValue == null || patternValue.isEmpty()) {
                 patternValue = "^Hello\\d+$";
             }
-            boolean matches = input.matches(patternValue); // true if starts with Hello and ends with digit
-            System.out.println("matchingHelloWithDigits     return matches=" + matches + "-input=" + input + "-patternValue=" + patternValue);
+            boolean matches
+                    = input.matches(patternValue); // true if starts with Hello and ends with digit
+            System.out.println(
+                    "matchingHelloWithDigits     return matches="
+                    + matches
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return matches;
         }
 
         /*
-        Explanation: (\\w+)@(\\w+)\\.(\\w+)"
-            (\\w+) - First group: Matches one or more word characters ([a-zA-Z0-9_]).
-            @ - Matches the @ symbol.
-            (\\w+) - Second group: Matches the domain name.
-            \\. - Escaped . (literal dot).
-            (\\w+) - Third group: Matches the top-level domain (e.g., com, org).        
+    Explanation: (\\w+)@(\\w+)\\.(\\w+)"
+        (\\w+) - First group: Matches one or more word characters ([a-zA-Z0-9_]).
+        @ - Matches the @ symbol.
+        (\\w+) - Second group: Matches the domain name.
+        \\. - Escaped . (literal dot).
+        (\\w+) - Third group: Matches the top-level domain (e.g., com, org).
          */
         public static boolean extractGroups(String input, String patternValue) {
             if (input == null || input.isEmpty()) {
@@ -323,52 +361,64 @@ public class RegexExamples {
             Pattern pattern = Pattern.compile(patternValue);
             Matcher matcher = pattern.matcher(input);
             boolean matches = matcher.groupCount() == 3;
-            System.out.println("extractGroups               return matches=" + matches + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "extractGroups               return matches="
+                    + matches
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             if (matcher.find()) {
                 String username = matcher.group(1); // "email"
-                String domain = matcher.group(2);   // "domain"
-                String tld = matcher.group(3);      // "com"
-                System.out.println("                            extractGroups username=" + username + "-domain=" + domain + "-tld=" + tld);
+                String domain = matcher.group(2); // "domain"
+                String tld = matcher.group(3); // "com"
+                System.out.println(
+                        "                            extractGroups username="
+                        + username
+                        + "-domain="
+                        + domain
+                        + "-tld="
+                        + tld);
             }
             return matches;
         }
 
         /*
-        Explanation: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-            25[0-5] → Matches 250 to 255.
-            2[0-4][0-9] → Matches 200 to 249.
-            [01]?[0-9][0-9]? → Matches 0 to 199 (with optional leading zero).
-            \\. → Escaped . (literal dot).
-            {3} → Repeats the previous group 3 times (for the first 3 octets).        
+    Explanation: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        25[0-5] → Matches 250 to 255.
+        2[0-4][0-9] → Matches 200 to 249.
+        [01]?[0-9][0-9]? → Matches 0 to 199 (with optional leading zero).
+        \\. → Escaped . (literal dot).
+        {3} → Repeats the previous group 3 times (for the first 3 octets).
          */
  /*
-            ✅ 1. Valid IPv4 Address Format - A valid IPv4 address: Consists of 4 octets (bytes) separated by dots: x.x.x.x. Each octet is in the range 0–255
+       ✅ 1. Valid IPv4 Address Format - A valid IPv4 address: Consists of 4 octets (bytes) separated by dots: x.x.x.x. Each octet is in the range 0–255
 
-            Examples of valid IPv4 addresses:
-                192.168.1.1
-                10.0.0.5
-                172.16.254.3
-                8.8.8.8
-                127.0.0.1 (loopback)
-            ✅ 2. Private vs Public IP Address Ranges
-                Type            IP Range                        Use Case
-                Private         10.0.0.0 – 10.255.255.255       Internal networks
-                                172.16.0.0 – 172.31.255.255     Internal networks
-                                192.168.0.0 – 192.168.255.255   Home/office routers
-                Loopback        127.0.0.1 – 127.255.255.255     Localhost testing
-                Public          Any IP not in the above         Internet-facing addresses
-            ✅ 3. Reserved & Invalid Ranges
-                Range               Description
-                0.0.0.0/8           "This" network (non-routable)
-                169.254.0.0/16      Link-local (auto-assign)
-                255.255.255.255     Broadcast
-            ✅ 4. IP Address Regex Validation (Java Example)
-                public static boolean isValidIPv4(String ip) {
-                    String pattern = 
-                        "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}"
-                        + "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-                    return ip.matches(pattern);
-                }        
+       Examples of valid IPv4 addresses:
+           192.168.1.1
+           10.0.0.5
+           172.16.254.3
+           8.8.8.8
+           127.0.0.1 (loopback)
+       ✅ 2. Private vs Public IP Address Ranges
+           Type            IP Range                        Use Case
+           Private         10.0.0.0 – 10.255.255.255       Internal networks
+                           172.16.0.0 – 172.31.255.255     Internal networks
+                           192.168.0.0 – 192.168.255.255   Home/office routers
+           Loopback        127.0.0.1 – 127.255.255.255     Localhost testing
+           Public          Any IP not in the above         Internet-facing addresses
+       ✅ 3. Reserved & Invalid Ranges
+           Range               Description
+           0.0.0.0/8           "This" network (non-routable)
+           169.254.0.0/16      Link-local (auto-assign)
+           255.255.255.255     Broadcast
+       ✅ 4. IP Address Regex Validation (Java Example)
+           public static boolean isValidIPv4(String ip) {
+               String pattern =
+                   "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}"
+                   + "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+               return ip.matches(pattern);
+           }
          */
         public static boolean matchingIp(String input, String patternValue) {
             boolean matches = false;
@@ -376,21 +426,28 @@ public class RegexExamples {
                 input = "192.168.1.1";
             }
             if (patternValue == null || patternValue.isEmpty()) {
-                patternValue = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+                patternValue
+                        = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
             }
             /*
-        Explanation: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-            25[0-5] → Matches 250 to 255.
-            2[0-4][0-9] → Matches 200 to 249.
-            [01]?[0-9][0-9]? → Matches 0 to 199 (with optional leading zero).
-            \\. → Escaped . (literal dot).
-            {3} → Repeats the previous group 3 times (for the first 3 octets).        
+      Explanation: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+          25[0-5] → Matches 250 to 255.
+          2[0-4][0-9] → Matches 200 to 249.
+          [01]?[0-9][0-9]? → Matches 0 to 199 (with optional leading zero).
+          \\. → Escaped . (literal dot).
+          {3} → Repeats the previous group 3 times (for the first 3 octets).
              */
 
             Pattern pattern = Pattern.compile(patternValue);
             Matcher matcher = pattern.matcher(input);
             matches = matcher.matches();
-            System.out.println("matchingIp                  return matches=" + matches + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "matchingIp                  return matches="
+                    + matches
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return matches;
         }
 
@@ -400,21 +457,28 @@ public class RegexExamples {
                 input = "256.1.1.1";
             }
             if (patternValue == null || patternValue.isEmpty()) {
-                patternValue = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+                patternValue
+                        = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
             }
 
             Pattern pattern = Pattern.compile(patternValue);
             Matcher matcher = pattern.matcher(input);
             matches = matcher.matches();
-            System.out.println("matchingIp2                 return matches=" + matches + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "matchingIp2                 return matches="
+                    + matches
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return matches;
         }
 
         /*
-        Explanation: "^[a-zA-Z][a-zA-Z0-9_]{7,29}$"
-            ^[a-zA-Z] → Must start with a letter.
-            [a-zA-Z0-9_]{7,29} → Followed by 7-29 letters, digits, or underscores.
-            $ → Ensures no extra characters.        
+    Explanation: "^[a-zA-Z][a-zA-Z0-9_]{7,29}$"
+        ^[a-zA-Z] → Must start with a letter.
+        [a-zA-Z0-9_]{7,29} → Followed by 7-29 letters, digits, or underscores.
+        $ → Ensures no extra characters.
          */
         public static boolean validateUsername(String input, String patternValue) {
             boolean matches = false;
@@ -429,15 +493,21 @@ public class RegexExamples {
             Pattern pattern = Pattern.compile(patternValue);
             Matcher matcher = pattern.matcher(input);
             matches = matcher.matches();
-            System.out.println("validateUsername            return matches=" + matches + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "validateUsername            return matches="
+                    + matches
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return matches;
         }
 
         /*
-        Explanation: "\\b(\\w+)(\\s+\\1\\b)+"
-            \\b → Word boundary.
-            (\\w+) → First word (captured in group 1).
-            (\\s+\\1\\b)+ → One or more whitespace followed by the same word (\1 refers to the first group).        
+    Explanation: "\\b(\\w+)(\\s+\\1\\b)+"
+        \\b → Word boundary.
+        (\\w+) → First word (captured in group 1).
+        (\\s+\\1\\b)+ → One or more whitespace followed by the same word (\1 refers to the first group).
          */
         public static boolean findingRepeatedWords(String input, String patternValue) {
             boolean matches = false;
@@ -451,15 +521,21 @@ public class RegexExamples {
             Pattern pattern = Pattern.compile(patternValue, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(input);
             matches = matcher.matches();
-            System.out.println("findingRepeatedWords        return matches=" + matches + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "findingRepeatedWords        return matches="
+                    + matches
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return matches;
         }
 
         /*
-        Explanation:
-            < → Starts with <.
-            ([^>]+) → Captures one or more characters that are not >.
-            > → Ends with >.        
+    Explanation:
+        < → Starts with <.
+        ([^>]+) → Captures one or more characters that are not >.
+        > → Ends with >.
          */
         public static boolean matchingHtmlTags(String input, String patternValue) {
             boolean matches = false;
@@ -473,14 +549,20 @@ public class RegexExamples {
             Pattern pattern = Pattern.compile(patternValue);
             Matcher matcher = pattern.matcher(input);
             matches = matcher.matches();
-            System.out.println("matchingHtmlTags            return matches=" + matches + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "matchingHtmlTags            return matches="
+                    + matches
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
             return matches;
         }
 
         /*
-        Explanation:
-            [,] → Matches a single comma.
-            split() → Breaks the string into an array wherever the pattern matches.        
+    Explanation:
+        [,] → Matches a single comma.
+        split() → Breaks the string into an array wherever the pattern matches.
          */
         public static void splittingStrings(String input, String patternValue) {
             if (input == null || input.isEmpty()) {
@@ -491,7 +573,13 @@ public class RegexExamples {
             }
 
             String[] words = input.split(patternValue);
-            System.out.println("splittingStrings        return words=" + Arrays.toString(words) + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "splittingStrings        return words="
+                    + Arrays.toString(words)
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
         }
 
         public static void replacingPatterns(String input, String patternValue) {
@@ -503,7 +591,13 @@ public class RegexExamples {
             }
 
             String result = input.replaceAll(patternValue, " "); // "Hello World"
-            System.out.println("replacingPatterns               return result=" + result + "-input=" + input + "-patternValue=" + patternValue);
+            System.out.println(
+                    "replacingPatterns               return result="
+                    + result
+                    + "-input="
+                    + input
+                    + "-patternValue="
+                    + patternValue);
         }
     }
 }

@@ -7,18 +7,13 @@
  */
 package com.patterns.structural.bridge;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public class AssembleBridgeImplementor implements Workshop {
-    // Concrete implementation 2 for bridge pattern 
+    // Concrete implementation 2 for bridge pattern
 
     @Override
     public void work() {

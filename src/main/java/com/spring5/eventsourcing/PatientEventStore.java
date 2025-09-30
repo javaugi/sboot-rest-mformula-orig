@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- *
  * @author javau
  */
 public interface PatientEventStore {
+
     void saveEvents(UUID patientId, List<Event> events);
+
     List<Event> getEventsForPatient(UUID patientId);
 }

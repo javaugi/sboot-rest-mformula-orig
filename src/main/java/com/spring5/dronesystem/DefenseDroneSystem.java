@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 /**
- *
  * @author javaugi
  */
 public class DefenseDroneSystem {
@@ -84,6 +83,6 @@ Profiling:
     Performance statistics collection
     Periodic reporting
 
-This implementation provides a comprehensive foundation for a defense drone system with all the requested features while maintaining 
+This implementation provides a comprehensive foundation for a defense drone system with all the requested features while maintaining
     security, performance, and reliability.
-*/
+ */

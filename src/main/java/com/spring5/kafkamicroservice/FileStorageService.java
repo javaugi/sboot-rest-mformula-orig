@@ -45,9 +45,10 @@ public class FileStorageService {
             // Implement retry or dead-letter queue logic here
         }
     }
-    
+
     @KafkaListener(topics = "${app.topics.file-events}", groupId = "file-storage-group")
-    public void handleFileEventWithRuleSwitch(ConsumerRecord<String, FileStorageEvent> record, Acknowledgment ack) {
+    public void handleFileEventWithRuleSwitch(
+            ConsumerRecord<String, FileStorageEvent> record, Acknowledgment ack) {
         try {
             FileStorageEvent event = record.value();
             logger.info("Received file event: {}", event);
@@ -55,8 +56,10 @@ public class FileStorageService {
             switch (event.getOperation()) {
                 case UPLOAD -> // Process file upload (would typically move from temp to permanent storage)
                     processFileUpload(event);
-                case DELETE -> deleteFile(event.getFilePath());
-                case UPDATE -> updateFileMetadata(event.getFileId(), event.getFilePath());
+                case DELETE ->
+                    deleteFile(event.getFilePath());
+                case UPDATE ->
+                    updateFileMetadata(event.getFileId(), event.getFilePath());
             }
 
             ack.acknowledge();
@@ -77,13 +80,13 @@ public class FileStorageService {
     // Other file operations...
     private void deleteFile(String filePath) {
         logger.info("deleteFile {}", filePath);
-    } 
-    
+    }
+
     private void updateFileMetadata(String fileId, String filePath) {
         logger.info("updateFileMetadata {}: {}", fileId, filePath);
     }
-    
-    public String store(MultipartFile confirmationFile){
+
+    public String store(MultipartFile confirmationFile) {
         return confirmationFile.getName();
     }
 }

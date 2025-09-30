@@ -9,6 +9,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import com.spring5.utils.PHIPseudonymizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /*
 6. Best Practices for PHI Logging
     Rotate the per-environment HMAC key regularly.
@@ -19,12 +20,11 @@ import java.util.regex.Pattern;
 public class PHIConverter extends ClassicConverter {
 
     private static final PHIPseudonymizer pseudonymizer
-        = new PHIPseudonymizer(System.getenv().getOrDefault("PHI_KEY", "default-dev-key"));
+            = new PHIPseudonymizer(System.getenv().getOrDefault("PHI_KEY", "default-dev-key"));
 
     private static final Pattern PATIENT_ID_PATTERN = Pattern.compile("patientId=([A-Za-z0-9_-]+)");
 
-
-    //No raw PHI ever goes into logs.
+    // No raw PHI ever goes into logs.
     @Override
     public String convert(ILoggingEvent event) {
         String msg = event.getFormattedMessage();
@@ -33,8 +33,7 @@ public class PHIConverter extends ClassicConverter {
         Matcher matcher = PATIENT_ID_PATTERN.matcher(msg);
 
         // Java 9+ supports lambda here
-        return matcher.replaceAll(matchResult
-            -> "patientId=" + pseudonymizer.pseudonymize(matchResult.group(1))
-        );
+        return matcher.replaceAll(
+                matchResult -> "patientId=" + pseudonymizer.pseudonymize(matchResult.group(1)));
     }
 }

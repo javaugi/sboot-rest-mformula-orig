@@ -5,9 +5,7 @@
 package com.spring5.cloudgcp;
 
 /**
- *
  * @author javaugi
  */
 public class GCPConfig {
-    
 }

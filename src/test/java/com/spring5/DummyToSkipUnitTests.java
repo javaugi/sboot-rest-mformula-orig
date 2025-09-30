@@ -8,18 +8,18 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- *
  * @author javaugi
  */
 @SpringBootTest
 public class DummyToSkipUnitTests {
+
     @Test
     public void dummy() {
-    }    
+    }
 }
 
 /*
-No tests matching pattern "DummyToSkipUnitTests" were executed! 
+No tests matching pattern "DummyToSkipUnitTests" were executed!
 (Set -Dsurefire.failIfNoSpecifiedTests=false to ignore this error.)
 means that you told Maven Surefire to run tests matching a specific pattern (DummyToSkipUnitTests), but no such tests exist, so the build fails.
 
@@ -82,4 +82,4 @@ Copy
 Edit
 mvn test
 and Maven will run all available tests without needing to specify one.
-*/
+ */

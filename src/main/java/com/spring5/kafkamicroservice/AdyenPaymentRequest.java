@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 public class AdyenPaymentRequest {
+
     private boolean synchronous;
     private String paymentId;
     private String apiKey;
@@ -21,7 +22,7 @@ public class AdyenPaymentRequest {
     private BigDecimal amount;
     private PaymentMethod paymentMethod;
     private String reference;
-    
+
     public boolean validate() {
         return true;
     }

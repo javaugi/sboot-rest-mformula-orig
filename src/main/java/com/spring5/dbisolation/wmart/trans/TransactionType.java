@@ -5,5 +5,8 @@
 package com.spring5.dbisolation.wmart.trans;
 
 public enum TransactionType {
-    SALE, REFUND, ADJUSTMENT, VOID
+    SALE,
+    REFUND,
+    ADJUSTMENT,
+    VOID
 }

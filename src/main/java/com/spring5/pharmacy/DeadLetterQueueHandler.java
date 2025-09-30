@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeadLetterQueueHandler {
+
     @KafkaListener(topics = "prescription-errors")
     public void handleFailedEvents(PrescriptionEvent event) {
         // Log error
         // Send to DLQ for manual processing
         // Or initiate compensation
-    }    
+    }
 }

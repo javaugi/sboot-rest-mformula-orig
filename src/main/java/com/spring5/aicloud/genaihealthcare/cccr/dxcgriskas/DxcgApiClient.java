@@ -10,9 +10,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-//1. DxCG's Primary Integration Methods
-//A. SOAP Web Services (Most Common)
-//B. REST API with Custom Authentication
+// 1. DxCG's Primary Integration Methods
+// A. SOAP Web Services (Most Common)
+// B. REST API with Custom Authentication
 @Service
 public class DxcgApiClient {
 
@@ -25,11 +25,11 @@ public class DxcgApiClient {
 
     private RestTemplate createRestTemplate(String apiKey) {
         return new RestTemplateBuilder()
-            .rootUri(baseUrl)
-            .defaultHeader("X-API-Key", apiKey)
-            .defaultHeader("Content-Type", "application/json")
-            .connectTimeout(Duration.ofSeconds(30))
-            .readTimeout(Duration.ofSeconds(60))
-            .build();
+                .rootUri(baseUrl)
+                .defaultHeader("X-API-Key", apiKey)
+                .defaultHeader("Content-Type", "application/json")
+                .connectTimeout(Duration.ofSeconds(30))
+                .readTimeout(Duration.ofSeconds(60))
+                .build();
     }
 }

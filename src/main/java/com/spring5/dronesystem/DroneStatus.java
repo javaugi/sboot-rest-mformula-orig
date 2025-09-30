@@ -5,9 +5,12 @@
 package com.spring5.dronesystem;
 
 /**
- *
  * @author javaugi
  */
 public enum DroneStatus {
-    IDLE, ACTIVE, RETURNING, MAINTENANCE, CRITICAL
+    IDLE,
+    ACTIVE,
+    RETURNING,
+    MAINTENANCE,
+    CRITICAL
 }

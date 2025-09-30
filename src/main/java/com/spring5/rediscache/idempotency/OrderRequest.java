@@ -6,10 +6,9 @@ package com.spring5.rediscache.idempotency;
 
 import lombok.Data;
 
-@Data   
+@Data
 public class OrderRequest {
+
     private Long productId;
     private int quantity;
-
-    
 }

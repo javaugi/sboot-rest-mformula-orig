@@ -4,7 +4,6 @@
  */
 package com.spring5.service.aiml;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +23,10 @@ import reactor.core.publisher.Flux;
 @Service
 public class OpenAiApiService {
 
-    private final static Logger log = LoggerFactory.getLogger(OpenAiApiService.class);
+    private static final Logger log = LoggerFactory.getLogger(OpenAiApiService.class);
 
-    private final String prompt = """
+    private final String prompt
+            = """
                 Explain quantum computing.
                 """;
 
@@ -38,34 +38,37 @@ public class OpenAiApiService {
 
     private WebClient client;
 
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    private final ObjectMapper objectMapper
+            = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     @PostConstruct
     public void init() {
-        client = WebClient.builder()
-                .baseUrl(openAiUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader("api-key", openAiKey)
-                .build();
+        client
+                = WebClient.builder()
+                        .baseUrl(openAiUrl)
+                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .defaultHeader("api-key", openAiKey)
+                        .build();
     }
 
-    //(Use this if the API returns a stream like Server-Sent Events)
+    // (Use this if the API returns a stream like Server-Sent Events)
     public Flux<String> queryOpenAI(String prompt) {
         String requestBody = "{\"model\":\"gpt-3.5-turbo\", \"prompt\":\"" + prompt + "\"}";
         return WebClient.create()
-            .post()
-            .uri(openAiUrl)
-            .headers(h -> {
-                h.setContentType(MediaType.APPLICATION_JSON);
-                h.set("Authorization", "Bearer " + openAiKey);
-                h.set("X-Custom-Header", "custom-value");
-            })
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(requestBody)
-            .retrieve()
-            .bodyToFlux(String.class);
+                .post()
+                .uri(openAiUrl)
+                .headers(
+                        h -> {
+                            h.setContentType(MediaType.APPLICATION_JSON);
+                            h.set("Authorization", "Bearer " + openAiKey);
+                            h.set("X-Custom-Header", "custom-value");
+                        })
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToFlux(String.class);
     }
 
     public Flux<String> getData() throws JsonProcessingException {
@@ -81,19 +84,21 @@ public class OpenAiApiService {
         request.setStop(null);
 
         String requestValue = objectMapper.writeValueAsString(request);
-        return client.post()
+        return client
+                .post()
                 .bodyValue(requestValue)
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .retrieve()
                 .bodyToFlux(String.class)
-                .mapNotNull(event -> {
-                    try {
-                        String jsonData = event.substring(event.indexOf("{"), event.lastIndexOf("}") + 1);
-                        return objectMapper.readValue(jsonData, EventData.class);
-                    } catch (JsonProcessingException | StringIndexOutOfBoundsException e) {
-                        return null;
-                    }
-                })
+                .mapNotNull(
+                        event -> {
+                            try {
+                                String jsonData = event.substring(event.indexOf("{"), event.lastIndexOf("}") + 1);
+                                return objectMapper.readValue(jsonData, EventData.class);
+                            } catch (JsonProcessingException | StringIndexOutOfBoundsException e) {
+                                return null;
+                            }
+                        })
                 .skipUntil(event -> !event.getChoices().get(0).getText().equals("\n"))
                 .map(event -> event.getChoices().get(0).getText());
     }

@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WithSpecificPartitionMessageConsumer {
-    @KafkaListener(topicPartitions = {
-        @TopicPartition(topic = "orders", partitions = { "0", "1" }), // Listen to partitions 0 and 1
-        @TopicPartition(topic = "alerts", partitions = "0")
-    })
+
+    @KafkaListener(
+            topicPartitions = {
+                @TopicPartition(
+                        topic = "orders",
+                        partitions = {"0", "1"}), // Listen to partitions 0 and 1
+                @TopicPartition(topic = "alerts", partitions = "0")
+            })
     public void listenToPartitions(ConsumerRecord<String, String> record) {
-        System.out.printf("Received from partition %d: %s%n", 
-            record.partition(), record.value());
-    }    
+        System.out.printf("Received from partition %d: %s%n", record.partition(), record.value());
+    }
 }

@@ -16,7 +16,7 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/api/openai")
 public class OpenAIController {
 
-    private final static Logger log = LoggerFactory.getLogger(OpenAIController.class);
+    private static final Logger log = LoggerFactory.getLogger(OpenAIController.class);
 
     private final OpenAIService openAIService;
 
@@ -44,7 +44,7 @@ public class OpenAIController {
     public OpenAIController(OpenAIService openAIService) {
         this.openAIService = openAIService;
     }
-    
+
     //curl "http://localhost:8080/chat?prompt=Tell me a joke"
     @GetMapping("/chat")
     public String chat(@RequestParam String prompt) {

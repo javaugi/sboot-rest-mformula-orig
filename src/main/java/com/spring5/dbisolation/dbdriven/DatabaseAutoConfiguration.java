@@ -16,26 +16,25 @@ import org.springframework.context.annotation.Configuration;
 /*
 1. Explain Spring Boot auto-configuration and how it works - Detailed Description:
 Spring Boot auto-configuration attempts to automatically configure your Spring application based on the jar dependencies
-    you have added. It works by scanning the classpath for certain conditions (like presence of specific classes, properties, 
+    you have added. It works by scanning the classpath for certain conditions (like presence of specific classes, properties,
     or beans) and then configuring beans accordingly.
-*/
-
+ */
 // Custom auto-configuration example
 @Configuration
 @ConditionalOnClass(DataSource.class)
 @EnableConfigurationProperties(DatabaseProperties.class)
 public class DatabaseAutoConfiguration {
-    
+
     @Autowired
     private DatabaseProperties properties;
-    
+
     @Bean
     @ConditionalOnMissingBean
     public DataSource dataSource() {
         return DataSourceBuilder.create()
-            .url(properties.getUrl())
-            .username(properties.getUsername())
-            .password(properties.getPassword())
-            .build();
+                .url(properties.getUrl())
+                .username(properties.getUsername())
+                .password(properties.getPassword())
+                .build();
     }
 }

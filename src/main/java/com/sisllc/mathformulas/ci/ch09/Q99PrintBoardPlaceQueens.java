@@ -7,9 +7,9 @@ public class Q99PrintBoardPlaceQueens {
     public static int GRID_SIZE = 8;
 
     /* Check if (row1, column1) is a valid spot for a queen by checking if there
-	 * is a queen in the same column or diagonal. We don't need to check it for queens
-	 * in the same row because the calling placeQueen only attempts to place one queen at
-	 * a time. We know this row is empty.
+   * is a queen in the same column or diagonal. We don't need to check it for queens
+   * in the same row because the calling placeQueen only attempts to place one queen at
+   * a time. We know this row is empty.
      */
     public static boolean checkValid(Integer[] columns, int row1, int column1) {
         for (int row2 = 0; row2 < row1; row2++) {
@@ -22,7 +22,7 @@ public class Q99PrintBoardPlaceQueens {
             }
 
             /* Check diagonals: if the distance between the columns equals the distance
-			 * between the rows, then they're in the same diagonal.
+       * between the rows, then they're in the same diagonal.
              */
             int columnDistance = Math.abs(column2 - column1);
             int rowDistance = row1 - row2; // row1 > row2, so no need to use absolute value
@@ -39,7 +39,7 @@ public class Q99PrintBoardPlaceQueens {
         } else {
             for (int col = 0; col < GRID_SIZE; col++) {
                 if (checkValid(columns, row, col)) {
-                    columns[row] = col;	// Place queen
+                    columns[row] = col; // Place queen
                     placeQueens(row + 1, columns, results);
                 }
             }

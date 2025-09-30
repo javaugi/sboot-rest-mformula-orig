@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- *
  * @author javau
  */
 public interface TransactionRepositoryCustom {
+
     Page<Transaction> findByCriteria(TransactionQueryCriteria criteria, Pageable pageable);
 }

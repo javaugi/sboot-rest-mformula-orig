@@ -15,15 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InventoryReservationService {
-    
+
     @Autowired
     private InventoryRepository inventoryRepository;
-    
+
     private final Map<String, AtomicInteger> inventory = new ConcurrentHashMap<>();
     private final Object lock = new Object();
-    
+
     public boolean reserveItem(String itemId, int quantity) {
-        synchronized(lock) {
+        synchronized (lock) {
             AtomicInteger current = inventory.computeIfAbsent(itemId, k -> new AtomicInteger(100));
             if (current.get() >= quantity) {
                 current.addAndGet(-quantity);
@@ -32,12 +32,11 @@ public class InventoryReservationService {
             return false;
         }
     }
-    
+
     @Transactional
     public boolean reserveItemWithDB(String itemId, int quantity) {
-        Inventory item = inventoryRepository.findById(Long.valueOf(itemId))
-            .orElseThrow();
-        
+        Inventory item = inventoryRepository.findById(Long.valueOf(itemId)).orElseThrow();
+
         if (item.getAvailableQuantity() >= quantity) {
             item.setAvailableQuantity(item.getAvailableQuantity() - quantity);
             inventoryRepository.save(item);

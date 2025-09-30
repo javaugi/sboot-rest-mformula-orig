@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OAuth2UserInfo {
+
     String email;
     String provider;
     String code;

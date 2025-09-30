@@ -22,10 +22,10 @@ import org.springframework.web.client.RestTemplate;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 @Configuration
 @EnableConfigurationProperties(ExternalApiProperties.class)
 public class ResilienceConfig {
+
     @Bean
     public CircuitBreakerRegistry circuitBreakerRegistry() {
         return CircuitBreakerRegistry.ofDefaults();
@@ -43,36 +43,39 @@ public class ResilienceConfig {
 
     @Bean("tradeServiceCircuitBreaker")
     public CircuitBreaker tradeServiceCircuitBreaker(CircuitBreakerRegistry registry) {
-        CircuitBreakerConfig config = CircuitBreakerConfig.custom()
-            .failureRateThreshold(50)
-            .waitDurationInOpenState(Duration.ofSeconds(30))
-            .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
-            .slidingWindowSize(10)
-            .minimumNumberOfCalls(5)
-            .permittedNumberOfCallsInHalfOpenState(3)
-            .build();
+        CircuitBreakerConfig config
+                = CircuitBreakerConfig.custom()
+                        .failureRateThreshold(50)
+                        .waitDurationInOpenState(Duration.ofSeconds(30))
+                        .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
+                        .slidingWindowSize(10)
+                        .minimumNumberOfCalls(5)
+                        .permittedNumberOfCallsInHalfOpenState(3)
+                        .build();
 
         return registry.circuitBreaker("tradeServiceCircuitBreaker", config);
     }
 
     @Bean("tradeServiceRateLimiter")
     public RateLimiter tradeServiceRateLimiter(RateLimiterRegistry registry) {
-        RateLimiterConfig config = RateLimiterConfig.custom()
-            .limitForPeriod(10) // 10 requests per second
-            .limitRefreshPeriod(Duration.ofSeconds(1))
-            .timeoutDuration(Duration.ofSeconds(5))
-            .build();
+        RateLimiterConfig config
+                = RateLimiterConfig.custom()
+                        .limitForPeriod(10) // 10 requests per second
+                        .limitRefreshPeriod(Duration.ofSeconds(1))
+                        .timeoutDuration(Duration.ofSeconds(5))
+                        .build();
 
         return registry.rateLimiter("tradeServiceRateLimiter", config);
     }
 
     @Bean("tradeServiceRetry")
     public Retry tradeServiceRetry(RetryRegistry registry) {
-        RetryConfig config = RetryConfig.custom()
-            .maxAttempts(3)
-            .waitDuration(Duration.ofMillis(500))
-            .retryExceptions(IOException.class, TimeoutException.class)
-            .build();
+        RetryConfig config
+                = RetryConfig.custom()
+                        .maxAttempts(3)
+                        .waitDuration(Duration.ofMillis(500))
+                        .retryExceptions(IOException.class, TimeoutException.class)
+                        .build();
 
         return registry.retry("tradeServiceRetry", config);
     }
@@ -80,9 +83,9 @@ public class ResilienceConfig {
     @Bean
     public RestTemplate restTemplate(ExternalApiProperties properties) {
         return new RestTemplateBuilder()
-            .rootUri(properties.getBaseUrl())
-            .connectTimeout(Duration.ofMillis(properties.getTimeout()))
-            .readTimeout(Duration.ofMillis(properties.getTimeout()))
-            .build();
+                .rootUri(properties.getBaseUrl())
+                .connectTimeout(Duration.ofMillis(properties.getTimeout()))
+                .readTimeout(Duration.ofMillis(properties.getTimeout()))
+                .build();
     }
 }

@@ -8,11 +8,19 @@ public class BitManipulation {
             System.out.println("Value=" + numbers[i]);
             System.out.println("BinaryString=" + Integer.toBinaryString(numbers[i]));
             System.out.println("BitCount=" + Integer.bitCount(numbers[i]));
-            System.out.println("number=" + numbers[i] + "\n -is power of two?=" + isPowerOfTwo(numbers[i])
-                    + "\n -is power of two?=" + isPowerOfTwo2(numbers[i])
-                    + "\n -is power of two?=" + isPowerOfTwo3(numbers[i])
-                    + "\n -is power of two?=" + isPower(2, numbers[i])
-                    + "\n -is power of two?=" + isPower2(2, numbers[i]));
+            System.out.println(
+                    "number="
+                    + numbers[i]
+                    + "\n -is power of two?="
+                    + isPowerOfTwo(numbers[i])
+                    + "\n -is power of two?="
+                    + isPowerOfTwo2(numbers[i])
+                    + "\n -is power of two?="
+                    + isPowerOfTwo3(numbers[i])
+                    + "\n -is power of two?="
+                    + isPower(2, numbers[i])
+                    + "\n -is power of two?="
+                    + isPower2(2, numbers[i]));
         }
     }
 
@@ -65,5 +73,4 @@ public class BitManipulation {
         // compare and both are equal
         return (res1 == res2);
     }
-
 }

@@ -8,8 +8,6 @@
 package com.interview.shoppingcart.api;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -17,7 +15,10 @@ package com.interview.shoppingcart.api;
 public interface Item {
 
     public static enum Category {
-        Bagged, Weight, Discount, BuyGetFree;
+        Bagged,
+        Weight,
+        Discount,
+        BuyGetFree;
     }
 
     public String getName();
@@ -31,5 +32,4 @@ public interface Item {
     public double getPrice();
 
     public void setPrice(double price);
-
 }

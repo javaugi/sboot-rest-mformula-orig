@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author javaugi https://www.hackerrank.com/test
  */
 public class CodingAssessmentDemo {
@@ -16,10 +15,10 @@ public class CodingAssessmentDemo {
     private static final CodingAssessmentDemo main = new CodingAssessmentDemo();
 
     public static void main(String[] args) {
-        //main.run1();
+        // main.run1();
         main.run2();
     }
-    
+
     private void run1() {
         create1();
         create2();
@@ -29,10 +28,10 @@ public class CodingAssessmentDemo {
     private void run2() {
         String[] members = chatRoomMembers();
         String[][] roomInvites = chatRoomInfo();
-                
+
         Map<String, Integer> memInviteCntMap = new HashMap<>();
-        initMap(memInviteCntMap, members);         
-        
+        initMap(memInviteCntMap, members);
+
         for (String[] row : roomInvites) {
             processInvitees(memInviteCntMap, row[2]);
         }
@@ -49,26 +48,25 @@ public class CodingAssessmentDemo {
         System.out.print("2 run2() printing \n");
         printMap(memInviteCntMap2);
         System.out.print("2 done run2() printing \n");
-
     }
-    
+
     private void initMap(Map<String, Integer> memInviteCntMap, String[] members) {
         for (String mem : members) {
             if (memInviteCntMap.get(mem) == null) {
                 memInviteCntMap.put(mem, 0);
             }
-        }         
+        }
     }
-    
+
     private void processInvitees(Map<String, Integer> memInviteCntMap, String inviteesArr) {
         String[] invitees = inviteesArr.split(",");
-        for (String inviteeId: invitees) {
+        for (String inviteeId : invitees) {
             inviteeId = inviteeId.trim();
             if ("ALL".equalsIgnoreCase(inviteeId)) {
                 increaseOneToAll(memInviteCntMap);
                 break;
             } else {
-                //memInviteCntMap.put(inviteeId, memInviteCntMap.getOrDefault(inviteeId, 0) + 1);
+                // memInviteCntMap.put(inviteeId, memInviteCntMap.getOrDefault(inviteeId, 0) + 1);
                 if (memInviteCntMap.get(inviteeId) == null) {
                     memInviteCntMap.put(inviteeId, 1);
                 } else {
@@ -85,9 +83,9 @@ public class CodingAssessmentDemo {
         for (String inviteeId : invitees) {
             inviteeId = inviteeId.trim();
             if ("ALL".equalsIgnoreCase(inviteeId)) {
-                //memInviteCntMap.keySet().stream().forEach(e -> e.setValue(1 + e.getValue()));
+                // memInviteCntMap.keySet().stream().forEach(e -> e.setValue(1 + e.getValue()));
                 increaseOneToAll(memInviteCntMap);
-                //break;
+                // break;
             } else {
                 memInviteCntMap.put(inviteeId, memInviteCntMap.getOrDefault(inviteeId, 0) + 1);
             }
@@ -95,30 +93,30 @@ public class CodingAssessmentDemo {
     }
 
     private void increaseOneToAll(Map<String, Integer> memInviteCntMap) {
-        //memInviteCntMap.entrySet().stream().forEach(e -> e.setValue(1 + e.getValue()));
-                
-        for (String key: memInviteCntMap.keySet()) {
+        // memInviteCntMap.entrySet().stream().forEach(e -> e.setValue(1 + e.getValue()));
+
+        for (String key : memInviteCntMap.keySet()) {
             memInviteCntMap.put(key, (1 + memInviteCntMap.get(key)));
         }
     }
-    
+
     private void printMap(Map<String, Integer> map) {
         System.out.print("\n Chat room invitees with the number of invite count \n");
-        for (String key: map.keySet()) {
+        for (String key : map.keySet()) {
             System.out.println("Member=" + key + "-total invites=" + map.get(key));
         }
     }
-    
+
     private String[] chatRoomMembers() {
         String[] members = {"id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10"};
         System.out.print("\n Chat room members ...");
-        for (var mem: members) {
+        for (var mem : members) {
             System.out.print(mem + "\t");
         }
-        
+
         return members;
     }
-    
+
     private String[][] chatRoomInfo() {
         String[][] roomInvites = {
             {"MSG", "id1", "id2"},
@@ -133,12 +131,11 @@ public class CodingAssessmentDemo {
             {"MSG", "id6", "id1, id2, id5, id7"},
             {"MSG", "id4", "ALL, id2, id5, id7"},
             {"MSG", "id3", "id1, id2, id5, id7"},
-            {"MSG", "id1", "ALL, id2, id5, id7"},
-        };
+            {"MSG", "id1", "ALL, id2, id5, id7"},};
 
         System.out.println("\n--- Printing roomInvites with enhanced loop ---");
-        for (String[] row: roomInvites) {
-            for (String element: row) {
+        for (String[] row : roomInvites) {
+            for (String element : row) {
                 System.out.print(element + "\t");
             }
             System.out.println();
@@ -146,7 +143,6 @@ public class CodingAssessmentDemo {
 
         return roomInvites;
     }
-    
 
     public void enhancedLooping() {
         // 1. Declare and initialize a 2D String array with fixed dimensions.
@@ -179,9 +175,9 @@ public class CodingAssessmentDemo {
 
         // 4. Example of declaring and initializing with values directly (alternative).
         String[][] anotherStringArray = {
-                {"A", "B", "C"},
-                {"D", "E", "F"},
-                {"G", "H", "I", "J"} //jagged array is allowed
+            {"A", "B", "C"},
+            {"D", "E", "F"},
+            {"G", "H", "I", "J"} // jagged array is allowed
         };
 
         System.out.println("\n--- Printing anotherStringArray ---");
@@ -193,7 +189,7 @@ public class CodingAssessmentDemo {
         }
 
         // 5. Example of creating a jagged array (rows can have different lengths).
-        String[][] jaggedArray = new String[3][]; //only define number of rows
+        String[][] jaggedArray = new String[3][]; // only define number of rows
         jaggedArray[0] = new String[2]; // Row 0 has 2 columns
         jaggedArray[1] = new String[3]; // Row 1 has 3 columns
         jaggedArray[2] = new String[4]; // Row 2 has 4 columns
@@ -216,8 +212,7 @@ public class CodingAssessmentDemo {
             System.out.println();
         }
     }
-    
-    
+
     private String[][] create1() {
         // 1. Declare and initialize a 2D String array with fixed dimensions.
         //    - The first dimension specifies the number of rows.
@@ -250,11 +245,11 @@ public class CodingAssessmentDemo {
     }
 
     private String[][] create2() {
-        //Example of declaring and initializing with values directly (alternative).
+        // Example of declaring and initializing with values directly (alternative).
         String[][] anotherStringArray = {
             {"A", "B", "C"},
             {"D", "E", "F"},
-            {"G", "H", "I", "J"} //jagged array is allowed
+            {"G", "H", "I", "J"} // jagged array is allowed
         };
 
         System.out.println("\n--- Printing anotherStringArray ---");
@@ -270,7 +265,7 @@ public class CodingAssessmentDemo {
 
     private String[][] create3() {
         // 5. Example of creating a jagged array (rows can have different lengths).
-        String[][] jaggedArray = new String[3][]; //only define number of rows
+        String[][] jaggedArray = new String[3][]; // only define number of rows
         jaggedArray[0] = new String[2]; // Row 0 has 2 columns
         jaggedArray[1] = new String[3]; // Row 1 has 3 columns
         jaggedArray[2] = new String[4]; // Row 2 has 4 columns
@@ -295,5 +290,4 @@ public class CodingAssessmentDemo {
 
         return jaggedArray;
     }
-
 }

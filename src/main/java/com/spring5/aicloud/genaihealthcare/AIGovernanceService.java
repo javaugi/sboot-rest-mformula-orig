@@ -4,9 +4,9 @@
  */
 package com.spring5.aicloud.genaihealthcare;
 
-import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AIGovernanceService {

@@ -7,17 +7,14 @@ package com.spring5.billingpayment;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
-import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.net.RequestOptions;
+import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.math.BigDecimal;
 
 @Service
 public class StripePaymentService {
@@ -58,34 +55,40 @@ public class StripePaymentService {
                     "Payment for this order is already being processed or has succeeded.",
                     null, // PaymentIntentId not strictly needed for this idempotent response
                     null,
-                    request.getOrderId()
-            );
+                    request.getOrderId());
         }
 
         // --- Create PaymentIntent ---
-        PaymentIntentCreateParams createParams = PaymentIntentCreateParams.builder()
-                .setAmount(amountInCents)
-                .setCurrency(request.getCurrency())
-                .setPaymentMethod(request.getPaymentMethodId())
-                .setConfirmationMethod(PaymentIntentCreateParams.ConfirmationMethod.AUTOMATIC) // Recommended
-                .setConfirm(true) // Automatically confirm the intent after creation
-                .setOffSession(false) // Assuming customer is present
-                .addPaymentMethodType("card")
-                .putMetadata("order_id", request.getOrderId()) // Add your internal order ID as metadata
-                .build();
+        PaymentIntentCreateParams createParams
+                = PaymentIntentCreateParams.builder()
+                        .setAmount(amountInCents)
+                        .setCurrency(request.getCurrency())
+                        .setPaymentMethod(request.getPaymentMethodId())
+                        .setConfirmationMethod(
+                                PaymentIntentCreateParams.ConfirmationMethod.AUTOMATIC) // Recommended
+                        .setConfirm(true) // Automatically confirm the intent after creation
+                        .setOffSession(false) // Assuming customer is present
+                        .addPaymentMethodType("card")
+                        .putMetadata("order_id", request.getOrderId()) // Add your internal order ID as metadata
+                        .build();
 
         // Use Idempotency Key to prevent duplicate requests
         // A unique key for each API call, often the orderId or a UUID associated with the attempt
         // For PaymentIntent creation, the orderId is a good candidate for idempotency.
-        RequestOptions requestOptions = RequestOptions.builder()
-                .setIdempotencyKey(request.getOrderId() + "-" + System.currentTimeMillis()) // Ensure unique per attempt
-                .build();
+        RequestOptions requestOptions
+                = RequestOptions.builder()
+                        .setIdempotencyKey(
+                                request.getOrderId()
+                                + "-"
+                                + System.currentTimeMillis()) // Ensure unique per attempt
+                        .build();
 
         try {
             PaymentIntent paymentIntent = PaymentIntent.create(createParams, requestOptions);
 
             // Store initial status (e.g., PENDING or REQUIRES_ACTION) in your database
-            orderStatusStore.put(request.getOrderId(), PaymentStatus.PENDING); // Assume pending until webhook confirms
+            orderStatusStore.put(
+                    request.getOrderId(), PaymentStatus.PENDING); // Assume pending until webhook confirms
 
             return mapStripePaymentIntentToResponse(paymentIntent, request.getOrderId());
 
@@ -121,7 +124,12 @@ public class StripePaymentService {
             System.err.println("Unexpected error during payment processing: " + e.getMessage());
             e.printStackTrace();
             orderStatusStore.put(request.getOrderId(), PaymentStatus.FAILED);
-            return new PaymentResponse(PaymentStatus.FAILED.name(), "An unexpected error occurred.", null, null, request.getOrderId());
+            return new PaymentResponse(
+                    PaymentStatus.FAILED.name(),
+                    "An unexpected error occurred.",
+                    null,
+                    null,
+                    request.getOrderId());
         }
     }
 
@@ -130,7 +138,8 @@ public class StripePaymentService {
      * This is where you translate Stripe's various statuses into your system's
      * statuses.
      */
-    private PaymentResponse mapStripePaymentIntentToResponse(PaymentIntent paymentIntent, String orderId) {
+    private PaymentResponse mapStripePaymentIntentToResponse(
+            PaymentIntent paymentIntent, String orderId) {
         String status = paymentIntent.getStatus();
         PaymentStatus internalStatus;
         String message;
@@ -180,12 +189,7 @@ public class StripePaymentService {
         // In a real application, you would update your order's status in the database here
         // based on `internalStatus` and `paymentIntent.getId()`
         return new PaymentResponse(
-                internalStatus.name(),
-                message,
-                paymentIntent.getId(),
-                clientSecret,
-                orderId
-        );
+                internalStatus.name(), message, paymentIntent.getId(), clientSecret, orderId);
     }
 
     /**
@@ -197,7 +201,8 @@ public class StripePaymentService {
      */
     public void updateOrderStatus(String orderId, PaymentStatus status) {
         orderStatusStore.put(orderId, status);
-        System.out.println("Order " + orderId + " status updated to: " + status.name() + " by webhook.");
+        System.out.println(
+                "Order " + orderId + " status updated to: " + status.name() + " by webhook.");
     }
 
     // --- Handling Retries ---

@@ -14,7 +14,8 @@ public class ThreadMain {
         thread1a.start();
         thread2a.start();
         while (thread1a.isAlive() || thread2a.isAlive()) {
-        };
+        }
+        ;
         System.out.println("\n\n");
 
         /* Part 1 Demo -- difference instances */
@@ -26,7 +27,8 @@ public class ThreadMain {
         thread1b.start();
         thread2b.start();
         while (thread1b.isAlive() || thread2b.isAlive()) {
-        };
+        }
+        ;
         System.out.println("\n\n");
 
         /* Part 2 Demo */
@@ -37,5 +39,4 @@ public class ThreadMain {
         thread1c.start();
         thread2c.start();
     }
-
 }

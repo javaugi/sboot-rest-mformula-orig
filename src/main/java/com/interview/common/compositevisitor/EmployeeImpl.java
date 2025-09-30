@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -35,7 +33,8 @@ public class EmployeeImpl extends EmployeeAbstract {
 
     @Override
     public void printSalary() {
-        System.out.println("Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
+        System.out.println(
+                "Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
     }
 
     @Override

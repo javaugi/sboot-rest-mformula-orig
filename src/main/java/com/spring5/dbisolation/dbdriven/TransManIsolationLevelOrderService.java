@@ -5,6 +5,7 @@
 package com.spring5.dbisolation.dbdriven;
 
 import com.spring5.audit.AuditOrder;
+import com.spring5.audit.AuditOrderRepository;
 import com.spring5.audit.OrderRequest;
 import com.spring5.kafkamicroservice.PaymentRepository;
 import com.spring5.validatorex.InsufficientStockException;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.spring5.audit.AuditOrderRepository;
 
 /*
 Transaction Management Questions
@@ -25,25 +25,27 @@ Spring provides declarative and programmatic transaction management. Key isolati
     READ_COMMITTED (default for most databases)
     REPEATABLE_READ
     SERIALIZABLE
-*/
+ */
 @Service
 public class TransManIsolationLevelOrderService {
+
     @Autowired
     private AuditOrderRepository orderRepository;
-    
+
     @Autowired
     private PaymentRepository paymentRepository;
-    
-    @Transactional(isolation = Isolation.REPEATABLE_READ, 
-                  propagation = Propagation.REQUIRED,
-                  rollbackFor = {PaymentException.class, InsufficientStockException.class})
+
+    @Transactional(
+            isolation = Isolation.REPEATABLE_READ,
+            propagation = Propagation.REQUIRED,
+            rollbackFor = {PaymentException.class, InsufficientStockException.class})
     public AuditOrder processOrder(OrderRequest request) {
         AuditOrder order = createOrder(request);
         processPayment(order);
         updateInventory(order);
         return order;
     }
-    
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void processPayment(AuditOrder order) {
         // payment processing logic
@@ -52,8 +54,7 @@ public class TransManIsolationLevelOrderService {
     private AuditOrder createOrder(OrderRequest request) {
         return AuditOrder.builder().build();
     }
-    
+
     private void updateInventory(AuditOrder order) {
-        
     }
 }

@@ -22,7 +22,8 @@ public class PrescriptionValidationController {
     }
 
     @PostMapping
-    public ResponseEntity<ValidationResult> validatePrescription(@RequestBody PrescriptionRequest request) {
+    public ResponseEntity<ValidationResult> validatePrescription(
+            @RequestBody PrescriptionRequest request) {
         if (request.getOrderId() == null || request.getOrderId().isEmpty()) {
             // Basic validation for missing required fields
             ValidationResult errorResult = new ValidationResult();
@@ -32,7 +33,10 @@ public class PrescriptionValidationController {
         }
 
         ValidationResult result = validationService.validatePrescription(request);
-        HttpStatus httpStatus = (result.getStatus() == ValidationResult.Status.REJECTED) ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
+        HttpStatus httpStatus
+                = (result.getStatus() == ValidationResult.Status.REJECTED)
+                ? HttpStatus.BAD_REQUEST
+                : HttpStatus.OK;
         return new ResponseEntity<>(result, httpStatus);
     }
 }

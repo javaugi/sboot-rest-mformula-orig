@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /*
-@RestControllerAdvice in Spring Boot is a specialized annotation used for global exception handling and other cross-cutting concerns within 
+@RestControllerAdvice in Spring Boot is a specialized annotation used for global exception handling and other cross-cutting concerns within
     RESTful web services. It combines the functionality of two other Spring annotations:
 @ControllerAdvice:
     This annotation allows you to define methods that apply globally across multiple controllers. These methods can include:
@@ -24,22 +24,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @ResponseBody:
     This annotation indicates that the return value of a method should be bound directly to the web response body, typically serialized into
         JSON or XML format, rather than being used for view resolution.
-*/
+ */
 @RestControllerAdvice
 public class SecurityExceptionHandler {
 
-    @ExceptionHandler(value = { AccessDeniedException.class })
+    @ExceptionHandler(value = {AccessDeniedException.class})
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
-        ErrorResponse errorResponse = new ErrorResponseException(HttpStatus.FORBIDDEN, new ErrorResponseException(HttpStatus.FORBIDDEN));
-        //ErrorResponse errorResponse = new ErrorResponse("Access Denied", "You don't have permission to access this resource",  HttpStatus.FORBIDDEN.value());
+        ErrorResponse errorResponse
+                = new ErrorResponseException(
+                        HttpStatus.FORBIDDEN, new ErrorResponseException(HttpStatus.FORBIDDEN));
+        // ErrorResponse errorResponse = new ErrorResponse("Access Denied", "You don't have permission
+        // to access this resource",  HttpStatus.FORBIDDEN.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = { AuthenticationException.class })
+    @ExceptionHandler(value = {AuthenticationException.class})
     public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
-        //ErrorResponse errorResponse = new ErrorResponse("Authentication Failed", ex.getMessage(), HttpStatus.UNAUTHORIZED.value());
+        // ErrorResponse errorResponse = new ErrorResponse("Authentication Failed", ex.getMessage(),
+        // HttpStatus.UNAUTHORIZED.value());
         ErrorResponse errorResponse = new ErrorResponseException(HttpStatus.UNAUTHORIZED);
-        
+
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 }

@@ -4,7 +4,7 @@
  */
 package com.spring5.dbisolation.jblue;
 
-//@Component
+// @Component
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import org.springframework.boot.CommandLineRunner;
 

@@ -5,23 +5,23 @@
 package com.interview.hrank;
 
 /**
- *
  * @author javaugi
  */
 public class GenericOperations {
+
     public static void main(String args[]) {
         Integer[] intArray = {1, 2, 3};
         String[] stringArray = {"Hello", "World"};
-        
+
         printArray(intArray);
         printArray(stringArray);
     }
 
     public static <T> void printArray(T[] array) {
         for (T element : array) {
-            //System.out.println(element);
+            // System.out.println(element);
             doPrint.print(element);
-            
+
             if (element instanceof Integer value) {
                 System.out.println("isOdd=" + isOdd.check(value));
             }
@@ -30,5 +30,4 @@ public class GenericOperations {
 
     public static final GenericPrint doPrint = ele -> System.out.println(ele);
     public static final PerformOperation isOdd = n -> n % 2 != 0;
-
 }

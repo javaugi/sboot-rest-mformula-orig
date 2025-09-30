@@ -25,7 +25,6 @@ Discuss Architecture:
     Show you understand distributed systems concepts
     Demonstrate knowledge of fault tolerance patterns
     Good luck with your interview! Remember to relate your past experiences to the OTA context wherever possible.
-*/
+ */
 public class TipsWithArchitectureRelProjects {
-    
 }

@@ -43,5 +43,4 @@ public class RankingNodeMain {
         System.out.println("Array: " + AssortedMethods.arrayToString(list));
         System.out.println("Ranks: " + AssortedMethods.arrayToString(tracker));
     }
-
 }

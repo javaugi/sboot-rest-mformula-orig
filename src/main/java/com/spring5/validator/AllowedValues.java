@@ -15,8 +15,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = AllowedValuesValidator.class)
 public @interface AllowedValues {
+
     String message() default "Value not allowed";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
+
     String[] value();
 }

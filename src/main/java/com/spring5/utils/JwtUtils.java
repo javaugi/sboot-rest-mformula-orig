@@ -9,14 +9,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import reactor.core.publisher.Mono;
 
 /**
- *
  * @author javau
  */
 public interface JwtUtils {
+
     Mono<Boolean> validateToken(String token);
+
     Mono<Boolean> validateToken(String token, UserDetails userDetails);
-    Mono<Authentication> getAuthentication(String token);    
+
+    Mono<Authentication> getAuthentication(String token);
+
     Mono<String> generateToken(UserDetails userDetails);
+
     Mono<String> generateToken(Authentication auth);
+
     String extractUsername(String token);
 }

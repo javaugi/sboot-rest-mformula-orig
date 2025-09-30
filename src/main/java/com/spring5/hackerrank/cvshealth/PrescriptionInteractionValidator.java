@@ -7,14 +7,16 @@ package com.spring5.hackerrank.cvshealth;
 import java.util.*;
 
 public class PrescriptionInteractionValidator {
-    private static final Map<String, Set<String>> DRUG_INTERACTIONS = Map.of(
-        "opioid", Set.of("benzodiazepine", "alcohol"),
-        "benzodiazepine", Set.of("opioid", "alcohol")
-    );
+
+    private static final Map<String, Set<String>> DRUG_INTERACTIONS
+            = Map.of(
+                    "opioid", Set.of("benzodiazepine", "alcohol"),
+                    "benzodiazepine", Set.of("opioid", "alcohol"));
 
     public static boolean hasInteraction(List<String> medications) {
         for (String drug : medications) {
-            Set<String> interactions = DRUG_INTERACTIONS.getOrDefault(drug.toLowerCase(), Collections.emptySet());
+            Set<String> interactions
+                    = DRUG_INTERACTIONS.getOrDefault(drug.toLowerCase(), Collections.emptySet());
             if (!Collections.disjoint(medications, interactions)) {
                 return true; // Dangerous interaction found
             }

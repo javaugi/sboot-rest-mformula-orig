@@ -5,10 +5,10 @@
 package com.spring5.dbisolation.wmart;
 
 /**
- *
  * @author javau
  */
 public class FraudService {
+
     public int getScore(String userId) {
         return 1;
     }

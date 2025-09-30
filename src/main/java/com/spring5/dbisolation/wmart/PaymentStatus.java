@@ -5,7 +5,6 @@
 package com.spring5.dbisolation.wmart;
 
 /**
- *
  * @author javaugi
  */
 public enum PaymentStatus {
@@ -13,5 +12,5 @@ public enum PaymentStatus {
     SUCCEEDED,
     FAILED,
     PENDING, // Initial state, awaiting confirmation via webhook
-    CANCELED    
+    CANCELED
 }

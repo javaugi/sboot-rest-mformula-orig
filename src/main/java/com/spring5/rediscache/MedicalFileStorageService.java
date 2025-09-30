@@ -23,26 +23,26 @@ public class MedicalFileStorageService {
     private FileStorageRepository fileStorageRepository;
     @Autowired
     private FileMetadataRepository fileMetadataRepository;
-    
+
     @Autowired
-    private @Qualifier(RedisConfig.REDIS_TPL_MFILE) RedisTemplate<String, MedicalFileMetadata> redisTemplate;
+    private @Qualifier(RedisConfig.REDIS_TPL_MFILE)
+    RedisTemplate<String, MedicalFileMetadata> redisTemplate;
 
     @Cacheable(value = FILE_METADATA_CACHE, key = "#fileId")
     public MedicalFileMetadata getFileMetadata(String fileId) throws Exception {
-        return fileMetadataRepository.findById(Long.valueOf(fileId))
-            .orElseThrow(() -> new FileNotFoundException(fileId));
+        return fileMetadataRepository
+                .findById(Long.valueOf(fileId))
+                .orElseThrow(() -> new FileNotFoundException(fileId));
     }
 
     public void storeFile(MedicalFile file) {
         // Store actual file in your storage system (S3, filesystem, etc.)
         fileStorageRepository.save(file);
-        
+
         // Cache the metadata
-        redisTemplate.opsForValue().set(
-            FILE_METADATA_CACHE + "::" + file.getId(),
-            file.getMetadata(),
-            Duration.ofHours(1)
-        );
+        redisTemplate
+                .opsForValue()
+                .set(FILE_METADATA_CACHE + "::" + file.getId(), file.getMetadata(), Duration.ofHours(1));
     }
 
     // Pattern-based cache eviction for related files

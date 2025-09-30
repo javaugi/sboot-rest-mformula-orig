@@ -7,14 +7,12 @@
  */
 package com.interview.shoppingcart.api.impl;
 
-import com.interview.shoppingcart.api.ShoppingCart;
 import com.interview.shoppingcart.api.Item;
+import com.interview.shoppingcart.api.ShoppingCart;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -84,5 +82,4 @@ public class ShoppingCartImpl implements ShoppingCart {
     public void setCoupons(List<Item> coupons) {
         this.coupons = coupons;
     }
-
 }

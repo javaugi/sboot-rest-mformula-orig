@@ -9,6 +9,7 @@ import java.util.Map;
 @lombok.Data
 @lombok.Builder(toBuilder = true)
 public class PopulationRiskAnalysis {
+
     private String planType;
     private int year;
     private int totalMembers;

@@ -19,5 +19,4 @@ public class CompletionRequest {
     Integer bestOf;
     Boolean stream;
     List<String> stop;
-
 }

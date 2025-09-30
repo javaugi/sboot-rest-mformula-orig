@@ -39,5 +39,4 @@ public class Q95InsertCharAt {
             System.out.println(s);
         }
     }
-
 }

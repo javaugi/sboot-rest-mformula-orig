@@ -27,7 +27,8 @@ public class WmCurrencyService {
     // Fallback method that provides a default, safe value
     private double defaultRate(String from, String to, Throwable t) {
         // Log the failure for analysis
-        System.err.println("Circuit breaker is open or call failed. Returning default rate. Error: " + t.getMessage());
+        System.err.println(
+                "Circuit breaker is open or call failed. Returning default rate. Error: " + t.getMessage());
         return 1.0; // Return a default value to prevent application failure
     }
 }

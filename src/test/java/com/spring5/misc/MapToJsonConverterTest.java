@@ -8,15 +8,13 @@ import com.spring5.utils.MapToJsonConverter;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class MapToJsonConverterTest {
-    
-    //@Autowired
-    //private MapToJsonConverter converter;
-    
+
+    // @Autowired
+    // private MapToJsonConverter converter;
     @Test
     public void testConverter() {
         Map<String, Object> testMap = Map.of("key", "value");

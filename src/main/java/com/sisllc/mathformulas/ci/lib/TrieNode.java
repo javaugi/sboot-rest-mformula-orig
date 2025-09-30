@@ -1,8 +1,6 @@
 package com.sisllc.mathformulas.ci.lib;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -22,19 +20,19 @@ public class TrieNode {
     private char character;
 
     /* Constructs an empty trie node and initializes the list of its children to an empty list. Used
-     * only to construct the root node of the trie.
-     *
-     * Using a LinkedList will take less space than an array, since we allocate no more space than
-     * necessary. Another good option would be a hash table, to map from character to the TrieNode.
-     * This is faster, but will require more space.
+   * only to construct the root node of the trie.
+   *
+   * Using a LinkedList will take less space than an array, since we allocate no more space than
+   * necessary. Another good option would be a hash table, to map from character to the TrieNode.
+   * This is faster, but will require more space.
      */
     public TrieNode() {
         children = new LinkedList<TrieNode>();
     }
 
     /* Constructs a trie node and stores in the node the char passed in
-     * as the argument. Initializes the list of child nodes of this
-     * node to an empty list.
+   * as the argument. Initializes the list of child nodes of this
+   * node to an empty list.
      */
     public TrieNode(char character) {
         this();
@@ -48,10 +46,10 @@ public class TrieNode {
     }
 
     /* Add the String passed in as argument to the trie, starting at a
-     * child node of this node. If any prefix of this String is already
-     * present in the trie starting from a child node of this node, only
-     * add the remaining part of the String to the trie, at the
-     * appropriate position in the trie.
+   * child node of this node. If any prefix of this String is already
+   * present in the trie starting from a child node of this node, only
+   * add the remaining part of the String to the trie, at the
+   * appropriate position in the trie.
      */
     public void addWord(String word) {
         if (word == null || word.isEmpty()) {
@@ -78,7 +76,7 @@ public class TrieNode {
     }
 
     /* Find a child node of this node that has the char argument as its
-     * data. Return null if no such child node is present in the trie.
+   * data. Return null if no such child node is present in the trie.
      */
     TrieNode getChild(char c) {
         for (TrieNode t : children) {

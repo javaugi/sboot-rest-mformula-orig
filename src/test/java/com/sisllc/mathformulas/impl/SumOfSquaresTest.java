@@ -5,8 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

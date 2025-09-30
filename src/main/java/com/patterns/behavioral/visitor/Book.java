@@ -8,8 +8,6 @@
 package com.patterns.behavioral.visitor;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -36,5 +34,4 @@ public class Book implements ItemElement {
     public int accept(ShoppingCartVisitor visitor) {
         return visitor.visit(this);
     }
-
 }

@@ -19,18 +19,18 @@ import lombok.Data;
 @Entity
 @Table(name = "BATTERY_TEST_RESULTS")
 public class BatteryTestResult {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private long id;
-    
+
     private String testId;
     private String vehicleId;
     private LocalDateTime testDate;
     private boolean passed;
-    
-    //String.join(",", anomalies), or anomalies.stream().collect(Collectors.joining(","));
+
+    // String.join(",", anomalies), or anomalies.stream().collect(Collectors.joining(","));
     private String anomalies;
     private String metrics;
-    
 }

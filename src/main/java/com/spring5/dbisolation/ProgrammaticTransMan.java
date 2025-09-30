@@ -24,21 +24,21 @@ Global Configuration - You can also set the default isolation level in your appl
         2: READ_COMMITTED
         4: REPEATABLE_READ
         8: SERIALIZABLE
-*/
-
+ */
 @Service
 @RequiredArgsConstructor
 public class ProgrammaticTransMan {
+
     private final PlatformTransactionManager transactionManager;
     private final ProductRepository productRepository;
-    //private final JpaTransactionManager transactionManager;
-        
+
+    // private final JpaTransactionManager transactionManager;
     public void updateProductWithCustomIsolation(Product product) {
         TransactionDefinition definition = new DefaultTransactionDefinition();
         ((DefaultTransactionDefinition) definition).setIsolationLevel(Isolation.SERIALIZABLE.value());
-        
+
         TransactionStatus status = transactionManager.getTransaction(definition);
-        
+
         try {
             productRepository.save(product);
             transactionManager.commit(status);
@@ -46,5 +46,5 @@ public class ProgrammaticTransMan {
             transactionManager.rollback(status);
             throw e;
         }
-    }    
+    }
 }

@@ -9,39 +9,36 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- *
  * @author javau
  */
 public class AlphanumericSumCalculator {
 
     /*
-    Key Features:
-        Handles both uppercase and lowercase letters
-        Ignores non-alphanumeric characters
-        Uses proper character conversion methods
-        Includes test cases for verification
-        User-friendly input/output interface
-    The program efficiently processes the string and calculates the sum according to the specified rules.
+  Key Features:
+      Handles both uppercase and lowercase letters
+      Ignores non-alphanumeric characters
+      Uses proper character conversion methods
+      Includes test cases for verification
+      User-friendly input/output interface
+  The program efficiently processes the string and calculates the sum according to the specified rules.
      */
-
     public static void main(String[] args) {
         List<String> list = List.of("a1b2c3", "hello123", "ABCxyz");
         /*
-        Input string: a1b2c3
-        Calculated sum: 12 (a=1 + 1 + b=2 + 2 + c=3 + 3)
+    Input string: a1b2c3
+    Calculated sum: 12 (a=1 + 1 + b=2 + 2 + c=3 + 3)
 
-        Input string: hello123
-        Calculated sum: 58 (h=8 + e=5 + l=12 + l=12 + o=15 + 1 + 2 + 3)
+    Input string: hello123
+    Calculated sum: 58 (h=8 + e=5 + l=12 + l=12 + o=15 + 1 + 2 + 3)
 
-        Input string: ABCxyz
-        Calculated sum: 81 (A=1 + B=2 + C=3 + x=24 + y=25 + z=26)
+    Input string: ABCxyz
+    Calculated sum: 81 (A=1 + B=2 + C=3 + x=24 + y=25 + z=26)
          */
         for (String s : list) {
             System.out.println("1. Input " + s + "-calculated=" + calculateAlphanumericSum(s));
             System.out.println("2. Input " + s + "-calculated=" + calculateAlphanumericSumImproved(s));
             System.out.println("3. Input " + s + "-calculated=" + calculateAlphanumericSumStream(s));
         }
-
     }
 
     private static void scanner() {
@@ -69,14 +66,14 @@ public class AlphanumericSumCalculator {
     }
 
     /*
-    How the program works:
-        Input Handling: The program reads an alphanumeric string from the user.
-        Character Processing: It processes each character in the string:
-            Digits: Added directly to the sum using Character.getNumericValue()
-            Letters: Converted to their position in the alphabet (a=1, b=2, ..., z=26)
-            Non-alphanumeric characters: Ignored
-        Case Handling: The program handles both uppercase and lowercase letters by converting them to lowercase first.
-        Output: Displays the original string and the calculated sum.
+  How the program works:
+      Input Handling: The program reads an alphanumeric string from the user.
+      Character Processing: It processes each character in the string:
+          Digits: Added directly to the sum using Character.getNumericValue()
+          Letters: Converted to their position in the alphabet (a=1, b=2, ..., z=26)
+          Non-alphanumeric characters: Ignored
+      Case Handling: The program handles both uppercase and lowercase letters by converting them to lowercase first.
+      Output: Displays the original string and the calculated sum.
      */
     public static int calculateAlphanumericSum(String input) {
         int sum = 0;
@@ -116,17 +113,19 @@ public class AlphanumericSumCalculator {
 
     public static int calculateAlphanumericSumStream(String input) {
         AtomicInteger sum = new AtomicInteger(0);
-        input.toLowerCase().chars()
-            .mapToObj(c -> (char) c)
-            .forEach(c -> {
-            if (Character.isDigit(c)) {
-                sum.addAndGet(Character.getNumericValue(c));
-            } else if (Character.isLetter(c)) {
-                sum.addAndGet((c - 'a' + 1));
-            }
-            });
+        input
+                .toLowerCase()
+                .chars()
+                .mapToObj(c -> (char) c)
+                .forEach(
+                        c -> {
+                            if (Character.isDigit(c)) {
+                                sum.addAndGet(Character.getNumericValue(c));
+                            } else if (Character.isLetter(c)) {
+                                sum.addAndGet((c - 'a' + 1));
+                            }
+                        });
 
         return sum.get();
     }
-
 }

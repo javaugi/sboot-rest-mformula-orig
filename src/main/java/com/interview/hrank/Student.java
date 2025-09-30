@@ -5,7 +5,6 @@
 package com.interview.hrank;
 
 /**
- *
  * @author javaugi
  */
 public class Student {
@@ -66,6 +65,4 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
 }

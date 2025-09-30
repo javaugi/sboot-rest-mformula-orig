@@ -7,26 +7,51 @@ package com.spring5.hackerrank.cvshealth;
 import java.util.Objects;
 
 public class MedicationItem {
+
     private String drugCode; // e.g., NDC code
     private int quantity;
     private String dosageInstructions;
 
     // Constructor, getters, setters
-    public MedicationItem() {}
+    public MedicationItem() {
+    }
 
-    public String getDrugCode() { return drugCode; }
-    public void setDrugCode(String drugCode) { this.drugCode = drugCode; }
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-    public String getDosageInstructions() { return dosageInstructions; }
-    public void setDosageInstructions(String dosageInstructions) { this.dosageInstructions = dosageInstructions; }
+    public String getDrugCode() {
+        return drugCode;
+    }
+
+    public void setDrugCode(String drugCode) {
+        this.drugCode = drugCode;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getDosageInstructions() {
+        return dosageInstructions;
+    }
+
+    public void setDosageInstructions(String dosageInstructions) {
+        this.dosageInstructions = dosageInstructions;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MedicationItem that = (MedicationItem) o;
-        return quantity == that.quantity && Objects.equals(drugCode, that.drugCode) && Objects.equals(dosageInstructions, that.dosageInstructions);
+        return quantity == that.quantity
+                && Objects.equals(drugCode, that.drugCode)
+                && Objects.equals(dosageInstructions, that.dosageInstructions);
     }
 
     @Override
@@ -36,10 +61,15 @@ public class MedicationItem {
 
     @Override
     public String toString() {
-        return "MedicationItem{" +
-               "drugCode='" + drugCode + '\'' +
-               ", quantity=" + quantity +
-               ", dosageInstructions='" + dosageInstructions + '\'' +
-               '}';
+        return "MedicationItem{"
+                + "drugCode='"
+                + drugCode
+                + '\''
+                + ", quantity="
+                + quantity
+                + ", dosageInstructions='"
+                + dosageInstructions
+                + '\''
+                + '}';
     }
 }

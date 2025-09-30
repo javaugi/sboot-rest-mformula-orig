@@ -104,11 +104,12 @@ public class UnconcatenateStringINtoWordsSentence {
 
     public static void main(String[] args) {
         dictionary = AssortedMethods.getTrieDictionary();
-        sentence = "As one of the top companies in the world, Google will surely attract the attention of computer gurus. This does not, however, mean the company is for everyone.";
+        sentence
+                = "As one of the top companies in the world, Google will surely attract the attention of computer gurus. This does not, however, mean the company is for everyone.";
         sentence = clean(sentence);
         System.out.println(sentence);
-        //Result v = parse(0, 0, new Hashtable<Integer, Result>());
-        //System.out.println(v.parsed);
+        // Result v = parse(0, 0, new Hashtable<Integer, Result>());
+        // System.out.println(v.parsed);
 
         Hashtable<Integer, Integer> ht = new Hashtable<Integer, Integer>();
         int v = parseOptimized(0, 0, ht);
@@ -117,7 +118,5 @@ public class UnconcatenateStringINtoWordsSentence {
         for (Integer key : keys) {
             System.out.println("key = " + key + "-value" + ht.get(key));
         }
-
     }
-
 }

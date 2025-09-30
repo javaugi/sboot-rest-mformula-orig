@@ -68,5 +68,4 @@ public class BinarySearch {
             System.out.println(i + ": " + loc + " " + loc2 + " " + loc3);
         }
     }
-
 }

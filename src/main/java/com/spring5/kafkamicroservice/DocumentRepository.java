@@ -7,9 +7,7 @@ package com.spring5.kafkamicroservice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javaugi
  */
 public interface DocumentRepository extends JpaRepository<KafkaDocument, Long> {
-    
 }

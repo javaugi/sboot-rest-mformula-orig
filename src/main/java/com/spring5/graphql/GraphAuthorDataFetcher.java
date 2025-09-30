@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GraphAuthorDataFetcher implements DataFetcher<List<GraphAuthor>> {
+
     @Autowired
     private GraphAuthorRepository repo;
 

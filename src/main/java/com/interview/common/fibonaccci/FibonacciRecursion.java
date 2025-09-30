@@ -5,7 +5,6 @@ package com.interview.common.fibonaccci;
  * subsequent number is the sum of the previous two.
  *
  * @author david
- *
  */
 public class FibonacciRecursion {
 
@@ -13,7 +12,7 @@ public class FibonacciRecursion {
         if (n <= 1) {
             return n;
         }
-        
+
         return fib(n - 1) + fib(n - 2);
     }
 

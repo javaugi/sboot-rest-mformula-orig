@@ -20,15 +20,15 @@ public class FindLongestWordMadeOfOtherWordsInTheList {
         return "";
     }
 
-    public static boolean canBuildWord(String str, boolean isOriginalWord, HashMap<String, Boolean> map) {
+    public static boolean canBuildWord(
+            String str, boolean isOriginalWord, HashMap<String, Boolean> map) {
         if (map.containsKey(str) && !isOriginalWord) {
             return map.get(str);
         }
         for (int i = 1; i < str.length(); i++) {
             String left = str.substring(0, i);
             String right = str.substring(i);
-            if (map.containsKey(left) && map.get(left) == true
-                    && canBuildWord(right, false, map)) {
+            if (map.containsKey(left) && map.get(left) == true && canBuildWord(right, false, map)) {
                 return true;
             }
         }
@@ -42,7 +42,8 @@ public class FindLongestWordMadeOfOtherWordsInTheList {
     }
 
     public static String[] createGiantArray() {
-        String arr[] = {"a",
+        String arr[] = {
+            "a",
             "able",
             "about",
             "account",
@@ -892,28 +893,29 @@ public class FindLongestWordMadeOfOtherWordsInTheList {
             "yes",
             "yesterday",
             "you",
-            "young"};
+            "young"
+        };
 
         return arr;
 
         /* To see performance on a larger array, comment / delete the above "return arr;" line and uncomment the below code.
-		 * This will create a giant array by concatenating words from the above list.*/
+     * This will create a giant array by concatenating words from the above list.*/
  /*ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < arr.length; i++) {
-			int n = AssortedMethods.randomIntInRange(0, 1000);
-			String s = arr[i];
-			for (int j = 0; j < n; j++) {
-				int index = AssortedMethods.randomIntInRange(0, i);
-				s += arr[index];
-			}
-			list.add(s);
-			list.add(arr[i]);
-		}
-		String[] ar = new String[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-			ar[i] = list.get(i);
-		}
-		return ar;
+    for (int i = 0; i < arr.length; i++) {
+    	int n = AssortedMethods.randomIntInRange(0, 1000);
+    	String s = arr[i];
+    	for (int j = 0; j < n; j++) {
+    		int index = AssortedMethods.randomIntInRange(0, i);
+    		s += arr[index];
+    	}
+    	list.add(s);
+    	list.add(arr[i]);
+    }
+    String[] ar = new String[list.size()];
+    for (int i = 0; i < list.size(); i++) {
+    	ar[i] = list.get(i);
+    }
+    return ar;
          */
     }
 }

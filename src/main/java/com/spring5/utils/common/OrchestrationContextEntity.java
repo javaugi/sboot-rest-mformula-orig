@@ -23,18 +23,17 @@ public class OrchestrationContextEntity {
     private String correlationId;
 
     @Lob
-    //@Convert(converter = ClaimEventConverter.class)
+    // @Convert(converter = ClaimEventConverter.class)
     private ReactiveClaimEvent claimEvent;
 
     @Lob
-    //@Convert(converter = HashMapConverter.class)
+    // @Convert(converter = HashMapConverter.class)
     private Map<String, Object> processVariables;
 
     private LocalDateTime timestamp;
     private OrchestrationStatus status;
 
-    //@ElementCollection
-    //private List<OrchestrationStepEntity> completedSteps;
-
+    // @ElementCollection
+    // private List<OrchestrationStepEntity> completedSteps;
     // Getters and setters
 }

@@ -15,12 +15,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data //it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor 
+@Data // it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class VehicleUpdate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +30,6 @@ public class VehicleUpdate {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String errorLog;
-        
 }
 /*
 CREATE TABLE vehicle_updates (
@@ -44,8 +44,8 @@ CREATE TABLE vehicle_updates (
     download_speed_kbps INTEGER,
     battery_level INTEGER,
     CONSTRAINT successful_completion CHECK (
-        (status = 'success' AND completion_time IS NOT NULL) OR 
+        (status = 'success' AND completion_time IS NOT NULL) OR
         (status != 'success' AND completion_time IS NULL)
     )
 ) PARTITION BY RANGE (attempt_time);
-*/
+ */

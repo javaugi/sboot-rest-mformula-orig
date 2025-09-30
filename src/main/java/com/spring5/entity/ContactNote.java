@@ -14,15 +14,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-//@Builder
-//@NoArgsConstructor
-//@AllArgsConstructor
+// @Builder
+// @NoArgsConstructor
+// @AllArgsConstructor
 @Entity
 @Table(name = "CONTACT_NOTE")
 public class ContactNote {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String message;
@@ -31,17 +31,18 @@ public class ContactNote {
     @JoinColumn(name = "CONTACT_ID")
     private Contact contact;
 
-    //*
+    // *
     public ContactNote() {
         super();
     }
+
     public ContactNote(Long id, Contact contact, String message) {
         this.id = id;
         this.contact = contact;
         this.message = message;
     }
-    // */
 
+    // */
     public Long getId() {
         return id;
     }
@@ -65,5 +66,4 @@ public class ContactNote {
     public void setMessage(String message) {
         this.message = message;
     }
-
 }

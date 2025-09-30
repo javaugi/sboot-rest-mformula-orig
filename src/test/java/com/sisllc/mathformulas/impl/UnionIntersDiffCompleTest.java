@@ -11,8 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -43,7 +41,8 @@ public class UnionIntersDiffCompleTest extends ProjectTest {
         String[] list = {"3", "5", "7"};
         System.out.println("intersect=" + uidc.intersect(list1, list2));
         Assert.assertTrue(uidc.intersect(list1, list2).containsAll(Arrays.asList(list)));
-        Assert.assertTrue(Objects.equals(uidc.intersect(list1, list2), new TreeSet(Arrays.asList(list))));
+        Assert.assertTrue(
+                Objects.equals(uidc.intersect(list1, list2), new TreeSet(Arrays.asList(list))));
     }
 
     @Test
@@ -59,6 +58,7 @@ public class UnionIntersDiffCompleTest extends ProjectTest {
         String[] list = {"2", "4", "6", "8"};
         System.out.println("complement=" + uidc.complement(list1, list2));
         Assert.assertTrue(uidc.complement(list1, list2).containsAll(Arrays.asList(list)));
-        Assert.assertTrue(Objects.equals(uidc.complement(list1, list2), new TreeSet(Arrays.asList(list))));
+        Assert.assertTrue(
+                Objects.equals(uidc.complement(list1, list2), new TreeSet(Arrays.asList(list))));
     }
 }

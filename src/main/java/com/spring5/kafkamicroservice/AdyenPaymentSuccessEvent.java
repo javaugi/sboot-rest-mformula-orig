@@ -7,6 +7,7 @@ package com.spring5.kafkamicroservice;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public record AdyenPaymentSuccessEvent(String paymentId, String pspReference, BigDecimal amount, Instant instant) {
-    
+public record AdyenPaymentSuccessEvent(
+        String paymentId, String pspReference, BigDecimal amount, Instant instant) {
+
 }

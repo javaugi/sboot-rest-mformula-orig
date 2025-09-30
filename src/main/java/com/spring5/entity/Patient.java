@@ -32,7 +32,6 @@ import lombok.ToString;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- *
  * @author javaugi
  */
 @Data
@@ -44,8 +43,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "PATIENT")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-//@EntityListeners(PatientEntityListener.class) // Listener to handle encryption
+// @EntityListeners(PatientEntityListener.class) // Listener to handle encryption
 public class Patient implements java.io.Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -58,32 +58,36 @@ public class Patient implements java.io.Serializable {
 
     @Convert(converter = EncryptedStringConverter.class) // JPA Attribute Converter
     private String ssn; // Social Security Number - PII/PHI
-    
+
     @NotBlank(message = "First name is required")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     private String firstName;
-    
+
     @NotBlank(message = "Last name is required")
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     private String lastName;
-    
+
     @Past(message = "Date of birth must be in the past")
     @NotNull(message = "Date of birth is required")
     private LocalDate dateOfBirth;
-    
+
     @Pattern(regexp = "^(MALE|FEMALE|OTHER)$", message = "Gender must be MALE, FEMALE, or OTHER")
     private String gender;
-    
+
     private String address;
-    
+
     @Email(message = "Email should be valid")
     private String userEmail;
-    
+
     @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number must be valid")
     private String phoneNumber;
-    
-    //@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Appointment.class)
+
+    // @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "patient",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            targetEntity = Appointment.class)
     private List<Appointment> appointments;
 
     private Claim claim;

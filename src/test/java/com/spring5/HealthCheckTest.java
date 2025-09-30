@@ -5,7 +5,6 @@
 package com.spring5;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -18,8 +17,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 // webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT starts a real server on a random port.
 // @ActiveProfiles("mock") will apply the configurations from application-mock.properties,
 // disabling the problematic Cloud SQL R2DBC auto-configuration.
-//@ExtendWith(SpringExtension.class)
-//@WebFluxTest
+// @ExtendWith(SpringExtension.class)
+// @WebFluxTest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @Import({WebClientAutoConfiguration.class, TestPostgresConfig.class})
@@ -29,20 +28,23 @@ public class HealthCheckTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    //@Test
+    // @Test
     void contextLoads() {
         assertThat(true).isTrue();
     }
 
-    //@Test
+    // @Test
     void shouldReturnHealthStatusUp() {
         // Test the Spring Boot Actuator health endpoint
-        webTestClient.get()
-            .uri("/actuator/health")
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody()
-            .jsonPath("$.status").isEqualTo("UP");
+        webTestClient
+                .get()
+                .uri("/actuator/health")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$.status")
+                .isEqualTo("UP");
     }
 }
 
@@ -62,7 +64,7 @@ Summary
     Extend with custom health indicators
     Integrates with Prometheus, Grafana, Azure Monitor, etc.
  */
-/*
+ /*
 org.springdoc/springdoc-openapi-starter-webmvc-ui
 # default: /v3/api-docs
 springdoc.api-docs.path=/api-docs

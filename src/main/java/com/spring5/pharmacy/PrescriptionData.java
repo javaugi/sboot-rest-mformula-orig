@@ -4,7 +4,6 @@
  */
 package com.spring5.pharmacy;
 
-import com.spring5.entity.Patient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,16 +25,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class PrescriptionData {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;    
-    
+    private Long id;
+
     private Long patientId;
-    
+
     @OneToOne
     @JoinColumn(name = "prescription_id")
     private PrescriptionEvent prescriptionEvent;
-    
+
     @OneToOne
     @JoinColumn(name = "prescription2_id")
     private PrescriptionEvent2 prescriptionEvent2;

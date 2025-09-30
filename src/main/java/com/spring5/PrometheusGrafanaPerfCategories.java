@@ -5,11 +5,9 @@
 package com.spring5;
 
 /**
- *
  * @author javaugi
  */
 public class PrometheusGrafanaPerfCategories {
-    
 }
 
 /*
@@ -79,4 +77,4 @@ p95 query latency > 500 ms
 Query count > 100/min with > 300 ms average time
 
 Would you like a working Spring Boot + Prometheus example to track DB latency, with categorization? I can set that up for you.
-*/
+ */

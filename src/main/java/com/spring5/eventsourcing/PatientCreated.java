@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public class PatientCreated extends Event {
+
     private final String patientName;
 
     public PatientCreated(UUID patientId, String patientName, Instant timestamp) {

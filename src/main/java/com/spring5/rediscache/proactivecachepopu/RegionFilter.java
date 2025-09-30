@@ -12,10 +12,11 @@ import java.io.IOException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class RegionFilter extends OncePerRequestFilter {
-    
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, 
-        FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
         String region = request.getHeader("X-Region");
         CacheRegionContextHolder.setRegion(region != null ? region : "US");
 

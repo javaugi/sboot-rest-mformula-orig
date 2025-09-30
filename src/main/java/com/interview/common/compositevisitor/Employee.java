@@ -8,7 +8,6 @@
 package com.interview.common.compositevisitor;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

@@ -7,10 +7,6 @@
  */
 package com.mycompany.davidlee;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.interview.shoppingcart.api.Receipt;
 import com.interview.shoppingcart.api.ShoppingCart;
 import com.interview.shoppingcart.api.StoreRegister;
@@ -18,12 +14,13 @@ import com.interview.shoppingcart.api.impl.ItemImpl;
 import com.interview.shoppingcart.api.impl.ShoppingCartImpl;
 import com.interview.shoppingcart.api.impl.StoreRegisterImpl;
 import com.spring5.ProjectTest;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -69,7 +66,7 @@ public class StoreRegisterTest extends ProjectTest {
 
     @Test
     public void whenAdd2Remove1ThenTotal1Item() {
-        //ShoppingCart cart = new ShoppingCartImpl();
+        // ShoppingCart cart = new ShoppingCartImpl();
         cart.addItem(new ItemImpl("Id100", 1.25));
         cart.addItem(new ItemImpl("Id101", 1.55));
         cart.removeItem(new ItemImpl("Id100", 1.25));

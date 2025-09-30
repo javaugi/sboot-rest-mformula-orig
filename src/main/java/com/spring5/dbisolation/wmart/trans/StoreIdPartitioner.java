@@ -22,8 +22,8 @@ public class StoreIdPartitioner implements Partitioner {
     private final ConcurrentMap<String, Integer> partitionCache = new ConcurrentHashMap<>();
 
     @Override
-    public int partition(String topic, Object key, byte[] keyBytes,
-        Object value, byte[] valueBytes, Cluster cluster) {
+    public int partition(
+            String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
 
         String storeId = extractStoreId(key, value);
 

@@ -6,11 +6,10 @@
 package com.interview.common.utils;
 
 /**
- *
  * @author david
  */
 public class PhoneNumberExtensionVO {
-    
+
     String originalPhoneExtension;
     String phoneNumber;
     String formattedPhoneNumber;
@@ -59,7 +58,13 @@ public class PhoneNumberExtensionVO {
 
     @Override
     public String toString() {
-        return "PhoneNumberExtensionVO{" + "originalPhoneExtension=" + originalPhoneExtension + ", formattedPhoneNumber=" + formattedPhoneNumber + ", extension=" + extension + '}';
+        return "PhoneNumberExtensionVO{"
+                + "originalPhoneExtension="
+                + originalPhoneExtension
+                + ", formattedPhoneNumber="
+                + formattedPhoneNumber
+                + ", extension="
+                + extension
+                + '}';
     }
-
 }

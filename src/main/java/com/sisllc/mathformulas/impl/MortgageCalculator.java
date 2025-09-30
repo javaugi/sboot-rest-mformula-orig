@@ -5,20 +5,18 @@ package com.sisllc.mathformulas.impl;
  * monthy payment.
  *
  * @author david
- *
  */
 public class MortgageCalculator {
 
     public static void main(String args[]) {
 
         print(30, 200000, 6);
-
     }
 
     private static void print(int term, double principal, double rate) {
         // Term in years
         System.out.print("Term (years): " + term + "-principal=" + principal + "-rate=" + rate);
-        //yearly rate (5.25 = 0.0525)
+        // yearly rate (5.25 = 0.0525)
         rate = rate / 100 / 12;
         // Term in months
         term = term * 12;
@@ -46,5 +44,4 @@ public class MortgageCalculator {
     public double rateInMonths(double rate) {
         return rate / 100 / 12;
     }
-
 }

@@ -7,15 +7,13 @@ package com.spring5.security;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 /**
- *
  * @author javaugi
  */
-//@Configuration
+// @Configuration
 @EnableMethodSecurity(
-    prePostEnabled = true,     // Enables @PreAuthorize and @PostAuthorize
-    securedEnabled = true,     // Enables @Secured
-    jsr250Enabled = true       // Enables @RolesAllowed
+        prePostEnabled = true, // Enables @PreAuthorize and @PostAuthorize
+        securedEnabled = true, // Enables @Secured
+        jsr250Enabled = true // Enables @RolesAllowed
 )
 public class ExampleMethodSecurityConfig {
-    
 }

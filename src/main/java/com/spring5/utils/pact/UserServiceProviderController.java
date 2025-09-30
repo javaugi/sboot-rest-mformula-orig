@@ -31,9 +31,10 @@ public class UserServiceProviderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.findById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        return userService
+                .findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -44,10 +45,9 @@ public class UserServiceProviderController {
 
     @GetMapping
     public ResponseEntity<List<User>> getUsersByStatus(
-        @RequestParam(required = false) String status) {
+            @RequestParam(required = false) String status) {
 
-        List<User> users = status != null
-            ? userService.findByStatus(status) : userService.findAll();
+        List<User> users = status != null ? userService.findByStatus(status) : userService.findAll();
 
         return ResponseEntity.ok(users);
     }

@@ -6,12 +6,13 @@ import java.util.PriorityQueue;
  * Taxicab Numbers A taxicab number is a positive integer that can be expressed
  * as the sum of two positive cubes in more than one way.
  *
+ * <p>
  * The first taxicab number is 1729:
  *
+ * <p>
  * 1729 = 13 + 123 = 93 + 103
  *
  * @author david
- *
  */
 public class TaxicabNumbers implements Comparable<TaxicabNumbers> {
 
@@ -81,5 +82,4 @@ public class TaxicabNumbers implements Comparable<TaxicabNumbers> {
             System.out.println();
         }
     }
-
 }

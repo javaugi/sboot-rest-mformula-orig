@@ -10,7 +10,7 @@ public class RandomIntegerMSetFromNArray {
     }
 
     /* pick M elements from original array.  Clone original array so that
-	 * we don�t destroy the input. */
+   * we don�t destroy the input. */
     public static int[] pickMRandomly(int[] original, int m) {
         for (int i = 0; i < original.length; i++) {
             int k = rand(0, i);
@@ -27,5 +27,4 @@ public class RandomIntegerMSetFromNArray {
         int[] set = pickMRandomly(cards, 4);
         System.out.println(AssortedMethods.arrayToString(set));
     }
-
 }

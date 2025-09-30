@@ -5,16 +5,17 @@
 package com.spring5.audit;
 
 /**
- *
  * @author javaugi
  */
 public class OrderFailedEvent {
+
     private String orderId;
     private String message;
-    
+
     public OrderFailedEvent(String orderId) {
         this.orderId = orderId;
     }
+
     public OrderFailedEvent(String orderId, String message) {
         this.orderId = orderId;
         this.message = message;
@@ -35,6 +36,4 @@ public class OrderFailedEvent {
     public void setMessage(String message) {
         this.message = message;
     }
-    
-    
 }

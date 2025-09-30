@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class BlackJackHand extends Hand<BlackJackCard> {
 
     public BlackJackHand() {
-
     }
 
     public int score() {

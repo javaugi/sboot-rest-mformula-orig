@@ -5,7 +5,8 @@
 package com.interview.cls.sealed.shape;
 
 // Permitted subclass declared as sealed
-public sealed class Rectangle extends Shape permits ColoredRectangle, TransparentRectangle, FilledRectangle {
+public sealed class Rectangle extends Shape
+        permits ColoredRectangle, TransparentRectangle, FilledRectangle {
 
     private final double width;
     private final double height;

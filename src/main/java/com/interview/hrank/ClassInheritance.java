@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author javaugi
  */
 public class ClassInheritance {
@@ -24,12 +23,12 @@ public class ClassInheritance {
         System.out.print(adder.add(10, 32) + " ");
         System.out.print(adder.add(10, 3) + " ");
         System.out.print(adder.add(10, 10));
-        
-        
+
         ClassInheritance.AdderMultiple adderMultiple = new ClassInheritance().new AdderMultiple();
 
         // Print the superclass name
-        System.out.println("\n My adderMultiple superclass is: " + adderMultiple.getClass().getSuperclass().getName());
+        System.out.println(
+                "\n My adderMultiple superclass is: " + adderMultiple.getClass().getSuperclass().getName());
 
         // Test the add method with multiple parameters
         System.out.print(adderMultiple.add(10, 15, 32) + " ");
@@ -38,28 +37,27 @@ public class ClassInheritance {
     }
 
     /*
-        But the first solution matches the exact problem description which mentions "takes 2 integers as parameters". The sample output 
-        showing three numbers (42, 13, 20) appears to be from multiple calls to the add method rather than a single call with three parameters.
-    */
+      But the first solution matches the exact problem description which mentions "takes 2 integers as parameters". The sample output
+      showing three numbers (42, 13, 20) appears to be from multiple calls to the add method rather than a single call with three parameters.
+     */
     class ArithmeticMultiple {
         // Method to add variable number of integers
 
         public int add(int... numbers) {
-            return Arrays.stream(numbers)
-                .boxed()
-                .collect(Collectors.toList())
-                .stream()
-                .mapToInt(Integer::intValue).sum();
-            
+            return Arrays.stream(numbers).boxed().collect(Collectors.toList()).stream()
+                    .mapToInt(Integer::intValue)
+                    .sum();
+
             /*
-            int sum = 0;
-            for (int num : numbers) {
-                sum += num;
-            }
-            return sum;
-            // */
+      int sum = 0;
+      for (int num : numbers) {
+          sum += num;
+      }
+      return sum;
+      // */
         }
     }
+
     class AdderMultiple extends ArithmeticMultiple {
         // This class inherits the add method from Arithmetic
         // No additional implementation needed unless we want to modify behavior
@@ -71,9 +69,8 @@ public class ClassInheritance {
         public int add(int a, int b) {
             return a + b;
         }
-
-
     }
+
     class Adder extends Arithmetic {
         // This class inherits the add method from Arithmetic
         // No additional implementation needed unless we want to modify behavior
@@ -93,4 +90,4 @@ public class ClassInheritance {
     Output matches the sample requirements:
         My superclass is: Arithmetic
         42 13 20
-*/
+ */

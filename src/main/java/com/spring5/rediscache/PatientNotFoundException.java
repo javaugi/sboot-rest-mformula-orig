@@ -5,13 +5,14 @@
 package com.spring5.rediscache;
 
 /**
- *
  * @author javaugi
  */
 public class PatientNotFoundException extends Exception {
+
     public PatientNotFoundException() {
         super();
     }
+
     public PatientNotFoundException(String message) {
         super(message);
     }

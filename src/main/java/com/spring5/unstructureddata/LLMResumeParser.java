@@ -23,17 +23,19 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
- *
  * @author javaugi
  */
 public class LLMResumeParser {
-    //private static final String API_KEY = "your_api_key_here";
-    //private static final String API_URL = "https://api.deepseek.com/v1/chat/completions"; // Hypothetical endpoint
-        
+    // private static final String API_KEY = "your_api_key_here";
+    // private static final String API_URL = "https://api.deepseek.com/v1/chat/completions"; //
+    // Hypothetical endpoint
+
     @Value("${spring.ai.deepseek.openai.base-url}")
     private String dsBaseUrl;
+
     @Value("${spring.ai.deepseek.openai.api-key}")
     private String dsApiKey;
+
     @Value("${spring.ai.deepseek.openai.chat.options.model}")
     private String dsModelDefault;
 
@@ -60,9 +62,10 @@ public class LLMResumeParser {
             JsonNode structuredData = new ObjectMapper().readTree(llmResponse);
 
             // Save to file
-            new ObjectMapper().writerWithDefaultPrettyPrinter()
+            new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
                     .writeValue(new File(jsonOutputPath), structuredData);
-            
+
             System.out.println("Structured resume data saved to " + jsonOutputPath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,7 +95,8 @@ public class LLMResumeParser {
             httpPost.setHeader("Content-Type", "application/json");
 
             // Structured prompt to guide the LLM
-            String prompt = """
+            String prompt
+                    = """
                 Extract the following details from this resume in JSON format:
                 {
                     "name": "Full Name",
@@ -114,14 +118,18 @@ public class LLMResumeParser {
                     ],
                     "skills": ["List", "of", "Skills"]
                 }
-                Resume Text: """ + resumeText;
+                Resume Text: """
+                    + resumeText;
 
-            String payload = String.format("""
+            String payload
+                    = String.format(
+                            """
                 {
                     "model": "deepseek-chat",
                     "messages": [{"role": "user", "content": "%s"}],
                     "temperature": 0.3
-                }""", escapeJson(prompt));
+                }""",
+                            escapeJson(prompt));
 
             httpPost.setEntity((HttpEntity) new StringEntity(payload));
             return EntityUtils.toString(httpClient.execute(httpPost).getEntity());
@@ -130,10 +138,8 @@ public class LLMResumeParser {
 
     // Escape JSON strings to avoid syntax errors
     private static String escapeJson(String input) {
-        return input.replace("\"", "\\\"")
-                   .replace("\n", "\\n")
-                   .replace("\r", "\\r");
-    }    
+        return input.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
+    }
 }
 
 /*
@@ -178,12 +184,12 @@ import json
 
 def parse_resume_with_llm(resume_text, api_key):
     API_URL = "https://api.deepseek.com/v1/chat/completions"  # Hypothetical endpoint
-    
+
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
-    
+
     # Structured prompt to guide the LLM
     prompt = """
     Extract the following details from this resume in JSON format:
@@ -220,7 +226,7 @@ def parse_resume_with_llm(resume_text, api_key):
     }
 
     response = requests.post(API_URL, headers=headers, json=payload)
-    
+
     if response.status_code == 200:
         llm_output = response.json()["choices"][0]["message"]["content"]
         # Extract JSON part from LLM's response (sometimes includes extra text)
@@ -485,4 +491,4 @@ Alternatives:
 Use LangChain4J for easier LLM integration.
 
 Would you like to extend this for multi-resume processing or add NLP post-processing?
-*/
+ */

@@ -23,5 +23,4 @@ public class TwoNumberAdd {
             System.out.println(a + " + " + b + " = " + sum);
         }
     }
-
 }

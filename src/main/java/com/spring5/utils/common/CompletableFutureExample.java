@@ -15,25 +15,27 @@ public class CompletableFutureExample {
 
     // Simulate a remote API call
     public static CompletableFuture<String> getUserDetail(String userId) {
-        return CompletableFuture.supplyAsync(() -> {
-            // Simulate network latency
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-            }
-            return "UserInfo for " + userId;
-        });
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    // Simulate network latency
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                    }
+                    return "UserInfo for " + userId;
+                });
     }
 
     // Simulate another remote API call
     public static CompletableFuture<Integer> getCreditRating(String userId) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                Thread.sleep(150);
-            } catch (InterruptedException e) {
-            }
-            return 850;
-        });
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        Thread.sleep(150);
+                    } catch (InterruptedException e) {
+                    }
+                    return 850;
+                });
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -44,10 +46,10 @@ public class CompletableFutureExample {
         CompletableFuture<Integer> creditRatingFuture = getCreditRating(userId);
 
         // Combine them when both are done, without blocking.
-        CompletableFuture<String> combinedFuture = userInfoFuture
-            .thenCombine(creditRatingFuture, (userInfo, rating)
-                -> userInfo + " has a credit rating of: " + rating
-            );
+        CompletableFuture<String> combinedFuture
+                = userInfoFuture.thenCombine(
+                        creditRatingFuture,
+                        (userInfo, rating) -> userInfo + " has a credit rating of: " + rating);
 
         // At this point, the main thread is free to do other work.
         // We only block at the end to get the final result for demonstration.

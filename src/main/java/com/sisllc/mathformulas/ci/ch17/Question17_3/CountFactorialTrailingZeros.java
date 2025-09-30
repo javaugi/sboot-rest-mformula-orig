@@ -34,5 +34,4 @@ public class CountFactorialTrailingZeros {
             System.out.println(i + "! (or " + factorial(i) + ") has " + countFactZeros(i) + " zeros");
         }
     }
-
 }

@@ -8,23 +8,21 @@ import com.spring5.entity.Question;
 import org.springframework.hateoas.EntityModel;
 
 /**
- *
  * @author javaugi
  */
 public class QuestionModel extends EntityModel<Question> {
+
     private final Question question;
-    
+
     public QuestionModel(Question question) {
         this.question = question;
     }
-    
 
     public Long getId() {
         return question.getId();
     }
-    
+
     public String getText() {
         return question.getText();
     }
-        
 }

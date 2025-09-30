@@ -4,14 +4,13 @@
  */
 package com.spring5.aicloud.genaihealthcare.cccr;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClaimService {
@@ -20,7 +19,6 @@ public class ClaimService {
     private final PrepayPublisher publisher; // simple interface to "emit"
 
     private List<Claim> claims;
-
 
     public ClaimService(ClaimRepository repo, PrepayPublisher publisher) {
         this.repo = repo;
@@ -45,7 +43,9 @@ public class ClaimService {
             // search for facility same patient in [claimDate, claimDate + 30]
             LocalDate from = saved.claimDate;
             LocalDate to = saved.claimDate.plusDays(30);
-            List<Claim> matches = repo.findByPatientAndTypeBetween(saved.patientId, ClaimType.FACILITY.toString(), from, to);
+            List<Claim> matches
+                    = repo.findByPatientAndTypeBetween(
+                            saved.patientId, ClaimType.FACILITY.toString(), from, to);
             if (!matches.isEmpty()) {
                 // found prepay candidate
                 publisher.publishPrepayEvent(saved, matches);
@@ -54,7 +54,9 @@ public class ClaimService {
             // find prior professional claims [claimDate - 30, claimDate]
             LocalDate from = saved.claimDate.minusDays(30);
             LocalDate to = saved.claimDate;
-            List<Claim> matches = repo.findByPatientAndTypeBetween(saved.patientId, ClaimType.PROFESSIONAL.toString(), from, to);
+            List<Claim> matches
+                    = repo.findByPatientAndTypeBetween(
+                            saved.patientId, ClaimType.PROFESSIONAL.toString(), from, to);
             if (!matches.isEmpty()) {
                 publisher.publishPrepayEvent(saved, matches);
             }
@@ -74,17 +76,17 @@ public class ClaimService {
     // Using Stream API for claim processing
     public Map<ClaimStatus, List<Claim>> processClaims(List<Claim> claims) {
         return claims.stream()
-            .filter(claim -> claim.getReviewDate() != null)
-            .peek(this::applyClinicalRules)
-            .collect(Collectors.groupingBy(Claim::getStatus));
+                .filter(claim -> claim.getReviewDate() != null)
+                .peek(this::applyClinicalRules)
+                .collect(Collectors.groupingBy(Claim::getStatus));
     }
 
     // Parallel processing for performance
     public List<Claim> processClaimsParallel(List<Claim> claims) {
         return claims.parallelStream()
-            .filter(claim -> claim.isPrePay() || claim.isOutpatient())
-            .map(this::enrichClaimData)
-            .collect(Collectors.toList());
+                .filter(claim -> claim.isPrePay() || claim.isOutpatient())
+                .map(this::enrichClaimData)
+                .collect(Collectors.toList());
     }
 
     private void applyClinicalRules(Claim claim) {

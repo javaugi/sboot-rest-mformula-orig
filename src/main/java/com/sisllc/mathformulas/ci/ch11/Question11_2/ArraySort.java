@@ -38,7 +38,9 @@ public class ArraySort {
     }
 
     public static void main(String[] args) {
-        String[] array = {"apple", "banana", "carrot", "ele", "duck", "papel", "tarroc", "cudk", "eel", "lee"};
+        String[] array = {
+            "apple", "banana", "carrot", "ele", "duck", "papel", "tarroc", "cudk", "eel", "lee"
+        };
         sort(array);
         System.out.println(AssortedMethods.stringArrayToString(array));
     }

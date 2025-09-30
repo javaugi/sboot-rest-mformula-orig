@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientInquiryResponse {
+
     private String generatedResponse;
     private boolean requiresHumanReview;
     private String loyaltyProgramOffer;
     private Map<String, String> aiGovernanceMetrics;
-
 }

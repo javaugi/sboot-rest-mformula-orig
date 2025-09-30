@@ -9,6 +9,7 @@ import java.util.List;
 @lombok.Data
 @lombok.Builder(toBuilder = true)
 public class HighRiskMember {
+
     private String memberId;
     private double riskScore;
     private double predictedCost;

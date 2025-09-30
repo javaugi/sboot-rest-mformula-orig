@@ -1,29 +1,29 @@
 package com.sisllc.mathformulas.impl;
 
 /*
- * Program for Conway’s Game Of Life Initially, there is a grid with some cells
- * which may be alive or dead. Our task to generate the next generation of cells
- * based on the following rules:
- *
- * 1. Any live cell with fewer than two live neighbors dies, as if caused by under population.
- * 2. Any live cell with two or three live neighbors lives on to the next generation.
- * 3. Any live cell with more than three live neighbors dies, as if by overpopulation.
- * 4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+* Program for Conway’s Game Of Life Initially, there is a grid with some cells
+* which may be alive or dead. Our task to generate the next generation of cells
+* based on the following rules:
+*
+* 1. Any live cell with fewer than two live neighbors dies, as if caused by under population.
+* 2. Any live cell with two or three live neighbors lives on to the next generation.
+* 3. Any live cell with more than three live neighbors dies, as if by overpopulation.
+* 4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
 
- * Examples: The ‘*’ represent an alive cell and the ‘.’ represent a dead cell.
- *
- * Here is a simple Java implementation of the Game Of Life.
- * 1. Grid in initialized with 0’s representing the dead cells
- * 2 and 1’s representing alive cells.
- * 3 The generate() function loops through every cell and counts it’s neighbors.
- * 4. Based on that values, the aforementioned rules are implemented.
- *
- * The following implementation ignores the edge cells as it supposed to be played on an
- * infinite plane.
- *
- * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+* Examples: The ‘*’ represent an alive cell and the ‘.’ represent a dead cell.
+*
+* Here is a simple Java implementation of the Game Of Life.
+* 1. Grid in initialized with 0’s representing the dead cells
+* 2 and 1’s representing alive cells.
+* 3 The generate() function loops through every cell and counts it’s neighbors.
+* 4. Based on that values, the aforementioned rules are implemented.
+*
+* The following implementation ignores the edge cells as it supposed to be played on an
+* infinite plane.
+*
+* @author javaugi
+* @version $LastChangedRevision $LastChangedDate Last Modified Author:
+* $LastChangedBy
  */
 public class GameOfLife {
 
@@ -31,16 +31,17 @@ public class GameOfLife {
         int M = 10, N = 10;
 
         // Intiliazing the grid.
-        int[][] grid = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-        {0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        int[][] grid = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
 
         // Displaying the grid

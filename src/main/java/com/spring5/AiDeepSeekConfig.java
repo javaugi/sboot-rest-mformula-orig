@@ -18,31 +18,34 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 
-//https://platform.deepseek.com/transactions
-//https://platform.deepseek.com/api_keys
+// https://platform.deepseek.com/transactions
+// https://platform.deepseek.com/api_keys
 @Configuration
-public class AiDeepSeekConfig implements CommandLineRunner{
+public class AiDeepSeekConfig implements CommandLineRunner {
+
     private static final Logger log = LoggerFactory.getLogger(AiDeepSeekConfig.class);
-    
+
     @Value("classpath:/prompts/system-message.st")
-    private Resource systemResource;    
+    private Resource systemResource;
+
     @Value("${spring.ai.deepseek.openai.base-url}")
     private String baseUrl;
+
     @Value("${spring.ai.deepseek.openai.api-key}")
     private String apiKey;
+
     @Value("${spring.ai.deepseek.openai.chat.options.model}")
     private String apiModel;
-    
+
     @Override
     public void run(String... args) throws Exception {
-        log.info("AiDeepSeekConfig with baseUrl {} args {} ", baseUrl, Arrays.toString(args)); 
+        log.info("AiDeepSeekConfig with baseUrl {} args {} ", baseUrl, Arrays.toString(args));
         hide(systemResource, apiKey, apiModel);
     }
 
     private void hide(Resource resource, String... args) {
-        //doNothing
+        // doNothing
     }
-    
 
     @Primary
     @Bean(name = "deekseekOpenAiApi")
@@ -57,5 +60,5 @@ public class AiDeepSeekConfig implements CommandLineRunner{
                 .openAiApi(openAiApi)
                 .defaultOptions(OpenAiChatOptions.builder().model(apiModel).build())
                 .build();
-    }       
-} 
+    }
+}

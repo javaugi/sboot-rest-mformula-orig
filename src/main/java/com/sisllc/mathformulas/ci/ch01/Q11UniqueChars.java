@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -82,7 +80,7 @@ public class Q11UniqueChars {
         String[] words = sentence.split("\\s+");
         Set wordSet = new HashSet(Arrays.asList(words));
 
-        //TreeSet and sort are not needed and they are here to sort for display and compare purpose
+        // TreeSet and sort are not needed and they are here to sort for display and compare purpose
         wordSet = new TreeSet(Arrays.asList(words));
         Arrays.sort(words);
         System.out.println("sorted words=\n " + Arrays.toString(words) + "\n wordSet= \n" + wordSet);

@@ -5,12 +5,11 @@
 package com.spring5.dbisolation.dbdriven;
 
 /**
- *
  * @author javau
  */
 public class AnalyticNetworkImpactAnalysis {
-    
 }
+
 /*
 Question: How does network type affect OTA update performance?
 
@@ -37,4 +36,4 @@ SELECT
     ROUND(total_updates * 1.0 / (SELECT SUM(total_updates) FROM network_stats) * 100, 2) AS percentage_of_total
 FROM network_stats
 ORDER BY success_rate DESC;
-*/
+ */

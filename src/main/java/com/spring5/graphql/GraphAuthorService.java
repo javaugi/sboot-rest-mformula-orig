@@ -7,13 +7,14 @@ package com.spring5.graphql;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
+
 /*
-1. Resolvers (Similar to Controllers) 
+1. Resolvers (Similar to Controllers)
     - QueryResolver(GraphQLQueryResolver ): Queries(GET-like operations)
     - MutationResolver(GraphQLMutationResolver ): Mutations (POST/PUT/DELETE-like operations)
     - Subscriptions (real-time updates via WebSocket)
 2. Regular JPA Repositories
-3. Custom DataFetchers (For Complex Queries) - DataFetcher<List<GraphAuthor>> 
+3. Custom DataFetchers (For Complex Queries) - DataFetcher<List<GraphAuthor>>
 
 Key Differences vs REST/JPA
     Feature                 GraphQL                                 REST/JPA
@@ -31,10 +32,10 @@ When to Use GraphQL?
     ✅ Complex client data requirements (e.g., mobile vs web different fields)
     ✅ Microservices aggregation (single GraphQL gateway)
     ❌ Simple CRUD apps (REST/JPA is faster to implement)
-*/
-
+ */
 @Service
 public class GraphAuthorService {
+
     private final Map<String, GraphAuthor> authors = new ConcurrentHashMap<>();
 
     public GraphAuthorService() {
@@ -44,7 +45,7 @@ public class GraphAuthorService {
 
     public GraphAuthor findAuthorById(String id) {
         return authors.get(id);
-    }    
+    }
 }
 /*
 1. GraphQL in Spring Boot Basics
@@ -179,4 +180,4 @@ When to Use GraphQL?
 ✅ Microservices aggregation (single GraphQL gateway)
 
 ❌ Simple CRUD apps (REST/JPA is faster to implement)
-*/
+ */

@@ -10,13 +10,13 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- *
  * @author javaugi
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 public class Code2MediumLongestSubstringTest {
+
     Code2MediumStringProcessing main = new Code2MediumStringProcessing();
-    
+
     @Test
     public void testLongestSubstring_TwoDistinctChars() {
         assertEquals(5, main.longestSubstringWithAtLeastTwoDistinctChars("ccaabbb"));
@@ -35,5 +35,5 @@ public class Code2MediumLongestSubstringTest {
     @Test
     public void testLongestSubstring_AllDistinct() {
         assertEquals(2, main.longestSubstringWithAtLeastTwoDistinctChars("abc"));
-    }    
+    }
 }

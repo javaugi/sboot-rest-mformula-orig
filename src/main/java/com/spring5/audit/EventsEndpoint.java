@@ -25,11 +25,12 @@ import org.springframework.stereotype.Component;
 public class EventsEndpoint {
 
     public List<String> VALID_EVENT_TYPES = new ArrayList<>();
-    
-    @Autowired
-    private @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus;
 
-    //(1) Security:
+    @Autowired
+    private @Qualifier(EventBusConfig.MB_EVENT_BUS)
+    MBassador<Object> eventBus;
+
+    // (1) Security:
     // Consider adding these validations:
     private void validateEventType(String eventType) {
         if (!VALID_EVENT_TYPES.contains(eventType)) {
@@ -37,7 +38,7 @@ public class EventsEndpoint {
         }
     }
 
-    //(2) Audit Logging:
+    // (2) Audit Logging:
     @WriteOperation
     public void publishEvent(@Selector String eventType, String payload) {
         // Secure payload validation for defense context
@@ -61,13 +62,13 @@ public class EventsEndpoint {
         }
     }
 
-    //(4) Performance Monitoring:
+    // (4) Performance Monitoring:
     @ReadOperation
     public Map<String, Object> eventStats() {
         Map<String, Object> stats = new HashMap<>();
         // Alternative way to get subscription count since getSubscriptions() isn't available
-        //stats.put("subscriptions", eventBus.getHandlerCount());
-        //stats.put("pendingAsyncMessages", eventBus.getPendingMessages());
+        // stats.put("subscriptions", eventBus.getHandlerCount());
+        // stats.put("pendingAsyncMessages", eventBus.getPendingMessages());
         return stats;
     }
 
@@ -97,7 +98,6 @@ public class EventsEndpoint {
 
         // Getters and other methods as needed
     }
-
 }
 /*
 Key Improvements for Defense Context:

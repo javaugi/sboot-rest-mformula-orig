@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class LoyaltyProgram {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -56,5 +57,4 @@ public class LoyaltyProgram {
         this.programName = programName;
         this.enrollmentDate = LocalDateTime.now();
     }
-
 }

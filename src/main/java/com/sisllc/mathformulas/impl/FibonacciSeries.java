@@ -1,56 +1,54 @@
 package com.sisllc.mathformulas.impl;
 
 /**
- *
  * @author david
- *
+ * <p>
  * Fibonacci series in Java
- *
+ * <p>
  * In fibonacci series, next number is the sum of previous two numbers for
  * example 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55 etc. The first two numbers of
  * fibonacci series are 0 and 1.
- *
+ * <p>
  * There are two ways to write the fibonacci series program in java:
- *
+ * <p>
  * Fibonacci Series without using recursion Fibonacci Series using recursion
- *
+ * <p>
  * Q: There are stairs, each time one can clime 1 or 2, how many different ways
  * to clibe the stairs
- *
+ * <p>
  * Step 1. Finding the relationships before n and n - 1. To get n there are two
  * ways, one 1-stair from n-1 or 2-stairs from n-2. If the f(n) is the number of
  * ways to clime to n then f(n) = f(n-1) + f(n-2)
- *
+ * <p>
  * Make sure the start condition is correct:
- *
+ * <p>
  * f(0) = 0; f(1) = 1
- *
+ * <p>
  * Dynamic programing - is a technique for solving the problems with the
  * following properties
- *
+ * <p>
  * 1. An instance is solved using the samll instances
- *
+ * <p>
  * 2. The solution for a smaller instance might be needed multiple times
- *
+ * <p>
  * 3. The solutions to small instances is stored in a table, so that each
  * smaller instance is solved only once
- *
+ * <p>
  * 4. attional space is used to save time
- *
  */
 public class FibonacciSeries {
 
     public static int[] A = new int[1000];
 
     public static int f3(int n) {
-        //System.out.println("n=" + n);
+        // System.out.println("n=" + n);
         if (n <= 1) {
-            //System.out.print(", " + n);
+            // System.out.print(", " + n);
             return n;
         }
 
         if (A[n] > 0) {
-            //System.out.print(", " + A[n]);
+            // System.out.print(", " + A[n]);
             return A[n];
         } else {
             A[n] = f3(n - 1) + f3(n - 2);
@@ -71,7 +69,7 @@ public class FibonacciSeries {
         System.out.print("\n\n f3(n) ...");
         count = 12;
         f3(count);
-        //System.out.print("\n " + f3(count));
+        // System.out.print("\n " + f3(count));
 
         int n = 12;
         System.out.print("\n\n fib(12) ...");

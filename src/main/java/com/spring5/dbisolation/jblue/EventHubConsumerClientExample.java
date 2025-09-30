@@ -13,19 +13,20 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import java.time.Duration;
 
 /**
- *
  * @author javau
  */
 public class EventHubConsumerClientExample {
+
     public static void main(String[] args) throws InterruptedException {
         String connectionString = "Endpoint=sb://...";
         String eventHubName = "my-hub";
 
         // 1. Create the consumer client for a specific consumer group
-        EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString(connectionString, eventHubName)
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumerClient();
+        EventHubConsumerClient consumer
+                = new EventHubClientBuilder()
+                        .connectionString(connectionString, eventHubName)
+                        .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                        .buildConsumerClient();
 
         // 2. Get partition IDs (you need to know which partition to read from)
         System.out.println("Getting partition ids...");
@@ -37,20 +38,22 @@ public class EventHubConsumerClientExample {
         String targetPartitionId = "0";
         EventPosition startingPosition = EventPosition.earliest();
 
-        System.out.printf("Receiving events from partition %s, starting at %s%n",
-            targetPartitionId, startingPosition);
+        System.out.printf(
+                "Receiving events from partition %s, starting at %s%n",
+                targetPartitionId, startingPosition);
 
         // 4. Read a batch of 10 events with a 30-second timeout.
         // This is a synchronous call. It blocks until it gets the events or times out.
-        IterableStream<PartitionEvent> events = consumer.receiveFromPartition(
-            targetPartitionId, 10, startingPosition, Duration.ofSeconds(30));
+        IterableStream<PartitionEvent> events
+                = consumer.receiveFromPartition(
+                        targetPartitionId, 10, startingPosition, Duration.ofSeconds(30));
 
         int numberOfEvents = 0;
         for (PartitionEvent partitionEvent : events) {
             EventData eventData = partitionEvent.getData();
-            System.out.printf("Received event: Seq #: %d, Body: %s%n",
-                eventData.getSequenceNumber(),
-                eventData.getBodyAsString());
+            System.out.printf(
+                    "Received event: Seq #: %d, Body: %s%n",
+                    eventData.getSequenceNumber(), eventData.getBodyAsString());
             numberOfEvents++;
 
             // !!! You are responsible for saving the last sequence number for the next read!

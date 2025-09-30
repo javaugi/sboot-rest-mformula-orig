@@ -28,5 +28,4 @@ public class ValidationResult {
     public void addOpportunity(ReviewOpportunity oppr) {
         opprs.add(oppr);
     }
-
 }

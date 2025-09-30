@@ -12,37 +12,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
 public class TradeService {
-    
+
     @Autowired
     private TradeRepository tradeRepository;
-    
+
     public List<Trade> getAllTrades() {
         return tradeRepository.findAll();
     }
-    
+
     public Trade createTrade(Trade trade) {
         // Add validation logic here
         return tradeRepository.save(trade);
-    }    
-    
+    }
+
     public List<Trade> getAllTradesByUserEmail(String userEmail) throws Exception {
         return tradeRepository.getAllTradesByUserEmail(userEmail);
     }
-    
-    public void addMoney(long userAccountId, BigDecimal amount) throws Exception{
+
+    public void addMoney(long userAccountId, BigDecimal amount) throws Exception {
         tradeRepository.addMoney(userAccountId, amount);
     }
-    
-    public void addMoneyByAccount(String userAccount, BigDecimal amount) throws Exception{
+
+    public void addMoneyByAccount(String userAccount, BigDecimal amount) throws Exception {
         tradeRepository.addMoneyByAccount(userAccount, amount);
     }
 
-    public Trade updateTrade(Trade trade) {        
+    public Trade updateTrade(Trade trade) {
         return tradeRepository.save(trade);
     }
 }

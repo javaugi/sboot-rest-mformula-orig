@@ -31,7 +31,8 @@ class PatientRaiController {
      * logging, and index updates.
      */
     @PostMapping("/inquire")
-    public ResponseEntity<PatientInquiryResponse> handleInquiry(@RequestBody PatientInquiryRequest request) {
+    public ResponseEntity<PatientInquiryResponse> handleInquiry(
+            @RequestBody PatientInquiryRequest request) {
         // 1. Human-centered design: Start with an empathetic human-in-the-loop mindset.
         // No AI interaction occurs until we've confirmed safety and privacy.
         responsibleAiService.performPrivacyCheck(request);

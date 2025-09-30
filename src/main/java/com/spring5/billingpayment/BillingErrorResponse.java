@@ -10,6 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class BillingErrorResponse {
+
     private String message;
-    private String details;    
+    private String details;
 }

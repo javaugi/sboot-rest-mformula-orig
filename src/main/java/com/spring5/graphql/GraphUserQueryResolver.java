@@ -11,9 +11,10 @@ import org.springframework.stereotype.Controller;
 
 /*
 
-*/
+ */
 @Controller
 public class GraphUserQueryResolver {
+
     private final GraphUserService userService;
 
     public GraphUserQueryResolver(GraphUserService userService) {

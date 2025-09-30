@@ -64,62 +64,70 @@ public class AuthController {
     private ReactiveAuthenticationManager authenticationManager;
     private final AuthService authService;
     private final JwtTokenProvider tokenProvider;
-    
+
     @GetMapping("/me")
-    public Mono<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+    public Mono<Map<String, Object>> getCurrentUser(
+            @AuthenticationPrincipal UserDetails userDetails) {
         log.info("AuthController getCurrentUser {}", userDetails);
         if (userDetails == null) {
             return Mono.empty(); // Or return 401 if no user is authenticated
         }
 
-        return Mono.just(Map.of(
-            "username", userDetails.getUsername(),
-            "roles", userDetails.getAuthorities().stream()
-                .map(grantedAuthority -> grantedAuthority.getAuthority())
-                .collect(Collectors.toList())
-        ));
-    }    
-    
+        return Mono.just(
+                Map.of(
+                        "username", userDetails.getUsername(),
+                        "roles",
+                        userDetails.getAuthorities().stream()
+                                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                                .collect(Collectors.toList())));
+    }
+
     @PostMapping("/login")
     public Mono<ResponseEntity<LoginResponse>> login(@RequestBody LoginRequest request) {
-        log.info("AuthController login {}", request);       
-        //return Mono.just(ResponseEntity.ok(new LoginResponse("login done")));
-        //*
-        return authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        ).flatMap(auth -> {
-            String jwt = jwtUtils.generateToken(auth).block();
-            return Mono.just(ResponseEntity.ok(new LoginResponse(jwt)));
-        }).onErrorResume(e -> Mono.just(
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
-        ));
+        log.info("AuthController login {}", request);
+        // return Mono.just(ResponseEntity.ok(new LoginResponse("login done")));
+        // *
+        return authenticationManager
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()))
+                .flatMap(
+                        auth -> {
+                            String jwt = jwtUtils.generateToken(auth).block();
+                            return Mono.just(ResponseEntity.ok(new LoginResponse(jwt)));
+                        })
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
         // */
-    }    
+    }
 
     @PostMapping("/logout")
     public Mono<ResponseEntity<String>> logout() {
-        log.info("AuthController logout ");       
+        log.info("AuthController logout ");
         return ReactiveSecurityContextHolder.getContext()
-        .flatMap(securityContext -> {
-            ReactiveSecurityContextHolder.clearContext();
-            return Mono.just(ResponseEntity.ok("Logged out successfully"));
-        })
-        .switchIfEmpty(Mono.just(ResponseEntity.ok("Logged out (no active session)")));
+                .flatMap(
+                        securityContext -> {
+                            ReactiveSecurityContextHolder.clearContext();
+                            return Mono.just(ResponseEntity.ok("Logged out successfully"));
+                        })
+                .switchIfEmpty(Mono.just(ResponseEntity.ok("Logged out (no active session)")));
     }
 
     // Internal user login
     @PostMapping("/internal/login")
-    public ResponseEntity<AuthResponse> internalLogin(@Valid @RequestBody InternalLoginRequest request) {
-        InternalUser user = authService.authenticateInternalUser(request.getUsername(), request.getPassword());
-        String token = tokenProvider.generateToken(user.getEmail(), user.getRole().toString(), "INTERNAL");
+    public ResponseEntity<AuthResponse> internalLogin(
+            @Valid @RequestBody InternalLoginRequest request) {
+        InternalUser user
+                = authService.authenticateInternalUser(request.getUsername(), request.getPassword());
+        String token
+                = tokenProvider.generateToken(user.getEmail(), user.getRole().toString(), "INTERNAL");
         String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
 
-        return ResponseEntity.ok(AuthResponse.builder()
-            .accessToken(token)
-            .refreshToken(refreshToken)
-            .tokenType("Bearer")
-            .user(mapToUserDto(user))
-            .build());
+        return ResponseEntity.ok(
+                AuthResponse.builder()
+                        .accessToken(token)
+                        .refreshToken(refreshToken)
+                        .tokenType("Bearer")
+                        .user(mapToUserDto(user))
+                        .build());
     }
 
     // External OAuth2 login initiation
@@ -127,26 +135,26 @@ public class AuthController {
     public ResponseEntity<Void> initiateExternalLogin(@PathVariable String provider) {
         String redirectUrl = authService.getOAuth2RedirectUrl(provider);
         return ResponseEntity.status(HttpStatus.FOUND)
-            .header(HttpHeaders.LOCATION, redirectUrl)
-            .build();
+                .header(HttpHeaders.LOCATION, redirectUrl)
+                .build();
     }
 
     // OAuth2 callback
     @GetMapping("/external/{provider}/callback")
     public ResponseEntity<AuthResponse> handleOAuth2Callback(
-        @PathVariable String provider,
-        @RequestParam String code) {
+            @PathVariable String provider, @RequestParam String code) {
 
         ExternalUser user = authService.authenticateExternalUser(provider, code);
         String token = tokenProvider.generateToken(user.getEmail(), "USER", "EXTERNAL");
         String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
 
-        return ResponseEntity.ok(AuthResponse.builder()
-            .accessToken(token)
-            .refreshToken(refreshToken)
-            .tokenType("Bearer")
-            .user(mapToUserDto(user))
-            .build());
+        return ResponseEntity.ok(
+                AuthResponse.builder()
+                        .accessToken(token)
+                        .refreshToken(refreshToken)
+                        .tokenType("Bearer")
+                        .user(mapToUserDto(user))
+                        .build());
     }
 
     // API Key authentication
@@ -155,28 +163,32 @@ public class AuthController {
         ApiClient client = authService.authenticateApiClient(request.getApiKey());
         String token = tokenProvider.generateToken(client.getClientId(), "API_CLIENT", "EXTERNAL");
 
-        return ResponseEntity.ok(AuthResponse.builder()
-            .accessToken(token)
-            .tokenType("Bearer")
-            .user(mapToUserDto(client))
-            .build());
+        return ResponseEntity.ok(
+                AuthResponse.builder()
+                        .accessToken(token)
+                        .tokenType("Bearer")
+                        .user(mapToUserDto(client))
+                        .build());
     }
 
     // Token refresh
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+    public ResponseEntity<AuthResponse> refreshToken(
+            @Valid @RequestBody RefreshTokenRequest request) {
         try {
             String email = tokenProvider.validateRefreshToken(request.getRefreshToken());
             TokenInfo tokenInfo = tokenProvider.getTokenInfoFromRefreshToken(request.getRefreshToken());
 
-            String newAccessToken = tokenProvider.generateToken(email, tokenInfo.getRole(), tokenInfo.getUserType());
+            String newAccessToken
+                    = tokenProvider.generateToken(email, tokenInfo.getRole(), tokenInfo.getUserType());
             String newRefreshToken = tokenProvider.generateRefreshToken(email);
 
-            return ResponseEntity.ok(AuthResponse.builder()
-                .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken)
-                .tokenType("Bearer")
-                .build());
+            return ResponseEntity.ok(
+                    AuthResponse.builder()
+                            .accessToken(newAccessToken)
+                            .refreshToken(newRefreshToken)
+                            .tokenType("Bearer")
+                            .build());
         } catch (Exception ex) {
 
         }
@@ -267,7 +279,7 @@ Modify your JwtAuthFilter:
 java
 public class JwtAuthFilter extends OncePerRequestFilter {
     // ... existing code ...
-    
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, ...) {
         String jwt = extractToken(request);
@@ -281,7 +293,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private boolean isTokenBlacklisted(String token) {
         // For in-memory blacklist:
         // return blacklistedTokens.contains(token);
-        
+
         // For database blacklist:
         // return tokenRepo.existsById(token);
         return false; // Implement your logic

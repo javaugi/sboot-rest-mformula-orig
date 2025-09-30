@@ -10,8 +10,6 @@ package com.patterns.structural.proxy;
 import java.io.IOException;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -20,7 +18,7 @@ public class CommandExecutorImpl implements CommandExecutor {
 
     @Override
     public void runCommand(String cmd) throws IOException {
-        //some heavy implementation
+        // some heavy implementation
         Runtime.getRuntime().exec(cmd);
         System.out.println("'" + cmd + "' command executed.");
     }

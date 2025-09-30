@@ -8,8 +8,6 @@
 package com.patterns.behavioral.state;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -30,5 +28,4 @@ public class TVContext implements TVState {
     public void doAction() {
         this.tvState.doAction();
     }
-
 }

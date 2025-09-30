@@ -5,7 +5,6 @@
 package com.spring5.dbisolation.wmart.log;
 
 /**
- *
  * @author javau
  */
 public interface ErrorPatternExtractor {

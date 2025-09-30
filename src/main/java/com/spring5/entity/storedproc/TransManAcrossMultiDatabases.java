@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TransManAcrossMultiDatabases {
-    
-} 
+}
+
 /*
 Interview Guide for Java/Spring Boot with Database Stored Procedures
 Core Java & Spring Boot Questions
@@ -41,13 +41,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 public class BookService {
     @Autowired
     private BookRepository repository;
-    
+
     public List<Book> findAll() {
         return repository.findAll();
     }
-    
+
     public Book findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> 
+        return repository.findById(id).orElseThrow(() ->
             new ResourceNotFoundException("Book not found"));
     }
 }
@@ -58,7 +58,7 @@ public class BookService {
 public class BookController {
     @Autowired
     private BookService service;
-    
+
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.ok(service.findAll());
@@ -72,7 +72,7 @@ java
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -82,10 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        
+
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-    
+
     @Bean
     public JwtFilter jwtFilter() {
         return new JwtFilter();
@@ -122,7 +122,7 @@ Calling from Spring Boot:
 java
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    @Query(value = "SELECT * FROM get_books_by_author(:author, :page, :size)", 
+    @Query(value = "SELECT * FROM get_books_by_author(:author, :page, :size)",
            nativeQuery = true)
     List<Book> findBooksByAuthorWithPagination(
         @Param("author") String author,
@@ -142,7 +142,7 @@ BEGIN
     UPDATE books
     SET price = price * (1 + percentage/100)
     WHERE category = category_param;
-    
+
     updated_count := SQL%ROWCOUNT;
     COMMIT;
 END;
@@ -153,7 +153,7 @@ java
 public class BookRepositoryImpl {
     @Autowired
     private EntityManager entityManager;
-    
+
     public int updatePricesByCategory(String category, double percentage) {
         StoredProcedureQuery query = entityManager
             .createStoredProcedureQuery("update_book_prices")
@@ -162,7 +162,7 @@ public class BookRepositoryImpl {
             .registerStoredProcedureParameter(3, Integer.class, ParameterMode.OUT)
             .setParameter(1, category)
             .setParameter(2, percentage);
-        
+
         query.execute();
         return (Integer) query.getOutputParameterValue(3);
     }
@@ -178,13 +178,13 @@ CREATE PROCEDURE sp_archive_old_books
 AS
 BEGIN
     INSERT INTO archived_books
-    SELECT *, @archive_year 
-    FROM books 
+    SELECT *, @archive_year
+    FROM books
     WHERE published_date < @cutoff_date;
-    
+
     DELETE FROM books
     WHERE published_date < @cutoff_date;
-    
+
     SET @rows_affected = @@ROWCOUNT;
 END
 Calling from Spring Boot:
@@ -194,7 +194,7 @@ java
 public class BookRepositoryImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     public int archiveOldBooks(LocalDate cutoffDate, int archiveYear) {
         SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate)
             .withProcedureName("sp_archive_old_books")
@@ -202,11 +202,11 @@ public class BookRepositoryImpl {
                 new SqlParameter("cutoff_date", Types.DATE),
                 new SqlParameter("archive_year", Types.INTEGER),
                 new SqlOutParameter("rows_affected", Types.INTEGER));
-        
+
         Map<String, Object> params = new HashMap<>();
         params.put("cutoff_date", cutoffDate);
         params.put("archive_year", archiveYear);
-        
+
         Map<String, Object> result = call.execute(params);
         return (int) result.get("rows_affected");
     }
@@ -242,7 +242,7 @@ java
 public class BookRepositoryImpl {
     @Autowired
     private MongoTemplate mongoTemplate;
-    
+
     public String updateBookRatings() {
         return mongoTemplate.scriptOps()
             .call("updateBookRatings", 2); // minReviews = 2
@@ -260,33 +260,33 @@ public class OrderService {
     private InventoryRepository inventoryRepository;
     @Autowired
     private PaymentRepository paymentRepository;
-    
+
     @Transactional
     public Order processOrder(OrderRequest request) {
         // 1. Check inventory
         Inventory inventory = inventoryRepository.findById(request.getItemId())
             .orElseThrow(() -> new InventoryException("Item not found"));
-        
+
         if (inventory.getQuantity() < request.getQuantity()) {
             throw new InventoryException("Not enough stock");
         }
-        
+
         // 2. Process payment
         Payment payment = paymentRepository.processPayment(
             request.getPaymentDetails());
-        
+
         if (!payment.isSuccess()) {
             throw new PaymentException("Payment failed");
         }
-        
+
         // 3. Create order
         Order order = new Order(request);
         orderRepository.save(order);
-        
+
         // 4. Update inventory
         inventory.setQuantity(inventory.getQuantity() - request.getQuantity());
         inventoryRepository.save(inventory);
-        
+
         return order;
     }
 }
@@ -323,7 +323,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 public class BookRepositoryImpl {
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Transactional
     public void batchInsert(List<Book> books) {
         for (int i = 0; i < books.size(); i++) {
@@ -404,4 +404,4 @@ Be prepared to optimize existing database queries
 Know how to handle concurrent data access
 
 Understand caching strategies (Spring Cache, Redis, etc.)
-*/
+ */

@@ -5,9 +5,9 @@
 package com.interview.hrank;
 
 /**
- * Example of a thread-safe singleton class using the
- * Initialization-on-demand holder idiom (Bill Pugh Singleton).
- * This approach is thread-safe without explicit synchronization.
+ * Example of a thread-safe singleton class using the Initialization-on-demand
+ * holder idiom (Bill Pugh Singleton). This approach is thread-safe without
+ * explicit synchronization.
  */
 public class ThreadSafeSingleton {
 
@@ -18,13 +18,14 @@ public class ThreadSafeSingleton {
     }
 
     /**
-     * Inner static class that holds the singleton instance.
-     * This class is not loaded until getInstance() is called for the first time,
-     * ensuring lazy initialization.
+     * Inner static class that holds the singleton instance. This class is not
+     * loaded until getInstance() is called for the first time, ensuring lazy
+     * initialization.
      */
     private static class SingletonHolder {
         // The single instance of the singleton class.
         // This is initialized when the SingletonHolder class is loaded.
+
         private static final ThreadSafeSingleton INSTANCE = new ThreadSafeSingleton();
     }
 
@@ -42,6 +43,7 @@ public class ThreadSafeSingleton {
     }
 
     private static ThreadSafeSingleton singleton = null;
+
     public static ThreadSafeSingleton getInstance2() {
         // When getInstance() is called for the first time, the SingletonHolder class
         // is loaded, and the INSTANCE is initialized. Subsequent calls return
@@ -58,7 +60,6 @@ public class ThreadSafeSingleton {
     }
 
     // You can add other methods and fields as needed for your singleton's functionality.
-
     // Example of how to use the singleton:
     // public static void main(String[] args) {
     //     ThreadSafeSingleton singleton1 = ThreadSafeSingleton.getInstance();
@@ -68,6 +69,7 @@ public class ThreadSafeSingleton {
     //     singleton2.showMessage();
     //
     //     // Verify that both references point to the same instance
-    //     System.out.println("Are singleton1 and singleton2 the same instance? " + (singleton1 == singleton2));
+    //     System.out.println("Are singleton1 and singleton2 the same instance? " + (singleton1 ==
+    // singleton2));
     // }
 }

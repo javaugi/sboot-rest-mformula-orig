@@ -22,8 +22,8 @@ public class WmOrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> create(@RequestHeader("Idempotency-Key") String idempotencyKey,
-        @RequestBody CreateOrderRequest r) {
+    public ResponseEntity<OrderDto> create(
+            @RequestHeader("Idempotency-Key") String idempotencyKey, @RequestBody CreateOrderRequest r) {
         OrderDto result = orderService.createOrder(idempotencyKey, r);
         return ResponseEntity.ok(result);
     }

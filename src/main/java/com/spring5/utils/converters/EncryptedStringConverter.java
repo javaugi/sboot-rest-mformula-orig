@@ -6,8 +6,8 @@ package com.spring5.utils.converters;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-// This is a simplistic example. Use a strong, standard algorithm from your Cloud KMS or a library.
 
+// This is a simplistic example. Use a strong, standard algorithm from your Cloud KMS or a library.
 @Converter
 public class EncryptedStringConverter implements AttributeConverter<String, String> {
 

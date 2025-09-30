@@ -23,10 +23,11 @@ public class LoyaltyProgramService {
     }
 
     public LoyaltyProgram updatePoints(String patientId, String programName, Integer points) {
-        LoyaltyProgram program = repository.findByPatientId(patientId).stream()
-            .filter(p -> p.getProgramName().equals(programName))
-            .findFirst()
-            .orElse(null);
+        LoyaltyProgram program
+                = repository.findByPatientId(patientId).stream()
+                        .filter(p -> p.getProgramName().equals(programName))
+                        .findFirst()
+                        .orElse(null);
 
         if (program != null) {
             program.setPointsBalance(program.getPointsBalance() + points);

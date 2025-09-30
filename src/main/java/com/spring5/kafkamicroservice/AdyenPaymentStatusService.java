@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AdyenPaymentStatusService {
+
     public AdyenPaymentStatus getStatus(String paymentId) {
         return AdyenPaymentStatus.COMPLETED;
     }

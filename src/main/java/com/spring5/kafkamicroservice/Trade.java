@@ -19,10 +19,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import static org.springframework.data.redis.serializer.RedisSerializationContext.java;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -33,10 +31,11 @@ import static org.springframework.data.redis.serializer.RedisSerializationContex
 @AllArgsConstructor
 @Entity
 public class Trade {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     private String symbol;
     private String instrumentId;
     private BigDecimal quantity;
@@ -48,5 +47,4 @@ public class Trade {
     @ManyToOne
     @JoinColumn(name = "user_account_id")
     private UserAccount userAccount;
-    
 }

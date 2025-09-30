@@ -21,24 +21,27 @@ public class Square {
     }
 
     public boolean contains(Square other) {
-        if (this.left <= other.left && this.right >= other.right && this.top <= other.top && this.bottom >= other.bottom) {
+        if (this.left <= other.left
+                && this.right >= other.right
+                && this.top <= other.top
+                && this.bottom >= other.bottom) {
             return true;
         }
         return false;
     }
 
     /* Return the point where the line segment connecting mid1 and
-	 * mid2 intercepts the edge of square 1. That is, draw a line
-	 * from mid2 to mid1, and continue it out until the edge of
-	 * the square. */
+   * mid2 intercepts the edge of square 1. That is, draw a line
+   * from mid2 to mid1, and continue it out until the edge of
+   * the square. */
     public Point extend(Point mid1, Point mid2, double size) {
         /* Find what direction the line mid2 -> mid1 goes */
         double xdir = mid1.x < mid2.x ? -1 : 1;
         double ydir = mid1.y < mid2.y ? -1 : 1;
 
         /* If mid1 and mid2 have the same x value, then the slope
-		 * calculation will throw a divide by 0 exception. So, we
-		 * compute this specially. */
+     * calculation will throw a divide by 0 exception. So, we
+     * compute this specially. */
         if (mid1.x == mid2.x) {
             return new Point(mid1.x, mid1.y + ydir * size / 2.0);
         }
@@ -47,11 +50,11 @@ public class Square {
         double y1 = 0;
 
         /* Calculate slope using the equation (y1 - y2) / (x1 - x2).
-		 * Note: if the slope is �steep� (>1) then the end of the
-		 * line segment will hit size / 2 units away from the middle
-		 * on the y axis. If the slope is �shallow� (<1) the end of
-		 * the line segment will hit size / 2 units away from the
-		 * middle on the x axis. */
+     * Note: if the slope is �steep� (>1) then the end of the
+     * line segment will hit size / 2 units away from the middle
+     * on the y axis. If the slope is �shallow� (<1) the end of
+     * the line segment will hit size / 2 units away from the
+     * middle on the x axis. */
         if (Math.abs(slope) == 1) {
             x1 = mid1.x + xdir * size / 2.0;
             y1 = mid1.y + ydir * size / 2.0;
@@ -73,7 +76,7 @@ public class Square {
         Point p4 = extend(other.middle(), this.middle(), -1 * other.size);
 
         /* Of above points, find start and end of lines. Start is farthest left (with top most as a tie breaker)
-		 * and end is farthest right (with bottom most as a tie breaker */
+     * and end is farthest right (with bottom most as a tie breaker */
         Point start = p1;
         Point end = p1;
         Point[] points = {p2, p3, p4};

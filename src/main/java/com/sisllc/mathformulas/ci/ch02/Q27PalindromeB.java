@@ -4,8 +4,6 @@ import com.sisllc.mathformulas.ci.lib.LinkedListNode;
 import java.util.Stack;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -55,7 +53,7 @@ public class Q27PalindromeB {
                 nodes[i].setPrevious(nodes[i - 1]);
             }
         }
-        //nodes[length - 2].data = 9; // Uncomment to ruin palindrome
+        // nodes[length - 2].data = 9; // Uncomment to ruin palindrome
 
         LinkedListNode head = nodes[0];
         System.out.println(head.printForward());

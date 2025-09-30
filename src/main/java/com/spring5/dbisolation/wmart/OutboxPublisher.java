@@ -23,14 +23,15 @@ public class OutboxPublisher {
     @Scheduled(fixedDelayString = "${outbox.poll-ms:1000}")
     public void publish() {
         List<Outbox> rows = repo.findUnpublished(PageRequest.of(0, 50));
-        rows.forEach(r -> {
-            try {
-                kafka.send(r.getTopic(), r.getKey(), r.getPayload()).get(5, TimeUnit.SECONDS);
-                r.setPublishedAt(Instant.now());
-                repo.save(r);
-            } catch (Exception ex) {
-                // log and leave for retry
-            }
-        });
+        rows.forEach(
+                r -> {
+                    try {
+                        kafka.send(r.getTopic(), r.getKey(), r.getPayload()).get(5, TimeUnit.SECONDS);
+                        r.setPublishedAt(Instant.now());
+                        repo.save(r);
+                    } catch (Exception ex) {
+                        // log and leave for retry
+                    }
+                });
     }
 }

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * performance in mind. This type of design pattern comes under creational
  * pattern as this pattern provides one of the best ways to create an object.
  *
+ * <p>
  * This pattern involves implementing a prototype interface which tells to
  * create a clone of the current object. This pattern is used when creation of
  * object directly is costly. For example, an object is to be created after a
@@ -22,30 +23,34 @@ import org.slf4j.LoggerFactory;
  * request and update the database as and when needed thus reducing database
  * calls.
  *
+ * <p>
  * When Would I Use This Pattern?
  *
+ * <p>
  * The Prototype pattern should be considered when
  *
+ * <p>
  * Composition, creation and representation of objects should be decoupled from
  * the system
  *
+ * <p>
  * Classes to be created are specified at runtime
  *
+ * <p>
  * You need to hide the complexity of creating new instance from the client
  *
+ * <p>
  * Creating an object is an expensive operation and it would be more efficient
  * to copy an object.
  *
+ * <p>
  * Objects are required that are similar to existing objects.
  *
- *
+ * <p>
  * The pattern is used by the Clonable interface in Java. Cloneable is
  * implemented as a marker interface to show what objects can be cloned, as
  * Object already defined a protected clone() method. Client can override, or
  * call the superclass implementation, of this clone method to do the copy.
- *
- *
- *
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:

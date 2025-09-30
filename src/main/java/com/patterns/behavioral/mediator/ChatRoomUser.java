@@ -8,8 +8,6 @@
 package com.patterns.behavioral.mediator;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

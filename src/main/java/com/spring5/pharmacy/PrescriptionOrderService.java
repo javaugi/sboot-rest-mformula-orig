@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service    
+@Service
 @Transactional(isolation = Isolation.SERIALIZABLE)
 public class PrescriptionOrderService {
+
     public void processOrder(PrescriptionData order) {
-    // Deduct inventory
-    // Process payment
-    // Log audit trail
-    }    
+        // Deduct inventory
+        // Process payment
+        // Log audit trail
+    }
 }

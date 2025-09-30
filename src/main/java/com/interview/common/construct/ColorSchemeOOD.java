@@ -12,7 +12,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /*
  *   https://dzone.com/articles/constructors-or-static-factory-methods by Yegor Bugayenko
  * I believe Joshua Bloch said it first in his very good book "Effective Java": static
@@ -34,8 +33,6 @@ import org.slf4j.LoggerFactory;
  * Let's take them one by one.
  */
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -53,7 +50,8 @@ public class ColorSchemeOOD {
         // This is how you make a red tomato color object with a constructor:
         Color tomato = new RGBColor(255, 99, 71);
 
-        //Now, we make an instance of Palette once and ask it to return a color to us every time we need it:
+        // Now, we make an instance of Palette once and ask it to return a color to us every time we
+        // need it:
         Palette palette = new Palette();
         Color c1 = palette.take(255, 99, 71);
         Color c2 = palette.take(255, 99, 71);
@@ -61,11 +59,11 @@ public class ColorSchemeOOD {
 
     public class Palette {
 
-        private final Map< Integer, Color> colors = new HashMap<>();
+        private final Map<Integer, Color> colors = new HashMap<>();
 
         Color take(int red, int green, int blue) {
             final int hex = red << 16 + green << 8 + blue;
-            //return colors.computerIfAbsent(hex, h - > new Color(h));
+            // return colors.computerIfAbsent(hex, h - > new Color(h));
             return null;
         }
     }
@@ -73,7 +71,7 @@ public class ColorSchemeOOD {
     interface Color {
     }
 
-    //They Have Names
+    // They Have Names
     class HexColor implements Color {
 
         private final int hex;
@@ -81,9 +79,7 @@ public class ColorSchemeOOD {
         HexColor(int h) {
 
             this.hex = h;
-
         }
-
     }
 
     class RGBColor implements Color {
@@ -92,11 +88,7 @@ public class ColorSchemeOOD {
 
         RGBColor(int red, int green, int blue) {
 
-            this.origin = new HexColor(
-                    red << 16 + green << 8 + blue
-            );
-
+            this.origin = new HexColor(red << 16 + green << 8 + blue);
         }
-
     }
 }

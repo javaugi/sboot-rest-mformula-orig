@@ -45,7 +45,7 @@ public class SortArrayFromMToNSortAll {
         int end_left = findEndOfLeftSubsequence(array);
 
         if (end_left >= array.length - 1) {
-            //System.out.println("The array is already sorted.");
+            // System.out.println("The array is already sorted.");
             return; // Already sorted
         }
 
@@ -77,7 +77,7 @@ public class SortArrayFromMToNSortAll {
     }
 
     /* Validate that sorting between these indices will sort the array. Note that this is not a complete
-	 * validation, as it does not check if these are the best possible indices.
+   * validation, as it does not check if these are the best possible indices.
      */
     public static boolean validate(int[] array, int left_index, int right_index) {
         int[] middle = new int[right_index - left_index + 1];
@@ -100,5 +100,4 @@ public class SortArrayFromMToNSortAll {
         int[] array = {1, 2, 4, 7, 10, 11, 8, 12, 5, 7, 16, 18, 19};
         findUnsortedSequence(array);
     }
-
 }

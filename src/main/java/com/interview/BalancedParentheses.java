@@ -22,26 +22,48 @@ Key Points:
     Space Complexity: O(n) in the worst case (when all characters are opening parentheses).
     Edge Cases: Handles empty strings (returns true) and strings with only closing parentheses (returns false).
     This solution efficiently checks for balanced parentheses using the LIFO principle of stacks.
-*/
+ */
 @Slf4j
 public class BalancedParentheses {
+
     public static void main(String[] args) {
         /*
-        Scanner scanner = new Scanner(System.in);
-        
-        while (scanner.hasNext()) {
-            String input = scanner.nextLine();
-            System.out.println(isBalanced(input));
+    Scanner scanner = new Scanner(System.in);
+
+    while (scanner.hasNext()) {
+        String input = scanner.nextLine();
+        System.out.println(isBalanced(input));
+    }
+    // */
+        List<String> inputs = Arrays.asList("{}()", "({()})", "{}(", "[])", "b[]a");
+        System.out.println("Printing Map ...");
+        printMap();
+
+        for (String input : inputs) {
+            String value = (isBalanced(input) ? "true" : "false");
+            String value2 = (isBalancedImproved(input) ? "true" : "false");
+            log.debug("\n input={}     bal 1?={}   bal 2?={}", input, value, value2);
         }
-        // */
+
+        if (true) {
+            return;
+        }
 
         System.out.println("1 isBalanced ...");
-        List<String> inputs = Arrays.asList("{}()", "({()})", "{}(", "[])", "b[]a");
         for (String input : inputs) {
-            String value = (isBalanced(input) ? "true": "false");
+            String value = (isBalanced(input) ? "true" : "false");
             String value2 = (isBalanced2(input) ? "true" : "false");
             String value3 = (isBalancedParentheses(input) ? "true" : "false");
-            log.debug("input={}     bal 1?={}   bal 2?={}   bal 3?={}", input, value, value2, value3);
+            String value4 = (isValidParentheses(input) ? "true" : "false");
+            String value5 = (isValidParentheses2(input) ? "true" : "false");
+            log.debug(
+                    "\n input={}     bal 1?={}   bal 2?={}   bal 3?={} bal 4?={}   bal 5?={}",
+                    input,
+                    value,
+                    value2,
+                    value3,
+                    value4,
+                    value5);
         }
 
         if (true) {
@@ -49,48 +71,77 @@ public class BalancedParentheses {
         }
 
         System.out.println("2 isBalanced ...");
-        for (String input: inputs) {
-            String value = (isBalanced2(input) ? "true": "false");
+        for (String input : inputs) {
+            String value = (isBalanced2(input) ? "true" : "false");
             System.out.println(value);
         }
         System.out.println("3 isBalanced ...");
-        for (String input: inputs) {
-            String value = (isValidParentheses(input) ? "true": "false");
+        for (String input : inputs) {
+            String value = (isValidParentheses(input) ? "true" : "false");
             System.out.println(value);
         }
         System.out.println("4 isBalanced ...");
-        for (String input: inputs) {
-            String value = (isValidParentheses2(input) ? "true": "false");
+        for (String input : inputs) {
+            String value = (isValidParentheses2(input) ? "true" : "false");
             System.out.println(value);
         }
     }
-    
+
+    static Map<Character, Character> map
+            = Map.of(
+                    '}', '{',
+                    ']', '[',
+                    ')', '(');
+
+    private static void printMap() {
+        map.keySet().stream()
+                .forEach(
+                        k -> {
+                            System.out.println("printMap key=" + k + "-value=" + map.get(k));
+                        });
+    }
+
+    public static boolean isBalancedImproved(String s) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : s.toCharArray()) {
+            if (c == '{' || c == '[' || c == '(') {
+                stack.push(c);
+            } else if (stack.isEmpty() || map.get(c) == null || stack.pop() != map.get(c)) {
+                // the stack should not be empty since there must be {, [, ( in it already if it is balanced
+                return false;
+            }
+        }
+
+        return stack.isEmpty();
+    }
+
     public static boolean isBalanced(String s) {
         Stack<Character> stack = new Stack<>();
-        
+
         for (char c : s.toCharArray()) {
             if (c == '{' || c == '[' || c == '(') {
                 stack.push(c);
             } else {
-                if (stack.isEmpty()) return false;
-                
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
                 char top = stack.pop();
-                if ((c == '}' && top != '{')
-                    || (c == ']' && top != '[')
-                    || (c == ')' && top != '(')) {
+                if ((c == '}' && top != '{') || (c == ']' && top != '[') || (c == ')' && top != '(')) {
                     return false;
                 }
 
                 /*
-                if (!((c == '}' && top == '{') || 
-                      (c == ']' && top == '[') || 
-                      (c == ')' && top == '('))) {
-                    return false;
-                }
-                // */
+        if (!((c == '}' && top == '{') ||
+              (c == ']' && top == '[') ||
+              (c == ')' && top == '('))) {
+            return false;
+        }
+        // */
             }
         }
-        
+
         return stack.isEmpty();
     }
 
@@ -100,45 +151,54 @@ public class BalancedParentheses {
         for (char c : s.toCharArray()) {
             if (c == '{' || c == '[' || c == '(') {
                 stack.push(c);
-            } else if (stack.isEmpty() || stack.pop() != c) {
-                //stack.pop() must be = c to be balanced
-                return false;
+            } else {
+                // the stack should not be empty since there must be {, [, ( in it already if it is balanced
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
+                char top = stack.pop(); // top should be {, [, (
+                // log.debug("c=" + c + "-top=" + top + "-map.get(c) expectedOpening =" + map.get(c));
+                if (map.get(c) != null) {
+                    char expectedOpening = map.get(c);
+                    // log.debug("top {} pair {}", top, expectedOpening);
+                    if (top != expectedOpening) {
+                        return false;
+                    }
+                }
             }
         }
 
         return stack.isEmpty();
     }
-    
-    public static boolean isBalanced2(String s) {        
+
+    public static boolean isBalanced2(String s) {
         Stack<Character> stack = new Stack<>();
-        
-        for (char c: s.toCharArray()) {
+
+        for (char c : s.toCharArray()) {
             if (c == '{' || c == '[' || c == '(') {
                 stack.push(c);
             } else {
                 if (stack.isEmpty()) {
                     return false;
                 }
-                
-                char top = stack.pop();     
+
+                char top = stack.pop();
                 if (charOutOfBalance2(c, top)) {
                     return false;
                 }
             }
-            
         }
 
         return stack.isEmpty();
     }
 
     private static boolean charOutOfBalance(char c, char top) {
-        return !((c == '}' && top == '{') || (c == ']' && top == '[')
-                || (c == ')' && top == '('));
+        return !((c == '}' && top == '{') || (c == ']' && top == '[') || (c == ')' && top == '('));
     }
-    
+
     private static boolean charOutOfBalance2(char c, char top) {
-        return (c == '}' && top != '{') || (c == ']' && top != '[')
-            || (c == ')' && top != '(');
+        return (c == '}' && top != '{') || (c == ']' && top != '[') || (c == ')' && top != '(');
     }
 
     public static boolean isValidParentheses(String s) {
@@ -156,38 +216,47 @@ public class BalancedParentheses {
         }
         return stack.isEmpty();
     }
-    
-    
-    Map<String, Integer> studentScores = Map.ofEntries(
-            entry("Alice", 95),
-            entry("Bob", 88),
-            entry("Charlie", 92),
-            entry("Diana", 78),
-            entry("Eve", 100)
-        );
-    
-    static Map<Character, Character> map = Map.ofEntries(entry('{', '}'), entry('[', ']'), entry('(', ')'));
-    
+
+    Map<String, Integer> studentScores
+            = Map.ofEntries(
+                    entry("Alice", 95),
+                    entry("Bob", 88),
+                    entry("Charlie", 92),
+                    entry("Diana", 78),
+                    entry("Eve", 100));
+
     public static boolean isValidParentheses2(String s) {
         Stack<Character> stack = new Stack<>();
         for (char c : s.toCharArray()) {
             if (c == '{' || c == '[' || c == '(') {
-                stack.push(map.get(c));
-            } else if (stack.isEmpty() || stack.pop() != c) {
-                return false;
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
+                char top = stack.pop();
+                // log.debug("c=" + c + "-top=" + top + "-map.get(c) cPair=" + map.get(c));
+                if (map.get(c) != null) {
+                    char expectedOpening = map.get(c);
+                    // log.debug("top {} pair {}", top, expectedOpening);
+                    if (top != expectedOpening) {
+                        return false;
+                    }
+                }
             }
-            
+
             /*
-            if (c == '(') {
-                stack.push(')');
-            } else if (c == '{') {
-                stack.push('}');
-            } else if (c == '[') {
-                stack.push(']');
-            } else if (stack.isEmpty() || stack.pop() != c) {
-                return false;
-            }
-            // */
+      if (c == '(') {
+          stack.push(')');
+      } else if (c == '{') {
+          stack.push('}');
+      } else if (c == '[') {
+          stack.push(']');
+      } else if (stack.isEmpty() || stack.pop() != c) {
+          return false;
+      }
+      // */
         }
         return stack.isEmpty();
     }
@@ -226,4 +295,4 @@ true
 true
 false
 true
-*/
+ */

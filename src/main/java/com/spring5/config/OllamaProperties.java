@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "ollama")
 @Component
 public class OllamaProperties {
+
     private String baseUrl = "http://localhost:11434";
     private String model = "llama3"; // or "mistral", "gemma", etc.
     private String embeddingModel = "llama3";

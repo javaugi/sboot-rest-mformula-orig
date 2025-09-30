@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring5.controller.PerformanceReviewController;
 import com.spring5.entity.BonusMultiplier;
 import com.spring5.service.PerformanceReviewImprovedService;
-import org.junit.Test;
 import org.junit.jupiter.api.Disabled;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -21,7 +20,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// 1. This annotation slices the application context to only load beans relevant to the web layer (Controllers, WebMvcConfigurer, etc.)
+// 1. This annotation slices the application context to only load beans relevant to the web layer
+// (Controllers, WebMvcConfigurer, etc.)
 // It auto-configures MockMvc which is the main entry point for server-side Spring MVC tests.
 @WebMvcTest(PerformanceReviewController.class) // Focuses only on this Controller
 @Disabled("MockitoBean not injected")
@@ -40,7 +40,7 @@ public class PerformanceReviewControllerWebMvcITests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    //@Test
+    // @Test
     public void getReview_ShouldReturnReview() throws Exception {
         // Given
         Long reviewId = 1L;
@@ -50,30 +50,37 @@ public class PerformanceReviewControllerWebMvcITests {
         given(performanceReviewService.getReviewById(reviewId)).willReturn(mockReview);
 
         // When & Then
-        mockMvc.perform(get("/api/reviews/" + reviewId) // Perform GET request
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk()) // Expect 200 OK
-            .andExpect(jsonPath("$.id").value(reviewId)) // Validate JSON response body
-            .andExpect(jsonPath("$.score").value("Meets"))
-            .andExpect(jsonPath("$.comments").value("Solid performance"));
+        mockMvc
+                .perform(
+                        get("/api/reviews/" + reviewId) // Perform GET request
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()) // Expect 200 OK
+                .andExpect(jsonPath("$.id").value(reviewId)) // Validate JSON response body
+                .andExpect(jsonPath("$.score").value("Meets"))
+                .andExpect(jsonPath("$.comments").value("Solid performance"));
     }
 
-    //@Test
+    // @Test
     public void createReview_ShouldReturnCreatedReview() throws Exception {
         // Given
         BonusMultiplier reviewToCreate = new BonusMultiplier(null, "Exceeds", "Exceeded expectations");
         BonusMultiplier savedReview = new BonusMultiplier(1L, "Exceeds", "Exceeded expectations");
 
         // Mock the service's behavior
-        given(performanceReviewService.createReview(any(BonusMultiplier.class))).willReturn(savedReview);
+        given(performanceReviewService.createReview(any(BonusMultiplier.class)))
+                .willReturn(savedReview);
 
         // When & Then
-        mockMvc.perform(post("/api/reviews") // Perform POST request
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(reviewToCreate))) // Convert object to JSON string
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(1L)) // Expect the mock saved object with an ID
-            .andExpect(jsonPath("$.score").value("Exceeds"))
-            .andExpect(jsonPath("$.comments").value("Exceeded expectations"));
+        mockMvc
+                .perform(
+                        post("/api/reviews") // Perform POST request
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        objectMapper.writeValueAsString(
+                                                reviewToCreate))) // Convert object to JSON string
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L)) // Expect the mock saved object with an ID
+                .andExpect(jsonPath("$.score").value("Exceeds"))
+                .andExpect(jsonPath("$.comments").value("Exceeded expectations"));
     }
 }

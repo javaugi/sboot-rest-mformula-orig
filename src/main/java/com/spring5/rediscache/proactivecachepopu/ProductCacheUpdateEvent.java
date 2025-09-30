@@ -7,6 +7,7 @@ package com.spring5.rediscache.proactivecachepopu;
 import org.springframework.context.ApplicationEvent;
 
 public class ProductCacheUpdateEvent extends ApplicationEvent {
+
     private final Long productId;
 
     public ProductCacheUpdateEvent(Object source, Long productId) {
@@ -17,4 +18,4 @@ public class ProductCacheUpdateEvent extends ApplicationEvent {
     public Long getProductId() {
         return productId;
     }
-}   
+}

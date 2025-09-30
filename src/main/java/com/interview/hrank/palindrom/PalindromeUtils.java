@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author javau
  */
 public class PalindromeUtils {
@@ -41,7 +40,6 @@ public class PalindromeUtils {
         return new StringBuilder(s).reverse().toString().equals(s);
     }
 
-
     /**
      * Generate all possible palindromes from character pool (for testing)
      */
@@ -51,11 +49,8 @@ public class PalindromeUtils {
         return result;
     }
 
-    private static void generatePalindromeHelper(Map<Character, Integer> charCount,
-        char[] current,
-        int left,
-        int right,
-        List<String> result) {
+    private static void generatePalindromeHelper(
+            Map<Character, Integer> charCount, char[] current, int left, int right, List<String> result) {
         if (left > right) {
             result.add(new String(current));
             return;
@@ -88,5 +83,4 @@ public class PalindromeUtils {
             }
         }
     }
-
 }

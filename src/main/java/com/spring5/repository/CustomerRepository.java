@@ -13,11 +13,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long>{
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
     // To query deleted records
+
     @Query("SELECT c FROM Customer c WHERE c.deleted = true")
     List<Customer> findAllDeleted();
-    
+
     Optional<Customer> findByEmail(@Param("email") String email);
 }
 
@@ -38,6 +39,6 @@ CREATE TRIGGER customer_archive_trigger
 AFTER UPDATE OF deleted ON customers
 FOR EACH ROW EXECUTE FUNCTION archive_deleted_customer();
 
-These examples cover a wide range of topics that would be relevant for a Backend Spring Boot Developer with Database 
+These examples cover a wide range of topics that would be relevant for a Backend Spring Boot Developer with Database
 Experience interview, demonstrating both theoretical knowledge and practical implementation skills.
-*/
+ */

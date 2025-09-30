@@ -16,23 +16,23 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class JsonSchemaValidatorFactory {
+
     private static final String JSON_SCHEMAS_DIR = "/jsonschemas/";
-    
+
     private Schema schema;
-    
+
     public boolean validateJsonPaylaod(String schema, String payload) {
-        try{
+        try {
             InputStream schemaStream = getClass().getResourceAsStream(JSON_SCHEMAS_DIR + schema);
             JSONObject rawSchemaJSONObject = new JSONObject(new JSONTokener(schemaStream));
-            this.schema = SchemaLoader.load(rawSchemaJSONObject);    
-            
+            this.schema = SchemaLoader.load(rawSchemaJSONObject);
+
             this.schema.validate(new JSONObject(payload));
             return true;
-        } catch(JSONException ex) {
+        } catch (JSONException ex) {
             log.error("Error validateJsonPaylaod schema {} payload {}", schema, payload, ex);
         }
-        
+
         return false;
     }
-    
 }

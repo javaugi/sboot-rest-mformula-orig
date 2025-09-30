@@ -22,10 +22,12 @@ public class Q12Anagram {
 
     public static String sort(String s) {
         String s1 = "jlfjfgg";
-        s1 = s1.toLowerCase().chars()
-            .sorted()
-            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
+        s1
+                = s1.toLowerCase()
+                        .chars()
+                        .sorted()
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
 
         char[] content = s.toCharArray();
         Arrays.sort(content);
@@ -45,21 +47,25 @@ public class Q12Anagram {
 
         char[] s1Array = s1.toLowerCase().toCharArray();
         char[] s2Array = s2.toLowerCase().toCharArray();
-        //Sorting both character array
+        // Sorting both character array
         Arrays.sort(s1Array);
         Arrays.sort(s2Array);
         return Arrays.equals(s1Array, s2Array);
     }
 
     public static boolean isAnagramSimplified2(String s1, String s2) {
-        s1 = s1.toLowerCase().chars()
-            .sorted()
-            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
-        s2 = s2.toLowerCase().chars()
-            .sorted()
-            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
+        s1
+                = s1.toLowerCase()
+                        .chars()
+                        .sorted()
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
+        s2
+                = s2.toLowerCase()
+                        .chars()
+                        .sorted()
+                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                        .toString();
 
         return Arrays.equals(s1.toCharArray(), s2.toCharArray());
     }
@@ -89,7 +95,7 @@ public class Q12Anagram {
                 if (num_completed_t == num_unique_chars) {
                     // itÕs a match if t has been processed completely
                     return true;
-                    //return i == t.length() - 1;
+                    // return i == t.length() - 1;
                 }
             }
         }
@@ -97,7 +103,7 @@ public class Q12Anagram {
     }
 
     public static boolean isAnagram(String input1, String input2) {
-        //Remove all whitespace first
+        // Remove all whitespace first
         String s1 = input1.replaceAll("\\s", "");
         String s2 = input2.replaceAll("\\s", "");
 
@@ -105,15 +111,15 @@ public class Q12Anagram {
         if (s1.length() != s2.length()) {
             status = false;
         } else {
-            //Convert into character array
+            // Convert into character array
             char[] s1Array = s1.toLowerCase().toCharArray();
             char[] s2Array = s2.toLowerCase().toCharArray();
 
-            //Sorting both character array
+            // Sorting both character array
             Arrays.sort(s1Array);
             Arrays.sort(s2Array);
 
-            //Check if both arrays are equal
+            // Check if both arrays are equal
             status = Arrays.equals(s1Array, s2Array);
         }
         System.out.println(s1 + " and " + s2 + " are anagrams ? " + status);

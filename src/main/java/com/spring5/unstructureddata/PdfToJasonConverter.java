@@ -13,13 +13,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 /**
- *
  * @author javaugi
  */
 public class PdfToJasonConverter {
-    
+
     public static void main(String[] args) {
-        String pdfPath = "input.pdf";    // Path to your PDF file
+        String pdfPath = "input.pdf"; // Path to your PDF file
         String jsonPath = "output.json"; // Path to save JSON file
 
         try {
@@ -46,7 +45,7 @@ public class PdfToJasonConverter {
             PDFTextStripper stripper = new PDFTextStripper();
             return stripper.getText(document);
         }
-    }    
+    }
 }
 
 /*
@@ -129,4 +128,4 @@ Extract structured data (tables, metadata) instead of raw text.
 Split into sections (e.g., paragraphs, headings) for better JSON structure.
 
 Handle large PDFs with pagination.
-*/
+ */

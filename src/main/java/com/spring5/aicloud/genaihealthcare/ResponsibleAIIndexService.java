@@ -35,12 +35,19 @@ public class ResponsibleAIIndexService {
     public Double getIndustryAverageScore() {
         List<ResponsibleAIIndex> allModels = repository.findAll();
         return allModels.stream()
-            .mapToDouble(ResponsibleAIIndex::getOverallScore)
-            .average()
-            .orElse(0.0);
+                .mapToDouble(ResponsibleAIIndex::getOverallScore)
+                .average()
+                .orElse(0.0);
     }
 
-    public ResponsibleAIIndex computeAndStore(String operation, String modelName, String notes, double transparency, double fairness, double privacy, double regulatoryAlignment) {
+    public ResponsibleAIIndex computeAndStore(
+            String operation,
+            String modelName,
+            String notes,
+            double transparency,
+            double fairness,
+            double privacy,
+            double regulatoryAlignment) {
         ResponsibleAIIndex r = new ResponsibleAIIndex();
         r.operation = operation;
         r.modelName = modelName;
@@ -68,7 +75,8 @@ public class ResponsibleAIIndexService {
     /**
      * Example helper: derive transparency heuristics
      */
-    public Map<String, Double> deriveScoresFromResponse(String prompt, String response, double modelConfidence, boolean consentPresent) {
+    public Map<String, Double> deriveScoresFromResponse(
+            String prompt, String response, double modelConfidence, boolean consentPresent) {
         Map<String, Double> scores = new HashMap<>();
         // Simple heuristics — replace with real evaluators and policy rules
         double transparency = 0.6 + (response != null ? 0.2 : 0.0);

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 @EnableScheduling
 public class FlightServiceWithChangeFeedProcessorOpt3 {
+
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AtomicReference<String> continuationToken = new AtomicReference<>();
 
@@ -31,22 +32,23 @@ public class FlightServiceWithChangeFeedProcessorOpt3 {
         CosmosChangeFeedRequestOptions options;
 
         if (continuationToken.get() != null) {
-            options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
-                continuationToken.get());
+            options
+                    = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
+                            continuationToken.get());
         } else {
             options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(FeedRange.forFullRange());
         }
 
-        container.queryChangeFeed(options, FlightEvent.class)
-            .byPage()
-            .take(1) // Process one page at a time
-            .subscribe(
-                response -> {
-                    processEvents(response.getResults());
-                    continuationToken.set(response.getContinuationToken());
-                },
-                error -> System.err.println("Error: " + error.getMessage())
-            );
+        container
+                .queryChangeFeed(options, FlightEvent.class)
+                .byPage()
+                .take(1) // Process one page at a time
+                .subscribe(
+                        response -> {
+                            processEvents(response.getResults());
+                            continuationToken.set(response.getContinuationToken());
+                        },
+                        error -> System.err.println("Error: " + error.getMessage()));
     }
 
     private void processEvents(List<FlightEvent> events) {

@@ -7,7 +7,6 @@
  */
 package com.patterns.structural.bridge;
 
-import com.sisllc.mathformulas.ci.ch08.Vehicle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,36 +14,44 @@ import org.slf4j.LoggerFactory;
  * GOF: Decouple an abstraction from its implementation so that the two can vary
  * independently
  *
+ * <p>
  * Bridge is used when we need to decouple an abstraction from its
  * implementation so that the two can vary independently. This type of design
  * pattern comes under structural pattern as this pattern decouples
  * implementation class and abstract class by providing a bridge structure
  * between them.
  *
+ * <p>
  * This pattern involves an interface which acts as a bridge which makes the
  * functionality of concrete classes independent from interface implementer
  * classes. Both types of classes can be altered structurally without affecting
  * each other.
  *
+ * <p>
  * The Bridge design pattern allows you to separate the abstraction from the
  * implementation.It is a structural design pattern. There are 2 parts in Bridge
  * design pattern :
  *
+ * <p>
  * 1. Abstraction
  *
+ * <p>
  * 2. Implementation
  *
- *
+ * <p>
  * This is a design mechanism that encapsulates an implementation class inside
  * of an interface class.
  *
+ * <p>
  * The bridge pattern allows the Abstraction and the Implementation to be
  * developed independently and the client code can access only the Abstraction
  * part without being concerned about the Implementation part.
  *
+ * <p>
  * The abstraction is an interface or abstract class and the implementor is also
  * an interface or abstract class.
  *
+ * <p>
  * The abstraction contains a reference to the implementor. Children of the
  * abstraction are referred to as refined abstractions, and children of the
  * implementor are concrete implementors. Since we can change the reference to
@@ -52,10 +59,9 @@ import org.slf4j.LoggerFactory;
  * implementor at run-time. Changes to the implementor do not affect client
  * code.
  *
+ * <p>
  * It increases the loose coupling between class abstraction and it’s
  * implementation.
- *
- *
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
@@ -103,9 +109,11 @@ public class BridgePattern {
         // Workshop - Implementor for bridge pattern
         // ProduceBridgeImplementor - Implementor 1 for bridge pattern
         // AssembleBridgeImplementor - Implementor 2 for bridge pattern
-        VehicleBridgeAbstraction vehicle1 = new Car(new ProduceBridgeImplementor(), new AssembleBridgeImplementor());
+        VehicleBridgeAbstraction vehicle1
+                = new Car(new ProduceBridgeImplementor(), new AssembleBridgeImplementor());
         vehicle1.manufacture();
-        VehicleBridgeAbstraction vehicle2 = new Bike(new ProduceBridgeImplementor(), new AssembleBridgeImplementor());
+        VehicleBridgeAbstraction vehicle2
+                = new Bike(new ProduceBridgeImplementor(), new AssembleBridgeImplementor());
         vehicle2.manufacture();
     }
 }

@@ -4,11 +4,11 @@
  */
 package com.spring5.rediscache;
 
-//https://chat.deepseek.com/a/chat/s/01b94101-b593-4f0e-811b-51797d977245
-//https://chatgpt.com/c/68196864-f0ec-8006-aad8-775b2d30b439?model=auto
+// https://chat.deepseek.com/a/chat/s/01b94101-b593-4f0e-811b-51797d977245
+// https://chatgpt.com/c/68196864-f0ec-8006-aad8-775b2d30b439?model=auto
 public class RedisCacheMain {
-    
 }
+
 /*
 Redis Cache Implementation for Healthcare App
 Here's a comprehensive design and implementation for using Redis in a healthcare application with file storage and auditing microservices.
@@ -124,7 +124,7 @@ public class MedicalFileStorageService {
 
     private static final String FILE_METADATA_CACHE = "fileMetadata";
     private final FileStorageRepository fileStorageRepository;
-    
+
     @Autowired
     private RedisTemplate<String, MedicalFileMetadata> redisTemplate;
 
@@ -137,7 +137,7 @@ public class MedicalFileStorageService {
     public void storeFile(MedicalFile file) {
         // Store actual file in your storage system (S3, filesystem, etc.)
         fileStorageRepository.saveFile(file);
-        
+
         // Cache the metadata
         redisTemplate.opsForValue().set(
             FILE_METADATA_CACHE + "::" + file.getId(),
@@ -161,7 +161,7 @@ Copy
 public class AuditService {
 
     private static final String AUDIT_STREAM = "healthcare:audit:stream";
-    
+
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -169,7 +169,7 @@ public class AuditService {
         ObjectRecord<String, AuditEvent> record = StreamRecords.newRecord()
             .ofObject(event)
             .withStreamKey(AUDIT_STREAM);
-            
+
         redisTemplate.opsForStream().add(record);
     }
 
@@ -186,11 +186,11 @@ public class AuditService {
     public void processAuditEvents() {
         List<ObjectRecord<String, AuditEvent>> records = redisTemplate.opsForStream()
             .read(AuditEvent.class, StreamOffset.fromStart(AUDIT_STREAM));
-            
+
         if (!records.isEmpty()) {
             // Process and persist to permanent storage
             persistToDatabase(records);
-            
+
             // Acknowledge processing
             String lastId = records.get(records.size()-1).getId().getValue();
             redisTemplate.opsForStream().trim(AUDIT_STREAM, lastId);
@@ -205,7 +205,7 @@ public class CriticalHealthcareOperationService {
 
     private static final String LOCK_KEY_PREFIX = "healthcare:lock:";
     private static final long LOCK_EXPIRE_TIME_MS = 30000;
-    
+
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -216,8 +216,8 @@ public class CriticalHealthcareOperationService {
         try {
             // Attempt to acquire lock
             Boolean locked = redisTemplate.opsForValue().setIfAbsent(
-                lockKey, 
-                lockValue, 
+                lockKey,
+                lockValue,
                 Duration.ofMillis(LOCK_EXPIRE_TIME_MS)
             );
 
@@ -249,16 +249,16 @@ public class RedisHealthService {
             RedisConnection connection = redisConnectionFactory.getConnection();
             String pong = connection.ping();
             connection.close();
-            
+
             return new HealthCheckResponse(
-                "Redis", 
-                "UP", 
+                "Redis",
+                "UP",
                 Map.of("response", pong, "timestamp", Instant.now())
             );
         } catch (Exception e) {
             return new HealthCheckResponse(
-                "Redis", 
-                "DOWN", 
+                "Redis",
+                "DOWN",
                 Map.of("error", e.getMessage())
             );
         }
@@ -268,11 +268,11 @@ public class RedisHealthService {
     public void monitorRedisPerformance() {
         RedisConnection connection = redisConnectionFactory.getConnection();
         RedisServerCommands serverCommands = connection.serverCommands();
-        
+
         Map<String, Object> metrics = new HashMap<>();
         metrics.put("used_memory", serverCommands.info("memory").getProperty("used_memory"));
         metrics.put("connected_clients", serverCommands.info("clients").getProperty("connected_clients"));
-        
+
         // Log or send to monitoring system
         logRedisMetrics(metrics);
         connection.close();
@@ -312,4 +312,4 @@ Monitor Redis memory usage carefully
 Consider Redis clustering for high availability
 
 Would you like me to elaborate on any specific aspect of this implementation or provide additional examples for particular use cases in your healthcare application?
-*/
+ */

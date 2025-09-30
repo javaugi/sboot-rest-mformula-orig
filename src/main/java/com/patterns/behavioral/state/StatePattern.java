@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
  * In State pattern a class behavior changes based on its state. This type of
  * design pattern comes under behavior pattern.
  *
+ * <p>
  * In State pattern, we create objects which represent various states and a
  * context object whose behavior varies as its state object changes. If we have
  * to change the behavior of an object based on its state, we can have a state
@@ -22,10 +23,12 @@ import org.slf4j.LoggerFactory;
  * systematic and loosely coupled way to achieve this through Context and State
  * implementations.
  *
+ * <p>
  * State Pattern Context is the class that has a State reference to one of the
  * concrete implementations of the State. Context forwards the request to the
  * state object for processing. Let’s understand this with a simple example.
  *
+ * <p>
  * Suppose we want to implement a TV Remote with a simple button to perform
  * action. If the State is ON, it will turn on the TV and if state is OFF, it
  * will turn off the TV.

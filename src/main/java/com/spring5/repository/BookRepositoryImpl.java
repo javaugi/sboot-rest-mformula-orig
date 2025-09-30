@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
@@ -24,51 +23,53 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class BookRepositoryImpl {
+
     @Autowired
     private EntityManager entityManager;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    //@Autowired
-    //private MongoTemplate mongoTemplate;
-        
-    //Oracle Stored procedure
+
+    // @Autowired
+    // private MongoTemplate mongoTemplate;
+    // Oracle Stored procedure
     public int updatePricesByCategory(String category, double percentage) {
-        StoredProcedureQuery query = entityManager
-            .createStoredProcedureQuery("update_book_prices")
-            .registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
-            .registerStoredProcedureParameter(2, Double.class, ParameterMode.IN)
-            .registerStoredProcedureParameter(3, Integer.class, ParameterMode.OUT)
-            .setParameter(1, category)
-            .setParameter(2, percentage);
-        
+        StoredProcedureQuery query
+                = entityManager
+                        .createStoredProcedureQuery("update_book_prices")
+                        .registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
+                        .registerStoredProcedureParameter(2, Double.class, ParameterMode.IN)
+                        .registerStoredProcedureParameter(3, Integer.class, ParameterMode.OUT)
+                        .setParameter(1, category)
+                        .setParameter(2, percentage);
+
         query.execute();
         return (Integer) query.getOutputParameterValue(3);
     }
-    
-    //SQL Server Stored procedure
+
+    // SQL Server Stored procedure
     public int archiveOldBooks(LocalDate cutoffDate, int archiveYear) {
-        SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate)
-            .withProcedureName("sp_archive_old_books")
-            .declareParameters(
-                new SqlParameter("cutoff_date", Types.DATE),
-                new SqlParameter("archive_year", Types.INTEGER),
-                new SqlOutParameter("rows_affected", Types.INTEGER));
-        
+        SimpleJdbcCall call
+                = new SimpleJdbcCall(jdbcTemplate)
+                        .withProcedureName("sp_archive_old_books")
+                        .declareParameters(
+                                new SqlParameter("cutoff_date", Types.DATE),
+                                new SqlParameter("archive_year", Types.INTEGER),
+                                new SqlOutParameter("rows_affected", Types.INTEGER));
+
         Map<String, Object> params = new HashMap<>();
         params.put("cutoff_date", cutoffDate);
         params.put("archive_year", archiveYear);
-        
+
         Map<String, Object> result = call.execute(params);
         return (int) result.get("rows_affected");
-    }    
-    
-    //JS for MongoDB
+    }
+
+    // JS for MongoDB
     /*
-    public String updateBookRatings() {
-        return (String)mongoTemplate.scriptOps().call("updateBookRatings", 2); // minReviews = 2
-    }  
-    // */
-    
+  public String updateBookRatings() {
+      return (String)mongoTemplate.scriptOps().call("updateBookRatings", 2); // minReviews = 2
+  }
+  // */
     // 4. Using Batch processing
     @Transactional
     public void batchInsert(List<Book> books) {
@@ -80,5 +81,4 @@ public class BookRepositoryImpl {
             }
         }
     }
-    
 }

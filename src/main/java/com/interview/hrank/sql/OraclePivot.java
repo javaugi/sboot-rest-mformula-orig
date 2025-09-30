@@ -5,12 +5,11 @@
 package com.interview.hrank.sql;
 
 /**
- *
  * @author javau
  */
 public class OraclePivot {
-
 }
+
 /*
 I'll help you create Oracle PL/SQL code to pivot the Occupation data. Here's a comprehensive solution:
 
@@ -161,4 +160,4 @@ The solution:
     Handles NULL values for occupations that have fewer entries
 
 Choose the solution that best fits your needs. The PL/SQL solutions provide formatted output, while the SQL solution gives you the raw result set.
-*/
+ */

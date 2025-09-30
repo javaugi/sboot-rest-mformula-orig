@@ -10,9 +10,7 @@ public class Q91CountWays {
         } else if (map[n] > -1) {
             return map[n];
         } else {
-            map[n] = countWaysDP(n - 1, map)
-                    + countWaysDP(n - 2, map)
-                    + countWaysDP(n - 3, map);
+            map[n] = countWaysDP(n - 1, map) + countWaysDP(n - 2, map) + countWaysDP(n - 3, map);
             return map[n];
         }
     }
@@ -45,5 +43,4 @@ public class Q91CountWays {
             System.out.println(i + " " + c1 + " " + c2 + " " + d1 + " " + d2);
         }
     }
-
 }

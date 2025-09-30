@@ -5,11 +5,9 @@
 package com.spring5.billingpayment;
 
 /**
- *
  * @author javaugi
  */
 public class BillingIntegrationConfig {
-    
 }
 
 /*
@@ -49,4 +47,4 @@ Emerging Trends
     More providers offering native subscription management
 
 Would you like me to elaborate on any specific aspect of these integrations, or do you have particular requirements (like specific compliance needs or scale considerations) that I should address?
-*/
+ */

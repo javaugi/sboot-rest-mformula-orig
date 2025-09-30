@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExtractedData {
+
     private String patientId;
     private String diagnosis;
     private String diagnosisDate;

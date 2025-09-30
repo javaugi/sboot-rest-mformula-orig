@@ -20,8 +20,8 @@ public class FraudDetector {
         this.allRules.add(new GeoVelocityRule());
     }
 
-    public List<Transaction> detectSuspiciousActivity(List<Transaction> transactions,
-        FraudDetectionConfig config) {
+    public List<Transaction> detectSuspiciousActivity(
+            List<Transaction> transactions, FraudDetectionConfig config) {
         List<Transaction> suspiciousTransactions = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
@@ -42,10 +42,12 @@ public class FraudDetector {
         return suspiciousTransactions;
     }
 
-    public List<Transaction> detectSuspiciousActivityParallel(List<Transaction> transactions, FraudDetectionConfig config) {
+    public List<Transaction> detectSuspiciousActivityParallel(
+            List<Transaction> transactions, FraudDetectionConfig config) {
         return transactions.parallelStream()
-            .filter(transaction -> allRules.stream()
-            .anyMatch(rule -> rule.isSuspicious(transaction, config)))
-            .collect(Collectors.toList());
+                .filter(
+                        transaction
+                        -> allRules.stream().anyMatch(rule -> rule.isSuspicious(transaction, config)))
+                .collect(Collectors.toList());
     }
 }

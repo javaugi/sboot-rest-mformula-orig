@@ -7,17 +7,14 @@
  */
 package com.mycompany.davidlee;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.interview.shoppingcart.api.Receipt;
 import com.interview.shoppingcart.api.impl.ItemImpl;
 import com.interview.shoppingcart.api.impl.ReceiptImpl;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

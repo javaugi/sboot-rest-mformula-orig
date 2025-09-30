@@ -11,7 +11,6 @@ package com.sisllc.mathformulas.impl;
 /**
  * Example of the pascal triangle: This is a java example that demonstrates how
  * to build a Pascal Triangle using*loops.**@author david
- *
  */
 public class PascalTriangle {
 

@@ -8,17 +8,15 @@
 package com.patterns.behavioral.observer;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public interface Observer2 {
-//method to update the observer, used by subject
+    // method to update the observer, used by subject
 
     public void update();
 
-    //attach with subject to observe
+    // attach with subject to observe
     public void setSubject(Subject2 sub);
-
 }

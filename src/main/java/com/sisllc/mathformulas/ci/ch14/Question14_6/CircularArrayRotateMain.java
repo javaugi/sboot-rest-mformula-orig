@@ -24,5 +24,4 @@ public class CircularArrayRotateMain {
             System.out.println(s);
         }
     }
-
 }

@@ -3,8 +3,6 @@ package com.sisllc.mathformulas.ci.ch02;
 import com.sisllc.mathformulas.ci.lib.LinkedListNode;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -30,8 +28,8 @@ public class Q26LinkedListFindBeginning {
         }
 
         /* Move slow to Head. Keep fast at Meeting Point. Each are k steps
-		/* from the Loop Start. If they move at the same pace, they must
-		 * meet at Loop Start. */
+    /* from the Loop Start. If they move at the same pace, they must
+     * meet at Loop Start. */
         slow = head;
         while (slow != fast) {
             slow = slow.next;
@@ -62,5 +60,4 @@ public class Q26LinkedListFindBeginning {
             System.out.println(loop.data);
         }
     }
-
 }

@@ -10,26 +10,26 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import javax.persistence.AttributeConverter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.AttributeConverter;
 import org.springframework.stereotype.Component;
 
-//@Converter(autoApply = false) // Optional: set to true to apply globally
+// @Converter(autoApply = false) // Optional: set to true to apply globally
 @Component
-//ChatGPT says 
+// ChatGPT says
 // 2. Don’t Annotate It with @Component or Try to Autowire Anything
 public class MapToJsonConverter implements AttributeConverter<Map<String, Object>, String> {
 
     private final ObjectMapper objectMapper;
-    private static final ObjectMapper objectMapperNew = new ObjectMapper()
-        .enable(SerializationFeature.INDENT_OUTPUT)
-        .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-        .registerModule(new JavaTimeModule())
-        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    
+    private static final ObjectMapper objectMapperNew
+            = new ObjectMapper()
+                    .enable(SerializationFeature.INDENT_OUTPUT)
+                    .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                    .registerModule(new JavaTimeModule())
+                    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
     public MapToJsonConverter() {
         objectMapper = new ObjectMapper();
         System.out.println("MapToJsonConverter instantiated!"); // Debug line
@@ -48,16 +48,18 @@ public class MapToJsonConverter implements AttributeConverter<Map<String, Object
     @Override
     public Map<String, Object> convertToEntityAttribute(String json) {
         try {
-             return json == null ? null : 
-                objectMapper.readValue(json, new TypeReference<HashMap<String, Object>>() {});
-            //return objectMapper.readValue(json, Map.class);
+            return json == null
+                    ? null
+                    : objectMapper.readValue(json, new TypeReference<HashMap<String, Object>>() {
+                    });
+            // return objectMapper.readValue(json, Map.class);
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not convert JSON to map", e);
         }
     }
 }
 /*
-This first part is from DeepSeek and the second part if from ChatGPT    
+This first part is from DeepSeek and the second part if from ChatGPT
 
 Solving the AttributeConverter Instantiation Error
 The error you're encountering (BeanCreationException: Unable to instantiate AttributeConverter) typically occurs when Spring cannot properly instantiate your MapToJsonConverter class. Let's analyze and fix this issue.
@@ -82,29 +84,29 @@ If you prefer not to use @Component, register the converter in your JPA configur
 
 @Configuration
 public class JpaConfig {
-    
+
     @Bean
     public MapToJsonConverter mapToJsonConverter() {
         return new MapToJsonConverter();
     }
-    
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            DataSource dataSource, 
+            DataSource dataSource,
             MapToJsonConverter mapToJsonConverter) {
-        
+
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
         em.setPackagesToScan("com.your.package");
-        
+
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
-        
+
         // Register the converter
         Map<String, Object> properties = new HashMap<>();
         properties.put("javax.persistence.attribute-converters", mapToJsonConverter);
         em.setJpaPropertyMap(properties);
-        
+
         return em;
     }
 }
@@ -133,7 +135,7 @@ public class MapToJsonConverter implements AttributeConverter<Map<String, Object
     @Override
     public Map<String, Object> convertToEntityAttribute(String dbData) {
         try {
-            return dbData == null ? null : 
+            return dbData == null ? null :
                 objectMapper.readValue(dbData, new TypeReference<Map<String, Object>>() {});
         } catch (IOException e) {
             throw new RuntimeException("JSON reading error", e);
@@ -145,11 +147,11 @@ Ensure your entity properly references the converter:
 
 @Entity
 public class MyEntity {
-    
+
     @Convert(converter = MapToJsonConverter.class)
     @Column(columnDefinition = "jsonb") // or "text" depending on your DB
     private Map<String, Object> properties;
-    
+
     // ... other fields and methods ...
 }
 Solution 5: Debugging Steps
@@ -158,11 +160,11 @@ If the above solutions don't work, add debugging:
 java
 Copy
 public class MapToJsonConverter implements AttributeConverter<Map<String, Object>, String> {
-    
+
     public MapToJsonConverter() {
         System.out.println("MapToJsonConverter instantiated!"); // Debug line
     }
-    
+
     // ... rest of the implementation ...
 }
 Then check your logs to see if the converter is being instantiated.
@@ -190,9 +192,9 @@ Database Column Type Mismatch: Ensure your database column type matches what you
 Would you like me to elaborate on any particular aspect of these solutions or provide additional debugging techniques?
 
 
-*/
+ */
 
-/* This part ifs from ChatGPT
+ /* This part ifs from ChatGPT
 I'm still getting this error after the change  org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in com.spring5.MyApplication: Unable to instantiate AttributeConverter [com.spring5.utils.MapToJsonConverter]
 
 
@@ -294,4 +296,4 @@ public class AuditEntry {
     // Getters and setters
 }
 
-*/
+ */

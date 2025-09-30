@@ -23,8 +23,8 @@ public class HappyNumbers {
 
     public static void main(String[] args) {
         /*
-	 * for (long num = 1, count = 0; count < 20; num++) { if (happy(num)) {
-	 * System.out.println(num); count++; } } //
+     * for (long num = 1, count = 0; count < 20; num++) { if (happy(num)) {
+     * System.out.println(num); count++; } } //
          */
 
         happy(70);

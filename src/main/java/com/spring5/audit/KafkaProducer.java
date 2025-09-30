@@ -14,7 +14,8 @@ public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final String topic = "myTopic";
 
-    public KafkaProducer(@Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate) {
+    public KafkaProducer(
+            @Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

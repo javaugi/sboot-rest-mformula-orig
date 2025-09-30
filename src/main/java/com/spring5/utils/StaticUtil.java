@@ -23,7 +23,8 @@ public class StaticUtil {
                 log.info("producerFactory {}", producerFactory);
                 return producerFactory;
             } else {
-                System.err.println("ApplicationContextHolder not initialized. MyService cannot be accessed.");
+                System.err.println(
+                        "ApplicationContextHolder not initialized. MyService cannot be accessed.");
                 // Handle this case appropriately - perhaps by throwing an exception
                 // or having a fallback mechanism if running outside Spring.
             }
@@ -32,7 +33,7 @@ public class StaticUtil {
             // Handle bean retrieval errors
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());
-        } 
+        }
         return null;
     }
 
@@ -57,7 +58,8 @@ public class StaticUtil {
          */
         public static Object getBean(String beanName) throws BeansException {
             if (context == null) {
-                throw new IllegalStateException("ApplicationContext not initialized. Ensure ApplicationContextHolder is scanned by Spring.");
+                throw new IllegalStateException(
+                        "ApplicationContext not initialized. Ensure ApplicationContextHolder is scanned by Spring.");
             }
             return context.getBean(beanName);
         }
@@ -73,7 +75,8 @@ public class StaticUtil {
          */
         public static <T> T getBean(Class<T> beanClass) throws BeansException {
             if (context == null) {
-                throw new IllegalStateException("ApplicationContext not initialized. Ensure ApplicationContextHolder is scanned by Spring.");
+                throw new IllegalStateException(
+                        "ApplicationContext not initialized. Ensure ApplicationContextHolder is scanned by Spring.");
             }
             return context.getBean(beanClass);
         }

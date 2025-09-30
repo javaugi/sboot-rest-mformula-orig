@@ -4,7 +4,7 @@
  */
 package com.spring5.dbisolation.wmart.trans;
 
-//import com.spring5.dbisolation.wmart.Order;
+// import com.spring5.dbisolation.wmart.Order;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -15,7 +15,6 @@ import jakarta.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.function.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -46,13 +45,16 @@ public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
         // Add ordering
         if (pageable.getSort().isSorted()) {
             List<Order> orders = new ArrayList<>();
-            pageable.getSort().forEach(order -> {
-                if (order.isAscending()) {
-                    orders.add(criteriaBuilder.asc(root.get(order.getProperty())));
-                } else {
-                    orders.add(criteriaBuilder.desc(root.get(order.getProperty())));
-                }
-            });
+            pageable
+                    .getSort()
+                    .forEach(
+                            order -> {
+                                if (order.isAscending()) {
+                                    orders.add(criteriaBuilder.asc(root.get(order.getProperty())));
+                                } else {
+                                    orders.add(criteriaBuilder.desc(root.get(order.getProperty())));
+                                }
+                            });
             query.orderBy(orders);
         }
 
@@ -69,19 +71,22 @@ public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
         return new PageImpl<>(result, pageable, total);
     }
 
-    private List<Predicate> buildPredicates(TransactionQueryCriteria criteria, Root<Transaction> root) {
+    private List<Predicate> buildPredicates(
+            TransactionQueryCriteria criteria, Root<Transaction> root) {
         List<Predicate> predicates = new ArrayList<>();
 
         predicates.add(criteriaBuilder.equal(root.get("userId"), criteria.getUserId()));
 
         if (criteria.getStartDate() != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(
-                root.get("createdAt").as(LocalDate.class), criteria.getStartDate()));
+            predicates.add(
+                    criteriaBuilder.greaterThanOrEqualTo(
+                            root.get("createdAt").as(LocalDate.class), criteria.getStartDate()));
         }
 
         if (criteria.getEndDate() != null) {
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(
-                root.get("createdAt").as(LocalDate.class), criteria.getEndDate()));
+            predicates.add(
+                    criteriaBuilder.lessThanOrEqualTo(
+                            root.get("createdAt").as(LocalDate.class), criteria.getEndDate()));
         }
 
         if (criteria.getType() != null) {

@@ -5,35 +5,35 @@
 package com.interview.hrank;
 
 /**
- *
  * @author javau
  */
 public class BinarySteps {
+
     public static int stepsToZero(String S) {
         // Convert binary string to integer
         int V = Integer.parseInt(S, 2);
         int steps = 0;
-        
+
         while (V != 0) {
-            if ((V & 1) == 0) {   // Even: LSB is 0
-                V >>= 1;          // Divide by 2 (right shift)
-            } else {              // Odd: LSB is 1
+            if ((V & 1) == 0) { // Even: LSB is 0
+                V >>= 1; // Divide by 2 (right shift)
+            } else { // Odd: LSB is 1
                 V -= 1;
             }
             steps++;
         }
         return steps;
     }
-    
+
     public static int stepsToZero2(String S) {
         // Convert binary string to integer
         int V = Integer.parseInt(S, 2);
         int steps = 0;
-        
+
         while (V != 0) {
-            if ((V % 2) == 0) {   // Even: LSB is 0
-                V >>= 1;          // Divide by 2 (right shift)
-            } else {              // Odd: LSB is 1
+            if ((V % 2) == 0) { // Even: LSB is 0
+                V >>= 1; // Divide by 2 (right shift)
+            } else { // Odd: LSB is 1
                 --V;
             }
             steps++;
@@ -42,24 +42,22 @@ public class BinarySteps {
     }
 
     public static int stepsToZeroRecursive(int V) {
-        if (V == 0) return 0;
-        return 1 + (V % 2 == 0 ? 
-                    stepsToZeroRecursive(V / 2) : 
-                    stepsToZeroRecursive(V - 1));
-    }    
+        if (V == 0) {
+            return 0;
+        }
+        return 1 + (V % 2 == 0 ? stepsToZeroRecursive(V / 2) : stepsToZeroRecursive(V - 1));
+    }
 
     public static void main(String[] args) {
-        String S = "10110";  // Binary for 6
+        String S = "10110"; // Binary for 6
         System.out.println("1. S=" + S + "-value=" + Integer.parseInt(S, 2));
         System.out.println("2. S=" + S + "-value=" + Integer.valueOf(S, 2));
-        
-        
-        
-        System.out.println("1 stepsToZero          =" + stepsToZero(S));   // Output: 7
-        System.out.println("2 stepsToZero2         =" + stepsToZero2(S));  // Output: 7
+
+        System.out.println("1 stepsToZero          =" + stepsToZero(S)); // Output: 7
+        System.out.println("2 stepsToZero2         =" + stepsToZero2(S)); // Output: 7
         int V = Integer.parseInt(S, 2);
-        System.out.println("3 stepsToZeroRecursive =" + stepsToZeroRecursive(V));  // Output: 7
-    }    
+        System.out.println("3 stepsToZeroRecursive =" + stepsToZeroRecursive(V)); // Output: 7
+    }
 }
 
 /*
@@ -101,7 +99,7 @@ public class BinarySteps {
         // Convert binary string to integer
         int V = Integer.parseInt(S, 2);
         int steps = 0;
-        
+
         while (V != 0) {
             if ((V & 1) == 0) {  // Even: LSB is 0
                 V >>= 1;          // Divide by 2 (right shift)
@@ -167,8 +165,8 @@ Alternative (Recursive)
 java
 public static int stepsToZeroRecursive(int V) {
     if (V == 0) return 0;
-    return 1 + (V % 2 == 0 ? 
-                stepsToZeroRecursive(V / 2) : 
+    return 1 + (V % 2 == 0 ?
+                stepsToZeroRecursive(V / 2) :
                 stepsToZeroRecursive(V - 1));
 }
 Key Takeaways
@@ -177,4 +175,4 @@ Binary Conversion: Use Integer.parseInt(S, 2).
 Efficiency: Bitwise ops (&, >>) outperform arithmetic.
 
 Termination: Loop until V = 0.
-*/
+ */

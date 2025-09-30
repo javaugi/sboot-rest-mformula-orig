@@ -5,12 +5,11 @@
 package com.spring5.dronesystem;
 
 /**
- *
  * @author javaugi
  */
 public class DroneSystemWithSensorDataAggregation {
-    
 }
+
 /*
 Please give me detailed Java code examples for defense drone system with sensor data aggregation and operation center interaction with
     drone machine using thread safety patterns, secure serial communication, performance optimization, tracking, monitoring and profiling
@@ -27,4 +26,4 @@ Below is a comprehensive Java implementation for a defense drone system that inc
 1. Core System Components
 1.1 Sensor Data Model
 
-*/
+ */

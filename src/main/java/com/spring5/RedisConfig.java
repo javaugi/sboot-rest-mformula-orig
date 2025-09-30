@@ -15,15 +15,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableCaching
-//https://github.com/javaugi/redis-caching-java-spring-boot
-//https://github.com/javaugi/spring-boot-redis-example
+// https://github.com/javaugi/redis-caching-java-spring-boot
+// https://github.com/javaugi/spring-boot-redis-example
 public class RedisConfig extends RedisBaseConfig {
 
     public static final String REDIS_TPL = "strObjRedisTemplate";
     public static final String REDIS_TPL_STR = "strStrRedisTemplate";
     public static final String REDIS_TPL_MFILE = "strMedFileRedisTemplate";
     public static final String RATE_LIMIT_CACHE_MAN = "rateLimitCacheMan";
-    
+
     @Primary
     @Bean(name = REDIS_TPL)
     public RedisTemplate<String, Object> redisObjectTemplate() {
@@ -53,5 +53,4 @@ public class RedisConfig extends RedisBaseConfig {
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         return template;
     }
-
 }

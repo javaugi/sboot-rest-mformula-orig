@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -33,7 +31,7 @@ public class BitVector {
     public boolean get(int i) {
         int b = vector[i / DATA_SIZE];
         int bit_index = i % DATA_SIZE;
-        //00100010
+        // 00100010
         if (((b >> bit_index) & 1) == 1) {
             return true;
         } else {

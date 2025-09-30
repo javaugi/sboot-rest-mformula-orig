@@ -26,6 +26,5 @@ public class PaymentResponse {
     private String orderId; // Your internal order ID
 
     public PaymentResponse(String status, String message) {
-
     }
 }

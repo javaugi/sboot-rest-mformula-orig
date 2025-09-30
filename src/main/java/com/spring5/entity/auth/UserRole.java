@@ -5,9 +5,9 @@
 package com.spring5.entity.auth;
 
 /**
- *
  * @author javau
  */
 public enum UserRole {
-    ADMIN, USER;
+    ADMIN,
+    USER;
 }

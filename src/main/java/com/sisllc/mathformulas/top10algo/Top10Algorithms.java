@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -34,8 +32,7 @@ public class Top10Algorithms {
     }
 
     public static int[] removeDups(int[] arr) {
-        Set<Integer> set = IntStream.of(arr).boxed()
-                .collect(Collectors.toCollection(HashSet::new));
+        Set<Integer> set = IntStream.of(arr).boxed().collect(Collectors.toCollection(HashSet::new));
         int[] rv = new int[set.size()];
         int count = 0;
         Iterator<Integer> iter = set.iterator();

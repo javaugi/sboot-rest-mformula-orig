@@ -5,12 +5,11 @@
 package com.interview.hrank.sql;
 
 /**
- *
  * @author javau
  */
 public class EuclideanDistance {
-
 }
+
 /*
 SELECT ROUND(
     SQRT(

@@ -5,13 +5,12 @@
 package com.spring5.mbassador;
 
 /**
- *
  * @author javaugi
  */
 public class UpdateInventoryCommand {
 
     private String productId;
-    private int quant;  
+    private int quant;
     private int newQuantity;
 
     public String getProductId() {
@@ -37,6 +36,4 @@ public class UpdateInventoryCommand {
     public void setNewQuantity(int newQuantity) {
         this.newQuantity = newQuantity;
     }
-
-    
 }

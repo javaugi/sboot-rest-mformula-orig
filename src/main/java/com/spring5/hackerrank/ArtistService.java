@@ -14,10 +14,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ArtistService {
+
     @Autowired
     private ArtistRepository artistRepository;
-    
-    
+
     public Artist createArtist(@RequestBody ArtistRequest artistRequest) {
         Artist artist = new Artist(artistRequest.firstName(), artistRequest.lastName());
         return artistRepository.save(artist);
@@ -28,7 +28,8 @@ public class ArtistService {
     }
 
     public Artist getArtistById(@PathVariable Long id) {
-        return artistRepository.findById(id)
+        return artistRepository
+                .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found"));
     }
 
@@ -37,5 +38,5 @@ public class ArtistService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found");
         }
         artistRepository.deleteById(id);
-    }    
+    }
 }

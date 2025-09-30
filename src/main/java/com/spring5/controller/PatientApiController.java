@@ -25,32 +25,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author javaugi
  */
 @RestController
 @RequestMapping("/api/patients")
 public class PatientApiController {
 
-    //*
+    // *
     @Autowired
     private PatientRepository patientRepository;
 
-    //@Autowired
-    //private EntityLinks entityLinks;
-    
+    // @Autowired
+    // private EntityLinks entityLinks;
     private final EntityLinks entityLinks;
+
     @Autowired
     public PatientApiController(EntityLinks entityLinks) {
         this.entityLinks = entityLinks;
-    }    
-    
+    }
 
     @GetMapping
     public ResponseEntity<Collection<PatientResource>> getAllPatients() {
-        List<PatientResource> patientResources = patientRepository.findAll().stream()
-                .map(PatientResource::new)
-                .collect(Collectors.toList());
+        List<PatientResource> patientResources
+                = patientRepository.findAll().stream().map(PatientResource::new).collect(Collectors.toList());
 
         EntityModel<Collection<PatientResource>> resources = EntityModel.of(patientResources);
         resources.add(entityLinks.linkToCollectionResource(Patient.class).withRel("patients"));
@@ -60,13 +57,16 @@ public class PatientApiController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientResource> getPatientById(@PathVariable Long id) {
-        return patientRepository.findById(id)
-            .map(patient -> {
-                PatientResource resource = new PatientResource(patient);
-                    resource.add(entityLinks.linkToItemResource(Patient.class, id).withSelfRel());
-                    resource.add(entityLinks.linkToCollectionResource(Patient.class).withRel("all-patients"));
-                    return ResponseEntity.ok(resource);
-                })
+        return patientRepository
+                .findById(id)
+                .map(
+                        patient -> {
+                            PatientResource resource = new PatientResource(patient);
+                            resource.add(entityLinks.linkToItemResource(Patient.class, id).withSelfRel());
+                            resource.add(
+                                    entityLinks.linkToCollectionResource(Patient.class).withRel("all-patients"));
+                            return ResponseEntity.ok(resource);
+                        })
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -76,12 +76,12 @@ public class PatientApiController {
         PatientResource resource = new PatientResource(savedPatient);
         resource.add(entityLinks.linkToItemResource(Patient.class, savedPatient.getId()).withSelfRel());
         resource.add(entityLinks.linkToCollectionResource(Patient.class).withRel("all-patients"));
-        
+
         /*
-        EntityModel<PatientResource> model = EntityModel.of(resource);
-        model.add(entityLinks.linkToItemResource(Patient.class, savedPatient.getId()).withSelfRel());
-        model.add(entityLinks.linkToCollectionResource(Patient.class).withRel("all-patients"));
-        // */
+    EntityModel<PatientResource> model = EntityModel.of(resource);
+    model.add(entityLinks.linkToItemResource(Patient.class, savedPatient.getId()).withSelfRel());
+    model.add(entityLinks.linkToCollectionResource(Patient.class).withRel("all-patients"));
+    // */
         // Get the self link and convert it to a URI
         Link selfLink = resource.getRequiredLink(LinkRelation.of("all-patients"));
         URI locationUri = URI.create(selfLink.getHref());

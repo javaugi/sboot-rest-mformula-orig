@@ -11,10 +11,7 @@ public class Coordinate implements Cloneable {
     }
 
     public boolean inbounds(int[][] matrix) {
-        return row >= 0
-                && column >= 0
-                && row < matrix.length
-                && column < matrix[0].length;
+        return row >= 0 && column >= 0 && row < matrix.length && column < matrix[0].length;
     }
 
     public boolean isBefore(Coordinate p) {

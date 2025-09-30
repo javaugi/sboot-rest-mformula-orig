@@ -20,11 +20,9 @@ public class AuditService {
 
     public void persistAuditEvent(AuditEvent event) {
         try {
-            IndexResponse response = elasticsearchClient.index(IndexRequest.of(i -> i
-                .index("audit-logs")
-                .id(event.getEventId())
-                .document(event)
-            ));
+            IndexResponse response
+                    = elasticsearchClient.index(
+                            IndexRequest.of(i -> i.index("audit-logs").id(event.getEventId()).document(event)));
             System.out.println("Indexed with version: " + response.version());
         } catch (IOException | ElasticsearchException e) {
             // Log or handle exception securely

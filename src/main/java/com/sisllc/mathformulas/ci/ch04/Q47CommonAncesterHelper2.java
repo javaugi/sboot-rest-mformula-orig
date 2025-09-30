@@ -37,8 +37,8 @@ public class Q47CommonAncesterHelper2 {
             return new Result(root, true); // This is the common ancestor
         } else if (root == p || root == q) {
             /* If we�re currently at p or q, and we also found one of those
-			 * nodes in a subtree, then this is truly an ancestor and the
-			 * flag should be true. */
+       * nodes in a subtree, then this is truly an ancestor and the
+       * flag should be true. */
             boolean isAncestor = rx.node != null || ry.node != null;
             return new Result(root, isAncestor);
         } else {
@@ -66,5 +66,4 @@ public class Q47CommonAncesterHelper2 {
             System.out.println("null");
         }
     }
-
 }

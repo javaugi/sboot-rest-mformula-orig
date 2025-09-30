@@ -13,7 +13,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -30,7 +29,8 @@ public class FileStorageEvent extends BaseEvent {
     private String filePath;
     private String confirm;
 
-    public FileStorageEvent(String id,
+    public FileStorageEvent(
+            String id,
             Instant timestamp,
             String sourceSystem,
             String fileId,
@@ -39,7 +39,7 @@ public class FileStorageEvent extends BaseEvent {
             String filePath,
             String confirm) {
         super(id, timestamp, sourceSystem);
-        
+
         this.fileId = fileId;
         this.tradeId = tradeId;
         this.operation = operation;

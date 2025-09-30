@@ -12,8 +12,8 @@ public class LogEntry {
     private final String serviceName;
     private final String threadId;
 
-    public LogEntry(String message, LogLevel level, String timestamp,
-        String serviceName, String threadId) {
+    public LogEntry(
+            String message, LogLevel level, String timestamp, String serviceName, String threadId) {
         this.message = message;
         this.level = level;
         this.timestamp = timestamp;

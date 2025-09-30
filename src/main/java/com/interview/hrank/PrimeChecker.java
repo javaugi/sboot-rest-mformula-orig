@@ -7,37 +7,30 @@ package com.interview.hrank;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 /**
- *
  * @author javaugi
  */
 public class PrimeChecker {
 
     public static void main(String[] args) {
-        //bufferedReaderLine();
-        
-        int[][] intArrs = {{2,1,3,4,5}, {7,18,2,5,10}};
-        
-        
-        // results  2    2   2 3     2 3 5 
-        //          7    7   7 2     7 2 5 
-        for (int[] intArr: intArrs) {
+        // bufferedReaderLine();
+
+        int[][] intArrs = {{2, 8, 3, 4, 5}, {7, 18, 2, 5, 10}};
+
+        // results  2    2   2 3     2 3 5
+        //          7    7   7 2     7 2 5
+        for (int[] intArr : intArrs) {
             int n1 = intArr[0];
             int n2 = intArr[1];
             int n3 = intArr[2];
             int n4 = intArr[3];
             int n5 = intArr[4];
 
-            //always skip the 4th one
-            doCheckPrime(n1, n2, n3, n4, n5);            
+            // always skip the 4th one
+            doCheckPrime(n1, n2, n3, n4, n5);
         }
-        
-       
     }
-    
-    
 
     private static void bufferedReaderLine() {
         try {
@@ -66,7 +59,7 @@ public class PrimeChecker {
         public static void checkPrime(int... numbers) {
             for (int num : numbers) {
                 if (isPrime(num)) {
-                    System.out.print(num + " ");
+                    System.out.print(num + " is prime ");
                 }
             }
             System.out.println();
@@ -82,23 +75,34 @@ public class PrimeChecker {
             if (n % 2 == 0) {
                 return false;
             }
-            /*
+            // *
             for (int i = 3; i * i <= n; i += 2) {
                 if (n % i == 0) {
                     return false;
                 }
             }
             // */
-            
-            for (int i = 3; i < n; i++) {
-                if (n % i == 0) {
-                    return false;
-                }
-            }
+            /*
+      for (int i = 3; i < n; i++) {
+          if (n % i == 0) {
+              return false;
+          }
+      }
+      // */
             return true;
         }
     }
 
+    /*
+  2 is prime
+  2 is prime
+  2 is prime 3 is prime
+  2 is prime 3 is prime 5 is prime
+  7 is prime
+  7 is prime
+  7 is prime 2 is prime
+  7 is prime 2 is prime 5 is prime
+     */
 }
 
 /*
@@ -131,10 +135,10 @@ Input:
 5
 
 Output:
-2 
-2 
-2 3 
-2 3 5 
+2
+2
+2 3
+2 3 5
 The output lines correspond to:
 
 First line: checkPrime(n1)
@@ -176,10 +180,9 @@ ob.checkPrime(n1,n2,n3);
 ob.checkPrime(n1,n2,n3,n4);  // Added 4-parameter call
 ob.checkPrime(n1,n2,n3,n4,n5);
 But this would produce 5 lines of output instead of the required 4, so it's not included in the original solution. The problem specifically asks for just 4 output lines corresponding to the 1, 2, 3, and 5 parameter calls.
-*/
+ */
 
-
-/*
+ /*
 Please write a prime check program for this scenario You are given a class Solution and its main method in the editor. Your task is to create a class Prime. The class Prime should contain a single method checkPrime.
 
 The locked code in the editor will call the checkPrime method with one or more integer arguments. You should write the checkPrime method in such a way that the code prints only the prime numbers.
@@ -208,9 +211,9 @@ Sample Input
 5
 Sample Output
 
-2 
-2 
-2 3 
+2
+2
+2 3
 2 3 5
 Here's the solution to the prime check problem:
 
@@ -231,7 +234,7 @@ class Prime {
         }
         System.out.println();
     }
-    
+
     private boolean isPrime(int n) {
         if (n <= 1) return false;
         if (n == 2) return true;
@@ -317,9 +320,9 @@ For input:
 5
 The program will output:
 
-2 
-2 
-2 3 
-2 3 5 
+2
+2
+2 3
+2 3 5
 Each line shows the prime numbers from the respective method calls, with non-prime numbers filtered out. The solution efficiently checks for primes without using method overloading, as required by the problem constraints.
-*/
+ */

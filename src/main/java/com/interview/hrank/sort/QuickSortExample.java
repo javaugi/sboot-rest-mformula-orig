@@ -1,6 +1,5 @@
 package com.interview.hrank.sort;
 
-import com.sisllc.mathformulas.bigo.*;
 import java.util.Arrays;
 
 /**
@@ -10,10 +9,10 @@ import java.util.Arrays;
  * average, time complexity is O(n log(n)). The basic step of sorting an array
  * are as follows:
  *
+ * <p>
  * Select a pivot, normally the middle one From both ends, swap elements and
- * make left elements < pivot and all right > pivot Recursively sort left part
- * and right part
- *
+ * make left elements <
+ * pivot and all right > pivot Recursively sort left part and right part
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
@@ -77,5 +76,4 @@ public class QuickSortExample {
             quickSort(arr, i, high);
         }
     }
-
 }

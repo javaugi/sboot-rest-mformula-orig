@@ -7,10 +7,11 @@ package com.spring5.eventsourcing;
 import java.util.UUID;
 
 /**
- *
  * @author javau
  */
-public  interface PatientRepository {
+public interface PatientRepository {
+
     PatientRecord getPatientRecord(UUID patientId);
-    void savePatientRecord(PatientRecord patientRecord);    
+
+    void savePatientRecord(PatientRecord patientRecord);
 }

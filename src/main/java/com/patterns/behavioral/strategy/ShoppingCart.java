@@ -13,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -23,7 +21,7 @@ public class ShoppingCart {
 
     private static final Logger log = LoggerFactory.getLogger(ShoppingCart.class);
 
-    //List of items
+    // List of items
     List<Item> items;
 
     public ShoppingCart() {

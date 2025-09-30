@@ -20,9 +20,10 @@ public class OrderEventProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public CompletableFuture<SendResult<String, String>> publishOrderEvent(String storeId, String messageId, String payload) {
+    public CompletableFuture<SendResult<String, String>> publishOrderEvent(
+            String storeId, String messageId, String payload) {
         ProducerRecord<String, String> record = new ProducerRecord<>("order-events", storeId, payload);
         record.headers().add("messageId", messageId.getBytes(StandardCharsets.UTF_8));
-        return kafkaTemplate.send(record);//.completable();
+        return kafkaTemplate.send(record); // .completable();
     }
 }

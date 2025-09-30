@@ -12,7 +12,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- *
  * @author javaugi
  */
 /*
@@ -56,16 +55,18 @@ public class DroneFleetControlSystem {
         }
 
         // Simulate mission control thread sending commands
-        Thread missionControl = new Thread(() -> {
-            try {
-                while (true) {
-                    String command = missionQueue.take();  // blocking until a command is available
-                    dispatchCommandToFleet(command);
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        });
+        Thread missionControl
+                = new Thread(
+                        () -> {
+                            try {
+                                while (true) {
+                                    String command = missionQueue.take(); // blocking until a command is available
+                                    dispatchCommandToFleet(command);
+                                }
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        });
 
         missionControl.start();
 

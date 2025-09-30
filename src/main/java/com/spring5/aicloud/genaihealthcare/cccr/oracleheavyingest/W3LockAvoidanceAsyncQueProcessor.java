@@ -12,21 +12,20 @@ import javax.sql.DataSource;
 import oracle.jdbc.OracleCallableStatement;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
-//import oracle.sql.ArrayDescriptor;
-//import org.apache.spark.sql.execution.columnar.ARRAY;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 
 /**
- *
  * @author javau
  */
 public class W3LockAvoidanceAsyncQueProcessor {
+
     @Autowired
     private DataSource dataSource;
 
     public void enqueueClaims(List<Claim> claims) throws SQLException {
-        String sql = """
+        String sql
+                = """
             DECLARE
                 enqueue_options DBMS_AQ.ENQUEUE_OPTIONS_T;
                 message_properties DBMS_AQ.MESSAGE_PROPERTIES_T;
@@ -53,8 +52,7 @@ public class W3LockAvoidanceAsyncQueProcessor {
 
         try (Connection conn = dataSource.getConnection(); OracleCallableStatement stmt = (OracleCallableStatement) conn.prepareCall(sql)) {
 
-            ArrayDescriptor desc = ArrayDescriptor.createDescriptor(
-                "CLAIM_ARRAY", conn);
+            ArrayDescriptor desc = ArrayDescriptor.createDescriptor("CLAIM_ARRAY", conn);
             ARRAY claimArray = new ARRAY(desc, conn, claims.toArray());
 
             stmt.setArray(1, claimArray);
@@ -69,6 +67,5 @@ public class W3LockAvoidanceAsyncQueProcessor {
     }
 
     private void processSingleClaim(Long claimId) {
-
     }
 }

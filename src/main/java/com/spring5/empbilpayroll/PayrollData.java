@@ -23,11 +23,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class PayrollData {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     int hoursWorked;
-    
+
     String taxDeductions;
 }

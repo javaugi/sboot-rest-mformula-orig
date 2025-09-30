@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InternalLoginRequest {
+
     private String username;
     private String password;
     private String email;

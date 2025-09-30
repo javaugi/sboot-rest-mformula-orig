@@ -14,7 +14,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -24,13 +23,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KafkaAuditEvent extends BaseEvent {
+
     private String entityId;
     private EntityType entityType; // TRADE, FILE, USER
     private AuditAction action; // CREATE, UPDATE, DELETE
     private String userId;
     private Map<String, Object> metadata;
 
-    public KafkaAuditEvent(String id,
+    public KafkaAuditEvent(
+            String id,
             Instant timestamp,
             String sourceSystem,
             String entityId,
@@ -39,11 +40,11 @@ public class KafkaAuditEvent extends BaseEvent {
             String userId,
             Map<String, Object> metadata) {
         super(id, timestamp, sourceSystem);
-        
+
         this.entityId = entityId;
-        this.entityType =  entityType;
+        this.entityType = entityType;
         this.action = action;
         this.userId = userId;
-        this.metadata =  metadata;
+        this.metadata = metadata;
     }
 }

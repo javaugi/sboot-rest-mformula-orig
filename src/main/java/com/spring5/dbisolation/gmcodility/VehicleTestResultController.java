@@ -5,11 +5,11 @@
 package com.spring5.dbisolation.gmcodility;
 
 // VehicleTestResultController.java
+import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,18 +31,18 @@ Requirements:
     Implement proper error handling
     Include unit tests
 
-*/
-
+ */
 @RestController
 @RequestMapping("/api/vehicle-tests")
 public class VehicleTestResultController {
 
     @Autowired
     private VehicleTestResultRepository testResultRepository;
-    
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<VehicleTestResult> createArtistByResp(@RequestBody VehicleTestResult testResult) {
+    public ResponseEntity<VehicleTestResult> createArtistByResp(
+            @RequestBody VehicleTestResult testResult) {
         if (testResult.getTestType() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test Type is required");
         }
@@ -51,10 +51,10 @@ public class VehicleTestResultController {
         if (testResult.getTestDate() == null) {
             System.out.println("createArtistByResp throws ResponseStatusException HttpStatus.CONFLICT ");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test Date Required");
-        }        
-        
+        }
+
         return new ResponseEntity<>(testResultRepository.save(testResult), HttpStatus.CREATED);
-    }    
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -65,16 +65,18 @@ public class VehicleTestResultController {
             @RequestParam(required = false) Boolean passed) {
 
         try {
-            // Specification<VehicleTestResult> spec = where(null); 
+            // Specification<VehicleTestResult> spec = where(null);
             // Specification<VehicleTestResult> spec = Specification.where(null);
-            Specification<VehicleTestResult> spec = (root, query, criteriaBuilder) -> null; // Null predicate = no filtering
-            
+            Specification<VehicleTestResult> spec
+                    = (root, query, criteriaBuilder) -> null; // Null predicate = no filtering
+
             if (testType != null) {
                 spec = spec.and((root, query, cb) -> cb.equal(root.get("testType"), testType));
             }
 
             if (startDate != null) {
-                spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("testDate"), startDate));
+                spec
+                        = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("testDate"), startDate));
             }
 
             if (endDate != null) {
@@ -84,24 +86,22 @@ public class VehicleTestResultController {
             if (passed != null) {
                 spec = spec.and((root, query, cb) -> cb.equal(root.get("passed"), passed));
             }
-            
-            
+
             List<VehicleTestResult> results = testResultRepository.findAll(spec);
 
-            //*   
-            Specification<VehicleTestResult> spec2 = (root, query, criteriaBuilder)
+            // *
+            Specification<VehicleTestResult> spec2
+                    = (root, query, criteriaBuilder)
                     -> criteriaBuilder.and(
                             criteriaBuilder.equal(root.get("testType"), testType),
-                            criteriaBuilder.equal(root.get("testDate"), startDate)
-                    ); // */
+                            criteriaBuilder.equal(root.get("testDate"), startDate)); // */
 
             ResponseEntity.ok(results);
             ResponseEntity.accepted().body(results);
             new ResponseEntity<>(results, HttpStatus.OK);
             return ResponseEntity.status(HttpStatus.OK).body(results);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
 

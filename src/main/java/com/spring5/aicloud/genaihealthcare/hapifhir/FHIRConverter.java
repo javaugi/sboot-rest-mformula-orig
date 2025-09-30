@@ -22,10 +22,12 @@ public class FHIRConverter {
         Condition condition = new Condition();
         condition.setId("cond-" + data.getPatientId());
         condition.setSubject(new Reference("Patient/" + data.getPatientId()));
-        condition.getCode().addCoding()
-            .setSystem("http://snomed.info/sct")
-            .setCode("44054006") // SNOMED code for Diabetes mellitus
-            .setDisplay(data.getDiagnosis());
+        condition
+                .getCode()
+                .addCoding()
+                .setSystem("http://snomed.info/sct")
+                .setCode("44054006") // SNOMED code for Diabetes mellitus
+                .setDisplay(data.getDiagnosis());
         condition.setRecordedDateElement(new DateTimeType(data.getDiagnosisDate()));
 
         // Add resources to Bundle

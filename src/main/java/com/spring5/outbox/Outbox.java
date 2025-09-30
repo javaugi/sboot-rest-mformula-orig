@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Getter
 @Setter
 @ToString
@@ -28,15 +27,18 @@ import lombok.ToString;
 @Entity
 @Cacheable
 public class Outbox {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String aggregateId;
     private String aggregateType;
     private String eventType;
+
     @Column(columnDefinition = "json")
     private String payload;
+
     private LocalDateTime createdAt;
     private Boolean processed;
-    
 }

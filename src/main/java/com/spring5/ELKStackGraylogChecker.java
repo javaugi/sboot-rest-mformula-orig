@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author javaugi
  */
 @RestController
@@ -26,22 +25,22 @@ public class ELKStackGraylogChecker {
 }
 
 /*
-The ELK stack (Elasticsearch - is a search and analytics engine that is used to store and index log data., 
-    Logstash - is a data processing pipeline that is used to collect, parse, and transform log data before sending it to Elasticsearch., 
-    and Kibana - is a visualization tool (dashboard) that is used to explore and analyze log data stored in Elasticsearch  ) 
+The ELK stack (Elasticsearch - is a search and analytics engine that is used to store and index log data.,
+    Logstash - is a data processing pipeline that is used to collect, parse, and transform log data before sending it to Elasticsearch.,
+    and Kibana - is a visualization tool (dashboard) that is used to explore and analyze log data stored in Elasticsearch  )
 and Graylog are popular open-source solutions for centralized logging. They allow you to collect, store, search, and analyze logs
     from multiple sources in a single place. This can be very useful for troubleshooting
-    
-This configuration sends logs to a Graylog instance running at graylog-server on port 12201. 
+
+This configuration sends logs to a Graylog instance running at graylog-server on port 12201.
 To use this code, you will need to have a Graylog server running. You can download Graylog from the Graylog website. Once you have Graylog running,
     you can start the Spring Boot application. The application will then send its logs to Graylog.
-*/
+ */
 
-/*
+ /*
 <dependencies>
      <dependency>
          <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-web</artifactId>     
+         <artifactId>spring-boot-starter-web</artifactId>
      </dependency>
      <dependency>
         <groupId>net.logstash.logback</groupId>
@@ -72,7 +71,7 @@ To use this code, you will need to have a Graylog server running. You can downlo
              <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
          </encoder>
      </appender>
- 
+
      <appender name="GELF" class="biz.paluch.logging.gelf.logback.GelfUDPAppender">
         <host>graylog-server</host>
         <port>12201</port>
@@ -84,10 +83,10 @@ To use this code, you will need to have a Graylog server running. You can downlo
             </patternLayout>
         </encoder>
     </appender>
- 
+
      <root level="INFO">
          <appender-ref ref="STDOUT" />
          <appender-ref ref = "GELF"/>
      </root>
  </configuration>
-*/
+ */

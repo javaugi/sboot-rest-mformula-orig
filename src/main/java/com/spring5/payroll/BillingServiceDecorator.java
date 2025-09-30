@@ -5,12 +5,13 @@
 package com.spring5.payroll;
 
 /**
- *
  * @author javaugi
  */
 public abstract class BillingServiceDecorator implements BillingService {
+
     protected BillingService wrapped;
-    public BillingServiceDecorator(BillingService service) { 
-        this.wrapped = service; 
+
+    public BillingServiceDecorator(BillingService service) {
+        this.wrapped = service;
     }
 }

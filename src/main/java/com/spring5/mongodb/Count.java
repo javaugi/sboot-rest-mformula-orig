@@ -18,6 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Count {
+
     private String word;
-    private long count;    
+    private long count;
 }

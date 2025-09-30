@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-//import java.util.stream.*;
 
+// import java.util.stream.*;
 @Slf4j
 public class MyVehicleGrouping {
 
@@ -30,21 +30,26 @@ public class MyVehicleGrouping {
         Integer[] rtn = new Integer[2];
 
         Map<String, List<Vehicle>> gList
-            = list.stream().parallel()
-                .sorted(Comparator.comparing(Vehicle::getMake)
-                .thenComparing(Vehicle::getModel)
-                ).collect(Collectors.groupingBy(Vehicle::getMake));
+                = list.stream()
+                        .parallel()
+                        .sorted(Comparator.comparing(Vehicle::getMake).thenComparing(Vehicle::getModel))
+                        .collect(Collectors.groupingBy(Vehicle::getMake));
 
         final AtomicInteger makeCnt = new AtomicInteger();
         final AtomicInteger modelCnt = new AtomicInteger();
-        gList.keySet().forEach(e -> {
-            makeCnt.incrementAndGet();
-            Printer.print("Make=" + e);
-            gList.get(e).stream().forEach(v -> {
-                modelCnt.incrementAndGet();
-                Printer.print("     Model=" + v.getModel());
-            });
-        });
+        gList
+                .keySet()
+                .forEach(
+                        e -> {
+                            makeCnt.incrementAndGet();
+                            Printer.print("Make=" + e);
+                            gList.get(e).stream()
+                                    .forEach(
+                                            v -> {
+                                                modelCnt.incrementAndGet();
+                                                Printer.print("     Model=" + v.getModel());
+                                            });
+                        });
 
         rtn[0] = makeCnt.get();
         rtn[1] = modelCnt.get();
@@ -60,14 +65,14 @@ public class MyVehicleGrouping {
     }
 
     public static List<Vehicle> getVehicles() {
-        return List.of(Vehicle.builder().make("Ford").model("F1").build(),
-            Vehicle.builder().make("Ford").model("F2").build(),
-            Vehicle.builder().make("Ford").model("F3").build(),
-            Vehicle.builder().make("Ford").model("F4").build(),
-            Vehicle.builder().make("GM").model("G1").build(),
-            Vehicle.builder().make("GM").model("G2").build(),
-            Vehicle.builder().make("GM").model("G3").build()
-        );
+        return List.of(
+                Vehicle.builder().make("Ford").model("F1").build(),
+                Vehicle.builder().make("Ford").model("F2").build(),
+                Vehicle.builder().make("Ford").model("F3").build(),
+                Vehicle.builder().make("Ford").model("F4").build(),
+                Vehicle.builder().make("GM").model("G1").build(),
+                Vehicle.builder().make("GM").model("G2").build(),
+                Vehicle.builder().make("GM").model("G3").build());
     }
 
     @Data
@@ -78,6 +83,5 @@ public class MyVehicleGrouping {
         String model;
         double cost;
         int rating;
-
     }
 }

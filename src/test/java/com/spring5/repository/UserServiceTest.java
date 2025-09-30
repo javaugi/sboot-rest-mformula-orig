@@ -27,20 +27,21 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest
 public class UserServiceTest {
+
     @Mock
     private UserDao userDao;
-    
+
     //When using Mockito Use @InjectMocks to inject Mocked beans to following class
     @InjectMocks
     private UserServiceImp userService;
-    
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-    
+
     @Test
-    public void testNothing() {        
+    public void testNothing() {
     }
 
     //@Test
@@ -58,5 +59,5 @@ public class UserServiceTest {
         //Make sure to import assertThat From org.assertj.core.api package
         assertThat(userList).isNotNull();
         assertThat(userList.size()).isEqualTo(2);
-    }    
+    }
 }

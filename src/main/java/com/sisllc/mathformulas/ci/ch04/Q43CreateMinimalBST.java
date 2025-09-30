@@ -13,5 +13,4 @@ public class Q43CreateMinimalBST {
         System.out.println("Created BST? " + root.isBST());
         System.out.println("Height: " + root.height());
     }
-
 }

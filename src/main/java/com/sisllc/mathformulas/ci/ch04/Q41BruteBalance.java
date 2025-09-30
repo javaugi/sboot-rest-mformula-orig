@@ -39,5 +39,4 @@ public class Q41BruteBalance {
         System.out.println("Root? " + unbalanced.data);
         System.out.println("Is balanced? " + isBalanced(unbalanced));
     }
-
 }

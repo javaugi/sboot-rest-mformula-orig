@@ -42,5 +42,4 @@ public class CompareBinaryToHex {
     public static void main(String[] args) {
         System.out.println(compareBinToHex("111001011", "1CB"));
     }
-
 }

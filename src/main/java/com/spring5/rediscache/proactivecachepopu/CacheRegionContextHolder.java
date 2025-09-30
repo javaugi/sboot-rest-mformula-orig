@@ -5,6 +5,7 @@
 package com.spring5.rediscache.proactivecachepopu;
 
 public class CacheRegionContextHolder {
+
     private static final ThreadLocal<String> context = new ThreadLocal<>();
 
     public static void setRegion(String region) {

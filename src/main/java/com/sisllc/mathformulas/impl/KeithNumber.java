@@ -7,11 +7,11 @@ package com.sisllc.mathformulas.impl;
  * each subsequent term is the sum of the previous n terms. By definition, N is
  * a Keith number if N appears in the sequence thus constructed.
  *
+ * <p>
  * A Keith number has the following integer sequence: 14, 19, 28, 47, 61, 75,
  * 197, 742, 1104, 1537, 2208, 2580, ....
  *
  * @author david
- *
  */
 public class KeithNumber {
 
@@ -51,7 +51,8 @@ public class KeithNumber {
             for (int i = 1; i < length; i++) {
                 total = total + numbers[i];
                 numbers[i - 1] = numbers[i];
-                System.out.println("for looping total=" + total + ": number=" + number + "\n " + print(numbers));
+                System.out.println(
+                        "for looping total=" + total + ": number=" + number + "\n " + print(numbers));
             }
             numbers[length - 1] = total;
             System.out.println("total=" + total + ": number=" + number + "\n " + print(numbers));
@@ -60,7 +61,6 @@ public class KeithNumber {
             }
         }
         return false;
-
     }
 
     private static String print(int[] numbers) {
@@ -70,5 +70,4 @@ public class KeithNumber {
         }
         return sb.toString();
     }
-
 }

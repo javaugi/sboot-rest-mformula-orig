@@ -36,13 +36,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.server.WebFilter;
 
 /**
- *
  * @author javaugi
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
+
     @Autowired
     private JwtAuthenticationFilter jwtAuthFilter;
     private RegionFilter regionFilter;
@@ -50,44 +49,60 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher(PathRequest.toH2Console());
-        //this is required to make the console screen work, otherwise the RequestBody/JSON data is displayed
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/**", "/management/**", "/actuator/**").hasRole("ADMIN")
-                .requestMatchers("/user/**", "/profile/**").hasRole("USER")
-                .requestMatchers("/api/patients/**").hasAnyRole("PATIENT", "NURSE", "PHYSICIAN", "ADMIN")
-                .requestMatchers("/api/nurses/**").hasAnyRole("NURSE", "PHYSICIAN", "ADMIN")
-                .requestMatchers("/api/physicians/**").hasAnyRole("PHYSICIAN", "ADMIN")
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-            .requestMatchers("/api/patients/**").hasRole("PHARMACIST")
-            .requestMatchers("/api/ai-governance/**").hasRole("ADMIN")
-            .requestMatchers("/api/loyalty/**").hasAnyRole("PATIENT", "ADMIN")
-            //.mvcMatchers("/user/**", "/profile/**").hasRole("USER")
-                //.regexMatchers("/api/v[0-9]+/.*", "/public/.*").permitAll()
-                .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().permitAll())
-                .csrf(csrf -> csrf.disable()) //Cross Site Request Forgery
-                //.ignoringRequestMatchers("/api/**")
-                .formLogin(form -> form
-                .loginPage("/login") // custom login page
-                .permitAll()
-                )
-                .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout") // redirect after logout
-                .permitAll()
-                )
-                .cors(cors -> cors //Corss Origin Resource Sharing
-                .configurationSource(corsConfigurationSource())
-                )
-                //.oauth2ResourceServer(oauth2 -> oauth2
+        // this is required to make the console screen work, otherwise the RequestBody/JSON data is
+        // displayed
+        http.authorizeHttpRequests(
+                auth
+                -> auth.requestMatchers("/admin/**", "/management/**", "/actuator/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/user/**", "/profile/**")
+                        .hasRole("USER")
+                        .requestMatchers("/api/patients/**")
+                        .hasAnyRole("PATIENT", "NURSE", "PHYSICIAN", "ADMIN")
+                        .requestMatchers("/api/nurses/**")
+                        .hasAnyRole("NURSE", "PHYSICIAN", "ADMIN")
+                        .requestMatchers("/api/physicians/**")
+                        .hasAnyRole("PHYSICIAN", "ADMIN")
+                        .requestMatchers("/api/admin/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/api/patients/**")
+                        .hasRole("PHARMACIST")
+                        .requestMatchers("/api/ai-governance/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/api/loyalty/**")
+                        .hasAnyRole("PATIENT", "ADMIN")
+                        // .mvcMatchers("/user/**", "/profile/**").hasRole("USER")
+                        // .regexMatchers("/api/v[0-9]+/.*", "/public/.*").permitAll()
+                        .requestMatchers("/api/auth/**", "/h2-console/**")
+                        .permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                        .permitAll()
+                        .anyRequest()
+                        .permitAll())
+                .csrf(csrf -> csrf.disable()) // Cross Site Request Forgery
+                // .ignoringRequestMatchers("/api/**")
+                .formLogin(
+                        form
+                        -> form.loginPage("/login") // custom login page
+                                .permitAll())
+                .logout(
+                        logout
+                        -> logout
+                                .logoutSuccessUrl("/login?logout") // redirect after logout
+                                .permitAll())
+                .cors(
+                        cors
+                        -> cors // Corss Origin Resource Sharing
+                                .configurationSource(corsConfigurationSource()))
+                // .oauth2ResourceServer(oauth2 -> oauth2
                 //  .jwt(Customizer.withDefaults())
-                //)
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())
-                );
+                // )
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 
-        //return http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class).build();
+        // return http.addFilterBefore(jwtTokenFilter(),
+        // UsernamePasswordAuthenticationFilter.class).build();
         http.addFilter(regionFilter);
-        //http.addFilter(new JwtAuthenticationFilter(authenticationManager()));
+        // http.addFilter(new JwtAuthenticationFilter(authenticationManager()));
         return http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 
@@ -97,21 +112,23 @@ public class SecurityConfig {
     }
 
     /*
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
-    }
-    // */
-
-    //CSRF (Cross-Site Request Forgery):
-    //CORS (Cross-Origin Resource Sharing):
+  @Bean
+  public JwtDecoder jwtDecoder() {
+      return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+  }
+  // */
+    // CSRF (Cross-Site Request Forgery):
+    // CORS (Cross-Origin Resource Sharing):
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://localhost:8088", "https://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedOrigins(
+                Arrays.asList("https://localhost:8088", "https://localhost:3000"));
+        configuration.setAllowedMethods(
+                Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowedHeaders(
+                Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -121,22 +138,19 @@ public class SecurityConfig {
     @Bean
     public WebFilter corsFilter() {
         return (exchange, chain) -> {
-            exchange.getResponse().getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
+            exchange
+                    .getResponse()
+                    .getHeaders()
+                    .add("Access-Control-Allow-Origin", "http://localhost:3000");
             return chain.filter(exchange);
         };
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user")
-                .password("{noop}password")
-                .roles("USER")
-                .build();
+        UserDetails user = User.withUsername("user").password("{noop}password").roles("USER").build();
 
-        UserDetails admin = User.withUsername("admin")
-                .password("{noop}admin")
-                .roles("ADMIN")
-                .build();
+        UserDetails admin = User.withUsername("admin").password("{noop}admin").roles("ADMIN").build();
 
         return new InMemoryUserDetailsManager(user, admin);
     }
@@ -144,17 +158,11 @@ public class SecurityConfig {
     // If using in-memory for testing:
     @Bean
     public UserDetailsService users() {
-        UserDetails user = User.builder()
-                .username("john")
-                .password("{noop}password")
-                .roles("USER")
-                .build();
+        UserDetails user
+                = User.builder().username("john").password("{noop}password").roles("USER").build();
 
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("{noop}admin")
-                .roles("ADMIN", "USER")
-                .build();
+        UserDetails admin
+                = User.builder().username("admin").password("{noop}admin").roles("ADMIN", "USER").build();
 
         return new InMemoryUserDetailsManager(user, admin);
     }
@@ -165,12 +173,11 @@ public class SecurityConfig {
     }
 
     /*
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12); // Strength factor 12-31
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+      return new BCryptPasswordEncoder(12); // Strength factor 12-31
+  }
      */
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/resources/**");
@@ -181,21 +188,19 @@ public class SecurityConfig {
         return new SimpleUrlLogoutSuccessHandler() {
             @Override
             public void onLogoutSuccess(
-                HttpServletRequest request, 
-                HttpServletResponse response, 
-                Authentication authentication) throws IOException {
-                
-                String redirectUrl = String.format(
-                    "%s?client_id=%s&logout_uri=%s",
-                    //logoutUrl,
-                    //clientId,
-                    URLEncoder.encode("http://localhost:8080/login", "UTF-8")
-                );
+                    HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+                    throws IOException {
+
+                String redirectUrl
+                        = String.format(
+                                "%s?client_id=%s&logout_uri=%s",
+                                // logoutUrl,
+                                // clientId,
+                                URLEncoder.encode("http://localhost:8080/login", "UTF-8"));
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
             }
         };
-    }    
-    
+    }
 }
 
 /*
@@ -216,7 +221,7 @@ The WebSecurityConfigurerAdapter was deprecated in Spring Security 5.7.0 and rem
     OAuth2 Resource Server Configuration
 4. Advanced Configuration Examples
     Role-Based Access Control
-    CSRF Configuration  
+    CSRF Configuration
     CORS Configuration
 5. Multiple Security Filter Chains
 6. Method Security
@@ -226,7 +231,7 @@ The WebSecurityConfigurerAdapter was deprecated in Spring Security 5.7.0 and rem
         public class MethodSecurityConfig {
             // Method security configuration
         }
-        
+
         See SecureService for details
 7. Security Configuration Tip
     Make sure your Spring Security is correctly configured to authenticate and provide roles. Roles are typically prefixed with ROLE_ in Spring.
@@ -254,27 +259,27 @@ Migration Benefits
     More Modular: Clear separation of concerns
     Better for Component-Based Security: Fits better with Spring's overall component model
 
-The new approach is more aligned with Spring's general move towards functional configuration styles and provides better flexibility 
+The new approach is more aligned with Spring's general move towards functional configuration styles and provides better flexibility
     in configuring security for modern applications.
 ##################################
 
 does the sprint boot properties spring.h2.console.path=/h2-console work for other databases?
 
-No, the Spring Boot property spring.h2.console.path=/h2-console is specific to the H2 in-memory database and its embedded web console. 
+No, the Spring Boot property spring.h2.console.path=/h2-console is specific to the H2 in-memory database and its embedded web console.
     It will not work for other databases like MySQL, PostgreSQL, Oracle, or others.
 
 Here's why:
 
-H2 Console Specific: The H2 console is a feature provided by the H2 database engine itself. Spring Boot provides convenient 
-    auto-configuration to enable and configure this specific console using the spring.h2.console properties.   
+H2 Console Specific: The H2 console is a feature provided by the H2 database engine itself. Spring Boot provides convenient
+    auto-configuration to enable and configure this specific console using the spring.h2.console properties.
 
 Different Databases, Different Tools: Other databases have their own separate management tools and consoles. For example:
 MySQL: MySQL Workbench, DBeaver, command-line client.
 PostgreSQL: pgAdmin, DBeaver, psql command-line client.
 Oracle: SQL Developer, SQLcl.
-Microsoft SQL Server: SQL Server Management Studio (SSMS), Azure Data Studio.   
+Microsoft SQL Server: SQL Server Management Studio (SSMS), Azure Data Studio.
 
-No Generic Console Path: There isn't a standard, universal console path property that Spring Boot can use to automatically 
+No Generic Console Path: There isn't a standard, universal console path property that Spring Boot can use to automatically
 enable a web console for every possible database. Each database's tooling is independent.
 
 What you need to do for other databases:
@@ -282,12 +287,12 @@ What you need to do for other databases:
 If you want a web-based interface to interact with other databases in your Spring Boot application, you would typically:
 
 Use a dedicated database administration tool: As mentioned above, each database usually has its own powerful desktop application for management.
-    Integrate a third-party database administration tool into your application (less common for production): There might be embeddable 
+    Integrate a third-party database administration tool into your application (less common for production): There might be embeddable
     or web-based administration tools that you could potentially integrate, but this is not a standard Spring Boot feature and would require specific dependencies and configuration for that tool.
-Build your own UI: For more controlled access and specific functionalities, you could build your own web interface using Spring MVC 
+Build your own UI: For more controlled access and specific functionalities, you could build your own web interface using Spring MVC
     or Spring WebFlux to interact with your database through your application's services and data access layer (e.g., Spring Data JPA, Spring Data JDBC).
 
-In summary, spring.h2.console.path is exclusively for configuring the H2 database's web console. For other databases, you'll need to use 
+In summary, spring.h2.console.path is exclusively for configuring the H2 database's web console. For other databases, you'll need to use
     their respective management tools.
 
 
@@ -451,12 +456,12 @@ No, the Spring Boot property spring.h2.console.path=/h2-console is specific to t
 
 Here's why:
 
-H2 Console Specific: The H2 console is a feature provided by the H2 database engine itself. Spring Boot provides convenient auto-configuration to enable and configure this specific console using the spring.h2.console properties.   
+H2 Console Specific: The H2 console is a feature provided by the H2 database engine itself. Spring Boot provides convenient auto-configuration to enable and configure this specific console using the spring.h2.console properties.
 Different Databases, Different Tools: Other databases have their own separate management tools and consoles. For example:
 MySQL: MySQL Workbench, DBeaver, command-line client.
 PostgreSQL: pgAdmin, DBeaver, psql command-line client.
 Oracle: SQL Developer, SQLcl.
-Microsoft SQL Server: SQL Server Management Studio (SSMS), Azure Data Studio.   
+Microsoft SQL Server: SQL Server Management Studio (SSMS), Azure Data Studio.
 No Generic Console Path: There isn't a standard, universal console path property that Spring Boot can use to automatically enable a web console for every possible database. Each database's tooling is independent.
 What you need to do for other databases:
 

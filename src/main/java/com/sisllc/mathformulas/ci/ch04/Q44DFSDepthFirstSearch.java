@@ -8,7 +8,8 @@ import java.util.LinkedList;
 
 public class Q44DFSDepthFirstSearch {
 
-    public static void createLevelLinkedList(TreeNode root, ArrayList<LinkedList<TreeNode>> lists, int level) {
+    public static void createLevelLinkedList(
+            TreeNode root, ArrayList<LinkedList<TreeNode>> lists, int level) {
         if (root == null) {
             return;
         }
@@ -16,7 +17,7 @@ public class Q44DFSDepthFirstSearch {
         if (lists.size() == level) { // Level not contained in list
             list = new LinkedList<TreeNode>();
             /* Levels are always traversed in order. So, if this is the first time we've visited level i,
-			 * we must have seen levels 0 through i - 1. We can therefore safely add the level at the end. */
+       * we must have seen levels 0 through i - 1. We can therefore safely add the level at the end. */
             lists.add(list);
         } else {
             list = lists.get(level);
@@ -51,5 +52,4 @@ public class Q44DFSDepthFirstSearch {
         ArrayList<LinkedList<TreeNode>> list = createLevelLinkedList(root);
         printResult(list);
     }
-
 }

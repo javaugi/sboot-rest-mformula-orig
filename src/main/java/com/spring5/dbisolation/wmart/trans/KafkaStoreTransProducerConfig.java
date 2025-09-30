@@ -4,7 +4,7 @@
  */
 package com.spring5.dbisolation.wmart.trans;
 
-//@Configuration
+// @Configuration
 import com.fasterxml.jackson.databind.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;

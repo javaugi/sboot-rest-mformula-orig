@@ -47,5 +47,4 @@ public class Q46BST {
             }
         }
     }
-
 }

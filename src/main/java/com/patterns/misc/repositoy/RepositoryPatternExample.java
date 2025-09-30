@@ -24,8 +24,8 @@ Benefits of the Repository Pattern:
     Maintainability: Changes to the data source (e.g., switching from one database to another) only require modifying the repository implementation, not the service layer.
     Code Reusability: The repository interface and its implementations can be reused across different parts of your application.
 
-    In a real Spring application, you would typically use Spring Data JPA, which significantly simplifies the implementation of the repository pattern. 
-    Spring Data JPA automatically generates the repository implementation based on the interface you define. Here's an example of how it would 
+    In a real Spring application, you would typically use Spring Data JPA, which significantly simplifies the implementation of the repository pattern.
+    Spring Data JPA automatically generates the repository implementation based on the interface you define. Here's an example of how it would
     look with Spring Data JPA:
  */
 public class RepositoryPatternExample {
@@ -37,7 +37,7 @@ public class RepositoryPatternExample {
     }
 
     private void run() {
-// Initialize the repository implementation
+        // Initialize the repository implementation
         UserRepository userRepository = new InMemoryUserRepository();
 
         // Initialize the service, injecting the repository
@@ -64,7 +64,7 @@ public class RepositoryPatternExample {
         userService.getAllUsers().forEach(System.out::println);
     }
 
-// 1. Entity Class
+    // 1. Entity Class
     class User {
 
         private Long id;
@@ -104,14 +104,19 @@ public class RepositoryPatternExample {
         @Override
         public String toString() {
             return "User{"
-                    + "id=" + id
-                    + ", username='" + username + '\''
-                    + ", email='" + email + '\''
+                    + "id="
+                    + id
+                    + ", username='"
+                    + username
+                    + '\''
+                    + ", email='"
+                    + email
+                    + '\''
                     + '}';
         }
     }
 
-// 2. Repository Interface
+    // 2. Repository Interface
     interface UserRepository {
 
         Optional<User> findById(Long id);
@@ -123,7 +128,7 @@ public class RepositoryPatternExample {
         void deleteById(Long id);
     }
 
-// 3. Repository Implementation (using an in-memory Map for simplicity)
+    // 3. Repository Implementation (using an in-memory Map for simplicity)
     class InMemoryUserRepository implements UserRepository {
 
         private final Map<Long, User> users = new HashMap<>();
@@ -154,7 +159,7 @@ public class RepositoryPatternExample {
         }
     }
 
-// 4. Service Class (using the Repository)
+    // 4. Service Class (using the Repository)
     class UserService {
 
         private final UserRepository userRepository;
@@ -180,5 +185,4 @@ public class RepositoryPatternExample {
             userRepository.deleteById(id);
         }
     }
-
 }

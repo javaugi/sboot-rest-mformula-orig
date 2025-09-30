@@ -45,7 +45,7 @@ public class KafkaTuningConfig extends KafkaBaseConfig {
     public ConsumerFactory<String, Object> tunedConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(tunedConsumerConfigs());
     }
-        
+
     // Consumer factory
     @Primary
     @Bean
@@ -60,7 +60,9 @@ public class KafkaTuningConfig extends KafkaBaseConfig {
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(concurrency); // Number of concurrent consumers
-        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL); // Manual commit
+        factory
+                .getContainerProperties()
+                .setAckMode(ContainerProperties.AckMode.MANUAL); // Manual commit
         factory.getContainerProperties().setPollTimeout(3000); // 3 seconds
         return factory;
     }
@@ -72,7 +74,8 @@ public class KafkaTuningConfig extends KafkaBaseConfig {
 
     @Primary
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactoryRetry(DefaultErrorHandler errorHandler) {
+    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactoryRetry(
+            DefaultErrorHandler errorHandler) {
         ConcurrentKafkaListenerContainerFactory<String, String> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
@@ -96,30 +99,35 @@ public class KafkaTuningConfig extends KafkaBaseConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactoryRebalance() {
+    public ConcurrentKafkaListenerContainerFactory<String, String>
+            kafkaListenerContainerFactoryRebalance() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(concurrency);
 
         // Custom partition assignment strategy
-        factory.getContainerProperties().setConsumerRebalanceListener(new ConsumerRebalanceListener() {
-            @Override
-            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-                log.info("Partitions revoked: {}", partitions);
-            }
+        factory
+                .getContainerProperties()
+                .setConsumerRebalanceListener(
+                        new ConsumerRebalanceListener() {
+                    @Override
+                    public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+                        log.info("Partitions revoked: {}", partitions);
+                    }
 
-            @Override
-            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-                log.info("Partitions assigned: {}", partitions);
-            }
-        });
+                    @Override
+                    public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                        log.info("Partitions assigned: {}", partitions);
+                    }
+                });
 
         return factory;
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> batchKafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, String>
+            batchKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
@@ -132,7 +140,6 @@ public class KafkaTuningConfig extends KafkaBaseConfig {
 
         return factory;
     }
-
 }
 
 /*

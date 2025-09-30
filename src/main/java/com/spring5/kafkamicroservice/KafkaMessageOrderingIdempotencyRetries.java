@@ -71,12 +71,12 @@ Best Practices in Java
         Use Kafka's single partition per key guarantee
         Implement sequence numbers in your events
 
-*/
+ */
 @Service
 @Slf4j
 public class KafkaMessageOrderingIdempotencyRetries {
 
-    //1. Message Ordering (Kafka Example)
+    // 1. Message Ordering (Kafka Example)
     public class OrderedKafkaProducer {
 
         public static void main(String[] args) {
@@ -96,22 +96,28 @@ public class KafkaMessageOrderingIdempotencyRetries {
                 ProducerRecord<String, String> record
                         = new ProducerRecord<>("ordered-topic", "key1", "Message " + i);
 
-                producer.send(record, (metadata, exception) -> {
-                    if (exception != null) {
-                        exception.printStackTrace();
-                    } else {
-                        System.out.println("Sent message to: " + metadata.topic()
-                                + " partition: " + metadata.partition()
-                                + " offset: " + metadata.offset());
-                    }
-                });
+                producer.send(
+                        record,
+                        (metadata, exception) -> {
+                            if (exception != null) {
+                                exception.printStackTrace();
+                            } else {
+                                System.out.println(
+                                        "Sent message to: "
+                                        + metadata.topic()
+                                        + " partition: "
+                                        + metadata.partition()
+                                        + " offset: "
+                                        + metadata.offset());
+                            }
+                        });
             }
 
             producer.close();
         }
     }
 
-    //2. Idempotency (Spring Boot with Deduplication)
+    // 2. Idempotency (Spring Boot with Deduplication)
     @Service
     public class IdempotentConsumer {
 
@@ -133,12 +139,13 @@ public class KafkaMessageOrderingIdempotencyRetries {
         }
 
         private boolean eventAlreadyProcessed(String eventId) {
-            return entityManager.createQuery(
-                    "SELECT 1 FROM ProcessedEvents WHERE eventId = :eventId", Integer.class)
+            return entityManager
+                    .createQuery("SELECT 1 FROM ProcessedEvents WHERE eventId = :eventId", Integer.class)
                     .setParameter("eventId", eventId)
                     .setMaxResults(1)
                     .getResultList()
-                    .size() > 0;
+                    .size()
+                    > 0;
         }
 
         private void processOrderIdempotently(OrderEvent event) {
@@ -170,19 +177,18 @@ public class KafkaMessageOrderingIdempotencyRetries {
         // constructor, getters, setters
     }
 
-    //3. Retries with Exponential Backoff (Spring Kafka)
+    // 3. Retries with Exponential Backoff (Spring Kafka)
     @Service
     public class RetryableConsumer {
 
         @Retryable(
                 value = {RuntimeException.class},
                 maxAttempts = 3,
-                backoff = @Backoff(delay = 1000, multiplier = 2, maxDelay = 5000)
-        )
+                backoff = @Backoff(delay = 1000, multiplier = 2, maxDelay = 5000))
         @KafkaListener(topics = "payments")
         public void processPayment(
                 String paymentData,
-                //@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
+                // @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
                 @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
                 @Header(KafkaHeaders.OFFSET) long offset) {
 
@@ -207,7 +213,7 @@ public class KafkaMessageOrderingIdempotencyRetries {
         }
     }
 
-    //Combined Approach (Event Sourcing with Deduplication)
+    // Combined Approach (Event Sourcing with Deduplication)
     public class EventProcessor {
         // Track last processed sequence number per aggregate
 

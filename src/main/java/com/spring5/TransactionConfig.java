@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class TransactionConfig {
 
     @Bean
-    public TransactionalEventPublisher transactionalEventPublisher(@Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
+    public TransactionalEventPublisher transactionalEventPublisher(
+            @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
         return new TransactionalEventPublisher(eventBus);
     }
 }
@@ -96,4 +97,4 @@ public class MyBean implements InitializingBean, DisposableBean {
         System.out.println("DisposableBean.destroy called");
     }
 }
-*/
+ */

@@ -19,29 +19,33 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
 /**
- *
  * @author javau
  */
 public class VehicleProducer {
+
     private final Producer<String, GenericRecord> producer;
     private final String topicName;
     private final Schema vehicleCreatedSchemaV1; // For demonstration of V1
     private final Schema vehicleCreatedSchemaV2; // For demonstration of V2
 
-    public VehicleProducer(String bootstrapServers, String schemaRegistryUrl, String topicName) throws IOException {
+    public VehicleProducer(String bootstrapServers, String schemaRegistryUrl, String topicName)
+            throws IOException {
         this.topicName = topicName;
 
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringSerializer.class.getName());
+        props.put(
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                org.apache.kafka.common.serialization.StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
         props.put("schema.registry.url", schemaRegistryUrl);
 
         this.producer = new KafkaProducer<>(props);
 
         // Load Avro schemas from resources
-        try (InputStream isV1 = getClass().getClassLoader().getResourceAsStream("avro/VehicleCreated_v1.avsc");
-             InputStream isV2 = getClass().getClassLoader().getResourceAsStream("avro/VehicleCreated_v2.avsc")) {
+        try (InputStream isV1
+                = getClass().getClassLoader().getResourceAsStream("avro/VehicleCreated_v1.avsc"); InputStream isV2
+                = getClass().getClassLoader().getResourceAsStream("avro/VehicleCreated_v2.avsc")) {
             if (isV1 == null || isV2 == null) {
                 throw new IOException("Avro schema files not found.");
             }
@@ -58,13 +62,17 @@ public class VehicleProducer {
         vehicleEvent.put("year", year);
         vehicleEvent.put("timestamp", System.currentTimeMillis());
 
-        ProducerRecord<String, GenericRecord> record = new ProducerRecord<>(topicName, vin, vehicleEvent);
+        ProducerRecord<String, GenericRecord> record
+                = new ProducerRecord<>(topicName, vin, vehicleEvent);
 
-        producer.send(record, new Callback() {
+        producer.send(
+                record,
+                new Callback() {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
                 if (exception == null) {
-                    System.out.printf("Successfully sent V1 event: VIN=%s, Topic=%s, Partition=%d, Offset=%d%n",
+                    System.out.printf(
+                            "Successfully sent V1 event: VIN=%s, Topic=%s, Partition=%d, Offset=%d%n",
                             vin, metadata.topic(), metadata.partition(), metadata.offset());
                 } else {
                     exception.printStackTrace();
@@ -73,7 +81,8 @@ public class VehicleProducer {
         });
     }
 
-    public void sendVehicleCreatedEventV2(String vin, String make, String model, int year, String color) {
+    public void sendVehicleCreatedEventV2(
+            String vin, String make, String model, int year, String color) {
         GenericRecord vehicleEvent = new GenericData.Record(vehicleCreatedSchemaV2);
         vehicleEvent.put("vin", vin);
         vehicleEvent.put("make", make);
@@ -82,13 +91,17 @@ public class VehicleProducer {
         vehicleEvent.put("color", color); // This field is new in V2
         vehicleEvent.put("timestamp", System.currentTimeMillis());
 
-        ProducerRecord<String, GenericRecord> record = new ProducerRecord<>(topicName, vin, vehicleEvent);
+        ProducerRecord<String, GenericRecord> record
+                = new ProducerRecord<>(topicName, vin, vehicleEvent);
 
-        producer.send(record, new Callback() {
+        producer.send(
+                record,
+                new Callback() {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
                 if (exception == null) {
-                    System.out.printf("Successfully sent V2 event: VIN=%s, Topic=%s, Partition=%d, Offset=%d%n",
+                    System.out.printf(
+                            "Successfully sent V2 event: VIN=%s, Topic=%s, Partition=%d, Offset=%d%n",
                             vin, metadata.topic(), metadata.partition(), metadata.offset());
                 } else {
                     exception.printStackTrace();
@@ -123,5 +136,5 @@ public class VehicleProducer {
         Thread.sleep(1000);
 
         producer.close();
-    }    
+    }
 }

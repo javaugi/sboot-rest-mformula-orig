@@ -6,13 +6,12 @@ package com.spring5.hackerrank.cvshealth;
 
 import org.apache.kafka.common.serialization.Serdes;
 
-
 /**
- *
  * @author javau
  */
 public class ClickEventSerde extends Serdes.WrapperSerde<ClickEvent> {
-    public ClickEventSerde() { 
-        super(new ClickEventSerializer(),  new ClickEventDeserializer()); 
+
+    public ClickEventSerde() {
+        super(new ClickEventSerializer(), new ClickEventDeserializer());
     }
 }

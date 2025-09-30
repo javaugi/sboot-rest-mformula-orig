@@ -11,11 +11,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
 public class ExampleSecureService {
+
     @PreAuthorize("hasRole('ADMIN')")
     public String adminOnlyMethod() {
         return "Only accessible by users with ADMIN role";
@@ -40,5 +40,5 @@ public class ExampleSecureService {
     @PostAuthorize("returnObject != null")
     public String modCheckAndReturn() {
         return "This will also be checked after execution";
-    }    
+    }
 }

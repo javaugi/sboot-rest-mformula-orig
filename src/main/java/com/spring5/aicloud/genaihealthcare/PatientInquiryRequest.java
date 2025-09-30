@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientInquiryRequest {
+
     private String patientId;
     private String query;
 

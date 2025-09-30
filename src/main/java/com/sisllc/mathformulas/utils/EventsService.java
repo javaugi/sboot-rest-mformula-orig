@@ -2,11 +2,11 @@
  * Copyright (C) 2023 Center for Information Management, Inc.
  *
  * This program is proprietary.
- * Redistribution without permission is strictly prohibited.  
+ * Redistribution without permission is strictly prohibited.
  * For more information, contact <http://www.ciminc.com>
  */
-
 package com.sisllc.mathformulas.utils;
+
 import static com.sisllc.mathformulas.utils.CommonUtils.REC_RULES_INTERVAL_PATTERN;
 import static com.sisllc.mathformulas.utils.CommonUtils.dateOfUserLocalDate;
 import static com.sisllc.mathformulas.utils.CommonUtils.userLocalDateOfDate;
@@ -22,13 +22,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
- * @version $LastChangedRevision $LastChangedDate
- * Last Modified Author: $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author:
+ * $LastChangedBy
  */
 public class EventsService {
+
     private static final Logger log = LoggerFactory.getLogger(EventsService.class);
 
     public static Integer serviceEventIntervalFinder(String input) {
@@ -41,7 +40,8 @@ public class EventsService {
         return 1;
     }
 
-    public static Date getWeeklyAnytimeStartDate(Date serviceEventStart, Date periodStart, Date periodEnd, int intervalByWeeks) {
+    public static Date getWeeklyAnytimeStartDate(
+            Date serviceEventStart, Date periodStart, Date periodEnd, int intervalByWeeks) {
         if (!serviceEventStart.before(periodStart)) {
             return serviceEventStart;
         }
@@ -50,14 +50,17 @@ public class EventsService {
         LocalDate periodStartLocal = userLocalDateOfDate(periodStart);
 
         boolean dateInEffectiveInterval = true;
-        LocalDate intervalEndingSaturday = getIntervalEndingSaturday(serviceEventStartLocal, intervalByWeeks);
+        LocalDate intervalEndingSaturday
+                = getIntervalEndingSaturday(serviceEventStartLocal, intervalByWeeks);
         long daysBetween = ChronoUnit.DAYS.between(serviceEventStartLocal, periodStartLocal);
 
         LocalDate firstEventInPeriod = null;
         LocalDate intervalStartSunday;
         while (serviceEventStartLocal.isBefore(periodStartLocal)) {
             if (dateInEffectiveInterval) {
-                while (dateInEffectiveInterval && daysBetween-- >= 0 && !serviceEventStartLocal.isAfter(intervalEndingSaturday)) {
+                while (dateInEffectiveInterval
+                        && daysBetween-- >= 0
+                        && !serviceEventStartLocal.isAfter(intervalEndingSaturday)) {
                     if (!serviceEventStartLocal.isBefore(periodStartLocal)) {
                         firstEventInPeriod = serviceEventStartLocal;
                         break;
@@ -76,14 +79,16 @@ public class EventsService {
                 intervalEndingSaturday = serviceEventStartLocal.plusDays(7 * intervalByWeeks - 1);
                 daysBetween = ChronoUnit.DAYS.between(intervalStartSunday, intervalEndingSaturday);
                 if (!dateInEffectiveInterval) {
-                    //get to next effective interval
+                    // get to next effective interval
                     intervalStartSunday = serviceEventStartLocal;
                     serviceEventStartLocal = serviceEventStartLocal.plusDays(7 * intervalByWeeks);
                     intervalEndingSaturday = serviceEventStartLocal.plusDays(7 * intervalByWeeks - 1);
                     daysBetween = ChronoUnit.DAYS.between(intervalStartSunday, intervalEndingSaturday);
                     dateInEffectiveInterval = true;
                 }
-                if (dateInEffectiveInterval && !serviceEventStartLocal.isBefore(periodStartLocal) && !serviceEventStartLocal.isAfter(intervalEndingSaturday)) {
+                if (dateInEffectiveInterval
+                        && !serviceEventStartLocal.isBefore(periodStartLocal)
+                        && !serviceEventStartLocal.isAfter(intervalEndingSaturday)) {
                     firstEventInPeriod = serviceEventStartLocal;
                 }
             }
@@ -92,14 +97,16 @@ public class EventsService {
         return (firstEventInPeriod != null) ? dateOfUserLocalDate(firstEventInPeriod) : null;
     }
 
-    public static Date getWeeklyAnytimeEndDate(Date serviceEventStart, Date periodEnd, Date serviceEventRepeatUntil, int intervalByWeeks) {
+    public static Date getWeeklyAnytimeEndDate(
+            Date serviceEventStart, Date periodEnd, Date serviceEventRepeatUntil, int intervalByWeeks) {
         if (serviceEventRepeatUntil != null && serviceEventRepeatUntil.before(periodEnd)) {
             periodEnd = serviceEventRepeatUntil;
         }
 
         LocalDate serviceEventStartLocal = userLocalDateOfDate(serviceEventStart);
         LocalDate periodEndLocal = userLocalDateOfDate(periodEnd);
-        LocalDate intervalEndingSaturday = getIntervalEndingSaturday(serviceEventStartLocal, intervalByWeeks);
+        LocalDate intervalEndingSaturday
+                = getIntervalEndingSaturday(serviceEventStartLocal, intervalByWeeks);
         long daysBetween = ChronoUnit.DAYS.between(serviceEventStartLocal, periodEndLocal);
         boolean dateInEffectiveInterval = true;
 
@@ -107,13 +114,16 @@ public class EventsService {
         LocalDate intervalStartSunday;
         while (!serviceEventStartLocal.isAfter(periodEndLocal)) {
             if (dateInEffectiveInterval) {
-                while (dateInEffectiveInterval && daysBetween-- >= 0 && !serviceEventStartLocal.isAfter(intervalEndingSaturday)
+                while (dateInEffectiveInterval
+                        && daysBetween-- >= 0
+                        && !serviceEventStartLocal.isAfter(intervalEndingSaturday)
                         && !serviceEventStartLocal.isAfter(periodEndLocal)) {
                     if (!serviceEventStartLocal.isAfter(intervalEndingSaturday)) {
                         firstEvenEndtInPeriod = serviceEventStartLocal;
                     }
                     serviceEventStartLocal = serviceEventStartLocal.plusDays(1);
-                    if (serviceEventStartLocal.isAfter(intervalEndingSaturday) || serviceEventStartLocal.isAfter(periodEndLocal)) {
+                    if (serviceEventStartLocal.isAfter(intervalEndingSaturday)
+                            || serviceEventStartLocal.isAfter(periodEndLocal)) {
                         break;
                     }
                 }
@@ -121,13 +131,15 @@ public class EventsService {
             }
 
             if (!dateInEffectiveInterval) {
-                //get to next effective interval
+                // get to next effective interval
                 intervalStartSunday = serviceEventStartLocal;
                 serviceEventStartLocal = serviceEventStartLocal.plusDays(7 * intervalByWeeks);
                 intervalEndingSaturday = serviceEventStartLocal.plusDays(7 * intervalByWeeks - 1);
                 daysBetween = ChronoUnit.DAYS.between(intervalStartSunday, intervalEndingSaturday);
                 dateInEffectiveInterval = true;
-                if (dateInEffectiveInterval && !serviceEventStartLocal.isAfter(periodEndLocal) && !serviceEventStartLocal.isAfter(intervalEndingSaturday)) {
+                if (dateInEffectiveInterval
+                        && !serviceEventStartLocal.isAfter(periodEndLocal)
+                        && !serviceEventStartLocal.isAfter(intervalEndingSaturday)) {
                     firstEvenEndtInPeriod = serviceEventStartLocal;
                 }
             }
@@ -140,7 +152,8 @@ public class EventsService {
         return date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
     }
 
-    public static LocalDate getIntervalEndingSaturday(LocalDate serviceEventStartLocal, int intervalByWeeks) {
+    public static LocalDate getIntervalEndingSaturday(
+            LocalDate serviceEventStartLocal, int intervalByWeeks) {
         LocalDate nextSaturday = getNextSaturday(serviceEventStartLocal);
         return nextSaturday.plusDays((intervalByWeeks - 1) * 7);
     }
@@ -203,14 +216,17 @@ public class EventsService {
         LocalDate lastDayOfMonth = startDate.with(TemporalAdjusters.lastDayOfMonth());
 
         // Calculate the last day of bi-weekly events
-        LocalDate lastDayOfBiWeeklyEvents = lastDayOfMonth.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate lastDayOfBiWeeklyEvents
+                = lastDayOfMonth.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
 
         return lastDayOfBiWeeklyEvents;
     }
 
     public static LocalDate getLastDayOfBiWeeklyEvents(LocalDate startDate, int year, int month) {
-        LocalDate lastDayOfMonth = LocalDate.of(year, month, 1).with(TemporalAdjusters.lastDayOfMonth());
-        LocalDate lastDayOfBiWeeklyEvents = lastDayOfMonth.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate lastDayOfMonth
+                = LocalDate.of(year, month, 1).with(TemporalAdjusters.lastDayOfMonth());
+        LocalDate lastDayOfBiWeeklyEvents
+                = lastDayOfMonth.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
 
         if (startDate.isAfter(lastDayOfBiWeeklyEvents)) {
             return lastDayOfBiWeeklyEvents;
@@ -219,14 +235,21 @@ public class EventsService {
         }
     }
 
-    public static Date getFirstDateOfEventsByWeekInterval(Date initialStartDate, Date periodStart, Date periodEnd, int intervalByWeeks) {
+    public static Date getFirstDateOfEventsByWeekInterval(
+            Date initialStartDate, Date periodStart, Date periodEnd, int intervalByWeeks) {
         LocalDate initialStartDateLocal = userLocalDateOfDate(initialStartDate);
         LocalDate periodStartLocal = userLocalDateOfDate(periodStart);
         LocalDate periodEndLocal = userLocalDateOfDate(periodEnd);
-        return dateOfUserLocalDate(getFirstEventDate(initialStartDateLocal, intervalByWeeks, periodStartLocal, periodEndLocal));
+        return dateOfUserLocalDate(
+                getFirstEventDate(
+                        initialStartDateLocal, intervalByWeeks, periodStartLocal, periodEndLocal));
     }
 
-    public static LocalDate getFirstEventDate(LocalDate initialStartDate, int intervalByWeeks, LocalDate periodStartDate, LocalDate periodEndDate) {
+    public static LocalDate getFirstEventDate(
+            LocalDate initialStartDate,
+            int intervalByWeeks,
+            LocalDate periodStartDate,
+            LocalDate periodEndDate) {
         // Assign the desired event date to the initial start date
         LocalDate firstEventDate = initialStartDate;
 
@@ -252,18 +275,20 @@ public class EventsService {
         return firstEventDate;
     }
 
-    public static Date getLastDateOfEventsByWeekInterval(Date initialStartDate, Date periodEnd, Date periodUntil, int intervalByWeeks) {
+    public static Date getLastDateOfEventsByWeekInterval(
+            Date initialStartDate, Date periodEnd, Date periodUntil, int intervalByWeeks) {
         LocalDate initialStartDateLocal = userLocalDateOfDate(initialStartDate);
         LocalDate periodEndLocal = userLocalDateOfDate(periodEnd);
         if (periodUntil != null) {
             periodEndLocal = userLocalDateOfDate(periodUntil);
         }
 
-        return dateOfUserLocalDate(getLastEventDate(initialStartDateLocal, intervalByWeeks, periodEndLocal));
+        return dateOfUserLocalDate(
+                getLastEventDate(initialStartDateLocal, intervalByWeeks, periodEndLocal));
     }
 
-
-    public static LocalDate getLastEventDate(LocalDate initialStartDate, int intervalByWeeks, LocalDate periodEndDate) {
+    public static LocalDate getLastEventDate(
+            LocalDate initialStartDate, int intervalByWeeks, LocalDate periodEndDate) {
         // Assign the desired event date to the initial start date
         LocalDate lastEventDate = initialStartDate;
 
@@ -289,25 +314,50 @@ public class EventsService {
         return lastEventDate;
     }
 
-    public static int getNumberOfEventDatesByWeekInterval(Date initialStartDate, int intervalByWeeks, Date periodStart, Date periodEnd, Date periodUntil) {
+    public static int getNumberOfEventDatesByWeekInterval(
+            Date initialStartDate,
+            int intervalByWeeks,
+            Date periodStart,
+            Date periodEnd,
+            Date periodUntil) {
         LocalDate initialStartDateLocal = userLocalDateOfDate(initialStartDate);
         LocalDate periodStartLocal = userLocalDateOfDate(periodStart);
         LocalDate periodEndLocal = userLocalDateOfDate(periodEnd);
         if (periodUntil != null) {
             periodEndLocal = userLocalDateOfDate(periodUntil);
         }
-        return getNumberOfEventDatesByWeekInterval(initialStartDateLocal, intervalByWeeks, periodStartLocal, periodEndLocal);
+        return getNumberOfEventDatesByWeekInterval(
+                initialStartDateLocal, intervalByWeeks, periodStartLocal, periodEndLocal);
     }
 
-    public static int getNumberOfEventDatesByWeekInterval(LocalDate initialStartDate, int intervalByWeeks, LocalDate periodStart, LocalDate periodEnd) {
-        LocalDate firstEventDate = getFirstEventDate(initialStartDate, intervalByWeeks, periodStart, periodEnd);
+    public static int getNumberOfEventDatesByWeekInterval(
+            LocalDate initialStartDate, int intervalByWeeks, LocalDate periodStart, LocalDate periodEnd) {
+        LocalDate firstEventDate
+                = getFirstEventDate(initialStartDate, intervalByWeeks, periodStart, periodEnd);
         LocalDate lastEventDate = getLastEventDate(initialStartDate, intervalByWeeks, periodEnd);
-        log.info("intervalByWeeks {} firstEventDate {} lastEventDate {} \n initialStartDate {} periodStart {} periodEnd {}", intervalByWeeks, firstEventDate, lastEventDate, initialStartDate, periodStart, periodEnd);
-        return getNumberOfEventDatesByWeekInterval(intervalByWeeks, periodStart, firstEventDate, lastEventDate);
+        log.info(
+                "intervalByWeeks {} firstEventDate {} lastEventDate {} \n initialStartDate {} periodStart {} periodEnd {}",
+                intervalByWeeks,
+                firstEventDate,
+                lastEventDate,
+                initialStartDate,
+                periodStart,
+                periodEnd);
+        return getNumberOfEventDatesByWeekInterval(
+                intervalByWeeks, periodStart, firstEventDate, lastEventDate);
     }
 
-    public static int getNumberOfEventDatesByWeekInterval(int intervalByWeeks, LocalDate periodStart, LocalDate firstEventDate, LocalDate lastEventDate) {
-        log.info("1 intervalByWeeks {} periodStart {} firstEventDate {} lastEventDate {}", intervalByWeeks, periodStart, firstEventDate, lastEventDate);
+    public static int getNumberOfEventDatesByWeekInterval(
+            int intervalByWeeks,
+            LocalDate periodStart,
+            LocalDate firstEventDate,
+            LocalDate lastEventDate) {
+        log.info(
+                "1 intervalByWeeks {} periodStart {} firstEventDate {} lastEventDate {}",
+                intervalByWeeks,
+                periodStart,
+                firstEventDate,
+                lastEventDate);
 
         boolean isEventPeriod = true;
         LocalDate priorFirstEventDate;
@@ -316,31 +366,69 @@ public class EventsService {
         while (firstEventDate.isBefore(lastEventDate) || firstEventDate.isEqual(lastEventDate)) {
             priorFirstEventDate = firstEventDate;
             firstEventDate = firstEventDate.plusWeeks(intervalByWeeks);
-            log.info("2-1 looping numberOfEventDates {} isEventPeriod {} firstEventDate {} priorFirstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate, priorFirstEventDate);
+            log.info(
+                    "2-1 looping numberOfEventDates {} isEventPeriod {} firstEventDate {} priorFirstEventDate {}",
+                    numberOfEventDates,
+                    isEventPeriod,
+                    firstEventDate,
+                    priorFirstEventDate);
             if (isEventPeriod) {
                 numberOfEventDates = numberOfEventDates + intervalByWeeks * 7;
                 if (priorFirstEventDate.isBefore(periodStart)) {
-                    numberOfEventDates = numberOfEventDates - getNumberOfDatesBetweenTwoDates(priorFirstEventDate, periodStart);
+                    numberOfEventDates
+                            = numberOfEventDates
+                            - getNumberOfDatesBetweenTwoDates(priorFirstEventDate, periodStart);
                 }
             }
-            log.info("2-2 looping numberOfEventDates {} isEventPeriod {} firstEventDate {} priorFirstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate, priorFirstEventDate);
+            log.info(
+                    "2-2 looping numberOfEventDates {} isEventPeriod {} firstEventDate {} priorFirstEventDate {}",
+                    numberOfEventDates,
+                    isEventPeriod,
+                    firstEventDate,
+                    priorFirstEventDate);
             isEventPeriod = !isEventPeriod;
         }
 
-        log.info("3 numberOfEventDates {} isEventPeriod {} firstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate);
+        log.info(
+                "3 numberOfEventDates {} isEventPeriod {} firstEventDate {}",
+                numberOfEventDates,
+                isEventPeriod,
+                firstEventDate);
         if (isEventPeriod) {
-            numberOfEventDates = numberOfEventDates - getNumberOfDatesBetweenTwoDates(lastEventDate, firstEventDate);
-            log.info("4-1 numberOfEventDates {} isEventPeriod {} firstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate);
+            numberOfEventDates
+                    = numberOfEventDates - getNumberOfDatesBetweenTwoDates(lastEventDate, firstEventDate);
+            log.info(
+                    "4-1 numberOfEventDates {} isEventPeriod {} firstEventDate {}",
+                    numberOfEventDates,
+                    isEventPeriod,
+                    firstEventDate);
         } else {
             firstEventDate = firstEventDate.minusWeeks(intervalByWeeks);
-            log.info("4-2 numberOfEventDates {} isEventPeriod {} firstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate);
+            log.info(
+                    "4-2 numberOfEventDates {} isEventPeriod {} firstEventDate {}",
+                    numberOfEventDates,
+                    isEventPeriod,
+                    firstEventDate);
             numberOfEventDates = numberOfEventDates - intervalByWeeks * 7;
-            log.info("4-3 numberOfEventDates {} isEventPeriod {} firstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate);
-            numberOfEventDates = numberOfEventDates + getNumberOfDatesBetweenTwoDates(firstEventDate, lastEventDate);
-            log.info("4-4 numberOfEventDates {} isEventPeriod {} firstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate);
+            log.info(
+                    "4-3 numberOfEventDates {} isEventPeriod {} firstEventDate {}",
+                    numberOfEventDates,
+                    isEventPeriod,
+                    firstEventDate);
+            numberOfEventDates
+                    = numberOfEventDates + getNumberOfDatesBetweenTwoDates(firstEventDate, lastEventDate);
+            log.info(
+                    "4-4 numberOfEventDates {} isEventPeriod {} firstEventDate {}",
+                    numberOfEventDates,
+                    isEventPeriod,
+                    firstEventDate);
         }
 
-        log.info("5 numberOfEventDates {} isEventPeriod {} firstEventDate {}", numberOfEventDates, isEventPeriod, firstEventDate);
+        log.info(
+                "5 numberOfEventDates {} isEventPeriod {} firstEventDate {}",
+                numberOfEventDates,
+                isEventPeriod,
+                firstEventDate);
         return numberOfEventDates;
     }
 
@@ -355,7 +443,8 @@ public class EventsService {
         LocalDate targetPeriodStart = LocalDate.of(2023, 4, 1);
         LocalDate targetPeriodEnd = LocalDate.of(2023, 4, 30);
 
-        EventPeriodCmd eventPeriod = new EventPeriodCmd(intervalByWeeks, initialStartDate, targetPeriodStart, targetPeriodEnd);
+        EventPeriodCmd eventPeriod
+                = new EventPeriodCmd(intervalByWeeks, initialStartDate, targetPeriodStart, targetPeriodEnd);
         eventPeriod = getTargetPeriodEventDates(eventPeriod);
         eventPeriod = getNumberOfEventDates(eventPeriod);
         log.info("{}", eventPeriod);
@@ -379,12 +468,16 @@ public class EventsService {
             doneWeeklyCount = false;
             while (!doneWeeklyCount) {
                 if (!firstEventDate.isAfter(eventPeriodSaturday)) {
-                    countOfDatesBetween = getNumberOfDatesBetweenTwoDates(firstEventDate, eventPeriodSaturday);
+                    countOfDatesBetween
+                            = getNumberOfDatesBetweenTwoDates(firstEventDate, eventPeriodSaturday);
                     numberOfEventDates = numberOfEventDates + countOfDatesBetween;
                     firstEventDate = firstEventDate.plusDays(countOfDatesBetween);
                 } else {
                     firstEventDate = firstEventDate.plusWeeks(intervalByWeeks);
-                    eventPeriodSaturday = firstEventDate.plusWeeks(intervalByWeeks).with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
+                    eventPeriodSaturday
+                            = firstEventDate
+                                    .plusWeeks(intervalByWeeks)
+                                    .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
                     if (eventPeriodSaturday.isAfter(lastEventDate)) {
                         eventPeriodSaturday = lastEventDate;
                     }
@@ -416,22 +509,35 @@ public class EventsService {
         log.info("1 getNumberOfEventDates {}", eventPeriod);
 
         long daysOffset = ChronoUnit.DAYS.between(initialStartDate, targetPeriodStart);
-        long targetPeriodDays = ChronoUnit.DAYS.between(firstEventDate, lastEventDate) + 1; // Including the end date
+        long targetPeriodDays
+                = ChronoUnit.DAYS.between(firstEventDate, lastEventDate) + 1; // Including the end date
 
         long offsetIntervals = daysOffset / (intervalByWeeks * 7);
         long targetIntervals = targetPeriodDays / (intervalByWeeks * 7);
 
-        long totalEventDays = targetIntervals * (intervalByWeeks * 7) + (daysOffset % (intervalByWeeks * 7));
-        log.info("2 daysOffset {} targetPeriodDays {} offsetIntervals {} targetIntervals {} totalEventDays {}",
-                daysOffset, targetPeriodDays, offsetIntervals, targetIntervals, totalEventDays);
+        long totalEventDays
+                = targetIntervals * (intervalByWeeks * 7) + (daysOffset % (intervalByWeeks * 7));
+        log.info(
+                "2 daysOffset {} targetPeriodDays {} offsetIntervals {} targetIntervals {} totalEventDays {}",
+                daysOffset,
+                targetPeriodDays,
+                offsetIntervals,
+                targetIntervals,
+                totalEventDays);
 
-        if (targetPeriodDays % (intervalByWeeks * 7) < ((intervalByWeeks * 7) - (daysOffset % (intervalByWeeks * 7)))) {
+        if (targetPeriodDays % (intervalByWeeks * 7)
+                < ((intervalByWeeks * 7) - (daysOffset % (intervalByWeeks * 7)))) {
             totalEventDays += targetPeriodDays % (intervalByWeeks * 7);
         } else {
             totalEventDays += (intervalByWeeks * 7) - (daysOffset % (intervalByWeeks * 7));
         }
-        log.info("3 daysOffset {} targetPeriodDays {} offsetIntervals {} targetIntervals {} totalEventDays {}",
-                daysOffset, targetPeriodDays, offsetIntervals, targetIntervals, totalEventDays);
+        log.info(
+                "3 daysOffset {} targetPeriodDays {} offsetIntervals {} targetIntervals {} totalEventDays {}",
+                daysOffset,
+                targetPeriodDays,
+                offsetIntervals,
+                targetIntervals,
+                totalEventDays);
 
         numberOfEventDates = (int) totalEventDays;
 
@@ -463,7 +569,8 @@ public class EventsService {
         boolean isEventPeriod = true;
         LocalDate firstEventDate = initialStartDate;
 
-        // Move the first event date to the occurrence of the desired day of week - period start date Sunday
+        // Move the first event date to the occurrence of the desired day of week - period start date
+        // Sunday
         firstEventDate = firstEventDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
         // Adjust the event date based on the bi-weekly interval
         while (firstEventDate.isBefore(targetPeriodStart)) {
@@ -473,12 +580,21 @@ public class EventsService {
         }
 
         LocalDate eventPeriodSunday = firstEventDate;
-        LocalDate eventPeriodSaturday = eventPeriodSunday.plusWeeks(intervalByWeeks).with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
+        LocalDate eventPeriodSaturday
+                = eventPeriodSunday
+                        .plusWeeks(intervalByWeeks)
+                        .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
 
         if (!isEventPeriod && firstEventDate.isAfter(targetPeriodStart)) {
             firstEventDate = targetPeriodStart;
-            eventPeriodSunday = eventPeriodSunday.minusWeeks(intervalByWeeks).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-            eventPeriodSaturday = eventPeriodSunday.plusWeeks(intervalByWeeks).with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
+            eventPeriodSunday
+                    = eventPeriodSunday
+                            .minusWeeks(intervalByWeeks)
+                            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+            eventPeriodSaturday
+                    = eventPeriodSunday
+                            .plusWeeks(intervalByWeeks)
+                            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
         }
 
         if (eventPeriodSaturday.isAfter(lastEventDate)) {

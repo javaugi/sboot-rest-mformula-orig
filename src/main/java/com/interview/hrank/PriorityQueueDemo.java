@@ -12,32 +12,45 @@ import java.util.PriorityQueue;
 import java.util.Scanner;
 
 /**
- *
  * @author javaugi
  */
 public class PriorityQueueDemo {
-     private final static Scanner scan = new Scanner(System.in);
-     private final static Priorities priorities = new Priorities();
-     
-     private static final String[] events = {"ENTER John 3.75 50","ENTER Mark 3.8 24","ENTER Shafaet 3.7 35","SERVED","SERVED",
-            "ENTER Samiha 3.85 36","SERVED","ENTER Ashley 3.9 42","ENTER Maria 3.6 46","ENTER Anik 3.95 49","ENTER Dan 3.95 50","SERVED"};
-     /*
-     results Dan Ashley Shafaet Maria
+
+    private static final Scanner scan = new Scanner(System.in);
+    private static final Priorities priorities = new Priorities();
+
+    private static final String[] events = {
+        "ENTER John 3.75 50",
+        "ENTER Mark 3.8 24",
+        "ENTER Shafaet 3.7 35",
+        "SERVED",
+        "SERVED",
+        "ENTER Samiha 3.85 36",
+        "SERVED",
+        "ENTER Ashley 3.9 42",
+        "ENTER Maria 3.6 46",
+        "ENTER Anik 3.95 49",
+        "ENTER Dan 3.95 50",
+        "SERVED"
+    };
+    /*
+  results Dan Ashley Shafaet Maria
      */
-     private static final String[] events2 = {};
-    
-     public static void main(String[] args) {
-         System.out.println("demo ...");
-         demo();
-         
-         List<String> eventList = Arrays.asList(events);
-         System.out.println("\n demo1 eventList=" + eventList);
-         demo1(eventList) ;
-     }
-     
-     private static void demo() {
+    private static final String[] events2 = {};
+
+    public static void main(String[] args) {
+        System.out.println("demo ...");
+        demo();
+
+        List<String> eventList = Arrays.asList(events);
+        System.out.println("\n demo1 eventList=" + eventList);
+        demo1(eventList);
+    }
+
+    private static void demo() {
         // Define a custom comparator to compare strings based on their length
-        Comparator<String> stringLengthComparator = new Comparator<String>() {
+        Comparator<String> stringLengthComparator
+                = new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {
                 return Integer.compare(s1.length(), s2.length());
@@ -58,49 +71,49 @@ public class PriorityQueueDemo {
         // Print the elements in priority order (shortest string first)
         while (!priorityQueue.isEmpty()) {
             System.out.println(priorityQueue.poll());
-        }             
-     }
-     
-     private static void demo1(List<String> events) {
-        /* int totalEvents = Integer.parseInt(scan.nextLine());    
+        }
+    }
+
+    private static void demo1(List<String> events) {
+        /* int totalEvents = Integer.parseInt(scan.nextLine());
+    List<String> events = new ArrayList<>();
+
+    while (totalEvents-- > 0) {
+        String event = scan.nextLine();
+        events.add(event);
+    }
+    // */
+
+        List<Student> students = priorities.getStudents(events);
+
+        if (students.isEmpty()) {
+            System.out.println("EMPTY");
+        } else {
+            for (Student st : students) {
+                System.out.println("    Student:" + st.getName() + "    -cgpa" + st.getCGPA());
+            }
+        }
+    }
+
+    private static void runScanner() {
+        int totalEvents = Integer.parseInt(scan.nextLine());
         List<String> events = new ArrayList<>();
-        
+
         while (totalEvents-- > 0) {
             String event = scan.nextLine();
             events.add(event);
         }
-        // */
-        
+
         List<Student> students = priorities.getStudents(events);
-        
+
         if (students.isEmpty()) {
             System.out.println("EMPTY");
         } else {
-            for (Student st: students) {
-                System.out.println(st.getName());
+            for (Student st : students) {
+                System.out.println("    Student:" + st.getName() + "    -cgpa" + st.getCGPA());
             }
-        }         
-     }
-    
-     private static void runScanner() {
-        int totalEvents = Integer.parseInt(scan.nextLine());    
-        List<String> events = new ArrayList<>();
-        
-        while (totalEvents-- > 0) {
-            String event = scan.nextLine();
-            events.add(event);
         }
-        
-        List<Student> students = priorities.getStudents(events);
-        
-        if (students.isEmpty()) {
-            System.out.println("EMPTY");
-        } else {
-            for (Student st: students) {
-                System.out.println(st.getName());
-            }
-        }         
-     }
+    }
 }
 /*
 Explanation:
@@ -133,11 +146,11 @@ Key Features:
     Output matches the expected format with students printed in priority order
 
 This solution efficiently handles the priority queue operations while maintaining all the specified ordering rules. The time complexity is O(N log N) for N events due to the priority queue operations.
-*/
+ */
 
-/*
-In computer science, a priority queue is an abstract data type which is like a regular queue, but where additionally each element 
-    has a "priority" associated with it. In a priority queue, an element with high priority is served before an element with low priority. 
+ /*
+In computer science, a priority queue is an abstract data type which is like a regular queue, but where additionally each element
+    has a "priority" associated with it. In a priority queue, an element with high priority is served before an element with low priority.
 
 In this problem we will test your knowledge on Java Priority Queue.
 
@@ -157,7 +170,7 @@ The constructor Student(int id, String name, double cgpa).
 The method int getID() to return the id of the student.
 The method String getName() to return the name of the student.
 The method double getCGPA() to return the CGPA of the student.
-The Priorities class should implement the method List<Student> getStudents(List<String> events) to process all the given events and return all 
+The Priorities class should implement the method List<Student> getStudents(List<String> events) to process all the given events and return all
     the students yet to be served in the priority order.
 Input Format
 
@@ -208,4 +221,4 @@ Samiha is served as she has the highest CGPA. So, Q contains (Shafaet, 3.7, 35).
 Now, four more students are added to Q. So, it contains (Shafaet, 3.7, 35), (Ashley, 3.9, 42), (Maria, 3.6, 46), (Anik, 3.95, 49), and (Dan, 3.95, 50).
 Anik is served because though both Anil and Dan have the highest CGPA but Anik comes first when sorted in alphabetic order. So, Q contains (Dan, 3.95, 50), (Ashley, 3.9, 42), (Shafaet, 3.7, 35), and (Maria, 3.6, 46).
 As all events are completed, the name of each of the remaining students is printed on a new line.
-*/
+ */

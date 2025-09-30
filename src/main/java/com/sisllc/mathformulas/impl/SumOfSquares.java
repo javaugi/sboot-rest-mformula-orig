@@ -3,10 +3,10 @@ package com.sisllc.mathformulas.impl;
 /**
  * Sum Of Squares The sum of squares is defined as: int sum = 1² + 2² + 3² + n²
  *
+ * <p>
  * Or another way: int sum = n(n+1)(2n+1)/6
  *
  * @author david
- *
  */
 public class SumOfSquares {
 

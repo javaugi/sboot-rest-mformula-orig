@@ -14,7 +14,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -33,18 +32,25 @@ public class TradeEvent extends BaseEvent {
     private TradeDirection direction;
 
     public TradeEvent(String sourceSystem, String instrumentId) {
-        super(java.util.UUID.randomUUID().toString(),
-            Instant.now(), sourceSystem);
+        super(java.util.UUID.randomUUID().toString(), Instant.now(), sourceSystem);
         this.instrumentId = instrumentId;
-    }    
+    }
 
     public TradeEvent(String id, Instant timestamp, String sourceSystem, String tradeId) {
         super(id, timestamp, sourceSystem);
         this.tradeId = tradeId;
-    }    
-    
-    public TradeEvent(String id, Instant timestamp, String sourceSystem, String tradeId, String instrumentId,
-            BigDecimal quantity, BigDecimal price, String currency, TradeDirection direction) {
+    }
+
+    public TradeEvent(
+            String id,
+            Instant timestamp,
+            String sourceSystem,
+            String tradeId,
+            String instrumentId,
+            BigDecimal quantity,
+            BigDecimal price,
+            String currency,
+            TradeDirection direction) {
         super(id, timestamp, sourceSystem);
         this.tradeId = tradeId;
         this.instrumentId = instrumentId;
@@ -54,8 +60,15 @@ public class TradeEvent extends BaseEvent {
         this.direction = direction;
     }
 
-    public TradeEvent(String eventId, Instant timestamp, String tradeId, String instrumentId,
-            BigDecimal quantity, BigDecimal price, String currency, TradeDirection direction) {
+    public TradeEvent(
+            String eventId,
+            Instant timestamp,
+            String tradeId,
+            String instrumentId,
+            BigDecimal quantity,
+            BigDecimal price,
+            String currency,
+            TradeDirection direction) {
         super(eventId, timestamp, null);
         this.tradeId = tradeId;
         this.instrumentId = instrumentId;
@@ -64,5 +77,4 @@ public class TradeEvent extends BaseEvent {
         this.currency = currency;
         this.direction = direction;
     }
-   
 }

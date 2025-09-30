@@ -34,5 +34,4 @@ class Q42Node {
     public String toString() {
         return "Q42Node{" + "adjacentCount=" + adjacentCount + ", vertex=" + vertex + '}';
     }
-
 }

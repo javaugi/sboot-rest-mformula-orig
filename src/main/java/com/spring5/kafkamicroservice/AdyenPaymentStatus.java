@@ -5,9 +5,13 @@
 package com.spring5.kafkamicroservice;
 
 /**
- *
  * @author javaugi
  */
 public enum AdyenPaymentStatus {
-    PENDING, CREATED, PROCESSING, COMPLETED, FAILED, REFUNDED
+    PENDING,
+    CREATED,
+    PROCESSING,
+    COMPLETED,
+    FAILED,
+    REFUNDED
 }

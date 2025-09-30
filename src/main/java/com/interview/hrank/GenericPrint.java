@@ -5,9 +5,9 @@
 package com.interview.hrank;
 
 /**
- *
  * @author javaugi
  */
 public interface GenericPrint<T> {
+
     void print(T t);
 }

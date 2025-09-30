@@ -49,5 +49,4 @@ public class Q92GetPathRecursive {
             System.out.println("No path found.");
         }
     }
-
 }

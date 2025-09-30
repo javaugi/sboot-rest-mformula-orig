@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class PatientEventStoreImpl implements PatientEventStore {
+
     private final EventStore eventStore;
 
     public PatientEventStoreImpl(EventStore eventStore) {

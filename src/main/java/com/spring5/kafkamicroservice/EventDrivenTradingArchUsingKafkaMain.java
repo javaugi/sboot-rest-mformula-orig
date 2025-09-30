@@ -5,11 +5,9 @@
 package com.spring5.kafkamicroservice;
 
 /**
- *
  * @author javaugi
  */
 public class EventDrivenTradingArchUsingKafkaMain {
-    
 }
 
 /*
@@ -45,7 +43,7 @@ public abstract class BaseEvent {
     private String eventId;
     private Instant timestamp;
     private String sourceSystem;
-    
+
     // Constructors, getters, setters
 }
 
@@ -56,7 +54,7 @@ public class TradeEvent extends BaseEvent {
     private BigDecimal price;
     private String currency;
     private TradeDirection direction;
-    
+
     // Enum, constructors, getters, setters
 }
 
@@ -66,7 +64,7 @@ public class FileStorageEvent extends BaseEvent {
     private FileOperation operation; // UPLOAD, DELETE, UPDATE
     private String filePath;
     private String fileType;
-    
+
     // Enum, constructors, getters, setters
 }
 
@@ -76,7 +74,7 @@ public class AuditEvent extends BaseEvent {
     private AuditAction action; // CREATE, UPDATE, DELETE
     private String userId;
     private Map<String, Object> metadata;
-    
+
     // Enum, constructors, getters, setters
 }
 3. Trading System (Producer)
@@ -152,10 +150,10 @@ public class TradingEventPublisher {
     public void executeTradeAndPublishEvents(Trade trade, MultipartFile confirmationFile) {
         // 1. Save trade to database
         tradeRepository.save(trade);
-        
+
         // 2. Publish trade event
         publishTradeEvent(trade);
-        
+
         // 3. Store file and publish event
         String filePath = fileStorageService.store(confirmationFile);
         publishFileEvent(trade, filePath, FileOperation.UPLOAD);
@@ -273,19 +271,19 @@ public class KafkaErrorHandlingConfig {
 
     @Bean
     public DeadLetterPublishingRecoverer dlqRecoverer(KafkaTemplate<?, ?> template) {
-        return new DeadLetterPublishingRecoverer(template, 
+        return new DeadLetterPublishingRecoverer(template,
             (record, ex) -> new TopicPartition(record.topic() + ".DLT", record.partition()));
     }
 
     @Bean
     public DefaultErrorHandler errorHandler(DeadLetterPublishingRecoverer dlqRecoverer) {
         var handler = new DefaultErrorHandler(dlqRecoverer);
-        
+
         // Retry 3 times before sending to DLT
-        handler.setRetryListeners((record, ex, deliveryAttempt) -> 
+        handler.setRetryListeners((record, ex, deliveryAttempt) ->
             LoggerFactory.getLogger(KafkaErrorHandlingConfig.class)
                 .warn("Failed record {}, attempt {}", record, deliveryAttempt));
-        
+
         return handler;
     }
 }
@@ -306,14 +304,14 @@ public class KafkaMonitoringService {
 
     private void monitorKafkaMetrics() {
         // Track message production rates
-        meterRegistry.gauge("kafka.producer.messages.sent", 
+        meterRegistry.gauge("kafka.producer.messages.sent",
             kafkaTemplate.metrics().values().stream()
                 .filter(m -> m.metricName().name().equals("record-send-rate"))
                 .mapToDouble(Metric::value)
                 .sum());
 
         // Track error rates
-        meterRegistry.gauge("kafka.producer.errors", 
+        meterRegistry.gauge("kafka.producer.errors",
             kafkaTemplate.metrics().values().stream()
                 .filter(m -> m.metricName().name().equals("record-error-rate"))
                 .mapToDouble(Metric::value)
@@ -407,14 +405,14 @@ public class TransactionalTradeService {
         // 1. Save to DB
         tradeRepository.save(trade);
         documentRepository.save(document);
-        
+
         // 2. Publish events transactionally
         TradeEvent tradeEvent = createTradeEvent(trade);
         DocumentEvent docEvent = createDocumentEvent(document);
-        
+
         kafkaTemplate.send("trading.trade.events", trade.getId(), tradeEvent);
         kafkaTemplate.send("trading.document.events", document.getId(), docEvent);
-        
+
         // 3. The commit will happen automatically if no exceptions
     }
 
@@ -442,13 +440,13 @@ public class IdempotentFileService {
 
         try {
             processFile(record.value());
-            
+
             // Record processing
             processedRepo.save(new FileProcessedRecord(
                 record.value().getEventId(),
                 Instant.now()
             ));
-            
+
             ack.acknowledge();
         } catch (Exception e) {
             throw new KafkaException("Processing failed", e);
@@ -525,7 +523,7 @@ public class SchemaRegistryConfig {
 
     @Bean
     public RecordMessageConverter avroMessageConverter(SchemaRegistryClient schemaRegistryClient) {
-        AvroSchemaRegistryClientMessageConverter converter = 
+        AvroSchemaRegistryClientMessageConverter converter =
             new AvroSchemaRegistryClientMessageConverter(schemaRegistryClient);
         converter.setTypeMapper(new DefaultKafkaHeaderMapper());
         return converter;
@@ -559,7 +557,7 @@ public class TracingProducerInterceptor implements ProducerInterceptor<String, O
             .setAttribute("messaging.destination", record.topic())
             .setAttribute("messaging.destination_kind", "topic")
             .startSpan();
-        
+
         try (Scope scope = span.makeCurrent()) {
             // Inject trace context into headers
             GlobalOpenTelemetry.getPropagators().getTextMapPropagator()
@@ -568,7 +566,7 @@ public class TracingProducerInterceptor implements ProducerInterceptor<String, O
                         carrier.add(new RecordHeader(key, value.getBytes(StandardCharsets.UTF_8)));
                     }
                 });
-            
+
             return record;
         } finally {
             span.end();
@@ -618,7 +616,7 @@ public class TracingConsumerInterceptor implements ConsumerInterceptor<String, O
                     .setAttribute("messaging.destination_kind", "topic")
                     .setAttribute("messaging.operation", "process")
                     .startSpan();
-                
+
                 span.end();
             }
         }
@@ -643,20 +641,20 @@ public class TradeExecutionAnalytics {
         Span span = tracer.spanBuilder("analyzeTradeFlow")
             .setAttribute("trade.id", tradeId)
             .startSpan();
-        
+
         try (Scope scope = span.makeCurrent()) {
             // 1. Get trade creation span
             SpanContext tradeCreation = getSpanContextForTradeCreation(tradeId);
-            
+
             // 2. Get file processing span
             SpanContext fileProcessing = getSpanContextForFileProcessing(tradeId);
-            
+
             // 3. Get audit spans
             List<SpanContext> auditSpans = getAuditSpansForTrade(tradeId);
-            
+
             // Analyze timing and relationships
             analyzeTimings(tradeCreation, fileProcessing, auditSpans);
-            
+
         } finally {
             span.end();
         }
@@ -685,7 +683,7 @@ public class MonitoringController {
         Span span = tracer.spanBuilder("checkKafkaHealth").startSpan();
         try (Scope scope = span.makeCurrent()) {
             Map<String, Object> healthInfo = new HashMap<>();
-            
+
             // 1. Cluster health
             healthInfo.put("cluster", adminClient.describeCluster().nodes().get()
                 .stream()
@@ -696,18 +694,18 @@ public class MonitoringController {
                     "rack", node.rack()
                 ))
                 .collect(Collectors.toList()));
-            
+
             // 2. Consumer lag
             healthInfo.put("consumerLag", meterRegistry.find("kafka.consumer.lag")
                 .tags("group", "file-storage-group")
                 .gauge().value());
-            
+
             // 3. Producer metrics
             healthInfo.put("producerMetrics", Map.of(
                 "sendRate", meterRegistry.find("kafka.producer.record.send.rate").gauge().value(),
                 "errorRate", meterRegistry.find("kafka.producer.record.error.rate").gauge().value()
             ));
-            
+
             return ResponseEntity.ok(healthInfo);
         } catch (Exception e) {
             span.recordException(e);
@@ -741,7 +739,7 @@ java
 Copy
 @Configuration
 public class KafkaTuningConfig {
-    
+
     @Bean
     public ProducerFactory<String, Object> tunedProducerFactory() {
         Map<String, Object> config = new HashMap<>();
@@ -751,7 +749,7 @@ public class KafkaTuningConfig {
         config.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432 * 2); // 64MB
         return new DefaultKafkaProducerFactory<>(config);
     }
-    
+
     @Bean
     public ConsumerFactory<String, Object> tunedConsumerFactory() {
         Map<String, Object> config = new HashMap<>();
@@ -786,4 +784,4 @@ Would you like me to focus on any particular aspect in more depth, such as the p
 
 
 
-*/
+ */

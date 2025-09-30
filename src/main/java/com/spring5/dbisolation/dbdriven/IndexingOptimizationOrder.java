@@ -16,11 +16,6 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 
 /*
 // PostgreSQL query to analyze performance
@@ -28,30 +23,35 @@ EXPLAIN ANALYZE SELECT * FROM orders WHERE customer_id = 123 AND status = 'SHIPP
 
 // Creating an index for better performance
 CREATE INDEX idx_order_customer_status ON orders(customer_id, status);
-*/
-
+ */
 @Data
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "io_orders", indexes = {
-    @Index(name = "idx_io_order_customer", columnList = "customer_id"),
-    @Index(name = "idx_io_order_status", columnList = "status")
-}) 
-//The Bottom Line: One and the Same in a Running System -  between indexes created directly on a database table and those defined in Hibernate entities
+@Table(
+        name = "io_orders",
+        indexes = {
+            @Index(name = "idx_io_order_customer", columnList = "customer_id"),
+            @Index(name = "idx_io_order_status", columnList = "status")
+        })
+// The Bottom Line: One and the Same in a Running System -  between indexes created directly on a
+// database table and those defined in Hibernate entities
 public class IndexingOptimizationOrder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private IndexingOptimizationCustomer customer;
-    
+
     private String status;
     // other fields
     private LocalDateTime createdAt;
-    
+
     // Using pagination in repository
-    //@Query("SELECT o FROM IndexingOptimizationOrder o WHERE o.customer.id = :customerId ORDER BY o.createdAt DESC")
-    //Page<IndexingOptimizationOrder> findByCustomer(@Param("customerId") Long customerId, Pageable pageable);    
+    // @Query("SELECT o FROM IndexingOptimizationOrder o WHERE o.customer.id = :customerId ORDER BY
+    // o.createdAt DESC")
+    // Page<IndexingOptimizationOrder> findByCustomer(@Param("customerId") Long customerId, Pageable
+    // pageable);
 }

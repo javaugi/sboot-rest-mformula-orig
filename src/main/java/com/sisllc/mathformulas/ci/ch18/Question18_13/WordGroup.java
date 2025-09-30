@@ -10,7 +10,6 @@ public class WordGroup {
     private ArrayList<String> group = new ArrayList<String>();
 
     public WordGroup() {
-
     }
 
     public boolean containsWord(String s) {
@@ -45,12 +44,12 @@ public class WordGroup {
         }
 
         /* Group the words in the dictionary into lists of words of
-		 * same length.groupList[i] will contain a list of words, each
-		 * of length (i+1). */
+     * same length.groupList[i] will contain a list of words, each
+     * of length (i+1). */
         groupList = new WordGroup[maxWordLength];
         for (int i = 0; i < list.length; i++) {
             /* We do wordLength - 1 instead of just wordLength since this is used as
-			 * an index and no words are of length 0 */
+       * an index and no words are of length 0 */
             int wordLength = list[i].length() - 1;
             if (groupList[wordLength] == null) {
                 groupList[wordLength] = new WordGroup();

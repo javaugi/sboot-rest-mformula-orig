@@ -8,8 +8,6 @@
 package com.patterns.misc.filtercriteria;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

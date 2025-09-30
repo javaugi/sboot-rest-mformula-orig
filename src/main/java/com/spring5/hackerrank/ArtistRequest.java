@@ -5,4 +5,5 @@
 package com.spring5.hackerrank;
 
 public record ArtistRequest(String firstName, String lastName) {
+
 }

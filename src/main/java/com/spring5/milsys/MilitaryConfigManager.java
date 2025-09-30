@@ -14,9 +14,10 @@ import javax.crypto.*;
 import javax.crypto.spec.*;
 
 public class MilitaryConfigManager {
+
     private static final String CONFIG_DIR = "/secure/military/config";
     private static final String ENCRYPTION_KEY = "AES-256-Encryption-Key"; // In real system, use HSM
-    
+
     private final Map<String, String> configMap = new ConcurrentHashMap<>();
     private final WatchService configWatcher;
     private final Thread watchThread;
@@ -26,28 +27,29 @@ public class MilitaryConfigManager {
         Path configPath = Paths.get(CONFIG_DIR);
         if (!Files.exists(configPath)) {
             Files.createDirectories(configPath);
-            Files.setPosixFilePermissions(configPath, 
-                Set.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE,
-                      PosixFilePermission.OWNER_EXECUTE));
+            Files.setPosixFilePermissions(
+                    configPath,
+                    Set.of(
+                            PosixFilePermission.OWNER_READ,
+                            PosixFilePermission.OWNER_WRITE,
+                            PosixFilePermission.OWNER_EXECUTE));
         }
-        
+
         this.configWatcher = FileSystems.getDefault().newWatchService();
         configPath.register(configWatcher, StandardWatchEventKinds.ENTRY_MODIFY);
-        
+
         this.watchThread = new Thread(this::watchConfigChanges);
         watchThread.setDaemon(true);
         watchThread.start();
-        
+
         loadAllConfigs();
     }
 
-    private void loadAllConfigs()  {
+    private void loadAllConfigs() {
         try {
-            Files.list(Paths.get(CONFIG_DIR))
-                 .filter(Files::isRegularFile)
-                 .forEach(this::loadConfigFile);
+            Files.list(Paths.get(CONFIG_DIR)).filter(Files::isRegularFile).forEach(this::loadConfigFile);
         } catch (IOException e) {
-            //throw new DefenseConfigException("Failed to load military configurations");
+            // throw new DefenseConfigException("Failed to load military configurations");
         }
     }
 
@@ -55,13 +57,13 @@ public class MilitaryConfigManager {
         try {
             byte[] encryptedData = Files.readAllBytes(configFile);
             String decryptedContent = decryptConfig(encryptedData);
-            
+
             Properties props = new Properties();
             props.load(new StringReader(decryptedContent));
-            
+
             props.forEach((k, v) -> configMap.put(k.toString(), v.toString()));
         } catch (Exception e) {
-            //throw new DefenseConfigException("Invalid config file: " + configFile, e);
+            // throw new DefenseConfigException("Invalid config file: " + configFile, e);
         }
     }
 
@@ -69,10 +71,10 @@ public class MilitaryConfigManager {
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         SecretKeySpec keySpec = new SecretKeySpec(ENCRYPTION_KEY.getBytes(), "AES");
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, new byte[12]); // 96-bit IV
-        
+
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
         byte[] decrypted = cipher.doFinal(encryptedData);
-        
+
         return new String(decrypted);
     }
 
@@ -94,11 +96,11 @@ public class MilitaryConfigManager {
             }
         }
     }
-    
+
     public String getConfig(String key) {
         String value = configMap.get(key);
         if (value == null) {
-            //throw new DefenseConfigException("Missing required military configuration: " + key);
+            // throw new DefenseConfigException("Missing required military configuration: " + key);
         }
         return value;
     }

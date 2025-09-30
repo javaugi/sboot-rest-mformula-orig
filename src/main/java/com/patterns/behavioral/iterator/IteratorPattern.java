@@ -16,16 +16,18 @@ import org.slf4j.LoggerFactory;
  * elements of a collection object in sequential manner without any need to know
  * its underlying representation.
  *
+ * <p>
  * Iterator pattern falls under behavioral pattern category.
  *
+ * <p>
  * GOF: Provides a way to access the elements of an aggregate object without
  * exposing its underlying represenation.
  *
+ * <p>
  * Iterator pattern is used to provide a standard way to traverse through a
  * group of Objects. Iterator pattern is widely used in Java Collection
  * Framework. Iterator interface provides methods for traversing through a
  * collection.
- *
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:

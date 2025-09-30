@@ -6,10 +6,9 @@ package com.spring5.aicloud;
 
 import java.util.Arrays;
 
-
 /*
 Here's an example illustrating the integration of Spring Boot and Spring Cloud for building microservices:
-A microservices architecture often uses Spring Cloud components for service discovery, configuration management, and API gateways. 
+A microservices architecture often uses Spring Cloud components for service discovery, configuration management, and API gateways.
     This example demonstrates a simple system with a discovery service (using Eureka), a configuration server, and a client service.
 
 Operation
@@ -18,10 +17,8 @@ Operation
     Start Client Service: Run the ClientServiceApplication. It registers with Eureka and retrieves configurations from the Config Server.
 This setup allows the client service to dynamically discover and communicate with other services, centralizing configuration management
     and enhancing the resilience of the microservices architecture.
-*/
-
-
-//Example https://github.com/oktadev/auth0-java-microservices-examples
+ */
+// Example https://github.com/oktadev/auth0-java-microservices-examples
 /*
 There are two directories in this repository that pertain to this tutorial:
     spring-boot-gateway-webflux: a Spring Boot microservice architecture with Spring Cloud Gateway and Spring WebFlux.
@@ -31,78 +28,80 @@ Each directory contains three projects:
     car-service: a simple Car Service that uses Spring Data REST to serve up a REST API of cars.
     api-gateway: an API gateway with a /cool-cars endpoint that talks to the car service and filters out cars that aren't cool (in my opinion, of course).
 The configuration for the WebFlux and MVC implementations is the same, so choose one and follow along.
-*/
+ */
 public class SpringCloudMicroservicePattern {
+
     public static void main(String[] args) {
         System.out.println("SpringCloudMicroservicePattern ... " + Arrays.toString(args));
     }
+
     /*
-    1. Project Structure
-    microservices-demo/
-    ├── api-gateway/          # Spring Cloud Gateway
-    ├── config-server/        # Spring Cloud Config Server
-    ├── service-registry/     # Eureka Server
-    ├── account-service/      # Sample microservice
-    └── user-service/         # Sample microservice    
-    */
-    
-    
-    //1. Discovery Service (Eureka Server)
-    //@SpringBootApplication
-    //@EnableEurekaServer
+  1. Project Structure
+  microservices-demo/
+  ├── api-gateway/          # Spring Cloud Gateway
+  ├── config-server/        # Spring Cloud Config Server
+  ├── service-registry/     # Eureka Server
+  ├── account-service/      # Sample microservice
+  └── user-service/         # Sample microservice
+     */
+    // 1. Discovery Service (Eureka Server)
+    // @SpringBootApplication
+    // @EnableEurekaServer
     public class DiscoveryServiceApplication {
+
         public static void main(String[] args) {
-            //SpringApplication.run(DiscoveryServiceApplication.class, args);
-        }
-    }    
-    
-    //2. Configuration Server
-    //@SpringBootApplication
-    //@EnableConfigServer
-    public class ConfigServerApplication {
-        public static void main(String[] args) {
-            //SpringApplication.run(ConfigServerApplication.class, args);
-        }
-    }    
-    
-    //3. Client Service
-    //@SpringBootApplication
-    //@EnableDiscoveryClient
-    public class ClientServiceApplication {
-        public static void main(String[] args) {
-            //SpringApplication.run(ClientServiceApplication.class, args);
+            // SpringApplication.run(DiscoveryServiceApplication.class, args);
         }
     }
-    
+
+    // 2. Configuration Server
+    // @SpringBootApplication
+    // @EnableConfigServer
+    public class ConfigServerApplication {
+
+        public static void main(String[] args) {
+            // SpringApplication.run(ConfigServerApplication.class, args);
+        }
+    }
+
+    // 3. Client Service
+    // @SpringBootApplication
+    // @EnableDiscoveryClient
+    public class ClientServiceApplication {
+
+        public static void main(String[] args) {
+            // SpringApplication.run(ClientServiceApplication.class, args);
+        }
+    }
+
     /*
-Configuration
-application.yml (Client Service).
-Code
+  Configuration
+  application.yml (Client Service).
+  Code
 
-spring:
-  application:
-    name: client-service
-  cloud:
-    config:
-      uri: http://localhost:8888
-    discovery:
-      enabled: true
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-bootstrap.yml (Config Server).
-Code
+  spring:
+    application:
+      name: client-service
+    cloud:
+      config:
+        uri: http://localhost:8888
+      discovery:
+        enabled: true
+  eureka:
+    client:
+      serviceUrl:
+        defaultZone: http://localhost:8761/eureka/
+  bootstrap.yml (Config Server).
+  Code
 
-spring:
-  cloud:
-    config:
-      server:
-        git:
-          uri: file://${user.home}/config-repo    
-    */
+  spring:
+    cloud:
+      config:
+        server:
+          git:
+            uri: file://${user.home}/config-repo
+     */
 }
-
 
 /*
 Java Microservices Demo with Spring Cloud Components
@@ -257,7 +256,7 @@ java
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
-    
+
     @GetMapping
     public List<Account> getAccounts() {
         return List.of(
@@ -265,7 +264,7 @@ public class AccountController {
             new Account(2, "Checking", 500.00)
         );
     }
-    
+
     @GetMapping("/{id}")
     public Account getAccount(@PathVariable int id) {
         return new Account(id, "Savings", 1000.00);
@@ -291,7 +290,7 @@ java
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    
+
     @GetMapping
     public List<User> getUsers() {
         return List.of(
@@ -417,7 +416,7 @@ public class SecurityConfig {
 
     @Value("${aws.cognito.logoutUrl}")
     private String logoutUrl;
-    
+
     @Value("${aws.cognito.clientId}")
     private String clientId;
 
@@ -437,7 +436,7 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutSuccessHandler(logoutSuccessHandler())
             );
-        
+
         return http.build();
     }
 
@@ -451,10 +450,10 @@ public class SecurityConfig {
         return new SimpleUrlLogoutSuccessHandler() {
             @Override
             public void onLogoutSuccess(
-                HttpServletRequest request, 
-                HttpServletResponse response, 
+                HttpServletRequest request,
+                HttpServletResponse response,
                 Authentication authentication) throws IOException {
-                
+
                 String redirectUrl = String.format(
                     "%s?client_id=%s&logout_uri=%s",
                     logoutUrl,
@@ -470,10 +469,10 @@ public class SecurityConfig {
 java
 @Configuration
 public class JwtConfig {
-    
+
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuerUri;
-    
+
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetUri;
 
@@ -482,7 +481,7 @@ public class JwtConfig {
         JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
         converter.setAuthoritiesClaimName("cognito:groups");
         converter.setAuthorityPrefix("ROLE_");
-        
+
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
         jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
         return jwtConverter;
@@ -595,7 +594,7 @@ xml
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
-    
+
     <!-- JWT Support -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
@@ -614,7 +613,7 @@ xml
         <version>0.11.5</version>
         <scope>runtime</scope>
     </dependency>
-    
+
     <!-- Web Support -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -673,7 +672,7 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutSuccessUrl("/").permitAll()
             );
-        
+
         return http.build();
     }
 
@@ -698,13 +697,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        
+
         String provider = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        
+
         // Process attributes based on provider
         UserPrincipal userPrincipal = UserPrincipal.create(provider, attributes);
-        
+
         return userPrincipal;
     }
 }
@@ -792,28 +791,28 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private JwtTokenProvider tokenProvider;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, 
-                                      HttpServletResponse response, 
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                      HttpServletResponse response,
                                       Authentication authentication) throws IOException {
-        
+
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String token = tokenProvider.generateToken(userPrincipal);
-        
+
         String redirectUrl = determineTargetUrl(request, response, authentication);
         redirectUrl = UriComponentsBuilder.fromUriString(redirectUrl)
             .queryParam("token", token)
             .build().toUriString();
-        
+
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 
     protected String determineTargetUrl(HttpServletRequest request,
-                                      HttpServletResponse response, 
+                                      HttpServletResponse response,
                                       Authentication authentication) {
-        
+
         Optional<String> redirectUri = CookieUtils.getCookie(request, "redirect_uri")
             .map(Cookie::getValue);
-        
+
         return redirectUri.orElse(getDefaultTargetUrl());
     }
 }
@@ -830,7 +829,7 @@ public class AuthController {
         response.put("email", userPrincipal.getEmail());
         response.put("name", userPrincipal.getName());
         response.put("provider", userPrincipal.getProvider());
-        
+
         return ResponseEntity.ok(response);
     }
 
@@ -884,4 +883,4 @@ FACEBOOK_CLIENT_ID=your_facebook_app_id
 FACEBOOK_CLIENT_SECRET=your_facebook_app_secret
 JWT_SECRET=your_secure_jwt_secret
 This implementation provides a solid foundation for social login with JWT authentication in a Spring Boot microservice. You can extend it by adding more providers (Twitter, GitHub, etc.) following the same pattern.
-*/
+ */

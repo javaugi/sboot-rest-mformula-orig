@@ -7,10 +7,10 @@ package com.spring5.dbisolation.jblue;
 import java.time.LocalDateTime;
 
 /**
- *
  * @author javau
  */
 public class FlightDetails {
+
     private String flightNumber;
     private String airlineCode;
     private String airlineName;

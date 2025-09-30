@@ -5,9 +5,9 @@
 package com.spring5.audit;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/credit")

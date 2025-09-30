@@ -8,7 +8,6 @@ import static com.google.api.expr.v1alpha1.ConformanceServiceGrpc.SERVICE_NAME;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
-//import io.opentelemetry.exporter.prometheus.PrometheusHttpServer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.resources.Resource;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *
  * @author javaugi
  */
 @Configuration
@@ -62,9 +60,9 @@ public class OpenTelemetryConfig {
                         .setMeterProvider(
                                 SdkMeterProvider.builder()
                                         .setResource(resource)
-                                        //.registerMetricReader(
+                                        // .registerMetricReader(
                                         //    PrometheusHttpServer.builder().setPort(prometheusPort).build()
-                                        //)
+                                        // )
                                         .build())
                         .buildAndRegisterGlobal();
 

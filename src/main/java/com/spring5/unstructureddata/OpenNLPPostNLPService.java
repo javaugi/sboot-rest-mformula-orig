@@ -4,13 +4,13 @@
  */
 package com.spring5.unstructureddata;
 
-import opennlp.tools.namefind.*;
-import opennlp.tools.tokenize.SimpleTokenizer;
-import opennlp.tools.util.Span;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.File;
 import java.io.IOException;
+import opennlp.tools.namefind.*;
+import opennlp.tools.tokenize.SimpleTokenizer;
+import opennlp.tools.util.Span;
 
 /*
 Key Features
@@ -29,27 +29,27 @@ Identifies companies/skills using OpenNLP.
 Error Handling
 
 Gracefully skips corrupt files.
-*/
+ */
 public class OpenNLPPostNLPService {
+
     private static final SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
 
     public static JsonNode enrichWithNLP(JsonNode data) throws IOException {
         ObjectNode enriched = (ObjectNode) data;
-        
+
         // Extract entities using NLP
         String text = data.get("work_experience").asText();
         String[] tokens = tokenizer.tokenize(text);
-        
+
         // Load NER models (e.g., for skills)
-        NameFinderME nameFinder = new NameFinderME(
-            new TokenNameFinderModel(new File("en-ner-person.bin"))
-        );
-        
+        NameFinderME nameFinder
+                = new NameFinderME(new TokenNameFinderModel(new File("en-ner-person.bin")));
+
         Span[] names = nameFinder.find(tokens);
         if (names.length > 0) {
             enriched.put("ner_identified_companies", tokens[names[0].getStart()]);
         }
-        
+
         return enriched;
     }
 }

@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/kafkaoutbox")
 public class KafkaOutboxController {
+
     private final KafkaProducerService kafkaProducerService;
     private final OutboxService outboxService;
     private final OutboxOrderService outboxOrderService;
@@ -27,14 +28,14 @@ public class KafkaOutboxController {
     public String sendToOutboxTopic(@RequestBody OutboxOrder order) {
         outboxOrderService.createOrder(order);
         /*
-        outboxOrderService.createOrder(request);
-        outboxService.createOutboxEvent(
-            request.getAggregateType(),
-            request.getAggregateId(),
-            request.getEventType(),
-            request.getPayload()
-        );
-        // */
+    outboxOrderService.createOrder(request);
+    outboxService.createOutboxEvent(
+        request.getAggregateType(),
+        request.getAggregateId(),
+        request.getEventType(),
+        request.getPayload()
+    );
+    // */
         return "Outbox event created and sent to outbox topic";
-    }    
+    }
 }

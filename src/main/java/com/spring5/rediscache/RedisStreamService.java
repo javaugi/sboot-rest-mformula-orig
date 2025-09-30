@@ -5,22 +5,21 @@
 package com.spring5.rediscache;
 
 import com.spring5.RedisConfig;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.stream.Consumer;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.ReadOffset;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.connection.stream.StreamOffset;
+import org.springframework.data.redis.connection.stream.StreamReadOptions;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StreamOperations;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.connection.stream.StreamReadOptions;
 
 @Service
 public class RedisStreamService {
@@ -33,7 +32,8 @@ public class RedisStreamService {
     private static final String CONSUMER_GROUP_NAME = "analytics-group";
     private static final String CONSUMER_NAME = "consumer-app-instance-1";
 
-    public RedisStreamService(@Qualifier(RedisConfig.REDIS_TPL_STR) RedisTemplate<String, String> redisTemplate) {
+    public RedisStreamService(
+            @Qualifier(RedisConfig.REDIS_TPL_STR) RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
         this.streamOperations = redisTemplate.opsForStream(); // Get StreamOperations from RedisTemplate
     }
@@ -43,7 +43,12 @@ public class RedisStreamService {
         // Ensure the consumer group exists when the application starts
         try {
             streamOperations.createGroup(STREAM_KEY, CONSUMER_GROUP_NAME);
-            System.out.println("Consumer group '" + CONSUMER_GROUP_NAME + "' created or already exists for stream '" + STREAM_KEY + "'.");
+            System.out.println(
+                    "Consumer group '"
+                    + CONSUMER_GROUP_NAME
+                    + "' created or already exists for stream '"
+                    + STREAM_KEY
+                    + "'.");
         } catch (Exception e) {
             // Group already exists, ignore or log
             if (e.getMessage() != null && !e.getMessage().contains("BUSYGROUP")) {
@@ -73,26 +78,35 @@ public class RedisStreamService {
      * Reads events from the stream using a consumer group.
      */
     public void readEventsFromGroup() {
-        System.out.println("\nReading events for consumer '" + CONSUMER_NAME + "' in group '" + CONSUMER_GROUP_NAME + "' from stream '" + STREAM_KEY + "'...");
+        System.out.println(
+                "\nReading events for consumer '"
+                + CONSUMER_NAME
+                + "' in group '"
+                + CONSUMER_GROUP_NAME
+                + "' from stream '"
+                + STREAM_KEY
+                + "'...");
 
         StreamReadOptions options = StreamReadOptions.empty().count(10).block(Duration.ofMillis(100));
-        // Read up to 10 records, block for 5 seconds if no new records                
-        List<MapRecord<String, String, String>> records = streamOperations.read(
-                Consumer.from(CONSUMER_GROUP_NAME, CONSUMER_NAME),
-                // You can specify multiple stream offsets if reading from multiple streams
-                // and configure options like count and block duration
-                options,
-                StreamOffset.create(STREAM_KEY, ReadOffset.lastConsumed()) // Read from the last consumed offset
-        );
+        // Read up to 10 records, block for 5 seconds if no new records
+        List<MapRecord<String, String, String>> records
+                = streamOperations.read(
+                        Consumer.from(CONSUMER_GROUP_NAME, CONSUMER_NAME),
+                        // You can specify multiple stream offsets if reading from multiple streams
+                        // and configure options like count and block duration
+                        options,
+                        StreamOffset.create(
+                                STREAM_KEY, ReadOffset.lastConsumed()) // Read from the last consumed offset
+                );
         /*
-        List<MapRecord<String, String, String>> records = streamOperations.read(
-                Consumer.from(CONSUMER_GROUP_NAME, CONSUMER_NAME),
-                StreamOffset.create(STREAM_KEY, ReadOffset.lastConsumed()), // Read from the last consumed offset
-                // You can specify multiple stream offsets if reading from multiple streams
-                // and configure options like count and block duration
-                org.springframework.data.redis.connection.stream.StreamReadOptions.empty().count(10).block(Duration.ofSeconds(5))
-        );
-        // */
+    List<MapRecord<String, String, String>> records = streamOperations.read(
+            Consumer.from(CONSUMER_GROUP_NAME, CONSUMER_NAME),
+            StreamOffset.create(STREAM_KEY, ReadOffset.lastConsumed()), // Read from the last consumed offset
+            // You can specify multiple stream offsets if reading from multiple streams
+            // and configure options like count and block duration
+            org.springframework.data.redis.connection.stream.StreamReadOptions.empty().count(10).block(Duration.ofSeconds(5))
+    );
+    // */
 
         if (records == null || records.isEmpty()) {
             System.out.println("No new records for consumer '" + CONSUMER_NAME + "'.");
@@ -111,13 +125,14 @@ public class RedisStreamService {
     }
 
     /**
-     * Reads all available events from the beginning of the stream (for testing/debugging, not typical for groups).
+     * Reads all available events from the beginning of the stream (for
+     * testing/debugging, not typical for groups).
      */
     public void readAllEventsFromStream() {
-        System.out.println("\nReading all events from stream '" + STREAM_KEY + "' from the beginning...");
-        List<MapRecord<String, String, String>> records = streamOperations.read(
-                StreamOffset.fromStart(STREAM_KEY)
-        );
+        System.out.println(
+                "\nReading all events from stream '" + STREAM_KEY + "' from the beginning...");
+        List<MapRecord<String, String, String>> records
+                = streamOperations.read(StreamOffset.fromStart(STREAM_KEY));
 
         if (records.isEmpty()) {
             System.out.println("No records in stream '" + STREAM_KEY + "'.");
@@ -128,7 +143,6 @@ public class RedisStreamService {
             System.out.println("  Record ID: " + record.getId() + ", Data: " + record.getValue());
         }
     }
-
 
     /**
      * Example usage in a main method or another service
@@ -151,10 +165,12 @@ public class RedisStreamService {
 
         // Simulate usage:
         // service.addEvent("userLogin", Map.of("userId", "user123", "ipAddress", "192.168.1.1"));
-        // service.addEvent("productView", Map.of("userId", "user123", "productId", "P001", "category", "electronics"));
+        // service.addEvent("productView", Map.of("userId", "user123", "productId", "P001", "category",
+        // "electronics"));
         // TimeUnit.SECONDS.sleep(1); // Give time for events to be written
         // service.readEventsFromGroup();
-        // service.readEventsFromGroup(); // Read again to see if more arrive or if acknowledged are skipped
+        // service.readEventsFromGroup(); // Read again to see if more arrive or if acknowledged are
+        // skipped
         // service.readAllEventsFromStream();
     }
 }

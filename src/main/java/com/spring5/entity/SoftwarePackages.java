@@ -5,12 +5,11 @@
 package com.spring5.entity;
 
 /**
- *
  * @author javau
  */
 public class SoftwarePackages {
-    
 }
+
 /*
 CREATE TABLE software_packages (
     package_id UUID PRIMARY KEY,
@@ -22,4 +21,4 @@ CREATE TABLE software_packages (
     min_hardware_version VARCHAR(20),
     dependencies VARCHAR(20)[] -- Array of required package versions
 );
-*/
+ */

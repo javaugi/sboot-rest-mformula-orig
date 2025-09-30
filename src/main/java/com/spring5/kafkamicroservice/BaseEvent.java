@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -22,8 +20,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseEvent {
+
     private String eventId;
     private Instant timestamp;
-    private String sourceSystem;    
-    
+    private String sourceSystem;
 }

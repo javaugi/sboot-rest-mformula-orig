@@ -18,5 +18,4 @@ public class ClaimReviewedEvent {
     ClaimProcessingService claimProcessingService;
     Claim claim;
     ReviewResult result;
-
 }

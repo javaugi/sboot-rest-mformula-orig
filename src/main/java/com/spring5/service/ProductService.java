@@ -9,9 +9,9 @@ package com.spring5.service;
 
 import com.spring5.entity.Product;
 import java.util.List;
+import java.util.Optional;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -25,4 +25,8 @@ public interface ProductService {
     List<Product> findAll();
 
     List<Product> findByName(String name);
+
+    Optional<Product> getProductById(Long productId);
+
+    boolean productExists(Long id);
 }

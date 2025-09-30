@@ -5,12 +5,11 @@
 package com.spring5.graphql;
 
 /**
- *
  * @author javau
  */
 public class GraphqlSubscrRealtimeUpdViaWebSocket {
-    
 }
+
 /*
 could you give me an Subscriptions (real-time updates via WebSocket) example
 Here's a complete example of GraphQL subscriptions in Spring Boot using WebSocket for real-time prescription updates:
@@ -155,9 +154,9 @@ Backpressure Handling: Reactor's Flux manages slow clients
 Filtering: Only sends updates for the specified patientId
 
 Scalability: For production, consider Redis Pub/Sub for distributed systems
-*/
+ */
 
-/*
+ /*
 GraphQL is more effective than traditional REST with JPA repositories in several key scenarios, despite still needing to fetch data from a database. Here's why:
 
 1. Precise Data Fetching (No Over/Under-Fetching)
@@ -197,7 +196,7 @@ public DataFetcher<List<Prescription>> prescriptions() {
         Patient patient = env.getSource();
         // Single query with JOIN FETCH
         return em.createQuery(
-            "SELECT p FROM Prescription p JOIN FETCH p.patient WHERE p.patient.id = :pid", 
+            "SELECT p FROM Prescription p JOIN FETCH p.patient WHERE p.patient.id = :pid",
             Prescription.class)
             .setParameter("pid", patient.getId())
             .getResultList();
@@ -211,7 +210,7 @@ java
 private BatchLoaderRegistry registry;
 
 registry.forTypePair(UUID.class, Patient.class)
-       .registerBatchLoader(patientIds -> 
+       .registerBatchLoader(patientIds ->
            repo.findAllById(patientIds)); // Single SQL IN query
 b. Caching
 GraphQL Java caches parsed queries + supports DataLoader for request-scoped caching.
@@ -274,4 +273,4 @@ GraphQL shines when you need:
 ✅ Microservices aggregation
 
 For simple apps, stick with REST/JPA. For healthcare apps like your pharmacy system with varying client needs (mobile/web/analytics), GraphQL is more efficient at scale.
-*/
+ */

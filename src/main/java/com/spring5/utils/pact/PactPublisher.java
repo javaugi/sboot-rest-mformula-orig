@@ -25,14 +25,14 @@ public class PactPublisher {
     public void publishPacts() {
         // This is typically done via Maven/Gradle plugin, not in code
         // But you can use PactPublisher if needed
-        //PactPublisher.publish("target/pacts");
+        // PactPublisher.publish("target/pacts");
         /*
-        PactBrokerResultPublisher.publishPacts(
-            brokerUrl,
-            username,
-            password,
-            "target/pacts"
-        );
-        // */
+    PactBrokerResultPublisher.publishPacts(
+        brokerUrl,
+        username,
+        password,
+        "target/pacts"
+    );
+    // */
     }
 }

@@ -34,7 +34,8 @@ public class PaymentController {
             // Payment is processing, final status via webhook
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); // Or 402 Payment Required
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(response); // Or 402 Payment Required
         }
     }
 

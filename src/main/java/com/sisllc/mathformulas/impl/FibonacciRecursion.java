@@ -5,7 +5,6 @@ package com.sisllc.mathformulas.impl;
  * subsequent number is the sum of the previous two.
  *
  * @author david
- *
  */
 public class FibonacciRecursion {
 

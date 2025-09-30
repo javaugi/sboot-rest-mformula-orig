@@ -23,7 +23,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
 public class KafkaTemplateConfig extends KafkaBaseConfig {
-    
+
     @Value("${spring.kafka.admin.enabled:false}")
     private boolean kafkaAdminEnabled;
 
@@ -52,88 +52,85 @@ public class KafkaTemplateConfig extends KafkaBaseConfig {
     public KafkaTemplate<String, String> stringKafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
-    
+
     /*@Bean
-    public ProducerFactory<String, Object> producerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
-    }    
-    
-    @Bean
-    public Map<String, Object> producerConfigs() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-        props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
+  public ProducerFactory<String, Object> producerFactory() {
+      Map<String, Object> configProps = new HashMap<>();
+      configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+      configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+      configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+      return new DefaultKafkaProducerFactory<>(configProps);
+  }
 
-        return props;
-    }
-    
-    @Primary
-    @Bean
-    public ProducerFactory<String, String> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
-    }
+  @Bean
+  public Map<String, Object> producerConfigs() {
+      Map<String, Object> props = new HashMap<>();
+      props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+      props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+      props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+      props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
 
-    @Primary
-    @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
-    }
+      return props;
+  }
 
-    @Bean
-    public ProducerFactory<String, AuditEvent> auditProducerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
-    }
+  @Primary
+  @Bean
+  public ProducerFactory<String, String> producerFactory() {
+      return new DefaultKafkaProducerFactory<>(producerConfigs());
+  }
 
-    @Bean
-    public KafkaTemplate<String, AuditEvent> kafkaAuditTemplate() {
-        return new KafkaTemplate<>(auditProducerFactory());
-    } 
-    // */
-    
-    // adding a KafkaAdmin (aka KafkaAdminClient) bean is super useful for creating topics programmatically 
+  @Primary
+  @Bean
+  public KafkaTemplate<String, String> kafkaTemplate() {
+      return new KafkaTemplate<>(producerFactory());
+  }
+
+  @Bean
+  public ProducerFactory<String, AuditEvent> auditProducerFactory() {
+      return new DefaultKafkaProducerFactory<>(producerConfigs());
+  }
+
+  @Bean
+  public KafkaTemplate<String, AuditEvent> kafkaAuditTemplate() {
+      return new KafkaTemplate<>(auditProducerFactory());
+  }
+  // */
+    // adding a KafkaAdmin (aka KafkaAdminClient) bean is super useful for creating topics
+    // programmatically
     // or managing broker-related settings from your Spring Boot app.
-    
     @Bean
     @ConditionalOnProperty(name = "spring.kafka.admin.enabled", havingValue = "true")
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configs.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, 3000);       // 3s timeout per request
-        configs.put(AdminClientConfig.RETRIES_CONFIG, 2);                     // Only 1 retry
-        configs.put(AdminClientConfig.RETRY_BACKOFF_MS_CONFIG, 1000);         // Wait 1s between retries
+        configs.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, 3000); // 3s timeout per request
+        configs.put(AdminClientConfig.RETRIES_CONFIG, 2); // Only 1 retry
+        configs.put(AdminClientConfig.RETRY_BACKOFF_MS_CONFIG, 1000); // Wait 1s between retries
         System.out.println("✅ KafkaAdmin bean initialized!");
         return new KafkaAdmin(configs);
     }
-    
-    
-    //* If you want Spring to create topics automatically at startup:
+
+    // * If you want Spring to create topics automatically at startup:
     @Bean
     public NewTopic auditEventsTopic() {
         return new NewTopic("audit-events", 3, (short) 1); // topicName, partitions, replicationFactor
     }
-    // */
 
+    // */
     @Bean
     public KafkaAdminClient kafkaAdminClient() {
         System.out.println("✅ KafkaAdminClient bean initialized!");
         return (KafkaAdminClient) KafkaAdminClient.create(kafkaAdmin().getConfigurationProperties());
-    }  
-    
+    }
+
     //  Alternative: Use AdminClient interface (recommended)
-    //  It's better to depend on the AdminClient interface rather than the concrete KafkaAdminClient    
+    //  It's better to depend on the AdminClient interface rather than the concrete KafkaAdminClient
     @Primary
     @Bean
     public AdminClient adminClient() {
         System.out.println("✅ AdminClient bean initialized!");
         return AdminClient.create(kafkaAdmin().getConfigurationProperties());
     }
-
 }
 
 /*
@@ -217,9 +214,9 @@ spring:
     properties:
       request.timeout.ms: 5000
       retries: 3
-*/
+ */
 
-/*
+ /*
 
 how do I disable Kafka adminClient when I run spring boot
 
@@ -298,4 +295,4 @@ Copy
 Edit
 [AdminClient clientId=adminclient-1] Connection to node -1 could not be established
 Let me know if you're using Dockerized Kafka, or switching between dev/test/prod and want conditional Kafka enable/disable — I can set that up too!
-*/
+ */

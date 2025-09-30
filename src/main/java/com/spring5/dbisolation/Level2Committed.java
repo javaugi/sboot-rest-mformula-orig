@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class Level2Committed {
-    
+
     private final AccountRepository accountRepository;
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -23,13 +23,13 @@ public class Level2Committed {
         // These reads will only see committed data
         Account fromAccount = accountRepository.findById(fromId).orElseThrow();
         Account toAccount = accountRepository.findById(toId).orElseThrow();
-        
+
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
         toAccount.setBalance(toAccount.getBalance().add(amount));
-        
+
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
-        
+
         // Between these operations, other transactions may see the committed changes
-    }    
+    }
 }

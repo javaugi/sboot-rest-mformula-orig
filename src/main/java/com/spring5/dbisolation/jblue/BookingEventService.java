@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 public class BookingEventService {
+
     private final BookingEventRepository bookingEventRepository;
     private final KafkaProducerService kafkaProducerService;
     private final EventHubProducerService eventHubProducerService;
@@ -18,7 +19,7 @@ public class BookingEventService {
         return Mono.just(BookingEvent.builder().id(id).bookingId(bookingId).build());
     }
 
-    @Async  // runs in separate thread → doesn't block request
+    @Async // runs in separate thread → doesn't block request
     public void processEvent(BookingEvent event) {
         // Additional transformations, validations, retries can go here
         event = bookingEventRepository.save(event);

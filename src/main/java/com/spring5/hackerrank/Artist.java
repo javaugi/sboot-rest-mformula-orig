@@ -22,16 +22,17 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Artist{
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        Long id;
-        
-        String firstName;
-        String lastName;    
-        
-        public Artist(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-        }
+public class Artist {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
+    String firstName;
+    String lastName;
+
+    public Artist(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

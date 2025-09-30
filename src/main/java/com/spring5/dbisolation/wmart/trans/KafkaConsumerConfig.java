@@ -4,6 +4,7 @@
  */
 package com.spring5.dbisolation.wmart.trans;
 
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -16,8 +17,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 @Configuration
 @EnableKafka
@@ -40,25 +39,25 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "100"); // Process in batches
 
         // Important: Use custom partition assignor for store locality
-        props.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
-            StoreAwarePartitionAssignor.class.getName());
+        props.put(
+                ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
+                StoreAwarePartitionAssignor.class.getName());
         return props;
     }
-
 
     @Bean
     public ConsumerFactory<String, StoreTransaction> transactionConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
-        //return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
+        // return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
         //   new StdDeserializer<>(StoreTransaction.class));
     }
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, StoreTransaction>
-        kafkaListenerContainerFactory() {
+            kafkaListenerContainerFactory() {
 
         ConcurrentKafkaListenerContainerFactory<String, StoreTransaction> factory
-            = new ConcurrentKafkaListenerContainerFactory<>();
+                = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(transactionConsumerFactory());
 
         // Important: Ensure ordered processing within partitions

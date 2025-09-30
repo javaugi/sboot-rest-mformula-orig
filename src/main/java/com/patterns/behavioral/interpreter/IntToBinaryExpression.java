@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2019 Center for Information Management, Inc.
  *
@@ -9,8 +8,6 @@
 package com.patterns.behavioral.interpreter;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -27,5 +24,4 @@ public class IntToBinaryExpression implements Expression1 {
     public String interpret(InterpreterContext ic) {
         return ic.getBinaryFormat(this.i);
     }
-
 }

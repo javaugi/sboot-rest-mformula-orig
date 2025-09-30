@@ -8,5 +8,6 @@ import com.spring5.empbilpayroll.Employee;
 import com.spring5.empbilpayroll.PayrollResult;
 
 public interface PayrollObserver {
+
     void onPayrollProcessed(Employee employee, PayrollResult result);
 }

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ContentCachingResponseWrapper extends HttpServletResponseWrapper {
+
     private final ByteArrayOutputStream content = new ByteArrayOutputStream();
     private PrintWriter writer;
 

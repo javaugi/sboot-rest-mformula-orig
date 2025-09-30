@@ -28,5 +28,4 @@ public class ReviewResult {
     public void addOpportunity(ReviewOpportunity oppr) {
         opprs.add(oppr);
     }
-
 }

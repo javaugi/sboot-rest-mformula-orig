@@ -5,10 +5,10 @@
 package com.spring5.dbisolation.jblue.projection;
 
 /**
- *
  * @author javau
  */
 public interface FlightSummary {
+
     String getId();
 
     String getFlightNumber();

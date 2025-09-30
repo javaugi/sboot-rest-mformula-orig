@@ -18,8 +18,7 @@ public class NLPController {
 
     @PostMapping("/process")
     public Mono<Bundle> processText(@RequestBody ClinicalTextRequest request) {
-        return nlpService.processText(request.getText())
-            .map(FHIRConverter::toFHIRBundle);
+        return nlpService.processText(request.getText()).map(FHIRConverter::toFHIRBundle);
     }
 }
 /*
@@ -79,4 +78,4 @@ This gives you:
     Reactive WebFlux pipeline
     Mock NLP extraction → Replace with real AI later
     FHIR-compliant output ready for EHR or analytics
-*/
+ */

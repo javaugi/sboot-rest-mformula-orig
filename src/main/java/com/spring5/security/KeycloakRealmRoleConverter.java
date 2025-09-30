@@ -15,26 +15,26 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
- *
  * @author javaugi
  */
 public class KeycloakRealmRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
-    
+
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
-        Map<String, Object> realmAccess = null; //(Map<String, Object>) jwt.getClaims().get("realm_access");
-        
+        Map<String, Object> realmAccess
+                = null; // (Map<String, Object>) jwt.getClaims().get("realm_access");
+
         if (realmAccess == null || realmAccess.isEmpty()) {
             return new ArrayList<>();
         }
-        
-        Collection<GrantedAuthority> returnValue = ((List<String>) realmAccess.get("roles"))
-            .stream()
-            .map(roleName -> "ROLE_" + roleName.toUpperCase())
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
-            
+
+        Collection<GrantedAuthority> returnValue
+                = ((List<String>) realmAccess.get("roles"))
+                        .stream()
+                        .map(roleName -> "ROLE_" + roleName.toUpperCase())
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
         return returnValue;
     }
-    
 }

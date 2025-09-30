@@ -58,5 +58,4 @@ public class Q94GetSubSets {
         ArrayList<ArrayList<Integer>> subsets2 = getSubsets2(list);
         System.out.println(subsets2.toString());
     }
-
 }

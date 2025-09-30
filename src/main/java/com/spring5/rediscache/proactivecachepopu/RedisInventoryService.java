@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
-public class InventoryService {
+public class RedisInventoryService {
+
     private final KafkaTemplate<String, InventoryEvent> kafkaTemplate;
     private final InventoryRepository repository;
 
@@ -24,19 +25,20 @@ public class InventoryService {
     public ReservationResult reserveVehicle(String vin, String dealerId, String customerId) {
         // Optimistic lock check
         long currentVersion = repository.getVersion(vin);
-        
+
         if (!repository.isAvailable(vin, dealerId)) {
             return ReservationResult.failure("Vehicle not available");
         }
 
-        var event = InventoryEvent.builder()
-                .eventId(UUID.toString())
-                .vin(vin)
-                .type(RESERVATION)
-                .dealerId(dealerId)
-                .details(Map.of("customerId", customerId))
-                .version(currentVersion + 1)
-                .build();
+        var event
+                = InventoryEvent.builder()
+                        .eventId(UUID.toString())
+                        .vin(vin)
+                        .type(RESERVATION)
+                        .dealerId(dealerId)
+                        .details(Map.of("customerId", customerId))
+                        .version(currentVersion + 1)
+                        .build();
 
         try {
             kafkaTemplate.send("inventory-events", vin, event);

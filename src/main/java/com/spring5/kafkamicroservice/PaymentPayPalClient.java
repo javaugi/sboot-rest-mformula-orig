@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentPayPalClient {
-    
+
     public PaymentResult createOrder(PaymentRequestEvent event) {
         return null;
     }

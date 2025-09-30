@@ -10,18 +10,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * @author javaugi
  */
 @Component
-public class Resilience4jConfig implements CommandLineRunner {    
-    private final static Logger log = LoggerFactory.getLogger(Resilience4jConfig.class);
-    
+public class Resilience4jConfig implements CommandLineRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(Resilience4jConfig.class);
+
     @Override
     public void run(String... args) throws Exception {
-        log.info("Resilience4jConfig running {}"); 
+        log.info("Resilience4jConfig running {}");
     }
-    
 }
 
 /*
@@ -96,8 +95,8 @@ XML
     </build>
 
 </project>
-2. Application 1  Configuration (application.yml)   
- 1. 
+2. Application 1  Configuration (application.yml)
+ 1.
 github.com
 github.com
 
@@ -301,4 +300,4 @@ If the test calls fail, the circuit will return to the OPEN state.
 You can also check the Actuator health endpoint http://localhost:8080/actuator/health to see the state of the externalService Circuit Breaker (UP, DOWN, or OUT_OF_SERVICE with details about the state).
 
 This example provides a basic implementation of the Circuit Breaker pattern with Resilience4j in Spring Boot. Resilience4j offers other patterns like Retry, Rate Limiter, Bulkhead, and Time Limiter, which can be implemented similarly using their respective annotations and configurations.
-*/
+ */

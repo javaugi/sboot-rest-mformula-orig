@@ -5,65 +5,64 @@
 package com.spring5.aicloud;
 
 /**
- *
  * @author javaugi
  */
 public class SpringMSCloudGatewayConfigServRegDemo {
     /*
-1. Project Structure
-microservices-demo/
-├── api-gateway/          # Spring Cloud Gateway
-├── config-server/        # Spring Cloud Config Server
-├── service-registry/     # Eureka Server
-├── account-service/      # Sample microservice
-└── user-service/         # Sample microservice    
-    
-7. Running the System
-Start services in this order:
+  1. Project Structure
+  microservices-demo/
+  ├── api-gateway/          # Spring Cloud Gateway
+  ├── config-server/        # Spring Cloud Config Server
+  ├── service-registry/     # Eureka Server
+  ├── account-service/      # Sample microservice
+  └── user-service/         # Sample microservice
 
-Config Server (port 8888)
+  7. Running the System
+  Start services in this order:
 
-Service Registry (port 8761)
+  Config Server (port 8888)
 
-Account Service (default port 8081)
+  Service Registry (port 8761)
 
-User Service (default port 8082)
+  Account Service (default port 8081)
 
-API Gateway (port 8080)
+  User Service (default port 8082)
 
-Verify services are registered in Eureka: http://localhost:8761
+  API Gateway (port 8080)
 
-Test endpoints through Gateway:
+  Verify services are registered in Eureka: http://localhost:8761
 
-http://localhost:8080/api/accounts
+  Test endpoints through Gateway:
 
-http://localhost:8080/api/users
+  http://localhost:8080/api/accounts
 
-8. Key Features Demonstrated
-Service Discovery: All services register with Eureka
+  http://localhost:8080/api/users
 
-Centralized Configuration: Config Server provides properties
+  8. Key Features Demonstrated
+  Service Discovery: All services register with Eureka
 
-API Gateway:
+  Centralized Configuration: Config Server provides properties
 
-Route mapping (/api/accounts → account-service)
+  API Gateway:
 
-Load balancing (lb://ACCOUNT-SERVICE)
+  Route mapping (/api/accounts → account-service)
 
-Distributed System: Services can scale independently
+  Load balancing (lb://ACCOUNT-SERVICE)
 
-9. Advanced Configuration
-For production, you would add:
+  Distributed System: Services can scale independently
 
-Circuit breakers (Resilience4j)
+  9. Advanced Configuration
+  For production, you would add:
 
-Distributed tracing (Sleuth/Zipkin)
+  Circuit breakers (Resilience4j)
 
-Security (OAuth2/JWT)
+  Distributed tracing (Sleuth/Zipkin)
 
-Docker/Kubernetes deployment files    
-    */
-    
+  Security (OAuth2/JWT)
+
+  Docker/Kubernetes deployment files
+     */
+
 }
 
 /*
@@ -219,7 +218,7 @@ java
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
-    
+
     @GetMapping
     public List<Account> getAccounts() {
         return List.of(
@@ -227,7 +226,7 @@ public class AccountController {
             new Account(2, "Checking", 500.00)
         );
     }
-    
+
     @GetMapping("/{id}")
     public Account getAccount(@PathVariable int id) {
         return new Account(id, "Savings", 1000.00);
@@ -253,7 +252,7 @@ java
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    
+
     @GetMapping
     public List<User> getUsers() {
         return List.of(
@@ -308,4 +307,4 @@ Distributed tracing (Sleuth/Zipkin)
 Security (OAuth2/JWT)
 
 Docker/Kubernetes deployment files
-*/
+ */

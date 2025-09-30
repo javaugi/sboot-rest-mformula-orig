@@ -7,29 +7,34 @@ package com.spring5.integration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.openqa.selenium.Cookie;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-
 
 @ContextConfiguration
 @SpringBootTest
 @TestPropertySource(locations = "classpath:applicationtest.properties")
 public abstract class ITBaseConfig {
+
     @Value("${com.ciminc.waitBetween}")
     public String waitBetween;
+
     @Value("${com.ciminc.testRootUrl}")
     public String testRootUrl;
+
     @Value("${com.ciminc.dashboardUrl}")
     public String dashboardUrl;
+
     @Value("${com.ciminc.activityUrl}")
     public String activityUrl;
+
     @Value("${com.ciminc.contextPath}")
     public String contextPath;
+
     @Value("${com.ciminc.testProfile}")
     public String testProfile;
 
@@ -37,8 +42,8 @@ public abstract class ITBaseConfig {
     Environment env;
 
     public ITBaseConfig() {
-    }    
-    
+    }
+
     @Before
     public void setUp() throws Exception {
         waitBetween = env.getProperty("com.ciminc.waitBetween");
@@ -58,13 +63,14 @@ public abstract class ITBaseConfig {
     public void addCookie() {
         java.util.Calendar cal = java.util.Calendar.getInstance();
         cal.add(java.util.Calendar.DATE, 2);
-        Cookie cookie = new Cookie.Builder("name", "value")
-                .domain("localhost")
-                .expiresOn(cal.getTime())
-                .isHttpOnly(true)
-                .isSecure(false)
-                .path(contextPath + dashboardUrl)
-                .build();
+        Cookie cookie
+                = new Cookie.Builder("name", "value")
+                        .domain("localhost")
+                        .expiresOn(cal.getTime())
+                        .isHttpOnly(true)
+                        .isSecure(false)
+                        .path(contextPath + dashboardUrl)
+                        .build();
     }
 
     @After
@@ -76,15 +82,13 @@ public abstract class ITBaseConfig {
     public void wait1second() {
         if ("true".equals(waitBetween)) {
             try {
-                //System.out.println("waitBetween=" + waitBetween);
+                // System.out.println("waitBetween=" + waitBetween);
                 Thread.sleep(1000);
             } catch (Exception e) {
             }
         }
-    }    
-    
-    public void runCleanup() {
-        
     }
-    
+
+    public void runCleanup() {
+    }
 }

@@ -7,10 +7,10 @@ package com.spring5.aicloud.genaihealthcare;
 import java.util.Map;
 
 /**
- *
  * @author javau
  */
 public interface LLMClient {
+
     /**
      * Ask the LLM a prompt and return a structured response. providerMetadata
      * should capture model name, version, temperature, promptTokens, etc.

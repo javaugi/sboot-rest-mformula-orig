@@ -9,16 +9,15 @@ import java.util.Arrays;
  * average, time complexity is O(n log(n)). The basic step of sorting an array
  * are as follows:
  *
+ * <p>
  * Select a pivot, normally the middle one From both ends, swap elements and
- * make left elements < pivot and all right > pivot Recursively sort left part
- * and right part
- *
+ * make left elements <
+ * pivot and all right > pivot Recursively sort left part and right part
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
-
 public class QuickSortExample {
 
     public static void main(String[] args) {
@@ -74,5 +73,4 @@ public class QuickSortExample {
             quickSort(arr, i, high);
         }
     }
-
 }

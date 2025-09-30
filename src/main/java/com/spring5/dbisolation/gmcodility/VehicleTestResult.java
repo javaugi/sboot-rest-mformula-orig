@@ -23,11 +23,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "VEHICLE_TEST_RESULTS")
 public class VehicleTestResult {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private long id;
-    
+
     private String testType;
     private String vehicleId;
     private LocalDate testDate;

@@ -8,7 +8,6 @@
 package com.patterns.behavioral.visitor;
 
 /**
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -16,5 +15,4 @@ package com.patterns.behavioral.visitor;
 public interface ItemElement {
 
     public int accept(ShoppingCartVisitor visitor);
-
 }

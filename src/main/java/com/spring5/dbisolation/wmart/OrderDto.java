@@ -23,10 +23,7 @@ public class OrderDto {
     BigDecimal amount;
     OrderStatus orderStatus;
 
-    public OrderDto(String orderId,
-        String storeId,
-        String status) {
-
+    public OrderDto(String orderId, String storeId, String status) {
     }
 
     public static OrderDto from(Order order) {

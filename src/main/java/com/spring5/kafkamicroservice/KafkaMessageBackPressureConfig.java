@@ -7,7 +7,7 @@ package com.spring5.kafkamicroservice;
 /*
 1. Scale Consumers Horizontally
 2. Increase Consumer Throughput
-3. Configure Appropriate Kafka Settings to handle backpressure  
+3. Configure Appropriate Kafka Settings to handle backpressure
 4. Implement Rate Limiting on Producer
 5. Implement Dead Letter Queue (DLQ) for Failed Messages
 6. Monitor and Auto-scale
@@ -21,34 +21,27 @@ Best Practices Summary
 5. Consider partitioning strategy - more partitions allow more parallel consumers
 6. Tune consumer configurations (fetch sizes, poll intervals, etc.)
 7. Use async processing where appropriate to improve throughput
-*/
+ */
 public class KafkaMessageBackPressureConfig {
-    
+
     private void scaleConsumerHorizontally() {
-        
     }
-    
+
     private void increaseConsumerThroughput() {
-        
     }
-    
+
     private void configKafkaHandleBackpressure() {
-        
     }
-    
+
     private void implementRateLimitingOnProducers() {
-        
     }
-    
+
     private void implementDLQForFailedMessages() {
-        
     }
-    
+
     private void monitorAndAutoScale() {
-        
-    }    
-    
+    }
+
     private void implementKafkaStreamForStatefulProcessing() {
-        
     }
 }

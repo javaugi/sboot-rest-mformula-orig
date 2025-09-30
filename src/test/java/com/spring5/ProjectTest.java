@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //@SpringBootTest
 @TestPropertySource(locations = {"classpath:application.properties", "classpath:applicationtest.properties"})
 public class ProjectTest {
+
     public static final Logger log = LoggerFactory.getLogger(ProjectTest.class);
 
     @Autowired
@@ -26,7 +26,7 @@ public class ProjectTest {
 
     @Value("${com.ciminc.testProfile}")
     public String testProfile;
-    
+
     @Value("${app.npi.registry.enabled}")
     public Boolean npiRegistryEnabled;
 

@@ -4,9 +4,8 @@
  */
 package com.spring5.payroll;
 
-//Time entry and tme-keeping, Billing and Invoice, Payroll, FinancialGL Nicroservices
+// Time entry and tme-keeping, Billing and Invoice, Payroll, FinancialGL Nicroservices
 public class TeakBaiProFinMicroserviceArchConfig {
-    
 }
 
 /*
@@ -20,9 +19,9 @@ Payroll             Calculate salaries, taxes, deductions           Spring Boot 
 Financial Reporting GL, P&L, tax filings                            Spring Boot + PostgreSQL
     Notifications       Alerts for payroll runs, invoice due dates      Spring Cloud Stream + Twilio
 API Gateway         Route requests, handle auth                     Spring Cloud Gateway
-*/
+ */
 
-/*
+ /*
 5. Example Workflow
     Timekeeping Service
     Employee submits timesheet → TimesheetApprovedEvent published to Kafka.
@@ -48,6 +47,6 @@ Complex billing                 Decorator + Facade                  Flexible pri
 High-volume payroll             CQRS + Spring Batch                 Scalable reads/writes
 Audit compliance                Event sourcing + ELK                Immutable transaction history
 
-This architecture ensures modularity, scalability, and regulatory compliance while leveraging Java’s strengths. 
+This architecture ensures modularity, scalability, and regulatory compliance while leveraging Java’s strengths.
     Start with bounded contexts (DDD) and incrementally decompose into microservices.
-*/
+ */

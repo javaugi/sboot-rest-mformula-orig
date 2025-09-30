@@ -24,52 +24,55 @@ public class CommunicationManager {
 
     public void startServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
-        executor.submit(() -> {
-            while (running) {
-                try {
-                    Socket clientSocket = serverSocket.accept();
-                    handleClient(clientSocket);
-                } catch (IOException e) {
-                    if (running) {
-                        e.printStackTrace();
+        executor.submit(
+                () -> {
+                    while (running) {
+                        try {
+                            Socket clientSocket = serverSocket.accept();
+                            handleClient(clientSocket);
+                        } catch (IOException e) {
+                            if (running) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 
     private void handleClient(Socket clientSocket) {
-        executor.submit(() -> {
-            try (InputStream is = clientSocket.getInputStream(); OutputStream os = clientSocket.getOutputStream()) {
+        executor.submit(
+                () -> {
+                    try (InputStream is = clientSocket.getInputStream(); OutputStream os = clientSocket.getOutputStream()) {
 
-                byte[] lengthBytes = new byte[4];
-                is.read(lengthBytes);
-                int length = ByteBuffer.wrap(lengthBytes).getInt();
+                        byte[] lengthBytes = new byte[4];
+                        is.read(lengthBytes);
+                        int length = ByteBuffer.wrap(lengthBytes).getInt();
 
-                byte[] encryptedData = new byte[length];
-                is.read(encryptedData);
+                        byte[] encryptedData = new byte[length];
+                        is.read(encryptedData);
 
-                SensorData data = secureChannel.decrypt(encryptedData);
-                // Process received data
-                System.out.println("handleClient data=" + data);
+                        SensorData data = secureChannel.decrypt(encryptedData);
+                        // Process received data
+                        System.out.println("handleClient data=" + data);
 
-                // Send acknowledgment
-                byte[] ack = "ACK".getBytes();
-                os.write(ack);
-                os.flush();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+                        // Send acknowledgment
+                        byte[] ack = "ACK".getBytes();
+                        os.write(ack);
+                        os.flush();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            clientSocket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
-    public void sendData(String host, int port, SensorData data) throws IOException, GeneralSecurityException {
+    public void sendData(String host, int port, SensorData data)
+            throws IOException, GeneralSecurityException {
         try (Socket socket = new Socket(host, port); OutputStream os = socket.getOutputStream()) {
 
             byte[] encrypted = secureChannel.encrypt(data);

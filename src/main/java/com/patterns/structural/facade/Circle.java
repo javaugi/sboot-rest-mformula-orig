@@ -7,12 +7,7 @@
  */
 package com.patterns.structural.facade;
 
-import com.patterns.structural.decorator.*;
-import com.patterns.structural.composite.*;
-
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

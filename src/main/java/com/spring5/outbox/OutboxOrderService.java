@@ -15,7 +15,7 @@ public class OutboxOrderService {
     private OutboxOrderRepository orderRepository;
     @Autowired
     private OutboxRepository outboxRepository;
-    @Autowired 
+    @Autowired
     private OutboxEventPublisher publisher;
 
     @Transactional

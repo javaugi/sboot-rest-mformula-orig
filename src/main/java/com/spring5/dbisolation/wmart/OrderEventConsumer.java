@@ -4,7 +4,7 @@
  */
 package com.spring5.dbisolation.wmart;
 
-//import static jakarta.persistence.GenerationType.UUID;
+// import static jakarta.persistence.GenerationType.UUID;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
@@ -25,8 +25,10 @@ public class OrderEventConsumer {
 
     @KafkaListener(topics = "order-events", groupId = "orders-group")
     public void listen(ConsumerRecord<String, String> record, Acknowledgment ack) {
-        String messageId = Optional.ofNullable(record.headers().lastHeader("messageId"))
-            .map(h -> new String(h.value(), StandardCharsets.UTF_8)).orElse(UUID.randomUUID().toString());
+        String messageId
+                = Optional.ofNullable(record.headers().lastHeader("messageId"))
+                        .map(h -> new String(h.value(), StandardCharsets.UTF_8))
+                        .orElse(UUID.randomUUID().toString());
 
         if (!idempotencyService.claim("msg:" + messageId, "processing", Duration.ofMinutes(10))) {
             // duplicate — skip

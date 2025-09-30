@@ -7,6 +7,7 @@ package com.spring5.audit;
 import java.util.List;
 
 public class OrderReceivedEvent {
+
     private String orderId;
     private List<AuditOrder> items;
 
@@ -25,6 +26,4 @@ public class OrderReceivedEvent {
     public void setItems(List<AuditOrder> items) {
         this.items = items;
     }
-    
-    
 }

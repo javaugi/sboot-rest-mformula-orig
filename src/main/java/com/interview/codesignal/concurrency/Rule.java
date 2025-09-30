@@ -7,10 +7,11 @@ package com.interview.codesignal.concurrency;
 import java.util.Set;
 
 /**
- *
  * @author javaugi
  */
 public interface Rule {
+
     boolean evaluate(Set<Fact> facts);
+
     String getConclusion();
 }

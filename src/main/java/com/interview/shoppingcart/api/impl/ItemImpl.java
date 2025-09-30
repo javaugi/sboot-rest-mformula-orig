@@ -7,13 +7,10 @@
  */
 package com.interview.shoppingcart.api.impl;
 
+import com.interview.shoppingcart.api.Item;
 import java.util.Objects;
 
-import com.interview.shoppingcart.api.Item;
-
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -83,5 +80,4 @@ public class ItemImpl implements Item {
     public String toString() {
         return "Item{" + "name=" + name + '}';
     }
-
 }

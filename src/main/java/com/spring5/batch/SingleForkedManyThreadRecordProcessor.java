@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- *
  * @author javaugi
  */
 public class SingleForkedManyThreadRecordProcessor {
@@ -38,13 +37,14 @@ public class SingleForkedManyThreadRecordProcessor {
             int start = i * recordsPerThread;
             int end = start + recordsPerThread + (i == WORKER_THREADS - 1 ? remainingRecords : 0);
 
-            executor.submit(() -> {
-                try {
-                    processRecords(start, end);
-                } finally {
-                    latch.countDown();
-                }
-            });
+            executor.submit(
+                    () -> {
+                        try {
+                            processRecords(start, end);
+                        } finally {
+                            latch.countDown();
+                        }
+                    });
         }
 
         // Wait for all threads to complete

@@ -5,13 +5,14 @@
 package com.spring5.rediscache;
 
 /**
- *
  * @author javaugi
  */
 public class FileNotFoundException extends Exception {
+
     public FileNotFoundException() {
         super();
     }
+
     public FileNotFoundException(String message) {
         super(message);
     }

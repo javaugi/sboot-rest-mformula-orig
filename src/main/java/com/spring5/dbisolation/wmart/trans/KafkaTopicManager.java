@@ -4,7 +4,6 @@
  */
 package com.spring5.dbisolation.wmart.trans;
 
-import static java.lang.Math.log;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,8 @@ public class KafkaTopicManager {
         this.adminClient = AdminClient.create(props);
     }
 
-    public void createStorePartitionedTopic(String topicName, int partitions, short replicationFactor) {
+    public void createStorePartitionedTopic(
+            String topicName, int partitions, short replicationFactor) {
         NewTopic newTopic = new NewTopic(topicName, partitions, replicationFactor);
 
         Map<String, String> configs = new HashMap<>();
@@ -54,4 +54,4 @@ Key Benefits of This Implementation:
     Monitoring: Comprehensive logging and metrics
     Error Handling: Graceful error recovery without blocking entire partitions
     Performance: Batch processing and async operations
-*/
+ */

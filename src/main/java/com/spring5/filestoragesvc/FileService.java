@@ -10,14 +10,14 @@ package com.spring5.filestoragesvc;
 import java.io.InputStream;
 
 /**
- *
  * @author bill
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public interface FileService {
 
-    public boolean storeFile(String guid, String fileName, String contentType, InputStream inputStream);
+    public boolean storeFile(
+            String guid, String fileName, String contentType, InputStream inputStream);
 
     public boolean deleteFile(String guid);
 
@@ -28,5 +28,4 @@ public interface FileService {
     public String getFilename(String guid);
 
     public boolean fileExists(String guid);
-
 }

@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
- *
  * @author javau
  */
 public class W5MonitorMaintOraclePerformanceMonitor {
@@ -25,7 +24,8 @@ public class W5MonitorMaintOraclePerformanceMonitor {
     }
 
     private void checkForLockContention() {
-        String sql = """
+        String sql
+                = """
             SELECT sid, serial#, username,
                    seconds_in_wait, blocking_session
             FROM v$session
@@ -33,15 +33,17 @@ public class W5MonitorMaintOraclePerformanceMonitor {
             AND seconds_in_wait > 300
             """;
 
-        jdbcTemplate.query(sql, rs -> {
-            // Alert on long-running locks
-            alertLockContention(rs.getString("username"),
-                rs.getInt("seconds_in_wait"));
-        });
+        jdbcTemplate.query(
+                sql,
+                rs -> {
+                    // Alert on long-running locks
+                    alertLockContention(rs.getString("username"), rs.getInt("seconds_in_wait"));
+                });
     }
 
     private void checkTablespaceUsage() {
-        String sql = """
+        String sql
+                = """
             SELECT tablespace_name,
                    used_percent,
                    autoextensible
@@ -49,21 +51,20 @@ public class W5MonitorMaintOraclePerformanceMonitor {
             WHERE used_percent > 90
             """;
 
-        jdbcTemplate.query(sql, rs -> {
-            // Alert on space issues
-            alertTablespaceFull(rs.getString("tablespace_name"),
-                rs.getDouble("used_percent"));
-        });
+        jdbcTemplate.query(
+                sql,
+                rs -> {
+                    // Alert on space issues
+                    alertTablespaceFull(rs.getString("tablespace_name"), rs.getDouble("used_percent"));
+                });
     }
 
     private void checkForLongRunningQueries() {
-
     }
 
     private void alertLockContention(String username, int waittime) {
     }
 
     private void alertTablespaceFull(String tablespaceName, double percent) {
-
     }
 }

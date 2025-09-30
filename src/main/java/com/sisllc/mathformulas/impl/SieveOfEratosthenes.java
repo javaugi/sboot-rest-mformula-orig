@@ -8,10 +8,11 @@ import java.util.List;
  * Sieve Of Eratosthenes This java example shows the calculation of prime
  * numbers with the Sieve of Eratosthenes.
  *
- *
+ * <p>
  * In mathematics, the sieve of Eratosthenes is a simple, ancient algorithm for
  * finding all prime numbers up to any given limit.
  *
+ * <p>
  * It does so by iteratively marking as composite (i.e., not prime) the
  * multiples of each prime, starting with the first prime number, 2. The
  * multiples of a given prime are generated as a sequence of numbers starting
@@ -20,7 +21,6 @@ import java.util.List;
  * sequentially test each candidate number for divisibility by each prime.[2]
  *
  * @author david
- *
  */
 public class SieveOfEratosthenes {
 
@@ -39,7 +39,7 @@ public class SieveOfEratosthenes {
         boolean[] prime = new boolean[n + 1];
         init(prime);
 
-        //starts with 2 
+        // starts with 2
         for (int i = 2; i < n; i++) {
             if (prime[i]) {
                 returnValue.add(i);

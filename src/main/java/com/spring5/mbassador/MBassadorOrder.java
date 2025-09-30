@@ -4,7 +4,6 @@
  */
 package com.spring5.mbassador;
 
-import com.spring5.audit.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +29,6 @@ public class MBassadorOrder implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     double quantity;
 }

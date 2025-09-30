@@ -19,5 +19,4 @@ public class Q32Main {
             System.out.println("New min is " + stack.min() + ", " + stack2.min());
         }
     }
-
 }

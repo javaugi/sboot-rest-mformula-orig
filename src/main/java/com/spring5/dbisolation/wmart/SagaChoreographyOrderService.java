@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 
 /**
- *
  * @author javau
  */
 public class SagaChoreographyOrderService {
+
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
     @Autowired

@@ -7,10 +7,10 @@ package com.interview.codesignal.concurrency;
 import java.util.Set;
 
 /**
- *
  * @author javaugi
  */
 public class PossibleCommonColdRule implements Rule {
+
     @Override
     public boolean evaluate(Set<Fact> facts) {
         boolean hasSoreThroat = false;

@@ -25,5 +25,4 @@ public class RiskScoreResponse {
     private List<HccContribution> hccContributions;
     private List<InteractionFactor> interactionFactors;
     private DemographicFactor demographicFactors;
-
 }

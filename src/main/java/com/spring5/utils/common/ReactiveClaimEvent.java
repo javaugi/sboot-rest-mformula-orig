@@ -28,12 +28,17 @@ public class ReactiveClaimEvent {
     ClaimStatus status;
     String failureReason;
 
-
     public enum ClaimType {
-        PHYSICIAN, HOSPITAL, OUTPATIENT
+        PHYSICIAN,
+        HOSPITAL,
+        OUTPATIENT
     }
 
     public enum ClaimStatus {
-        SUBMITTED, VALIDATED, APPROVED, REJECTED, PROCESSED
+        SUBMITTED,
+        VALIDATED,
+        APPROVED,
+        REJECTED,
+        PROCESSED
     }
 }

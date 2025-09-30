@@ -5,12 +5,11 @@
 package com.spring5.aicloud;
 
 /**
- *
  * @author javaugi
  */
 public class SpringSecCloudProviders {
-    
 }
+
 /*
 OAuth2/JWT with Spring Security: Cloud Provider Comparison & Implementation
 Cloud Provider Comparison for OAuth2/JWT
@@ -79,7 +78,7 @@ public class SecurityConfig {
 
     @Value("${aws.cognito.logoutUrl}")
     private String logoutUrl;
-    
+
     @Value("${aws.cognito.clientId}")
     private String clientId;
 
@@ -99,7 +98,7 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutSuccessHandler(logoutSuccessHandler())
             );
-        
+
         return http.build();
     }
 
@@ -113,10 +112,10 @@ public class SecurityConfig {
         return new SimpleUrlLogoutSuccessHandler() {
             @Override
             public void onLogoutSuccess(
-                HttpServletRequest request, 
-                HttpServletResponse response, 
+                HttpServletRequest request,
+                HttpServletResponse response,
                 Authentication authentication) throws IOException {
-                
+
                 String redirectUrl = String.format(
                     "%s?client_id=%s&logout_uri=%s",
                     logoutUrl,
@@ -132,10 +131,10 @@ public class SecurityConfig {
 java
 @Configuration
 public class JwtConfig {
-    
+
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuerUri;
-    
+
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetUri;
 
@@ -144,7 +143,7 @@ public class JwtConfig {
         JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
         converter.setAuthoritiesClaimName("cognito:groups");
         converter.setAuthorityPrefix("ROLE_");
-        
+
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
         jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
         return jwtConverter;
@@ -242,4 +241,4 @@ Mobile Support:
 All providers have SDKs for Android/iOS
 
 Cognito has Amplify libraries for easier integration
-*/
+ */

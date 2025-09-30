@@ -24,54 +24,42 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @NamedQueries({
-    @NamedQuery(
-        name = "Employee.findByDepartment",
-        query = "FROM Employee WHERE department = :dept"
-    ),
-    @NamedQuery(
-        name = "Employee.countAll",
-        query = "SELECT COUNT(*) FROM Employee"
-    )
+    @NamedQuery(name = "Employee.findByDepartment", query = "FROM Employee WHERE department = :dept"),
+    @NamedQuery(name = "Employee.countAll", query = "SELECT COUNT(*) FROM Employee")
 })
 @NamedEntityGraphs({
     @NamedEntityGraph(
-        name = "employee.withDepartmentAndProfile",
-        attributeNodes = {
-            @NamedAttributeNode("department"),
-            @NamedAttributeNode("profile")
-        }
-    ),
+            name = "employee.withDepartmentAndProfile",
+            attributeNodes = {
+                @NamedAttributeNode("department"),
+                @NamedAttributeNode("profile")}),
     @NamedEntityGraph(
-        name = "employee.withAllRelations",
-        attributeNodes = {
-            @NamedAttributeNode("department"),
-            @NamedAttributeNode("profile"),
-            @NamedAttributeNode(value = "projects", subgraph = "projectSubgraph")
-        },
-        subgraphs = {
-            @NamedSubgraph(
-                name = "projectSubgraph",
-                attributeNodes = {
-                    @NamedAttributeNode("tasks"),
-                    @NamedAttributeNode("teamMembers")
-                }
-            )
-        }
-    )
+            name = "employee.withAllRelations",
+            attributeNodes = {
+                @NamedAttributeNode("department"),
+                @NamedAttributeNode("profile"),
+                @NamedAttributeNode(value = "projects", subgraph = "projectSubgraph")
+            },
+            subgraphs = {
+                @NamedSubgraph(
+                        name = "projectSubgraph",
+                        attributeNodes = {
+                            @NamedAttributeNode("tasks"),
+                            @NamedAttributeNode("teamMembers")})
+            })
 })
 public class Employee implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     private String name;
     private String firstName;
     private String lastName;
@@ -82,12 +70,12 @@ public class Employee implements java.io.Serializable {
     private boolean nightShift;
     private Region region;
     double hoursWorked;
-    
+
     // ManyToOne with Eager loading (default for single-valued associations)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;
-    
+
     @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private EmployeeProfile profile;    
+    private EmployeeProfile profile;
 }

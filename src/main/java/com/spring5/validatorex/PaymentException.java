@@ -5,10 +5,10 @@
 package com.spring5.validatorex;
 
 /**
- *
  * @author javaugi
  */
 public class PaymentException extends RuntimeException {
+
     public PaymentException(String message) {
         super(message);
     }

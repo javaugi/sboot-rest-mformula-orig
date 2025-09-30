@@ -27,7 +27,6 @@ Transaction Best Practices
     Monitor for deadlocks - Set up proper logging
     Consider alternative approaches - Like event sourcing for high-contention scenarios
  */
-
 @Service
 @RequiredArgsConstructor
 public class MedicalDocumentService {
@@ -49,128 +48,145 @@ public class MedicalDocumentService {
         return Mono.just("Test of highIsolationOperation").then();
     }
 
-    //Spring Data R2DBC will automatically handle version checks during updates: if the @Version is added
-    //When you save an entity, if the version has changed, it will throw an OptimisticLockingFailureException:
+    // Spring Data R2DBC will automatically handle version checks during updates: if the @Version is
+    // added
+    // When you save an entity, if the version has changed, it will throw an
+    // OptimisticLockingFailureException:
     @Transactional
     public Mono<MedicalDocument> updateDocument(String id, String newContent) {
-        return repository.findById(id)
-            .flatMap(doc -> {
-                doc.setTextContent(newContent);
-                return repository.save(doc);
-            })
-            .onErrorResume(OptimisticLockingFailureException.class, ex
-                -> Mono.error(new RuntimeException("Document was modified by another transaction"))
-            );
+        return repository
+                .findById(id)
+                .flatMap(
+                        doc -> {
+                            doc.setTextContent(newContent);
+                            return repository.save(doc);
+                        })
+                .onErrorResume(
+                        OptimisticLockingFailureException.class,
+                        ex -> Mono.error(new RuntimeException("Document was modified by another transaction")));
     }
 
-    //2. Pessimistic Locking with R2DBC
-    //  Pessimistic locking requires custom SQL since R2DBC repositories don't directly support it. Here's how to implement it:
+    // 2. Pessimistic Locking with R2DBC
+    //  Pessimistic locking requires custom SQL since R2DBC repositories don't directly support it.
+    // Here's how to implement it:
     //  Custom Repository Method
     @Transactional
     public Mono<MedicalDocument> updateWithPessimisticLock(String id, String newContent) {
-        return repository.findByIdForUpdate(id)
-            .switchIfEmpty(Mono.error(new RuntimeException("Document not found or locked")))
-            .flatMap(doc -> {
-                doc.setTextContent(newContent);
-                return repository.save(doc);
-            });
+        return repository
+                .findByIdForUpdate(id)
+                .switchIfEmpty(Mono.error(new RuntimeException("Document not found or locked")))
+                .flatMap(
+                        doc -> {
+                            doc.setTextContent(newContent);
+                            return repository.save(doc);
+                        });
     }
 
     // Alternative using DatabaseClient for more control
     @Transactional
     public Mono<MedicalDocument> pessimisticUpdate(String id, String newContent) {
-        return databaseClient.sql("""
+        return databaseClient
+                .sql(
+                        """
                 SELECT * FROM medical_documents
                 WHERE id = :id
                 FOR UPDATE
                 """)
-            .bind("id", id)
-            .mapProperties(MedicalDocument.class)
-            .one()
-            .flatMap(doc -> {
-                doc.setTextContent(newContent);
-                return repository.save(doc);
-            })
-            .onErrorResume(R2dbcException.class, ex
-                -> Mono.error(new RuntimeException("Failed to acquire lock: " + ex.getMessage()))
-            );
+                .bind("id", id)
+                .mapProperties(MedicalDocument.class)
+                .one()
+                .flatMap(
+                        doc -> {
+                            doc.setTextContent(newContent);
+                            return repository.save(doc);
+                        })
+                .onErrorResume(
+                        R2dbcException.class,
+                        ex -> Mono.error(new RuntimeException("Failed to acquire lock: " + ex.getMessage())));
     }
 
     /*
-    4. Locking Strategies Compared
-        Optimistic Locking
-            Best for: High contention scenarios with few conflicts
-            Pros: Better performance, no blocking
-            Cons: Requires retry logic for conflicts
+  4. Locking Strategies Compared
+      Optimistic Locking
+          Best for: High contention scenarios with few conflicts
+          Pros: Better performance, no blocking
+          Cons: Requires retry logic for conflicts
      */
     @Transactional
     public Mono<MedicalDocument> optimisticUpdate(String id, String content) {
-        return repository.findById(id)
-            .flatMap(doc -> {
-                doc.setTextContent(content);
-                return repository.save(doc);
-            })
-            .retryWhen(Retry.backoff(3, Duration.ofMillis(100)))
-            .onErrorResume(OptimisticLockingFailureException.class, ex
-                -> Mono.error(new RuntimeException("Update failed after retries"))
-            );
+        return repository
+                .findById(id)
+                .flatMap(
+                        doc -> {
+                            doc.setTextContent(content);
+                            return repository.save(doc);
+                        })
+                .retryWhen(Retry.backoff(3, Duration.ofMillis(100)))
+                .onErrorResume(
+                        OptimisticLockingFailureException.class,
+                        ex -> Mono.error(new RuntimeException("Update failed after retries")));
     }
 
     /*
-    Pessimistic Locking
-        Best for: Critical sections where you must prevent concurrent modifications
-        Pros: Guarantees exclusive access
-        Cons: Can cause deadlocks, reduces concurrency
+  Pessimistic Locking
+      Best for: Critical sections where you must prevent concurrent modifications
+      Pros: Guarantees exclusive access
+      Cons: Can cause deadlocks, reduces concurrency
      */
     @Transactional
     public Mono<MedicalDocument> processCriticalUpdate(String id) {
-        return repository.findByIdForUpdate(id)
-            .flatMap(doc -> {
-                // Critical section
-                performCriticalOperation(doc);
-                return repository.save(doc);
-            })
-            .timeout(Duration.ofSeconds(5))
-            .onErrorResume(e -> {
-                // Handle timeout or lock acquisition failure
-                return Mono.error(new RuntimeException("Operation timed out"));
-            });
+        return repository
+                .findByIdForUpdate(id)
+                .flatMap(
+                        doc -> {
+                            // Critical section
+                            performCriticalOperation(doc);
+                            return repository.save(doc);
+                        })
+                .timeout(Duration.ofSeconds(5))
+                .onErrorResume(
+                        e -> {
+                            // Handle timeout or lock acquisition failure
+                            return Mono.error(new RuntimeException("Operation timed out"));
+                        });
     }
 
     private void performCriticalOperation(MedicalDocument doc) {
-
     }
 
     /*
-    5. Handling Lock Timeouts
-        Configure lock timeouts at the database level:
-            -- Set lock timeout to 5 seconds
-            ALTER DATABASE your_database SET lock_timeout = '5s';
-        Or handle them in your application:
+  5. Handling Lock Timeouts
+      Configure lock timeouts at the database level:
+          -- Set lock timeout to 5 seconds
+          ALTER DATABASE your_database SET lock_timeout = '5s';
+      Or handle them in your application:
      */
     @Transactional
     public Mono<MedicalDocument> processWithTimeout(String id) {
-        return databaseClient.sql("SET LOCAL lock_timeout = '5s'").then()
-            .then(repository.findByIdForUpdate(id))
-            .flatMap(doc -> {
-                // Process document
-                return repository.save(doc);
-            })
-            .onErrorResume(ex -> {
-                //if (ex instanceof PostgresqlException) {
-                //PostgresqlException pgEx = (PostgresqlException) ex;
-            if (ex instanceof R2dbcException) {
-                R2dbcException pgEx = (R2dbcException) ex;
-                if ("55P03".equals(pgEx.getSqlState())) { // lock_not_available
-                    return Mono.error(new RuntimeException("Could not acquire lock in time"));
-                }
-            } else if (ex instanceof R2dbcTransientResourceException) {
-                return Mono.error(new RuntimeException("Database operation timed out"));
-            }
-            return Mono.error(ex);
-            });
+        return databaseClient
+                .sql("SET LOCAL lock_timeout = '5s'")
+                .then()
+                .then(repository.findByIdForUpdate(id))
+                .flatMap(
+                        doc -> {
+                            // Process document
+                            return repository.save(doc);
+                        })
+                .onErrorResume(
+                        ex -> {
+                            // if (ex instanceof PostgresqlException) {
+                            // PostgresqlException pgEx = (PostgresqlException) ex;
+                            if (ex instanceof R2dbcException) {
+                                R2dbcException pgEx = (R2dbcException) ex;
+                                if ("55P03".equals(pgEx.getSqlState())) { // lock_not_available
+                                    return Mono.error(new RuntimeException("Could not acquire lock in time"));
+                                }
+                            } else if (ex instanceof R2dbcTransientResourceException) {
+                                return Mono.error(new RuntimeException("Database operation timed out"));
+                            }
+                            return Mono.error(ex);
+                        });
     }
-
 }
 
 /*

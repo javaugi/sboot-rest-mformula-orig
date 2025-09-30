@@ -15,17 +15,21 @@ import org.slf4j.LoggerFactory;
  * Facade Pattern defines a higher-level interface that makes the subsystem
  * easier to use.
  *
+ * <p>
  * Facade pattern hides the complexities of the system and provides an interface
  * to the client using which the client can access the system. This type of
  * design pattern comes under structural pattern as this pattern adds an
  * interface to existing system to hide its complexities.
  *
+ * <p>
  * This pattern involves a single class which provides simplified methods
  * required by client and delegates calls to methods of existing system classes.
  *
+ * <p>
  * Provide a unified interface to a set of interfaces in a subsystem. Façade
  * defines a higher-level interface that makes the subsystem easier to use.
  *
+ * <p>
  * Where Would I Use This Pattern? As the concept behind facade is to simplify
  * an interface, service oriented architectures make use of the facade pattern.
  * For example, in web services, one web service might provide access to a
@@ -72,8 +76,9 @@ public class FacadePattern {
     }
 
     public static void testDatabaseHelper() {
-        DatabaseHelperFacade.generateReport(DatabaseHelperFacade.DBTypes.MYSQL, DatabaseHelperFacade.ReportTypes.HTML);
-        DatabaseHelperFacade.generateReport(DatabaseHelperFacade.DBTypes.ORACLE, DatabaseHelperFacade.ReportTypes.PDF);
+        DatabaseHelperFacade.generateReport(
+                DatabaseHelperFacade.DBTypes.MYSQL, DatabaseHelperFacade.ReportTypes.HTML);
+        DatabaseHelperFacade.generateReport(
+                DatabaseHelperFacade.DBTypes.ORACLE, DatabaseHelperFacade.ReportTypes.PDF);
     }
-
 }

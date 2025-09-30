@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -19,7 +17,8 @@ public class BTreePrinter {
         printNodeInternal(Collections.singletonList(root), 1, maxLevel);
     }
 
-    private static <T extends Comparable<?>> void printNodeInternal(List<TreeNode> nodes, int level, int maxLevel) {
+    private static <T extends Comparable<?>> void printNodeInternal(
+            List<TreeNode> nodes, int level, int maxLevel) {
         if (nodes.isEmpty() || BTreePrinter.isAllElementsNull(nodes)) {
             return;
         }
@@ -101,5 +100,4 @@ public class BTreePrinter {
 
         return true;
     }
-
 }

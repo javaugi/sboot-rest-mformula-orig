@@ -18,9 +18,9 @@ public class LargestRectangleOfLettersRowColumnOfWord {
     }
 
     /* This function finds a rectangle of letters of the largest
-	 * possible area (length x breadth) such that every row forms a
-	 * word (reading left to right) from the list and every column
-	 * forms a word (reading top to bottom) from the list.
+   * possible area (length x breadth) such that every row forms a
+   * word (reading left to right) from the list and every column
+   * forms a word (reading top to bottom) from the list.
      */
     public Rectangle maxRectangle() {
         // The dimensions of the largest possible rectangle.
@@ -47,11 +47,11 @@ public class LargestRectangleOfLettersRowColumnOfWord {
     }
 
     /* This function takes the length and height of a rectangle as
-	 * arguments. It tries to form a rectangle of the given length and
-	 * height using words of the specified length as its rows, in which
-	 * words whose length is the specified height form the columns. It
-	 * returns the rectangle so formed, and null if such a rectangle
-	 * cannot be formed.
+   * arguments. It tries to form a rectangle of the given length and
+   * height using words of the specified length as its rows, in which
+   * words whose length is the specified height form the columns. It
+   * returns the rectangle so formed, and null if such a rectangle
+   * cannot be formed.
      */
     private Rectangle makeRectangle(int length, int height) {
         if (groupList[length - 1] == null || groupList[height - 1] == null) {
@@ -64,16 +64,15 @@ public class LargestRectangleOfLettersRowColumnOfWord {
         return makePartialRectangle(length, height, new Rectangle(length));
     }
 
-
     /* This function recursively tries to form a rectangle with words
-	 * of length l from the dictionary as rows and words of length h
-	 * from the dictionary as columns. To do so, we start with an empty
-	 * rectangle and add in a word with length l as the first row. We
-	 * then check the trie of words of length h to see if each partial
-	 * column is a prefix of a word with length h. If so we branch
-	 * recursively and check the next word till we've formed a complete
-	 * rectangle. When we have a complete rectangle check if every
-	 * column is a word in the dictionary.
+   * of length l from the dictionary as rows and words of length h
+   * from the dictionary as columns. To do so, we start with an empty
+   * rectangle and add in a word with length l as the first row. We
+   * then check the trie of words of length h to see if each partial
+   * column is a prefix of a word with length h. If so we branch
+   * recursively and check the next word till we've formed a complete
+   * rectangle. When we have a complete rectangle check if every
+   * column is a word in the dictionary.
      */
     private Rectangle makePartialRectangle(int l, int h, Rectangle rectangle) {
 
@@ -108,7 +107,8 @@ public class LargestRectangleOfLettersRowColumnOfWord {
 
     // Test harness.
     public static void main(String[] args) {
-        LargestRectangleOfLettersRowColumnOfWord dict = new LargestRectangleOfLettersRowColumnOfWord(AssortedMethods.getListOfWords());
+        LargestRectangleOfLettersRowColumnOfWord dict
+                = new LargestRectangleOfLettersRowColumnOfWord(AssortedMethods.getListOfWords());
         Rectangle rect = dict.maxRectangle();
         if (rect != null) {
             rect.print();
@@ -116,5 +116,4 @@ public class LargestRectangleOfLettersRowColumnOfWord {
             System.out.println("No rectangle exists");
         }
     }
-
 }

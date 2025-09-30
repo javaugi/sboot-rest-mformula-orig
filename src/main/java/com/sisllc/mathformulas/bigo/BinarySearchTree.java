@@ -16,7 +16,6 @@ public class BinarySearchTree {
         public String toString() {
             return "Node [key=" + key + "]";
         }
-
     }
 
     Node root;
@@ -58,7 +57,7 @@ public class BinarySearchTree {
     }
 
     public static void main(String[] args) {
-        //*
+        // *
         Integer[] values = {2, 5, 20, 15, 25, 35, 38, 49, 65};
         System.out.println("" + values);
 
@@ -97,5 +96,4 @@ public class BinarySearchTree {
 
         return search(root.right, key);
     }
-
 }

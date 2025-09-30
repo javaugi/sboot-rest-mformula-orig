@@ -5,8 +5,6 @@
 package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import static jakarta.persistence.GenerationType.UUID;
-//import static java.lang.Math.log;
 import java.time.Duration;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -34,15 +32,15 @@ public class VeriskDxcgClient {
     @Value("${verisk.dxcg.api.secret}")
     private String apiSecret;
 
-    public VeriskDxcgClient(RestTemplateBuilder restTemplateBuilder,
-        ObjectMapper objectMapper) {
+    public VeriskDxcgClient(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.restTemplate = restTemplateBuilder
-            .rootUri(baseUrl)
-            .additionalInterceptors(new AuthInterceptor())
-            .connectTimeout(Duration.ofSeconds(30))
-            .readTimeout(Duration.ofSeconds(60))
-            .build();
+        this.restTemplate
+                = restTemplateBuilder
+                        .rootUri(baseUrl)
+                        .additionalInterceptors(new AuthInterceptor())
+                        .connectTimeout(Duration.ofSeconds(30))
+                        .readTimeout(Duration.ofSeconds(60))
+                        .build();
     }
 
     /**
@@ -50,11 +48,8 @@ public class VeriskDxcgClient {
      */
     public RiskScoreResponse submitRiskCalculation(RiskCalculationRequest request) {
         try {
-            ResponseEntity<RiskScoreResponse> response = restTemplate.postForEntity(
-                "/risk/calculate",
-                request,
-                RiskScoreResponse.class
-            );
+            ResponseEntity<RiskScoreResponse> response
+                    = restTemplate.postForEntity("/risk/calculate", request, RiskScoreResponse.class);
 
             return response.getBody();
         } catch (HttpClientErrorException e) {
@@ -67,17 +62,16 @@ public class VeriskDxcgClient {
      * Batch risk score calculation
      */
     public BatchRiskResponse submitBatchRiskCalculation(List<RiskCalculationRequest> requests) {
-        BatchRiskRequest batchRequest = BatchRiskRequest.builder()
-            .requests(requests)
-            .batchId(java.util.UUID.randomUUID().toString())
-            .build();
+        BatchRiskRequest batchRequest
+                = BatchRiskRequest.builder()
+                        .requests(requests)
+                        .batchId(java.util.UUID.randomUUID().toString())
+                        .build();
 
         try {
-            ResponseEntity<BatchRiskResponse> response = restTemplate.postForEntity(
-                "/risk/batch/calculate",
-                batchRequest,
-                BatchRiskResponse.class
-            );
+            ResponseEntity<BatchRiskResponse> response
+                    = restTemplate.postForEntity(
+                            "/risk/batch/calculate", batchRequest, BatchRiskResponse.class);
 
             return response.getBody();
         } catch (Exception e) {
@@ -95,5 +89,4 @@ public class VeriskDxcgClient {
             throw new DxcgIntegrationException("Failed to get model info", e);
         }
     }
-
 }

@@ -7,7 +7,7 @@ package com.interview.gmprep;
 import lombok.extern.slf4j.Slf4j;
 
 /*
-This problem appears to be about finding the minimum cost to assemble a product when you can switch between two assembly 
+This problem appears to be about finding the minimum cost to assemble a product when you can switch between two assembly
     lines (A and B), with each switch having a cost (X for A→B and Y for B→A). Here's a dynamic programming solution:
 
 Problem Understanding:
@@ -18,15 +18,35 @@ Problem Understanding:
  */
 @Slf4j
 public class AssemblyLineParallelStationsWithFixedTransfer {
-    
-    private static final AssemblyLineParallelStationsWithFixedTransfer main = new AssemblyLineParallelStationsWithFixedTransfer();
-    
+
+    private static final AssemblyLineParallelStationsWithFixedTransfer main
+            = new AssemblyLineParallelStationsWithFixedTransfer();
+
     public static void main(String[] args) {
-        int[] A = {5,3,4,8,9,12,7,4};
+        int[] A = {5, 3, 4, 8, 9, 12, 7, 4};
         int X = 8;
-        int[] B = {3,7,5,10,8,3,7,3};
+        int[] B = {3, 7, 5, 10, 8, 3, 7, 3};
         int Y = 4;
-        log.info("1 The best solution {}", main.solutionOptimized(A, B, X, Y));
+        log.info("1 The solution {}", main.solution(A, B, X, Y));
+        log.info("2 The solutionOptimized {}", main.solutionOptimized(A, B, X, Y));
+        log.info("3 The solutionOptimizedMy {}", main.solutionOptimizedMy(A, B, X, Y));
+    }
+
+    public int solutionOptimizedMy(int[] A, int[] B, int X, int Y) {
+        if (A == null || B == null || A.length != B.length || A.length == 0) {
+            return 0;
+        }
+
+        int prevA = A[0];
+        int prevB = B[0];
+
+        for (int i = 1; i < A.length; i++) {
+            prevA = A[i] + Math.min(prevA, prevB + Y);
+            prevB = B[i] + Math.min(prevB, prevA + X);
+        }
+
+        log.info("solutionOptimizedMy The best A {} B {}", prevA, prevB);
+        return Math.min(prevA, prevB);
     }
 
     public int solutionOptimized(int[] A, int[] B, int X, int Y) {
@@ -45,10 +65,10 @@ public class AssemblyLineParallelStationsWithFixedTransfer {
             prevB = currB;
         }
 
-        log.info("The best A {} B {}", prevA, prevB);
+        log.info("solutionOptimized The best A {} B {}", prevA, prevB);
         return Math.min(prevA, prevB);
     }
-    
+
     public int solution(int[] A, int[] B, int X, int Y) {
         if (A == null || B == null || A.length != B.length || A.length == 0) {
             return 0; // or throw exception based on requirements
@@ -75,6 +95,7 @@ public class AssemblyLineParallelStationsWithFixedTransfer {
         }
 
         // The answer is the minimum of last station in A or B
+        log.info("solutionOptimizedMy The best A {} B {}", dpA[n - 1], dpB[n - 1]);
         return Math.min(dpA[n - 1], dpB[n - 1]);
     }
 }

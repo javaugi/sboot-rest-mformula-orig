@@ -4,11 +4,11 @@ package com.sisllc.mathformulas.impl;
  * Floyd's triangle is a right-angled triangular array of natural numbers, used
  * in computer science education.
  *
+ * <p>
  * It is defined by filling the rows of the triangle with consecutive numbers,
  * starting with a 1 in the top left corner.
  *
  * @author david
- *
  */
 public class FloydsTriangle {
 
@@ -29,5 +29,4 @@ public class FloydsTriangle {
             System.out.println();
         }
     }
-
 }

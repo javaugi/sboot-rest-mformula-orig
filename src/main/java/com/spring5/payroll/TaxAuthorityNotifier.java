@@ -8,6 +8,7 @@ import com.spring5.empbilpayroll.Employee;
 import com.spring5.empbilpayroll.PayrollResult;
 
 public class TaxAuthorityNotifier implements PayrollObserver {
+
     @Override
     public void onPayrollProcessed(Employee employee, PayrollResult result) {
         // Send tax data to government API

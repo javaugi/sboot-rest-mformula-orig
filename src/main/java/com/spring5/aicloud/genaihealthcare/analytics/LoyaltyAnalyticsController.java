@@ -5,9 +5,8 @@
 package com.spring5.aicloud.genaihealthcare.analytics;
 
 // package com.health.analytics.api
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/analytics")

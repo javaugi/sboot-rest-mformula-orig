@@ -4,15 +4,13 @@
  */
 package com.spring5;
 
+import org.apache.kafka.common.TopicPartition;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.kafka.annotation.TopicPartition;
-import org.apache.kafka.common.TopicPartition; // ✅ CORRECT
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
-
 
 @Configuration
 public class KafkaErrorHandlingConfig {
@@ -21,7 +19,8 @@ public class KafkaErrorHandlingConfig {
     public DeadLetterPublishingRecoverer dlqRecoverer(KafkaTemplate<?, ?> kafkaTemplate) {
         return new DeadLetterPublishingRecoverer(
                 kafkaTemplate,
-                (record, ex) -> new TopicPartition(record.topic() + ".DLT", record.partition()) // Use same partition
+                (record, ex)
+                -> new TopicPartition(record.topic() + ".DLT", record.partition()) // Use same partition
         );
     }
 
@@ -30,7 +29,8 @@ public class KafkaErrorHandlingConfig {
         var handler = new DefaultErrorHandler(dlqRecoverer);
 
         // Retry 3 times before sending to DLT
-        handler.setRetryListeners((record, ex, deliveryAttempt)
+        handler.setRetryListeners(
+                (record, ex, deliveryAttempt)
                 -> LoggerFactory.getLogger(KafkaErrorHandlingConfig.class)
                         .warn("Failed record {}, attempt {}", record, deliveryAttempt));
 

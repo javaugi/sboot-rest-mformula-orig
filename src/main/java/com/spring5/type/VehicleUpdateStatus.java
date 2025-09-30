@@ -5,9 +5,13 @@
 package com.spring5.type;
 
 /**
- *
  * @author javau
  */
 public enum VehicleUpdateStatus {
-    QUEUED, DOWNLOADING, VERIFYING, INSTALLING, SUCCESS, FAILED;
+    QUEUED,
+    DOWNLOADING,
+    VERIFYING,
+    INSTALLING,
+    SUCCESS,
+    FAILED;
 }

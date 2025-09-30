@@ -4,7 +4,6 @@ package com.sisllc.mathformulas.impl;
  * Converting Celsius to Fahrenheit Multiply by 9, then divide by 5, then add 32
  *
  * @author david
- *
  */
 public class CelsiusToFahrenheit {
 
@@ -15,6 +14,5 @@ public class CelsiusToFahrenheit {
 
         temp = temp * 9 / 5 + 32;
         System.out.println("Fahrenheit: " + temp);
-
     }
 }

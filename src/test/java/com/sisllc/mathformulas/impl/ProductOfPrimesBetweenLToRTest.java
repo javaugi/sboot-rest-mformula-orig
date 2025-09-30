@@ -2,13 +2,10 @@ package com.sisllc.mathformulas.impl;
 
 import com.spring5.ProjectTest;
 import org.junit.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

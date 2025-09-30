@@ -17,9 +17,9 @@ Defense-Specific Knowledge
     Secure coding standards (CERT, OWASP)
     Data encryption in transit and at rest
     Authentication/authorization mechanisms
-*/
+ */
 
-/*
+ /*
 
 3. Behavioral Preparation
 
@@ -44,8 +44,7 @@ Sample Response Structure:
     Action:     Profiled application, identified bottleneck in serialization, implemented custom binary protocol
     Result:     Achieved 60% reduction, system met all operational requirements
 
-*/
-
+ */
 public class SensorDataAggregator {
 
     private final ConcurrentMap<String, SensorData> latestData = new ConcurrentHashMap<>();
@@ -53,19 +52,16 @@ public class SensorDataAggregator {
     private final AtomicLong processedCount = new AtomicLong(0);
     private final ExecutorService processingPool;
     private volatile boolean running = true;
-    
+
     private final Map<String, AtomicDouble> sensorReadings = new ConcurrentHashMap<>();
-    
+
     public void updateReading(String sensorId, double value) {
         sensorReadings.computeIfAbsent(sensorId, k -> new AtomicDouble()).set(value);
     }
-    
+
     public double getAverageReading() {
-        return sensorReadings.values().stream()
-            .mapToDouble(AtomicDouble::get)
-            .average()
-            .orElse(0.0);
-    }    
+        return sensorReadings.values().stream().mapToDouble(AtomicDouble::get).average().orElse(0.0);
+    }
 
     public SensorDataAggregator(int poolSize) {
         this.processingPool = Executors.newFixedThreadPool(poolSize);
@@ -78,19 +74,20 @@ public class SensorDataAggregator {
 
     private void startProcessing() {
         for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
-            processingPool.submit(() -> {
-                while (running) {
-                    try {
-                        SensorData data = dataQueue.poll(100, TimeUnit.MILLISECONDS);
-                        if (data != null) {
-                            processData(data);
+            processingPool.submit(
+                    () -> {
+                        while (running) {
+                            try {
+                                SensorData data = dataQueue.poll(100, TimeUnit.MILLISECONDS);
+                                if (data != null) {
+                                    processData(data);
+                                }
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                                break;
+                            }
                         }
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            });
+                    });
         }
     }
 

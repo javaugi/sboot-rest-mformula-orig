@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
  * design pattern comes under creational pattern as this pattern provides one of
  * the best ways to create an object.
  *
+ * <p>
  * In Factory pattern, we create object without exposing the creation logic to
  * the client and refer to newly created object using a common interface.
- *
  *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
@@ -47,30 +47,30 @@ public class FactoryPattern {
         // Step 2 Create concrete classes implementing the same interface.
         // Step 3 Create a Factory to generate object of concrete class based on given information.
         FactoryPattern fact = new FactoryPattern();
-        // Step 4 Use the Factory to get object of concrete class by passing an information such as type.
+        // Step 4 Use the Factory to get object of concrete class by passing an information such as
+        // type.
         fact.runExampe();
     }
 
     void runExampe() {
         ShapeFactory shapeFactory = new ShapeFactory();
 
-        //get an object of Circle and call its draw method.
+        // get an object of Circle and call its draw method.
         Shape shape1 = shapeFactory.getShape("CIRCLE");
 
-        //call draw method of Circle
+        // call draw method of Circle
         shape1.draw();
 
-        //get an object of Rectangle and call its draw method.
+        // get an object of Rectangle and call its draw method.
         Shape shape2 = shapeFactory.getShape("RECTANGLE");
 
-        //call draw method of Rectangle
+        // call draw method of Rectangle
         shape2.draw();
 
-        //get an object of Square and call its draw method.
+        // get an object of Square and call its draw method.
         Shape shape3 = shapeFactory.getShape("SQUARE");
 
-        //call draw method of square
+        // call draw method of square
         shape3.draw();
     }
-
 }

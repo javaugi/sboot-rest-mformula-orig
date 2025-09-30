@@ -42,9 +42,9 @@ public class MergeSort {
         int helperRight = middle + 1;
         int current = low;
 
-        /* Iterate through helper array. Compare the left and right half, 
-         * copying back the smaller element from the two halves into the original array.
-        */
+        /* Iterate through helper array. Compare the left and right half,
+     * copying back the smaller element from the two halves into the original array.
+         */
         while (helperLeft <= middle && helperRight <= high) {
             if (helper[helperLeft] <= helper[helperRight]) {
                 array[current] = helper[helperLeft];
@@ -82,5 +82,4 @@ public class MergeSort {
             }
         }
     }
-
 }

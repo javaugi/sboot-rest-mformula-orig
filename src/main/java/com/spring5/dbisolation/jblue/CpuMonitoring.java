@@ -15,8 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-//This creates a metric like system_cpu_usage you can view at:
-//http://localhost:8080/actuator/prometheus
+// This creates a metric like system_cpu_usage you can view at:
+// http://localhost:8080/actuator/prometheus
 @Component
 public class CpuMonitoring {
 
@@ -24,14 +24,14 @@ public class CpuMonitoring {
     private final OperatingSystemMXBean osBean;
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Customer> rowMapper;
-    //Option 1: Anonymous Class (Simple Approach)
-    //Option 2: Lambda Expression (Java 8+)
-    //Option 3: Separate Class (Recommended for reusability) - see CustomerRowMapper
-    //then   @Bean
-    //public RowMapper<Customer> customerRowMapper() {
-    //    return new CustomerRowMapper();
-    //}
 
+    // Option 1: Anonymous Class (Simple Approach)
+    // Option 2: Lambda Expression (Java 8+)
+    // Option 3: Separate Class (Recommended for reusability) - see CustomerRowMapper
+    // then   @Bean
+    // public RowMapper<Customer> customerRowMapper() {
+    //    return new CustomerRowMapper();
+    // }
     public CpuMonitoring(MeterRegistry registry, JdbcTemplate jdbcTemplate) {
         this.registry = registry;
         this.jdbcTemplate = jdbcTemplate;
@@ -39,33 +39,33 @@ public class CpuMonitoring {
         rowMapper = createRowMapper();
 
         // Register custom CPU usage metric
-        registry.gauge("system.cpu.usage", osBean,
-            os -> os.getSystemLoadAverage() * 100);
+        registry.gauge("system.cpu.usage", osBean, os -> os.getSystemLoadAverage() * 100);
     }
 
     public List<Customer> getCustomers() {
-        return registry.timer("db.query.customer.findAll")
-            .record(() -> jdbcTemplate.query("SELECT * FROM customers", rowMapper));
+        return registry
+                .timer("db.query.customer.findAll")
+                .record(() -> jdbcTemplate.query("SELECT * FROM customers", rowMapper));
         /*
-        You can then visualize:
-            Percentiles (p95, p99)
-            Count
-            Average latency
-            Worst-case latency
+    You can then visualize:
+        Percentiles (p95, p99)
+        Count
+        Average latency
+        Worst-case latency
 
-        📈 5. Using Prometheus + Grafana for Categorization : Create PromQL metrics like:
-            histogram_quantile(0.95, rate(db_query_customer_findAll_seconds_bucket[1m]))
-            Set Grafana thresholds using color-coded performance zones:
+    📈 5. Using Prometheus + Grafana for Categorization : Create PromQL metrics like:
+        histogram_quantile(0.95, rate(db_query_customer_findAll_seconds_bucket[1m]))
+        Set Grafana thresholds using color-coded performance zones:
 
-            Red: > 1000 ms
-            Orange: 500–1000 ms
-            Yellow: 100–500 ms
-            Green: < 100 ms
+        Red: > 1000 ms
+        Orange: 500–1000 ms
+        Yellow: 100–500 ms
+        Green: < 100 ms
 
-        🚀 Bonus: Automate Alerting : With Prometheus AlertManager or Grafana alerts, trigger warnings when:
-            p95 query latency > 500 ms
-            Query count > 100/min with > 300 ms average time
-                Would you like a working Spring Boot + Prometheus example to track DB latency, with categorization? I can set that up for you.
+    🚀 Bonus: Automate Alerting : With Prometheus AlertManager or Grafana alerts, trigger warnings when:
+        p95 query latency > 500 ms
+        Query count > 100/min with > 300 ms average time
+            Would you like a working Spring Boot + Prometheus example to track DB latency, with categorization? I can set that up for you.
          */
     }
 
@@ -81,23 +81,25 @@ public class CpuMonitoring {
         }
     }
 
-    public final RowMapper<Customer> customerRowMapper = (ResultSet rs, int rowNum) -> {
-        Customer customer = new Customer();
-        customer.setId(rs.getLong("id"));
-        customer.setName(rs.getString("name"));
-        customer.setEmail(rs.getString("email"));
-        // Add more fields as needed
-        return customer;
-    };
+    public final RowMapper<Customer> customerRowMapper
+            = (ResultSet rs, int rowNum) -> {
+                Customer customer = new Customer();
+                customer.setId(rs.getLong("id"));
+                customer.setName(rs.getString("name"));
+                customer.setEmail(rs.getString("email"));
+                // Add more fields as needed
+                return customer;
+            };
 
-    public final RowMapper<Customer> customerLambdaRowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer();
-        customer.setId(rs.getLong("id"));
-        customer.setName(rs.getString("name"));
-        customer.setEmail(rs.getString("email"));
-        // Add more fields as needed
-        return customer;
-    };
+    public final RowMapper<Customer> customerLambdaRowMapper
+            = (rs, rowNum) -> {
+                Customer customer = new Customer();
+                customer.setId(rs.getLong("id"));
+                customer.setName(rs.getString("name"));
+                customer.setEmail(rs.getString("email"));
+                // Add more fields as needed
+                return customer;
+            };
 
     public RowMapper<Customer> createRowMapper() {
         return (rs, rowNum) -> {
@@ -108,7 +110,6 @@ public class CpuMonitoring {
             return customer;
         };
     }
-
 }
 /*
 1. CPU Monitoring in Spring Boot
@@ -125,4 +126,4 @@ Add these dependencies in pom.xml:
     <groupId>io.micrometer</groupId>
     <artifactId>micrometer-registry-prometheus</artifactId>
 </dependency>
-*/
+ */

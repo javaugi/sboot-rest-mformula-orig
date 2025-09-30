@@ -31,23 +31,21 @@ public class MyApp {
         SpringApplication.run(MyApp.class, args);
     }
 }
-*/
-
+ */
 @Service
 @EnableCaching
 public class JpaHibernateCacheAbstractionBySpring {
- 
-    
+
     @Autowired
     private JHCache2ndLevelProductRepository productRepository;
-    
+
     @Cacheable(value = "products", key = "#id")
     public JPAHibernateCache2ndLevelProduct getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
-    
+
     @CacheEvict(value = "products", key = "#id")
     public void updateProduct(Long id, JPAHibernateCache2ndLevelProduct product) {
         productRepository.save(product);
-    }    
+    }
 }

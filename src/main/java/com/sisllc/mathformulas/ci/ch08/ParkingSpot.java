@@ -20,7 +20,7 @@ public class ParkingSpot {
     }
 
     /* Checks if the spot is big enough for the vehicle (and is available). This compares
-	 * the SIZE only. It does not check if it has enough spots. */
+   * the SIZE only. It does not check if it has enough spots. */
     public boolean canFitVehicle(Vehicle vehicle) {
         return isAvailable() && vehicle.canFitInSpot(this);
     }

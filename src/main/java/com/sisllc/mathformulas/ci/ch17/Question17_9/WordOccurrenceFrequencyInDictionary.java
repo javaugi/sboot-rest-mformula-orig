@@ -39,5 +39,4 @@ public class WordOccurrenceFrequencyInDictionary {
             System.out.println(word + ": " + getFrequency(dictionary, word));
         }
     }
-
 }

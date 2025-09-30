@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GraphBookService {
+
     private final Map<String, GraphBook> books = new ConcurrentHashMap<>();
 
     public GraphBookService() {
@@ -24,5 +25,5 @@ public class GraphBookService {
 
     public GraphBook findBookById(String id) {
         return books.get(id);
-    }    
+    }
 }

@@ -10,8 +10,6 @@ package com.interview.shoppingcart.api;
 import java.util.List;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -27,5 +25,4 @@ public interface Inventory {
     Item getItemByName(String name);
 
     int size();
-
 }

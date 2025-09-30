@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class PatientRecord {
+
     private final UUID patientId;
     private final List<Event> events;
 
@@ -35,6 +36,4 @@ public class PatientRecord {
     public List<Event> getEvents() {
         return events;
     }
-
-    
 }

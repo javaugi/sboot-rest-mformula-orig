@@ -4,16 +4,13 @@
  */
 package com.spring5.service.aiml;
 
-//import dev.ai4j.openai4j.chat.ChatCompletionRequest;
-//import dev.ai4j.openai4j.embedding.EmbeddingRequest;
+// import dev.ai4j.openai4j.chat.ChatCompletionRequest;
+// import dev.ai4j.openai4j.embedding.EmbeddingRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
-//import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
-//import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.service.OpenAiService;
-//import dev.ai4j.openai4j.embedding.EmbeddingRequest;
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,19 +26,18 @@ public class OllamaOpenApiService extends OpenAiService {
     }
 
     /*
-    public OllamaOpenApiService(String token, Duration timeout) {
-        super(token, timeout);
-    }
+  public OllamaOpenApiService(String token, Duration timeout) {
+      super(token, timeout);
+  }
 
-    public OllamaOpenApiService(OpenAiApi api) {
-        super(api);
-    }
+  public OllamaOpenApiService(OpenAiApi api) {
+      super(api);
+  }
 
-    public OllamaOpenApiService(OpenAiApi api, ExecutorService executorService) {
-        super(api, executorService);
-    }
-    // */
-
+  public OllamaOpenApiService(OpenAiApi api, ExecutorService executorService) {
+      super(api, executorService);
+  }
+  // */
     @Override
     public EmbeddingResult createEmbeddings(EmbeddingRequest request) {
         return ollamaService.createEmbeddings(request).block(Duration.ofSeconds(10));

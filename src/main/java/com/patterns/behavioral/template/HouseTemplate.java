@@ -8,15 +8,13 @@
 package com.patterns.behavioral.template;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public abstract class HouseTemplate {
 
-    //template method, final so subclasses can't override
+    // template method, final so subclasses can't override
     public final void buildHouse() {
         buildFoundation();
         buildPillars();
@@ -25,12 +23,12 @@ public abstract class HouseTemplate {
         System.out.println("House is built.");
     }
 
-    //default implementation
+    // default implementation
     private void buildWindows() {
         System.out.println("Building Glass Windows");
     }
 
-    //methods to be implemented by subclasses
+    // methods to be implemented by subclasses
     public abstract void buildWalls();
 
     public abstract void buildPillars();

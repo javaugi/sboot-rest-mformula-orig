@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
@@ -22,27 +21,28 @@ public class NotificationService {
 
     // Configure async bus
     @Autowired
-    private @Qualifier(EventBusConfig.MB_EVENT_BUS_HIGH_PERF) MBassador<Object> asyncBus;
+    private @Qualifier(EventBusConfig.MB_EVENT_BUS_HIGH_PERF)
+    MBassador<Object> asyncBus;
 
-// Handler will execute in a separate thread
+    // Handler will execute in a separate thread
     @Handler(delivery = Invoke.Asynchronously)
     public void asyncHandler(OrderCreatedEvent event) {
         // Time-consuming operation
     }
 
     @Handler(delivery = Invoke.Synchronously)
-    //@Filter(condition = "event.amount > 100")
+    // @Filter(condition = "event.amount > 100")
     public void handleLargePayment(PaymentProcessedEvent event) {
         System.out.println("Large payment detected: $" + event.getAmount());
     }
-    
+
     @Handler(delivery = Invoke.Synchronously)
-    //@Filter(condition = "event.amount > 1000")
+    // @Filter(condition = "event.amount > 1000")
     public void handleVeryLargePayment(PaymentProcessedEvent event) {
         System.out.println("Large payment detected: $" + event.getAmount());
     }
 
-// Higher priority executes first (default = 0)
+    // Higher priority executes first (default = 0)
     @Handler(priority = 10)
     public void highPriorityHandler(OrderCreatedEvent event) {
         System.out.println("High priority handler");
@@ -53,9 +53,8 @@ public class NotificationService {
         System.out.println("Medium priority handler");
     }
 
-// Handle events with no subscribers
+    // Handle events with no subscribers
     /**
-     *
      * @param deadEvent
      */
     @Handler

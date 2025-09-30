@@ -26,31 +26,32 @@ public class DefaultPaymentValidator implements PaymentValidator {
 
     @Override
     public List<ValidationRule> getFailedRules(Payment payment) {
-        return rules.stream()
-            .filter(rule -> !rule.validate(payment))
-            .collect(Collectors.toList());
+        return rules.stream().filter(rule -> !rule.validate(payment)).collect(Collectors.toList());
     }
 
-    //@Override
+    // @Override
     public List<ValidationRule> getFailedRulesInParalell(Payment payment) {
         return rules.parallelStream() // Use parallelStream()
-            .filter(rule -> !rule.validate(payment))
-            .collect(Collectors.toList());
+                .filter(rule -> !rule.validate(payment))
+                .collect(Collectors.toList());
     }
 
-    //@Override
+    // @Override
     public List<ValidationRule> getFailedRulesInComleteable(Payment payment) {
-        List<CompletableFuture<ValidationResult>> futures = rules
-            .stream()
-            .map(rule -> CompletableFuture.supplyAsync(() -> new ValidationResult(rule, rule.validate(payment))))
-            .collect(Collectors.toList());
+        List<CompletableFuture<ValidationResult>> futures
+                = rules.stream()
+                        .map(
+                                rule
+                                -> CompletableFuture.supplyAsync(
+                                        () -> new ValidationResult(rule, rule.validate(payment))))
+                        .collect(Collectors.toList());
 
         // Wait for all futures to complete and collect the results
         return futures.stream()
-            .map(CompletableFuture::join)
-            .filter(result -> !result.isValid())
-            .map(ValidationResult::getRule)
-            .collect(Collectors.toList());
+                .map(CompletableFuture::join)
+                .filter(result -> !result.isValid())
+                .map(ValidationResult::getRule)
+                .collect(Collectors.toList());
     }
 
     @Data
@@ -58,8 +59,8 @@ public class DefaultPaymentValidator implements PaymentValidator {
 
         private final ValidationRule rule;
         private final boolean isValid;
-        // Constructor, getters
 
+        // Constructor, getters
         public ValidationResult(ValidationRule rule, boolean isValid) {
             this.rule = rule;
             this.isValid = isValid;
@@ -68,6 +69,5 @@ public class DefaultPaymentValidator implements PaymentValidator {
         public boolean isValid() {
             return true;
         }
-
     }
 }

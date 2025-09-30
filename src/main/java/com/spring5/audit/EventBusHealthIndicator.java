@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class EventBusHealthIndicator implements HealthIndicator {
-    
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MyApplication.class, args);
         MBassador<Object> eventBus = context.getBean(EventBusConfig.MB_EVENT_BUS, MBassador.class);
@@ -30,7 +30,8 @@ public class EventBusHealthIndicator implements HealthIndicator {
 
     private final MBassador<Object> eventBus;
 
-    public EventBusHealthIndicator(@Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
+    public EventBusHealthIndicator(
+            @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
         this.eventBus = eventBus;
     }
 
@@ -42,14 +43,15 @@ public class EventBusHealthIndicator implements HealthIndicator {
             return Health.up().build();
         } catch (Exception e) {
             return Health.down()
-                .withException(e)
-                .withDetail("message", "Event bus not functioning")
-                .build();
+                    .withException(e)
+                    .withDetail("message", "Event bus not functioning")
+                    .build();
         }
     }
 
-    public static class PingEvent {}
-    
+    public static class PingEvent {
+    }
+
     @EventListener
     public void onPing(PingEvent event) {
         log.info("PingEvent received at " + LocalDateTime.now());

@@ -24,7 +24,9 @@ public class EnrollmentController {
 
     @PostMapping
     public ResponseEntity<EnrollmentResponse> enroll(@Valid @RequestBody EnrollmentRequest req) {
-        EnrollmentResult r = service.enrollPatient(req.patientId, req.consentId, req.email, req.acceptMarketing, req.freeText);
+        EnrollmentResult r
+                = service.enrollPatient(
+                        req.patientId, req.consentId, req.email, req.acceptMarketing, req.freeText);
         EnrollmentResponse resp = new EnrollmentResponse();
         resp.enrollmentId = r.success ? r.idOrMessage : null;
         resp.success = r.success;

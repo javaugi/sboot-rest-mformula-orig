@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class MilitarySerialComm implements SerialPortEventListener {
-    
+
     private SerialPort serialPort;
     private InputStream input;
     private OutputStream output;
@@ -27,41 +27,40 @@ public class MilitarySerialComm implements SerialPortEventListener {
 
     public void connect(String portName, int baudRate) throws Exception {
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
-        
+
         if (portIdentifier.isCurrentlyOwned()) {
             throw new DefenseSystemException("Port already in use: " + portName);
         }
 
         serialPort = (SerialPort) portIdentifier.open("MilitarySerialComm", 2000);
-        serialPort.setSerialPortParams(baudRate, 
-            SerialPort.DATABITS_8, 
-            SerialPort.STOPBITS_1, 
-            SerialPort.PARITY_NONE);
-        
+        serialPort.setSerialPortParams(
+                baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+
         // Hardware flow control for reliable military comms
-        serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | 
-                                    SerialPort.FLOWCONTROL_RTSCTS_OUT);
+        serialPort.setFlowControlMode(
+                SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);
 
         input = serialPort.getInputStream();
         output = serialPort.getOutputStream();
-        
+
         serialPort.addEventListener(this);
         serialPort.notifyOnDataAvailable(true);
-        
+
         startCommandProcessor();
     }
 
     private void startCommandProcessor() {
-        serialExecutor.submit(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    byte[] command = commandQueue.take();
-                    sendCommandWithRetry(command, 3); // 3 retries for military reliability
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
+        serialExecutor.submit(
+                () -> {
+                    while (!Thread.currentThread().isInterrupted()) {
+                        try {
+                            byte[] command = commandQueue.take();
+                            sendCommandWithRetry(command, 3); // 3 retries for military reliability
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                });
     }
 
     private void sendCommandWithRetry(byte[] command, int retries) {
@@ -84,7 +83,7 @@ public class MilitarySerialComm implements SerialPortEventListener {
             try {
                 byte[] buffer = new byte[input.available()];
                 int bytesRead = input.read(buffer);
-                
+
                 if (bytesRead > 0) {
                     processMilitaryResponse(buffer);
                 }
@@ -93,10 +92,8 @@ public class MilitarySerialComm implements SerialPortEventListener {
             }
         }
     }
-    
+
     // Additional military protocol methods omitted
     private void processMilitaryResponse(byte[] buffer) {
-        
     }
-
 }

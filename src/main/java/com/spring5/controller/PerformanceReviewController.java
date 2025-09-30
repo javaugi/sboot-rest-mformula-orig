@@ -23,11 +23,10 @@ public class PerformanceReviewController {
 
     // Constructor injection
     /*
-    public PerformanceReviewController(PerformanceReviewImprovedService performanceReviewService) {
-        this.performanceReviewService = performanceReviewService;
-    }
-    // */
-
+  public PerformanceReviewController(PerformanceReviewImprovedService performanceReviewService) {
+      this.performanceReviewService = performanceReviewService;
+  }
+  // */
     @GetMapping("/{id}")
     public BonusMultiplier getReview(@PathVariable Long id) {
         return performanceReviewService.getReviewById(id);

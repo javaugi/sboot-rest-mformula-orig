@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class FlightServiceWithChangeFeedProcessorOpt2Recommended {
+
     private final CosmosAsyncClient cosmosAsyncClient;
     private final CosmosAsyncContainer leaseContainer;
 
@@ -40,21 +41,22 @@ public class FlightServiceWithChangeFeedProcessorOpt2Recommended {
         CosmosAsyncContainer flightEventsContainer = database.getContainer("flightEvents");
 
         // Configure change feed options
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromBeginning(FeedRange.forFullRange());
+        CosmosChangeFeedRequestOptions options
+                = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
 
         options.setMaxItemCount(100); // Process in batches
 
         // Create the change feed query
-        CosmosPagedFlux<FlightEvent> changeFeedFlux = flightEventsContainer
-            .queryChangeFeed(options, FlightEvent.class);
+        CosmosPagedFlux<FlightEvent> changeFeedFlux
+                = flightEventsContainer.queryChangeFeed(options, FlightEvent.class);
 
         // Subscribe to process changes
-        changeFeedFlux.byPage().subscribe(
-            feedResponse -> processFeedResponse(feedResponse),
-            error -> handleError(error),
-            () -> System.out.println("Change feed processing completed")
-        );
+        changeFeedFlux
+                .byPage()
+                .subscribe(
+                        feedResponse -> processFeedResponse(feedResponse),
+                        error -> handleError(error),
+                        () -> System.out.println("Change feed processing completed"));
     }
 
     private void processFeedResponse(FeedResponse<FlightEvent> feedResponse) {
@@ -129,11 +131,12 @@ public class FlightServiceWithChangeFeedProcessorOpt2Recommended {
         CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
         CosmosAsyncContainer flightEventsContainer = database.getContainer("flightEvents");
 
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromContinuation(continuationToken);
+        CosmosChangeFeedRequestOptions options
+                = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
 
-        flightEventsContainer.queryChangeFeed(options, FlightEvent.class)
-            .byPage()
-            .subscribe(this::processFeedResponse);
+        flightEventsContainer
+                .queryChangeFeed(options, FlightEvent.class)
+                .byPage()
+                .subscribe(this::processFeedResponse);
     }
 }

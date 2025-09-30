@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 // 2. Using native query with query hints
 @Repository
 public interface AirlineRepository extends CosmosRepository<Airline, String> {
+
     Optional<Airline> findByAirlineCode(String airlineCode);
 
     List<Airline> findByAirlineCodeIn(Set<String> airlineCodes);
-
 }

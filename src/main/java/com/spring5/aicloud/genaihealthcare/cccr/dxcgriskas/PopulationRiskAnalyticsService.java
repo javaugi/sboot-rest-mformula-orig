@@ -7,9 +7,9 @@ package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,14 +33,14 @@ public class PopulationRiskAnalyticsService {
         RiskDistribution distribution = calculateRiskDistribution(scores);
 
         return PopulationRiskAnalysis.builder()
-            .planType(planType)
-            .year(year != null ? year : LocalDate.now().getYear())
-            .totalMembers(scores.size())
-            .averageRiskScore(averageRiskScore)
-            .totalPredictedCost(totalPredictedCost)
-            .hccPrevalence(hccPrevalence)
-            .riskDistribution(distribution)
-            .build();
+                .planType(planType)
+                .year(year != null ? year : LocalDate.now().getYear())
+                .totalMembers(scores.size())
+                .averageRiskScore(averageRiskScore)
+                .totalPredictedCost(totalPredictedCost)
+                .hccPrevalence(hccPrevalence)
+                .riskDistribution(distribution)
+                .build();
     }
 
     private double calculateAverageRiskScore(List<RiskScore> scores) {
@@ -59,21 +59,22 @@ public class PopulationRiskAnalyticsService {
         return RiskDistribution.builder().build();
     }
 
-
     /**
      * Identify high-risk members for care management programs
      */
     public List<HighRiskMember> identifyHighRiskMembers(double riskThreshold) {
         return riskScoreRepository.findLatestScores().stream()
-            .filter(score -> score.getRiskScore() > riskThreshold)
-            .map(score -> HighRiskMember.builder()
-            .memberId(score.getPatient().getMemberId())
-            .riskScore(score.getRiskScore())
-            .predictedCost(score.getPredictedCost())
-            .topConditions(extractTopConditions(score))
-            .build())
-            .sorted(Comparator.comparing(HighRiskMember::getRiskScore).reversed())
-            .collect(Collectors.toList());
+                .filter(score -> score.getRiskScore() > riskThreshold)
+                .map(
+                        score
+                        -> HighRiskMember.builder()
+                                .memberId(score.getPatient().getMemberId())
+                                .riskScore(score.getRiskScore())
+                                .predictedCost(score.getPredictedCost())
+                                .topConditions(extractTopConditions(score))
+                                .build())
+                .sorted(Comparator.comparing(HighRiskMember::getRiskScore).reversed())
+                .collect(Collectors.toList());
     }
 
     private List<String> extractTopConditions(RiskScore score) {
@@ -87,9 +88,9 @@ public class PopulationRiskAnalyticsService {
         // This would compare predicted vs actual costs
         // Used for CMS RAF validation and audit preparation
         return RiskValidationMetrics.builder()
-            .rSquared(0.85)
-            .meanAbsoluteError(1500.0)
-            .predictiveRatio(1.02)
-            .build();
+                .rSquared(0.85)
+                .meanAbsoluteError(1500.0)
+                .predictiveRatio(1.02)
+                .build();
     }
 }

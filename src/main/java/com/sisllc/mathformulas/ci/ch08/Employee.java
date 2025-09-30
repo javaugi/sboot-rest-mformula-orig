@@ -31,8 +31,8 @@ abstract class Employee {
     }
 
     /*
-	 * The issue has not been resolved. Escalate the call, and assign a new call
-	 * to the employee.
+   * The issue has not been resolved. Escalate the call, and assign a new call
+   * to the employee.
      */
     public void escalateAndReassign() {
         if (currentCall != null) {

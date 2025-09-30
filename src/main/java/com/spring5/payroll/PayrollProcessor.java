@@ -8,23 +8,23 @@ import com.spring5.empbilpayroll.Employee;
 import com.spring5.empbilpayroll.PayrollData;
 
 /**
- *
  * @author javaugi
  */
 public class PayrollProcessor {
-    
+
     public void processPayroll(Employee employee, PayrollData data) throws Exception {
         // Build the validation chain
-        PayrollChainOfRespValidator validatorChain = new OvertimeValidator()
-            .linkWith(new TaxComplianceValidator())
-            .linkWith(new MinimumWageValidator());
+        PayrollChainOfRespValidator validatorChain
+                = new OvertimeValidator()
+                        .linkWith(new TaxComplianceValidator())
+                        .linkWith(new MinimumWageValidator());
 
         // Run validation
         if (validatorChain.validate(employee, data)) {
             System.out.println("Payroll validated successfully!");
             // Proceed with payroll calculation
         }
-    }    
+    }
 }
 
 /*
@@ -40,4 +40,4 @@ When to Use This Pattern
     Payroll Validation: Ensure compliance with labor laws, tax rules, etc.
     Multi-Step Approvals: For workflows like timesheet approval.
     Modular Validation: When rules may vary by region/employee type.
-*/
+ */

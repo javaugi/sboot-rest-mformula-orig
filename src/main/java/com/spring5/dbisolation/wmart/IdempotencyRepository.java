@@ -8,9 +8,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
  * @author javau
  */
 public interface IdempotencyRepository extends JpaRepository<Idempotency, Long> {
+
     Optional<Idempotency> findByKey(String key);
 }

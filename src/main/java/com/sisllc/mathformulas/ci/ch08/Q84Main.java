@@ -28,5 +28,4 @@ public class Q84Main {
         System.out.println("Parking Failed. Final state: ");
         lot.print();
     }
-
 }

@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
- *
  * @author bill
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -46,28 +44,28 @@ public class StorageController extends AbstractStorageController {
             @RequestParam("guid") String guid,
             @RequestParam("uploadedFile") MultipartFile uploadedFileRef) {
         String fileName = uploadedFileRef.getOriginalFilename();
-        return super.uploadFile(guid, uploadedFileRef, context.getBean(FileService.class), URLConnection.guessContentTypeFromName(fileName));
+        return super.uploadFile(
+                guid,
+                uploadedFileRef,
+                context.getBean(FileService.class),
+                URLConnection.guessContentTypeFromName(fileName));
     }
 
     @GetMapping(value = "/cim-file-service/download")
     public ResponseEntity<Resource> downloadFile(
-            @RequestParam("guid") String guid,
-            @RequestParam("fileName") String fileName) {
+            @RequestParam("guid") String guid, @RequestParam("fileName") String fileName) {
         return super.downloadFile(guid, context.getBean(FileService.class));
     }
 
     @RequestMapping(value = "/cim-file-service/delete")
     public ResponseEntity deleteFile(
-            @RequestParam("guid") String guid,
-            @RequestParam("fileName") String fileName) {
+            @RequestParam("guid") String guid, @RequestParam("fileName") String fileName) {
         return super.deleteFile(guid, context.getBean(FileService.class));
     }
 
     @GetMapping(value = "/cim-file-service/exists")
     public ResponseEntity<Resource> fileExists(
-            @RequestParam("guid") String guid,
-            @RequestParam("fileName") String fileName) {
+            @RequestParam("guid") String guid, @RequestParam("fileName") String fileName) {
         return super.fileExists(guid, context.getBean(FileService.class));
     }
-
 }

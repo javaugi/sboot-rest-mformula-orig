@@ -23,7 +23,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 public class PharmacyOutbox {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;    
+    private Long id;
 }

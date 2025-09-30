@@ -5,7 +5,6 @@
 package com.spring5.kafkamicroservice;
 
 import java.time.Instant;
-import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.KafkaException;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,23 +14,24 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author javaugi
  */
 @Service
-//@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class IdempotentFileService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final FileProcessedRepository processedRepo;
-    
-    public IdempotentFileService(@Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate, FileProcessedRepository processedRepo) {
+
+    public IdempotentFileService(
+            @Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate,
+            FileProcessedRepository processedRepo) {
         this.kafkaTemplate = kafkaTemplate;
         this.processedRepo = processedRepo;
     }
-    
+
     private boolean fileExistByEventId(String eventId) {
-        //return false;
+        // return false;
         return processedRepo.existsByEventId(eventId);
     }
 
@@ -41,23 +41,20 @@ public class IdempotentFileService {
         if (fileExistByEventId(record.value().getEventId())) {
             ack.acknowledge();
             return;
-        }        
+        }
 
         try {
             processFile(record.value());
-            
+
             // Record processing
-            processedRepo.save(new FileProcessedRecord(
-                record.value().getEventId(),
-                Instant.now()
-            ));
-            
+            processedRepo.save(new FileProcessedRecord(record.value().getEventId(), Instant.now()));
+
             ack.acknowledge();
         } catch (Exception e) {
             throw new KafkaException("Processing failed", e);
         }
     }
-    
+
     private void processFile(FileStorageEvent fileStorageEvent) {
         System.out.println("processFile " + fileStorageEvent);
     }

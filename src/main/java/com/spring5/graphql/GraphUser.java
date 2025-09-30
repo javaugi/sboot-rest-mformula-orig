@@ -17,7 +17,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *
  * @author javaugi
  */
 @Getter
@@ -29,11 +28,11 @@ import lombok.ToString;
 @Entity
 @Table(name = "GRAPH_USER")
 public class GraphUser implements java.io.Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     private String username;
     private String userEmail;
 }

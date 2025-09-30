@@ -11,9 +11,9 @@ ProductCacheUpdateEvent                 Represents a cache update event
 ProductService                          Publishes the event when DB changes
 ProductCacheUpdateListener              Listens and updates Redis
 RedisTemplate                           Manages Redis caching logic
-*/
+ */
 
-/*
+ /*
 Pro Tip: Add Debounce Logic
 To prevent duplicate updates in short time windows, consider using:
     @Async + ScheduledExecutorService
@@ -23,10 +23,10 @@ Would you like me to enhance this with:
     Distributed locking (SETNX) to avoid stampedes?
     @Async cache refresh or queuing updates?
     A version using Spring Cache abstraction?
-*/
+ */
 public class EventDrivenCacheStampedeProtection {
-    
 }
+
 /*
 Great choice! Preventing cache stampede with Proactive Cache Population using an event-driven update model is highly effective when using Redis + Java + Spring.
 
@@ -336,4 +336,4 @@ Caffeine expireAfterWrite	In-memory	Auto-expire, clean design	Auto
 Redis SETNX + EXPIRE	Distributed-safe	Multi-instance clusters	Auto
 
 Would you like me to integrate this into your existing Spring Boot + Redis project structure with a full working sample?
-*/
+ */

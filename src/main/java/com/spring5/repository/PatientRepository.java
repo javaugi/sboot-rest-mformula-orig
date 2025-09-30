@@ -12,25 +12,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
  * @author javaugi
  */
 @Repository
 @Transactional
-public interface  PatientRepository extends JpaRepository<Patient, Long> {
-    List<Patient> findByNameContaining(@Param("name") String name);
-    
-    
-    //Performance optimization  Solution 1: Fix N+1 with JOIN FETCH
-    //@Query("SELECT p FROM Patient p JOIN FETCH p.appointments WHERE p.name LIKE %:name%")
-    //List<Patient> findByNameWithAppointments(@Param("name") String name);
+public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    //@Query("SELECT p FROM Patient p JOIN FETCH p.appointments WHERE p.name LIKE %:name%")
-    //Page<Patient> findByNameWithAppointments(@Param("name") String name, Pageable pageable);
-        
+    List<Patient> findByNameContaining(@Param("name") String name);
+
+    // Performance optimization  Solution 1: Fix N+1 with JOIN FETCH
+    // @Query("SELECT p FROM Patient p JOIN FETCH p.appointments WHERE p.name LIKE %:name%")
+    // List<Patient> findByNameWithAppointments(@Param("name") String name);
+    // @Query("SELECT p FROM Patient p JOIN FETCH p.appointments WHERE p.name LIKE %:name%")
+    // Page<Patient> findByNameWithAppointments(@Param("name") String name, Pageable pageable);
 }
 
-/* 
+/*
 Step 1: Identify the Performance Issue
 Symptoms
 1. Query takes 5+ seconds to return 100 records
@@ -47,11 +44,11 @@ Step 2: Optimization Solutions
 Solutions
 1. @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     private List<Appointment> appointments;
-2. 
+2.
 Solution 1: Fix N+1 with JOIN FETCH
 @Query("SELECT p FROM Patient p JOIN FETCH p.appointments WHERE p.name LIKE %:name%")
 List<Patient> findByNameWithAppointments(@Param("name") String name);
-3. 
+3.
 Solution 2: Add Pagination
 @Query("SELECT p FROM Patient p JOIN FETCH p.appointments WHERE p.name LIKE %:name%")
 Page<Patient> findByNameWithAppointments(@Param("name") String name, Pageable pageable);
@@ -113,9 +110,9 @@ public Page<Patient> searchPatients(String name, Pageable pageable) {
 @Query(value = "SELECT p.* FROM patients p " +
        "WHERE p.name LIKE %:name% " +
        "ORDER BY p.name " +
-       "LIMIT :limit OFFSET :offset", 
+       "LIMIT :limit OFFSET :offset",
        nativeQuery = true)
-List<Patient> findByNameNative(@Param("name") String name, 
+List<Patient> findByNameNative(@Param("name") String name,
                              @Param("limit") int limit,
                              @Param("offset") int offset);
 
@@ -134,4 +131,4 @@ Key Takeaways
 4. Database indexes are often overlooked
 5. Projections can significantly reduce memory usage
 
-*/
+ */

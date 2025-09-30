@@ -5,17 +5,16 @@
 package com.spring5.audit;
 
 /**
- *
  * @author javaugi
  */
 public class InventoryReservedEvent {
-    
+
     private String inventoryId;
     private String orderId;
     private boolean success;
-    
+
     public InventoryReservedEvent(String orderId) {
-       this.orderId = orderId;
+        this.orderId = orderId;
     }
 
     public String getInventoryId() {
@@ -41,7 +40,4 @@ public class InventoryReservedEvent {
     public void setSuccess(boolean success) {
         this.success = success;
     }
-
-    
-    
 }

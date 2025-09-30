@@ -10,12 +10,12 @@ import java.util.Scanner;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
- *
  * @author javaugi
  */
 public class MessageDigectHash {
+
     public static void main(String[] args) {
-        //scanner();
+        // scanner();
         String input = "M@keItH@rdToGuess_101";
         System.out.println("\n md5Hash with input=" + input);
         md5Hash(input);
@@ -23,15 +23,15 @@ public class MessageDigectHash {
         sha1Hash(input);
         System.out.println("\n sha256Hash with input=" + input);
         sha256Hash(input);
-    }    
+    }
 
     private static void scanner() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         scanner.close();
-        
+
         md5Hash(input);
-    }    
+    }
 
     private static void md5Hash(String input) {
         try {
@@ -39,62 +39,89 @@ public class MessageDigectHash {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(input.getBytes());
             byte[] digest = md.digest();
-            
+
             // Convert byte array to hex string
             StringBuilder hexString = new StringBuilder();
             for (byte b : digest) {
                 hexString.append(String.format("%02x", b));
             }
-            
             System.out.println(hexString.toString());
+
             String md5Hex = DigestUtils.md5Hex(input);
-            System.out.println("md5Hex hexString=" + hexString.toString() + "-md5Hex=" + md5Hex + "-equals=" + (md5Hex.equals(hexString.toString())));
+            System.out.println(
+                    "md5Hex hexString="
+                    + hexString.toString()
+                    + "-md5Hex="
+                    + md5Hex
+                    + "-equals="
+                    + (md5Hex.equals(hexString.toString())));
+
+            String md5Hex2 = org.springframework.util.DigestUtils.md5DigestAsHex(input.getBytes());
+            System.out.println(
+                    "Spring md5DigestAsHex="
+                    + hexString.toString()
+                    + "-md5Hex2="
+                    + md5Hex2
+                    + "-equals="
+                    + (md5Hex2.equals(hexString.toString())));
         } catch (NoSuchAlgorithmException e) {
             System.err.println("MD5 algorithm not found");
         }
-    }    
-    
+    }
+
     private static void sha1Hash(String input) {
         try {
             // Create MD5 Hash
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             md.update(input.getBytes());
             byte[] digest = md.digest();
-            
+
             // Convert byte array to hex string
             StringBuilder hexString = new StringBuilder();
             for (byte b : digest) {
                 hexString.append(String.format("%02x", b));
             }
-            
+
             System.out.println(hexString.toString());
             String md5Hex = DigestUtils.sha1Hex(input);
-            System.out.println("sha1Hex hexString=" + hexString.toString() + "-md5Hex=" + md5Hex + "-equals=" + (md5Hex.equals(hexString.toString())));
+            System.out.println(
+                    "sha1Hex hexString="
+                    + hexString.toString()
+                    + "-md5Hex="
+                    + md5Hex
+                    + "-equals="
+                    + (md5Hex.equals(hexString.toString())));
         } catch (NoSuchAlgorithmException e) {
             System.err.println("SHA-1 algorithm not found");
         }
-    }    
-    
+    }
+
     private static void sha256Hash(String input) {
         try {
             // Create MD5 Hash
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(input.getBytes());
             byte[] digest = md.digest();
-            
+
             // Convert byte array to hex string
             StringBuilder hexString = new StringBuilder();
             for (byte b : digest) {
                 hexString.append(String.format("%02x", b));
             }
-            
+
             System.out.println(hexString.toString());
             String md5Hex = DigestUtils.sha256Hex(input);
-            System.out.println("sha256Hex hexString=" + hexString.toString() + "-md5Hex=" + md5Hex + "-equals=" + (md5Hex.equals(hexString.toString())));
+            System.out.println(
+                    "sha256Hex hexString="
+                    + hexString.toString()
+                    + "-md5Hex="
+                    + md5Hex
+                    + "-equals="
+                    + (md5Hex.equals(hexString.toString())));
         } catch (NoSuchAlgorithmException e) {
             System.err.println("SHA-256 algorithm not found");
         }
-    }    
+    }
 }
 
 /*
@@ -138,4 +165,4 @@ Input Constraints:
     The program handles all alphanumeric characters (a-z, A-Z, 0-9)
     No special characters or spaces are expected based on the problem constraints
     This solution provides a straightforward implementation of MD5 hashing in Java while properly handling the byte-to-hex conversion that's required for the standard MD5 hash representation.
-*/
+ */

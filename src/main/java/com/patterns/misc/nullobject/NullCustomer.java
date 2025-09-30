@@ -8,8 +8,6 @@
 package com.patterns.misc.nullobject;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

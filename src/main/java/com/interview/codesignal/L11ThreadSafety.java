@@ -22,22 +22,21 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- *
  * @author javaugi
  */
 public class L11ThreadSafety {
 
     /*
-    Performance Considerations
-        synchronized has overhead; prefer lock-free alternatives when possible.
-        Atomic* classes are faster for simple counters.
-        ConcurrentHashMap offers segmented locking, allowing high concurrency.
-        Minimize contention by limiting shared state or sharding data.
-        Thread pool tuning matters — avoid too many threads for the CPU cores.
-    🧪 Tools for Debugging and Testing
-        Use FindBugs/SpotBugs, SonarQube, or IntelliJ Code Analysis
-        Use JMH for benchmarking thread-safe classes
-        Test with tools like jcstress, Thread Weaver, or Concurrency Test Harnesses    
+  Performance Considerations
+      synchronized has overhead; prefer lock-free alternatives when possible.
+      Atomic* classes are faster for simple counters.
+      ConcurrentHashMap offers segmented locking, allowing high concurrency.
+      Minimize contention by limiting shared state or sharding data.
+      Thread pool tuning matters — avoid too many threads for the CPU cores.
+  🧪 Tools for Debugging and Testing
+      Use FindBugs/SpotBugs, SonarQube, or IntelliJ Code Analysis
+      Use JMH for benchmarking thread-safe classes
+      Test with tools like jcstress, Thread Weaver, or Concurrency Test Harnesses
      */
     public static void main(String[] args) throws InterruptedException {
         L11ThreadSafety main = new L11ThreadSafety();
@@ -47,11 +46,12 @@ public class L11ThreadSafety {
     private void runSafeCounters() throws InterruptedException {
         SafeCounterAtomic counter = new SafeCounterAtomic(); // try other versions too
 
-        Runnable task = () -> {
-            for (int i = 0; i < 100; i++) {
-                counter.increment();
-            }
-        };
+        Runnable task
+                = () -> {
+                    for (int i = 0; i < 100; i++) {
+                        counter.increment();
+                    }
+                };
 
         Thread t1 = new Thread(task);
         Thread t2 = new Thread(task);
@@ -75,9 +75,9 @@ public class L11ThreadSafety {
             return count.get();
         }
     }
-    
+
     public record UserRecord(Long id, String userName) {
-        
+
     }
 
     // 1. Use Immutable Objects
@@ -94,12 +94,12 @@ public class L11ThreadSafety {
         }
     }
 
-    //2. Use Synchronized Blocks or Methods
+    // 2. Use Synchronized Blocks or Methods
     public class Counter {
 
         private int count = 0;
 
-        //Race Condition Example (Broken Counter) will occur if the methods are not  synchronized
+        // Race Condition Example (Broken Counter) will occur if the methods are not  synchronized
         public synchronized void increment() {
             count++;
         }
@@ -111,10 +111,10 @@ public class L11ThreadSafety {
 
     // 3. Use java.util.concurrent Classes
     /*
-        Prefer concurrent utilities over manual synchronization:
-        1.    ConcurrentHashMap instead of HashMap
-        2.    CopyOnWriteArrayList for read-heavy lists
-        3.    AtomicInteger, AtomicReference for atomic updates    
+     Prefer concurrent utilities over manual synchronization:
+     1.    ConcurrentHashMap instead of HashMap
+     2.    CopyOnWriteArrayList for read-heavy lists
+     3.    AtomicInteger, AtomicReference for atomic updates
      */
     //  java.util.concurrent.atomic
     public class AtomicWay {
@@ -134,21 +134,22 @@ public class L11ThreadSafety {
         }
     }
 
-    //4. Use Thread-safe Collections
+    // 4. Use Thread-safe Collections
     //  java.util.concurrent
     public class ThreadSafeCollectionsWay {
 
         List<String> list = List.of("apple", "orange", "pear");
         List<String> synchronizedList = Collections.synchronizedList(list);
-        //Collections.synchronizedList(new ArrayList<>()); 
-        //  for simple thread-safe wrapping - This wrapper synchronizes all individual method calls like .add(), .get(), .remove().
+        // Collections.synchronizedList(new ArrayList<>());
+        //  for simple thread-safe wrapping - This wrapper synchronizes all individual method calls like
+        // .add(), .get(), .remove().
         // however Compound actions still need manual synchronization.
 
-        //Or better: ConcurrentHashMap, ConcurrentLinkedQueue, etc.
+        // Or better: ConcurrentHashMap, ConcurrentLinkedQueue, etc.
         HashMap<String, String> hashMap = new HashMap<>();
         ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap(hashMap);
-        //concurrentHashMap is thread-safe ✅
-        //hashMap remains non-thread-safe
+        // concurrentHashMap is thread-safe ✅
+        // hashMap remains non-thread-safe
 
         AtomicReference<HashMap<String, String>> atomicReference = new AtomicReference<>(hashMap);
         CopyOnWriteArrayList<String> copyOnWriteList = new CopyOnWriteArrayList<>();
@@ -160,7 +161,7 @@ public class L11ThreadSafety {
             copyOnWriteList.stream().forEach(System.out::print);
 
             synchronizedList.add("apple"); // safe
-            synchronizedList.get(0);       // safe
+            synchronizedList.get(0); // safe
 
             synchronized (synchronizedList) {
                 if (!synchronizedList.contains("apple")) {
@@ -174,24 +175,25 @@ public class L11ThreadSafety {
                 }
             }
         }
-
     }
 
     // 5. Avoid Shared Mutable State
     public class ThreadLocalWay {
 
-        ThreadLocal<SimpleDateFormat> formatter = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+        ThreadLocal<SimpleDateFormat> formatter
+                = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
     }
 
-    //6. Use ExecutorService Instead of Manual Threads
+    // 6. Use ExecutorService Instead of Manual Threads
     public class ExcuterServiceWayInsteadOfManualThread {
 
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ExecutorService executor
+                = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         Callable<String> task = null;
         Future<String> future = executor.submit(task);
     }
 
-    //7. Proper Locking with ReentrantLock
+    // 7. Proper Locking with ReentrantLock
     //  java.util.concurrent.locks
     public class ProperLockingWithReentrantLock {
 
@@ -213,30 +215,33 @@ public class L11ThreadSafety {
         }
     }
 
-    //8. Use Volatile for Visibility (Not for Atomicity)    
-    // Guarantees visibility: When one thread updates a volatile variable, the new value is immediately visible to all other threads.
-    // Prevents caching: Without volatile, a thread may cache a variable's value in a register or CPU cache and not see the latest change made by another thread.
+    // 8. Use Volatile for Visibility (Not for Atomicity)
+    // Guarantees visibility: When one thread updates a volatile variable, the new value is
+    // immediately visible to all other threads.
+    // Prevents caching: Without volatile, a thread may cache a variable's value in a register or CPU
+    // cache and not see the latest change made by another thread.
     public class WorkerThreadUseVolatileForVisibility extends Thread {
 
         private volatile boolean running = true;
+
         /* volatile ensures visibility between threads
-            But it does not make compound actions (like increment) atomic        
+       But it does not make compound actions (like increment) atomic
          */
         @Override
         public void run() {
             while (running) {
                 // do work
             }
-            
+
             stopWorker();
         }
 
         public boolean isRunning() {
             return running;
         }
-        
+
         public void stopWorker() {
-            running = false;  // safely stops the thread
-        }                
+            running = false; // safely stops the thread
+        }
     }
 }

@@ -18,8 +18,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LineItem {
+
     private long id;
     private String name;
     private String type;
-    
 }

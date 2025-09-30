@@ -10,7 +10,7 @@ public class BitInteger {
     }
 
     /* Creates a number equal to given value. Takes time proportional
-	 * to INTEGER_SIZE. */
+   * to INTEGER_SIZE. */
     public BitInteger(int value) {
         bits = new boolean[INTEGER_SIZE];
         for (int j = 0; j < INTEGER_SIZE; j++) {

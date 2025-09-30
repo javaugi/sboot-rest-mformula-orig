@@ -8,10 +8,10 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- *
  * @author javau
  */
 public class TreatmentAdded extends Event {
+
     private final String treatment;
 
     public TreatmentAdded(UUID patientId, String treatment, Instant timestamp) {
@@ -22,6 +22,4 @@ public class TreatmentAdded extends Event {
     public String getTreatment() {
         return treatment;
     }
-    
-    
 }

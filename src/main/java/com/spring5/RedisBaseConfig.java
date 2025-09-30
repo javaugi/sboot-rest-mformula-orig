@@ -5,8 +5,6 @@
 package com.spring5;
 
 import java.time.Duration;
-//import net.sf.ehcache.management.CacheManager;
-//import net.sf.ehcache.management.CacheManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +19,13 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 @Configuration
 @EnableCaching
-//https://github.com/javaugi/redis-caching-java-spring-boot
-//https://github.com/javaugi/spring-boot-redis-example
+// https://github.com/javaugi/redis-caching-java-spring-boot
+// https://github.com/javaugi/spring-boot-redis-example
 public class RedisBaseConfig {
 
     @Value("${spring.data.redis.host}")
     private String redisHost;
+
     @Value("${spring.data.redis.port}")
     private int redisPort;
 
@@ -39,14 +38,14 @@ public class RedisBaseConfig {
     @Primary
     @Bean
     public RedisCacheManager cacheManager() {
-        RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(30))
-                .disableCachingNullValues()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair
-                        .fromSerializer(new GenericJackson2JsonRedisSerializer()));
+        RedisCacheConfiguration cacheConfig
+                = RedisCacheConfiguration.defaultCacheConfig()
+                        .entryTtl(Duration.ofMinutes(30))
+                        .disableCachingNullValues()
+                        .serializeValuesWith(
+                                RedisSerializationContext.SerializationPair.fromSerializer(
+                                        new GenericJackson2JsonRedisSerializer()));
 
-        return RedisCacheManager.builder(redisConnectionFactory())
-                .cacheDefaults(cacheConfig)
-                .build();
+        return RedisCacheManager.builder(redisConnectionFactory()).cacheDefaults(cacheConfig).build();
     }
 }

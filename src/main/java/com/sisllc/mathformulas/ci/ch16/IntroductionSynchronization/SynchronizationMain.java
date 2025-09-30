@@ -18,5 +18,4 @@ public class SynchronizationMain {
         }
         System.out.println("Program terminating.");
     }
-
 }

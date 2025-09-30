@@ -7,9 +7,9 @@ package com.spring5.dbisolation.gmvehconfig;
 import java.math.BigDecimal;
 
 /**
- *
  * @author javau
  */
 public interface PricingRule {
+
     BigDecimal apply(VehicleConfig config, BigDecimal basePrice);
 }

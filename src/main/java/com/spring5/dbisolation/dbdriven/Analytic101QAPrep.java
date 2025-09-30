@@ -13,10 +13,10 @@ Key Preparation Tips for Ford OTA Interview
     5. Review Telemetry Systems: Familiarize yourself with vehicle data collection (CAN bus, sensors, etc.)
     6. Practice Optimization: Indexing strategies for time-series data and JSON fields
     7. Prepare Failure Scenarios: How would you handle a failed mass rollout?
-*/
+ */
 public class Analytic101QAPrep {
-    
 }
+
 /*
 In PostgreSQL (and SQL in general), GROUP BY and its extensions (GROUPING SETS, ROLLUP, CUBE) are powerful tools for summarizing and aggregating data. They allow you to perform calculations (like SUM, COUNT, AVG, MAX, MIN) over different sets of rows.
 
@@ -94,7 +94,7 @@ This query would generate the following grouping sets:
 The hierarchy is important. If it were ROLLUP(product, region), the subtotals would be for each product, then the grand total.
 
 4. GROUP BY CUBE
-Meaning: Another special form of GROUPING SETS that generates all possible combinations of groupings for the specified columns. If you have N columns in CUBE(), it will generate 2 
+Meaning: Another special form of GROUPING SETS that generates all possible combinations of groupings for the specified columns. If you have N columns in CUBE(), it will generate 2
 N
   grouping sets.
 
@@ -131,4 +131,4 @@ GROUP BY ROLLUP: When you need hierarchical summaries, moving from the most deta
 GROUP BY CUBE: When you need to analyze data across all possible dimensions and their combinations. It's comprehensive for multi-dimensional analysis but can generate a very large result set for many columns.
 
 These extensions to GROUP BY are incredibly useful for generating various levels of summary data in a single, efficient query, avoiding the need for multiple separate queries and UNION ALL operations.
-*/
+ */

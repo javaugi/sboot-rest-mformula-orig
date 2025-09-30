@@ -42,6 +42,27 @@ public class MaxOccurrenceFinder {
         log.debug("Done");
     }
 
+    public static void misc() {
+        Integer[] numbers = {1, 2, 3, 2, 4, 2, 5, 1, 2, 3, 2};
+        List<Integer> list = List.of(numbers);
+        String str = "12324251232";
+
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (Integer num : numbers) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+
+        frequencyMap.clear();
+        for (Integer num : list) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+
+        frequencyMap.clear();
+        for (char num : str.toCharArray()) {
+            // frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+    }
+
     private void usingHashMapMostEfficient(int[] numbers) {
         Map<Integer, Integer> result = findOccurrences(numbers);
         int maxElement = findMaxOccurrence(numbers);
@@ -56,8 +77,9 @@ public class MaxOccurrenceFinder {
 
         System.out.println("All occurrences: " + occurrences);
         System.out.println("Elements with max occurrences: " + maxElements);
-        System.out.println("Max occurrence count: "
-            + (maxElements.isEmpty() ? 0 : occurrences.get(maxElements.get(0))));
+        System.out.println(
+                "Max occurrence count: "
+                + (maxElements.isEmpty() ? 0 : occurrences.get(maxElements.get(0))));
     }
 
     private void usingArraySort(int[] numbers) {
@@ -66,15 +88,12 @@ public class MaxOccurrenceFinder {
 
     private void usingStreams2(int[] numbers) {
         Optional<Map.Entry<Integer, Long>> maxEntry
-            = Arrays.stream(numbers)
-                .boxed()
-                .collect(Collectors.groupingBy(
-                    Function.identity(),
-                    Collectors.counting()
-                ))
-                .entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue());
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                        .entrySet()
+                        .stream()
+                        .max(Map.Entry.comparingByValue());
 
         if (maxEntry.isPresent()) {
             System.out.println("Element with max occurrences: " + maxEntry.get().getKey());
@@ -86,17 +105,14 @@ public class MaxOccurrenceFinder {
 
     private void usingStreams(int[] numbers) {
         // Using Java 8 streams to find occurrences
-        Map<Integer, Long> occurrences = Arrays.stream(numbers)
-            .boxed()
-            .collect(Collectors.groupingBy(
-                Function.identity(),
-                Collectors.counting()
-            ));
+        Map<Integer, Long> occurrences
+                = Arrays.stream(numbers)
+                        .boxed()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         // Find element with max occurrences
-        Optional<Map.Entry<Integer, Long>> maxEntry = occurrences.entrySet()
-            .stream()
-            .max(Map.Entry.comparingByValue());
+        Optional<Map.Entry<Integer, Long>> maxEntry
+                = occurrences.entrySet().stream().max(Map.Entry.comparingByValue());
 
         System.out.println("Occurrences: " + occurrences);
 
@@ -194,5 +210,4 @@ public class MaxOccurrenceFinder {
 
         return maxElement;
     }
-
 }

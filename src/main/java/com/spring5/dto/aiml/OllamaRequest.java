@@ -5,6 +5,7 @@
 package com.spring5.dto.aiml;
 
 public record OllamaRequest(String model, String prompt) {
+
     public OllamaRequest(String model) {
         this("deepseek-llm", "");
     }

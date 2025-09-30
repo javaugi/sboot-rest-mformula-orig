@@ -8,42 +8,47 @@ import java.util.Random;
  * Compilation: javac RabinKarp.java Execution: java RabinKarp pat txt
  * Dependencies: System.out.java
  *
+ * <p>
  * Reads in two strings, the pattern and the input text, and searches for the
  * pattern in the input text using the Las Vegas version of the Rabin-Karp
  * algorithm.
  *
+ * <p>
  * % java RabinKarp abracadabra abacadabrabracabracadabrabrabracad pattern:
  * abracadabra text: abacadabrabracabracadabrabrabracad match: abracadabra
  *
+ * <p>
  * % java RabinKarp rab abacadabrabracabracadabrabrabracad pattern: rab text:
  * abacadabrabracabracadabrabrabracad match: rab
  *
+ * <p>
  * % java RabinKarp bcara abacadabrabracabracadabrabrabracad pattern: bcara
  * text: abacadabrabracabracadabrabrabracad
  *
+ * <p>
  * % java RabinKarp rabrabracad abacadabrabracabracadabrabrabracad text:
  * abacadabrabracabracadabrabrabracad pattern: rabrabracad
  *
+ * <p>
  * % java RabinKarp abacad abacadabrabracabracadabrabrabracad text:
  * abacadabrabracabracadabrabrabracad pattern: abacad
  *
- *****************************************************************************
+ * <p>
+ ****************************************************************************
  */
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public class RabinKarp {
 
-    private String pat;      // the pattern  // needed only for Las Vegas
-    private long patHash;    // pattern hash value
-    private int m;           // pattern length
-    private long q;          // a large prime, small enough to avoid long overflow
-    private int R;           // radix
-    private long RM;         // R^(M-1) % Q
+    private String pat; // the pattern  // needed only for Las Vegas
+    private long patHash; // pattern hash value
+    private int m; // pattern length
+    private long q; // a large prime, small enough to avoid long overflow
+    private int R; // radix
+    private long RM; // R^(M-1) % Q
 
     /**
      * Preprocesses the pattern string.
@@ -63,7 +68,7 @@ public class RabinKarp {
      * @param pat the pattern string
      */
     public RabinKarp(String pat) {
-        this.pat = pat;      // save pattern (needed only for Las Vegas)
+        this.pat = pat; // save pattern (needed only for Las Vegas)
         R = 256;
         m = pat.length();
         q = longRandomPrime();
@@ -98,7 +103,7 @@ public class RabinKarp {
     // Monte Carlo version: always return true
     // private boolean check(int i) {
     //    return true;
-    //}
+    // }
     /**
      * Returns the index of the first occurrrence of the pattern string in the
      * text string.

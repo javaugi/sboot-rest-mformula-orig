@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
 /*
 8. Key Use Cases Implemented
     Individual Risk Scoring: Calculate CMS-HCC, HHS-HCC, or commercial risk scores
@@ -39,20 +40,20 @@ public class DxcgRiskAssessmentService {
     private final DxcgApiClient dxcgApiClient;
 
     // DxCG model factors (simplified - real implementation would use actual DxCG algorithms)
-    private static final Map<String, Double> HCC_WEIGHTS = Map.of(
-        "HCC1", 0.543, "HCC2", 0.321, "HCC6", 0.234, "HCC8", 0.456,
-        "HCC10", 0.289, "HCC17", 0.387, "HCC18", 0.412
-    );
+    private static final Map<String, Double> HCC_WEIGHTS
+            = Map.of(
+                    "HCC1", 0.543, "HCC2", 0.321, "HCC6", 0.234, "HCC8", 0.456, "HCC10", 0.289, "HCC17",
+                    0.387, "HCC18", 0.412);
 
     /*
-    public DxcgRiskAssessmentService(PatientRepository patientRepository,
-        RiskScoreRepository riskScoreRepository,
-        DxcgApiClient dxcgApiClient) {
-        this.patientRepository = patientRepository;
-        this.riskScoreRepository = riskScoreRepository;
-        this.dxcgApiClient = dxcgApiClient;
-    }
-    // */
+  public DxcgRiskAssessmentService(PatientRepository patientRepository,
+      RiskScoreRepository riskScoreRepository,
+      DxcgApiClient dxcgApiClient) {
+      this.patientRepository = patientRepository;
+      this.riskScoreRepository = riskScoreRepository;
+      this.dxcgApiClient = dxcgApiClient;
+  }
+  // */
     public PopulationRiskAnalysis analyzePopulationRisk(String planType, Integer year) {
         return PopulationRiskAnalysis.builder().build();
     }
@@ -65,8 +66,10 @@ public class DxcgRiskAssessmentService {
      * Calculate risk score for a single patient using DxCG methodology
      */
     public RiskScore calculateRiskScore(String id, String modelType) {
-        Patient patient = patientRepository.findById(Long.valueOf(id))
-            .orElse(Patient.builder().id(Long.valueOf(id)).build());
+        Patient patient
+                = patientRepository
+                        .findById(Long.valueOf(id))
+                        .orElse(Patient.builder().id(Long.valueOf(id)).build());
 
         // Extract HCCs from patient claims
         Set<String> hccCodes = extractHccCodes(patient);
@@ -83,14 +86,15 @@ public class DxcgRiskAssessmentService {
         Double finalRiskScore = baseScore * demographicFactor * interactionFactor;
         Double predictedCost = calculatePredictedCost(finalRiskScore, modelType);
 
-        RiskScore riskScore = RiskScore.builder()
-            .patient(patient)
-            .calculationDate(LocalDate.now())
-            .modelType(modelType)
-            .riskScore(finalRiskScore)
-            .predictedCost(predictedCost)
-            .hierarchicalConditionCategories(mapHccToDescriptions(hccCodes))
-            .build();
+        RiskScore riskScore
+                = RiskScore.builder()
+                        .patient(patient)
+                        .calculationDate(LocalDate.now())
+                        .modelType(modelType)
+                        .riskScore(finalRiskScore)
+                        .predictedCost(predictedCost)
+                        .hierarchicalConditionCategories(mapHccToDescriptions(hccCodes))
+                        .build();
 
         return riskScoreRepository.save(riskScore);
     }
@@ -104,19 +108,22 @@ public class DxcgRiskAssessmentService {
      */
     @Async
     public CompletableFuture<List<RiskScore>> calculateBatchRiskScores(
-        List<String> memberIds, String modelType) {
+            List<String> memberIds, String modelType) {
 
-        List<RiskScore> results = memberIds.parallelStream()
-            .map(memberId -> {
-                try {
-                    return calculateRiskScore(memberId, modelType);
-                } catch (Exception e) {
-                    log.error("Failed to calculate risk for member {}: {}", memberId, e.getMessage());
-                    return null;
-                }
-            })
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+        List<RiskScore> results
+                = memberIds.parallelStream()
+                        .map(
+                                memberId -> {
+                                    try {
+                                        return calculateRiskScore(memberId, modelType);
+                                    } catch (Exception e) {
+                                        log.error(
+                                                "Failed to calculate risk for member {}: {}", memberId, e.getMessage());
+                                        return null;
+                                    }
+                                })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
 
         return CompletableFuture.completedFuture(results);
     }
@@ -126,11 +133,11 @@ public class DxcgRiskAssessmentService {
      */
     private Set<String> extractHccCodes(Patient patient) {
         return patient.getClaims().stream()
-            .map(Claim::getDiagnosisCode)
-            .filter(Objects::nonNull)
-            .map(this::mapIcd10ToHcc)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
+                .map(Claim::getDiagnosisCode)
+                .filter(Objects::nonNull)
+                .map(this::mapIcd10ToHcc)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -138,24 +145,23 @@ public class DxcgRiskAssessmentService {
      */
     private String mapIcd10ToHcc(String icd10Code) {
         // Simplified mapping - real implementation would use DxCG grouper
-        Map<String, String> icd10ToHcc = Map.of(
-            "I25", "HCC1", // Atherosclerotic heart disease
-            "E11", "HCC2", // Diabetes mellitus
-            "I50", "HCC6", // Heart failure
-            "J44", "HCC8", // COPD
-            "N18", "HCC10", // Chronic kidney disease
-            "F32", "HCC17", // Major depression
-            "G30", "HCC18" // Alzheimer's disease
-        );
+        Map<String, String> icd10ToHcc
+                = Map.of(
+                        "I25", "HCC1", // Atherosclerotic heart disease
+                        "E11", "HCC2", // Diabetes mellitus
+                        "I50", "HCC6", // Heart failure
+                        "J44", "HCC8", // COPD
+                        "N18", "HCC10", // Chronic kidney disease
+                        "F32", "HCC17", // Major depression
+                        "G30", "HCC18" // Alzheimer's disease
+                );
 
         String rootCode = icd10Code.substring(0, 3);
         return icd10ToHcc.get(rootCode);
     }
 
     private Double calculateBaseRiskScore(Set<String> hccCodes, String modelType) {
-        return hccCodes.stream()
-            .mapToDouble(hcc -> HCC_WEIGHTS.getOrDefault(hcc, 0.0))
-            .sum();
+        return hccCodes.stream().mapToDouble(hcc -> HCC_WEIGHTS.getOrDefault(hcc, 0.0)).sum();
     }
 
     private Double calculateDemographicFactor(Patient patient) {
@@ -216,5 +222,4 @@ public class DxcgRiskAssessmentService {
         }
         return riskScore * baseCost;
     }
-
 }

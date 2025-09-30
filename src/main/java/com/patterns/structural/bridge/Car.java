@@ -7,20 +7,16 @@
  */
 package com.patterns.structural.bridge;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
  */
 public class Car extends VehicleBridgeAbstraction {
-    /// Refine abstraction 1 in bridge pattern 
 
-    public Car(Workshop workShop1, Workshop workShop2) {
+    /// Refine abstraction 1 in bridge pattern
+
+  public Car(Workshop workShop1, Workshop workShop2) {
         super(workShop1, workShop2);
     }
 

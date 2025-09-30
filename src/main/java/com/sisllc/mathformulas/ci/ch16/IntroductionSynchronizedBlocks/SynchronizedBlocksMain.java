@@ -19,5 +19,4 @@ public class SynchronizedBlocksMain {
         }
         System.out.println("Program terminating.");
     }
-
 }

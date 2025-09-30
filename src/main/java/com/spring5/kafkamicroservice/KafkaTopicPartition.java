@@ -8,16 +8,19 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.TopicPartition;
 
 /**
- *
  * @author javaugi
  */
-public class KafkaTopicPartition //implements TopicPartition
+public class KafkaTopicPartition // implements TopicPartition
 {
-    @KafkaListener(id = "myConsumer", topicPartitions = 
-        @TopicPartition(topic = "yourTopic", partitions = {"0", "1"})
-    )
+
+    @KafkaListener(
+            id = "myConsumer",
+            topicPartitions
+            = @TopicPartition(
+                    topic = "yourTopic",
+                    partitions = {"0", "1"}))
     public void listen(String message) {
         // Process the message
         System.out.println("Received message: " + message);
-    }    
+    }
 }

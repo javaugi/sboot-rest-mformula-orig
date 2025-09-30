@@ -5,7 +5,6 @@
 package com.spring5.dbisolation.wmart;
 
 /**
- *
  * @author javau
  */
 public enum OrderStatus {

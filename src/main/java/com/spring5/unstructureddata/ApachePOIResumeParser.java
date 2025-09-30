@@ -24,14 +24,14 @@ import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
- *
  * @author javaugi
  */
 public class ApachePOIResumeParser {
-    private static final String INPUT_DIR = "resumes/David Lee_res25f6.pdf";
-    private static final String OUTPUT_DIR = "outputres/resume25f6_poi_data.json" ;
 
-     public static void main(String[] args) {
+    private static final String INPUT_DIR = "resumes/David Lee_res25f6.pdf";
+    private static final String OUTPUT_DIR = "outputres/resume25f6_poi_data.json";
+
+    public static void main(String[] args) {
         String docxPath = INPUT_DIR;
         String jsonPath = OUTPUT_DIR;
 
@@ -83,9 +83,10 @@ public class ApachePOIResumeParser {
     private static String extractName(String text) {
         // Simple NLP-based name extraction (for better accuracy, train a model)
         try {
-            NameFinderME nameFinder = new NameFinderME(
-                new TokenNameFinderModel(new File("en-ner-person.bin")) // Download from OpenNLP
-            );
+            NameFinderME nameFinder
+                    = new NameFinderME(
+                            new TokenNameFinderModel(new File("en-ner-person.bin")) // Download from OpenNLP
+                    );
             String[] tokens = SimpleTokenizer.INSTANCE.tokenize(text);
             Span[] names = nameFinder.find(tokens);
             return names.length > 0 ? tokens[names[0].getStart()] : "Unknown";
@@ -95,23 +96,30 @@ public class ApachePOIResumeParser {
     }
 
     private static String extractEmail(String text) {
-        Matcher matcher = Pattern.compile(
-            "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
-        ).matcher(text);
+        Matcher matcher
+                = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}").matcher(text);
         return matcher.find() ? matcher.group() : "Not Found";
     }
 
     private static String extractPhone(String text) {
-        Matcher matcher = Pattern.compile(
-            "(\\+\\d{1,3}[- ]?)?\\d{10}"  // Supports +91 1234567890
-        ).matcher(text);
+        Matcher matcher
+                = Pattern.compile(
+                        "(\\+\\d{1,3}[- ]?)?\\d{10}" // Supports +91 1234567890
+                )
+                        .matcher(text);
         return matcher.find() ? matcher.group() : "Not Found";
     }
 
     private static List<String> extractSkills(String text) {
-        Set<String> skills = new HashSet<>(Arrays.asList(
-            "Java", "Python", "SQL", "Spring", "Machine Learning", "AWS"
-        )); // Add more skills here
+        Set<String> skills
+                = new HashSet<>(
+                        Arrays.asList(
+                                "Java",
+                                "Python",
+                                "SQL",
+                                "Spring",
+                                "Machine Learning",
+                                "AWS")); // Add more skills here
         List<String> foundSkills = new ArrayList<>();
         for (String skill : skills) {
             if (text.toLowerCase().contains(skill.toLowerCase())) {
@@ -122,12 +130,13 @@ public class ApachePOIResumeParser {
     }
 
     private static String extractExperience(String text) {
-        Matcher matcher = Pattern.compile(
-            "(\\d+)(\\+)?\\s*(years?|yrs?)"  // Matches "5 years", "3+ yrs"
-        ).matcher(text);
+        Matcher matcher
+                = Pattern.compile(
+                        "(\\d+)(\\+)?\\s*(years?|yrs?)" // Matches "5 years", "3+ yrs"
+                )
+                        .matcher(text);
         return matcher.find() ? matcher.group() : "Not Specified";
     }
-    
 }
 /*
 Extracting useful information from resumes in Word (DOCX) format to filter candidates can be done using Java with libraries like Apache POI (for reading Word files) and OpenNLP/Stanford NLP (for Named Entity Recognition to detect names, skills, etc.). Below is a structured approach:
@@ -298,4 +307,4 @@ Integrate with a Database to store candidate profiles.
 Add a Scoring System to rank candidates based on skills/experience.
 
 
-*/
+ */

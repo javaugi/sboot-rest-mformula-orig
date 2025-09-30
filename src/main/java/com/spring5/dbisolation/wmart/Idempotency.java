@@ -21,7 +21,6 @@ public class Idempotency {
     Order order;
 
     public Idempotency(String key, Long orderid) {
-
     }
 
     public OrderDto toDto() {

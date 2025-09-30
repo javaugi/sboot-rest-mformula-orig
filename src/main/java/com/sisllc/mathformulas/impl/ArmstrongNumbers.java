@@ -1,7 +1,6 @@
 package com.sisllc.mathformulas.impl;
 
 /**
- *
  * @author david An Armstrong number is an n-digit number that is equal to the
  * sum of the nth powers of its digits. For example: 371 = 33 +73 +13 9474 = 94
  * + 44 +74 + 44
@@ -20,7 +19,8 @@ public class ArmstrongNumbers {
     private static boolean isArmstrong(int input) {
 
         int num = input;
-        int length = String.valueOf(num).length();;
+        int length = String.valueOf(num).length();
+        ;
         int total = 0;
         int digit = 0;
 

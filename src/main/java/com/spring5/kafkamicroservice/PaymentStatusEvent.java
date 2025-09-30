@@ -6,4 +6,6 @@ package com.spring5.kafkamicroservice;
 
 import java.time.Instant;
 
-public record PaymentStatusEvent(String paymentId, PaymentStatus status, Instant timestamp) {}
+public record PaymentStatusEvent(String paymentId, PaymentStatus status, Instant timestamp) {
+
+}

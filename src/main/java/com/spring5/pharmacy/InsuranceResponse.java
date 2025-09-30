@@ -18,10 +18,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InsuranceResponse {
+
     private String Status;
     private String nextStep;
     private String planId;
-    
+
     public InsuranceResponse(String status, String nextStep) {
         this.Status = status;
         this.nextStep = nextStep;

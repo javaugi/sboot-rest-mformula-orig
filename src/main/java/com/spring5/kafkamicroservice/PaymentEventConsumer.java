@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PaymentEventConsumer {
-    
+
     private final PaymentProcessor paymentProcessor;
     private final PaymentEventProducer paymentEventProducer;
-    
+
     @KafkaListener(topics = "payment-requests")
     @CircuitBreaker(name = "paymentProcessing")
     public void processPaymentRequest(PaymentRequestEvent event) {
         PaymentResult result = paymentProcessor.process(event);
-        
+
         if (result.success()) {
             paymentEventProducer.publishPaymentCompleted(result);
         } else {

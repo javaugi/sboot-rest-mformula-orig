@@ -14,12 +14,13 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ErrorHandlingInterceptor {//implements IHandlerInterceptor {
+public class ErrorHandlingInterceptor { // implements IHandlerInterceptor {
 
     private final MBassador<Object> eventBus;
     private final RetryTemplate retryTemplate;
 
-    public ErrorHandlingInterceptor(@Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
+    public ErrorHandlingInterceptor(
+            @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
         this.eventBus = eventBus;
         this.retryTemplate = new RetryTemplate();
 
@@ -33,16 +34,15 @@ public class ErrorHandlingInterceptor {//implements IHandlerInterceptor {
         retryTemplate.setBackOffPolicy(backOffPolicy);
     }
 
-    //@Override
-    public Object onAfterHandling(Object message,
-                                  SubscriptionContext context,
-                                  Object handler,
-                                  Throwable exception) {
+    // @Override
+    public Object onAfterHandling(
+            Object message, SubscriptionContext context, Object handler, Throwable exception) {
         if (exception != null) {
-            retryTemplate.execute(retryContext -> {
-                eventBus.publish(message); // Retry publishing
-                return null;
-            });
+            retryTemplate.execute(
+                    retryContext -> {
+                        eventBus.publish(message); // Retry publishing
+                        return null;
+                    });
         }
         return null; // Interceptor contract
     }
@@ -68,13 +68,13 @@ public class ErrorHandlingInterceptor implements IHandlerInterceptor {
     public ErrorHandlingInterceptor(MBassador<Object> eventBus) {
         this.eventBus = eventBus;
         this.retryTemplate = new RetryTemplate();
-        
+
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
         retryPolicy.setMaxAttempts(3);
-        
+
         FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
         backOffPolicy.setBackOffPeriod(1000); // 1 second
-        
+
         retryTemplate.setRetryPolicy(retryPolicy);
         retryTemplate.setBackOffPolicy(backOffPolicy);
     }

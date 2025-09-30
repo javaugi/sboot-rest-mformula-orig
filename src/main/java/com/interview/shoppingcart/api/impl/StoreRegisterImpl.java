@@ -7,21 +7,18 @@
  */
 package com.interview.shoppingcart.api.impl;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 import com.interview.shoppingcart.api.Inventory;
 import com.interview.shoppingcart.api.Item;
 import com.interview.shoppingcart.api.Receipt;
 import com.interview.shoppingcart.api.ShoppingCart;
 import com.interview.shoppingcart.api.StoreRegister;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -71,10 +68,12 @@ public class StoreRegisterImpl implements StoreRegister {
             }
             if (i / 2 == 0) {
                 if (randomItem.getCategory().equals(Item.Category.Bagged)) {
-                    DiscountItem discount = new DiscountItem(randomItem.getName(), randomItem.getPrice(), 0.20);
+                    DiscountItem discount
+                            = new DiscountItem(randomItem.getName(), randomItem.getPrice(), 0.20);
                     cart.addItem(discount);
                 } else {
-                    BuyGetFreeItem guyFree = new BuyGetFreeItem(randomItem.getName(), randomItem.getPrice(), 1, 1);
+                    BuyGetFreeItem guyFree
+                            = new BuyGetFreeItem(randomItem.getName(), randomItem.getPrice(), 1, 1);
                     cart.addItem(guyFree);
                 }
             }
@@ -111,5 +110,4 @@ public class StoreRegisterImpl implements StoreRegister {
         inv.addItem(new WeightItem("Guanciale", 5.15, 6.15));
         return inv;
     }
-
 }

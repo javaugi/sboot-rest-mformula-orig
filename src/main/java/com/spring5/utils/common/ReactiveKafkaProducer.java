@@ -20,43 +20,41 @@ public class ReactiveKafkaProducer {
     private final String deadLetterTopic;
 
     public ReactiveKafkaProducer(
-        KafkaSender<String, Object> kafkaSender,
-        @Value("${app.topics.claim-validated}") String claimValidatedTopic,
-        @Value("${app.topics.dead-letter}") String deadLetterTopic) {
+            KafkaSender<String, Object> kafkaSender,
+            @Value("${app.topics.claim-validated}") String claimValidatedTopic,
+            @Value("${app.topics.dead-letter}") String deadLetterTopic) {
         this.kafkaSender = kafkaSender;
         this.claimValidatedTopic = claimValidatedTopic;
         this.deadLetterTopic = deadLetterTopic;
     }
 
     public Mono<Void> sendClaimValidated(ReactiveClaimEvent event) {
-        return kafkaSender.send(Mono.just(SenderRecord.create(
-            claimValidatedTopic,
-            0,
-            System.currentTimeMillis(),
-            event.id,
-            event,
-            null
-        )))
-            .doOnNext(result -> log.info("Sent validated claim: {}", event.id))
-            .then();
+        return kafkaSender
+                .send(
+                        Mono.just(
+                                SenderRecord.create(
+                                        claimValidatedTopic, 0, System.currentTimeMillis(), event.id, event, null)))
+                .doOnNext(result -> log.info("Sent validated claim: {}", event.id))
+                .then();
     }
 
     public Mono<Boolean> sendToDeadLetterTopic(String claimId, String reason) {
-        ReactiveClaimEvent deadLetterEvent = new ReactiveClaimEvent(
-            claimId, null, null, null, null, null,
-            ReactiveClaimEvent.ClaimStatus.REJECTED, reason
-        );
+        ReactiveClaimEvent deadLetterEvent
+                = new ReactiveClaimEvent(
+                        claimId, null, null, null, null, null, ReactiveClaimEvent.ClaimStatus.REJECTED, reason);
 
-        return kafkaSender.send(Mono.just(SenderRecord.create(
-            deadLetterTopic,
-            0,
-            System.currentTimeMillis(),
-            claimId,
-            deadLetterEvent,
-            null
-        )))
-            .doOnNext(result -> log.warn("Sent to DLQ: {} - Reason: {}", claimId, reason))
-            .then(Mono.just(false));
+        return kafkaSender
+                .send(
+                        Mono.just(
+                                SenderRecord.create(
+                                        deadLetterTopic,
+                                        0,
+                                        System.currentTimeMillis(),
+                                        claimId,
+                                        deadLetterEvent,
+                                        null)))
+                .doOnNext(result -> log.warn("Sent to DLQ: {} - Reason: {}", claimId, reason))
+                .then(Mono.just(false));
     }
 
     public Mono<Boolean> sendClaimReviewed(ReactiveClaimEvent event) {

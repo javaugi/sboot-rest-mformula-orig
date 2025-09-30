@@ -19,9 +19,9 @@ public class TestContainersConfig {
     @ServiceConnection
     public PostgreSQLContainer<?> postgreSQLContainer() {
         return new PostgreSQLContainer<>("postgres:15-alpine")
-            .withDatabaseName("testdb")
-            .withUsername("test")
-            .withPassword("test");
+                .withDatabaseName("testdb")
+                .withUsername("test")
+                .withPassword("test");
     }
 
     @Bean
@@ -32,7 +32,6 @@ public class TestContainersConfig {
 
     @Bean
     public GenericContainer<?> redisContainer() {
-        return new GenericContainer<>("redis:7-alpine")
-            .withExposedPorts(6379);
+        return new GenericContainer<>("redis:7-alpine").withExposedPorts(6379);
     }
 }

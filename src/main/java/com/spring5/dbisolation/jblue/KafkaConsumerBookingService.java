@@ -13,6 +13,7 @@ import org.springframework.kafka.support.Acknowledgment;
 
 @RequiredArgsConstructor
 public class KafkaConsumerBookingService {
+
     private final ObjectMapper mapper = new ObjectMapper();
     private final IdempotencyStore idempotencyStore; // see below
     private final BookingProcessor bookingProcessor; // business logic

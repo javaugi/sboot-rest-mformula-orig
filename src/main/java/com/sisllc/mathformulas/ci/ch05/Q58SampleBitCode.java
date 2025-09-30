@@ -80,5 +80,4 @@ public class Q58SampleBitCode {
         int num4 = clearBitsIthrough0(number, 2);
         System.out.println(AssortedMethods.toFullBinaryString(num4));
     }
-
 }

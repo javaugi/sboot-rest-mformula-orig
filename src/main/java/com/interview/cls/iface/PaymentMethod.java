@@ -4,7 +4,7 @@
  */
 package com.interview.cls.iface;
 
-//Sealed Interface Example
+// Sealed Interface Example
 // Sealed interface
 public sealed interface PaymentMethod permits CreditCard, PayPal, BankTransfer {
 

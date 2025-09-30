@@ -13,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -46,7 +44,7 @@ public class ColorSchemeFactoryMethod {
         // They Can Subtype
     }
 
-    private static Map< Integer, Color> CACHE = new HashMap<>();
+    private static Map<Integer, Color> CACHE = new HashMap<>();
     private static final int hex = 0;
 
     public static class Color {
@@ -64,7 +62,6 @@ public class ColorSchemeFactoryMethod {
         public Color(int h) {
             hex = h;
         }
-
     }
 
     public static Color makeFromRGB(String rgb) {

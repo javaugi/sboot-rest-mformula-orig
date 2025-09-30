@@ -71,5 +71,4 @@ public class SwapMinMax {
         time1 = System.currentTimeMillis();
         System.out.print("2. it takes " + (time1 - time2));
     }
-
 }

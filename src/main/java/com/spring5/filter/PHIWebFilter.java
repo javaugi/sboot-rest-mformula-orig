@@ -5,6 +5,8 @@
 package com.spring5.filter;
 
 import com.spring5.utils.PHIPseudonymizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -13,8 +15,6 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 /*
 3. Spring WebFlux WebFilter for Request/Response Logs
     This reactive filter captures HTTP request/response bodies and pseudonymizes PHI before logging.
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 public class PHIWebFilter implements WebFilter {
 
     private static final PHIPseudonymizer pseudonymizer
-        = new PHIPseudonymizer(System.getenv().getOrDefault("PHI_KEY", "default-key"));
+            = new PHIPseudonymizer(System.getenv().getOrDefault("PHI_KEY", "default-key"));
 
     private static final Pattern PATIENT_ID_PATTERN = Pattern.compile("patientId=([A-Za-z0-9_-]+)");
 
@@ -56,16 +56,20 @@ public class PHIWebFilter implements WebFilter {
                 matcher.appendReplacement(sb, Matcher.quoteReplacement(pseudonym));
             }
             matcher.appendTail(sb);
-            System.out.println("Incoming Request: " + request.getMethod() + " " + request.getURI().getPath() + "?" + sb);
+            System.out.println(
+                    "Incoming Request: " + request.getMethod() + " " + request.getURI().getPath() + "?" + sb);
         } else {
-            System.out.println("Incoming Request: " + request.getMethod() + " " + request.getURI().getPath());
+            System.out.println(
+                    "Incoming Request: " + request.getMethod() + " " + request.getURI().getPath());
         }
 
         // Process request/response as usual
-        return chain.filter(exchange)
-            .doOnTerminate(() -> {
-                // Pseudonymize response status or body metadata if needed
-                System.out.println("Response Status: " + response.getStatusCode());
-            });
+        return chain
+                .filter(exchange)
+                .doOnTerminate(
+                        () -> {
+                            // Pseudonymize response status or body metadata if needed
+                            System.out.println("Response Status: " + response.getStatusCode());
+                        });
     }
 }

@@ -8,14 +8,13 @@
 package com.spring5.dto;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -25,10 +24,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
+
     private long id;
     private String name;
     private BigDecimal price;
     private int quantity;
     private String description;
     private boolean status;
+    private String category;
+    private double basePrice;
+    private Map<String, String[]> variants;
 }

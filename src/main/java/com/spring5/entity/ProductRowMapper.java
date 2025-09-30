@@ -9,11 +9,10 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 /**
- *
  * @author javaugi
  */
 public class ProductRowMapper implements RowMapper<Product> {
-    
+
     @Override
     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
         // Create a new User object
@@ -22,12 +21,12 @@ public class ProductRowMapper implements RowMapper<Product> {
         // Map columns from the ResultSet to the User object properties
         product.setId(rs.getLong("id"));
         product.setName(rs.getString("name"));
-        product.setPrice(rs.getBigDecimal("price")); 
+        product.setPrice(rs.getBigDecimal("price"));
         product.setQuantity(rs.getInt("quantity"));
         product.setDescription(rs.getString("description"));
-        product.setStatus(rs.getBoolean("status"));        
+        product.setStatus(rs.getBoolean("status"));
 
         // Return the mapped User object
         return product;
-    }    
+    }
 }

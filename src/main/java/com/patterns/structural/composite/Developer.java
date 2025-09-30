@@ -8,8 +8,6 @@
 package com.patterns.structural.composite;
 
 /**
- *
- *
  * @author david
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy
@@ -25,11 +23,11 @@ public class Developer implements Employee {
     }
 
     public void add(Employee employee) {
-        //this is leaf node so this method is not applicable to this class.
+        // this is leaf node so this method is not applicable to this class.
     }
 
     public Employee getChild(int i) {
-        //this is leaf node so this method is not applicable to this class.
+        // this is leaf node so this method is not applicable to this class.
         return null;
     }
 
@@ -49,7 +47,6 @@ public class Developer implements Employee {
     }
 
     public void remove(Employee employee) {
-        //this is leaf node so this method is not applicable to this class.
+        // this is leaf node so this method is not applicable to this class.
     }
-
 }

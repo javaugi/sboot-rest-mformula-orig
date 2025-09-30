@@ -7,10 +7,10 @@ package com.spring5.dbisolation.jblue.projection;
 import java.time.LocalDateTime;
 
 /**
- *
  * @author javau
  */
 public interface FlightEssentialInfo {
+
     String getFlightNumber();
 
     LocalDateTime getDepartureTime();

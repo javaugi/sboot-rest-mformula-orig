@@ -18,23 +18,23 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
-@Data //it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor 
+@Data // it includes @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 // 1. Using JPA with proper indexing
 @Table(indexes = @Index(name = "idx_vin", columnList = "vin"))
 public class Vehicle {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String vin;
     private String make;
     private String model;
     private Long targetVersionId;
-    
+
     @LastModifiedDate
     private LocalDateTime lastComminucation;
-
 }

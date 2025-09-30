@@ -5,8 +5,6 @@
 package com.interview.shoppingcart.api;
 
 /**
- *
- *
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author:
  * $LastChangedBy

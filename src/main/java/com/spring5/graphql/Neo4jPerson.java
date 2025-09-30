@@ -9,11 +9,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
 
 @Node
 public class Neo4jPerson implements java.io.Serializable {
@@ -49,9 +48,9 @@ public class Neo4jPerson implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return this.name + "'s teammates => "
-                + Optional.ofNullable(this.teammates).orElse(
-                        Collections.emptySet()).stream()
+        return this.name
+                + "'s teammates => "
+                + Optional.ofNullable(this.teammates).orElse(Collections.emptySet()).stream()
                         .map(Neo4jPerson::getName)
                         .collect(Collectors.toList());
     }

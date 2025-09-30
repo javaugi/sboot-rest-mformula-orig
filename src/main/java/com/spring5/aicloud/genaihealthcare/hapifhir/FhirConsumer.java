@@ -4,18 +4,17 @@
  */
 package com.spring5.aicloud.genaihealthcare.hapifhir;
 
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
-import org.hl7.fhir.r4.model.Claim;
-import org.hl7.fhir.r4.model.Encounter;
-
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.r4.model.Claim;
+import org.hl7.fhir.r4.model.Encounter;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -33,7 +32,7 @@ public class FhirConsumer {
     public void onMessage(String fhirJson) {
         IParser parser = fhirContext.newJsonParser();
         IBaseResource res = parser.parseResource(fhirJson);
-        String type = res.fhirType();//.getResourceType().name();
+        String type = res.fhirType(); // .getResourceType().name();
 
         boolean isValid = fhirValidation(fhirJson);
         if (!isValid) {
@@ -63,7 +62,7 @@ public class FhirConsumer {
         // Persist normalized event for analytics
         repo.save(e);
 
-        //Scoring microservice or scoring-results to dashboards, billing automation, clinician UI
+        // Scoring microservice or scoring-results to dashboards, billing automation, clinician UI
         kafka.send("patient-events ", type, fhirJson);
     }
 
@@ -73,7 +72,7 @@ public class FhirConsumer {
 
         try {
             // Minimal validation: resource type allowed?
-            String resourceType = res.fhirType();//.getResourceType().name();
+            String resourceType = res.fhirType(); // .getResourceType().name();
             boolean isValid = fhirValidationService.validate();
         } catch (Exception ex) {
 
@@ -100,6 +99,6 @@ public class FhirConsumer {
     private String pseudonymize(String patientId) {
         String externalSafeId = pseudonymService.getPseudonym(patientId);
         return externalSafeId;
-        //externalModelClient.sendData(externalSafeId, otherData);
+        // externalModelClient.sendData(externalSafeId, otherData);
     }
 }

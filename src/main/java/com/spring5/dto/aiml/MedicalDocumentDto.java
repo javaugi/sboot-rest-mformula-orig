@@ -17,13 +17,19 @@ import org.springframework.data.relational.core.mapping.Column;
 @Builder(toBuilder = true)
 public class MedicalDocumentDto {
 
-    @Schema(description = "Unique identifier of the project", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(
+            description = "Unique identifier of the project",
+            example = "1",
+            accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @Version
     private Long version; // For optimistic locking
 
-    @Schema(description = "Title of the document", example = "Medical Document Dashboard", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(
+            description = "Title of the document",
+            example = "Medical Document Dashboard",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Title is mandatory")
     private String title;
 
@@ -35,7 +41,10 @@ public class MedicalDocumentDto {
     @Column("document_type")
     private String documentType;
 
-    @Schema(description = "Timestamp when the medical document was created", example = "2024-10-27T10:30:00", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(
+            description = "Timestamp when the medical document was created",
+            example = "2024-10-27T10:30:00",
+            accessMode = Schema.AccessMode.READ_ONLY)
     @Column("publication_date")
     private OffsetDateTime publicationDate;
 

@@ -8,14 +8,18 @@ import java.util.Arrays;
 import java.util.Set;
 
 /**
- *
  * @author javau
  */
 public class DefaultErrorPatternExtractor implements ErrorPatternExtractor {
-    private static final Set<String> COMMON_EXCEPTIONS = Set.of(
-        "NullPointerException", "IllegalArgumentException", "IOException",
-        "SQLException", "TimeoutException", "RuntimeException"
-    );
+
+    private static final Set<String> COMMON_EXCEPTIONS
+            = Set.of(
+                    "NullPointerException",
+                    "IllegalArgumentException",
+                    "IOException",
+                    "SQLException",
+                    "TimeoutException",
+                    "RuntimeException");
 
     @Override
     public String extractPattern(String logMessage) {
@@ -39,9 +43,9 @@ public class DefaultErrorPatternExtractor implements ErrorPatternExtractor {
         String[] words = cleanMessage.split("\\s+");
 
         return Arrays.stream(words)
-            .filter(word -> word.length() > 4)
-            .filter(word -> Character.isUpperCase(word.charAt(0)))
-            .findFirst()
-            .orElse("UnknownError");
+                .filter(word -> word.length() > 4)
+                .filter(word -> Character.isUpperCase(word.charAt(0)))
+                .findFirst()
+                .orElse("UnknownError");
     }
 }

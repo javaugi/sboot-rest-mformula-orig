@@ -15,7 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidPatientValidator.class)
 public @interface ValidPatient {
+
     String message() default "Invalid patient";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

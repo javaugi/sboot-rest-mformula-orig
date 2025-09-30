@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestConfiguration
 public class TestWebClientConfiguration {
+
     @Test
     public void contextLoads() {
     }

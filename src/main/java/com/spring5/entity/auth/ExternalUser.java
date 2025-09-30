@@ -30,5 +30,4 @@ public class ExternalUser {
     private String providerId;
 
     private LocalDateTime createdAt;
-
 }

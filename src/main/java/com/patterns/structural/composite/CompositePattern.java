@@ -17,12 +17,14 @@ import org.slf4j.LoggerFactory;
  * as a tree structure made up of types that inherit a base type, and it can
  * represent a single part or a whole hierarchy of objects.
  *
+ * <p>
  * WorkFlow: Client use the component class interface to interact with objects
  * in the composition structure.if recipient is a leaf then request is handled
  * directly.If recipient is a composite,then it usually forwards request to its
  * child components,possibly performing additional operations before and after
  * forwarding.
  *
+ * <p>
  * Recursion: What makes the Composite pattern one of the most beautiful is the
  * power of recursion. I can explain this with the same organization example.
  * You want to find the total salary paid to all employees of the organization.
@@ -107,5 +109,4 @@ public class CompositePattern {
         property.add(factory.makeProperty(PropertyType.Bungalow));
         property.print();
     }
-
 }

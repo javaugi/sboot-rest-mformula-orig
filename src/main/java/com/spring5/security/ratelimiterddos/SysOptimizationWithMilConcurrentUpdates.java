@@ -17,7 +17,6 @@ Sample Answer:
     Horizontal Scaling: Auto-scale backend services in cloud environment
     Caching: Cache frequent requests at multiple levels
     Asynchronous Processing: Use message queues for non-critical operations"
-*/
+ */
 public class SysOptimizationWithMilConcurrentUpdates {
-    
 }

@@ -30,10 +30,12 @@ public class Q45CreateBST {
     }
 
     public static void main(String[] args) {
-        int[] array = {Integer.MIN_VALUE, Integer.MAX_VALUE - 2, Integer.MAX_VALUE - 1, Integer.MAX_VALUE};
+        int[] array = {
+            Integer.MIN_VALUE, Integer.MAX_VALUE - 2, Integer.MAX_VALUE - 1, Integer.MAX_VALUE
+        };
         TreeNode node = TreeNode.createMinimalBST(array);
-        //node.left.data = 5;
-        //node.left.right.data = 3;
+        // node.left.data = 5;
+        // node.left.right.data = 3;
         System.out.println(checkBST(node));
     }
 }
