@@ -35,184 +35,119 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/assessments")
 public class AssessmentController {
 
-    private final AssessmentService assessmentService;
-    private final PatientService patientService;
-    private final AnswerService answerService;
+	private final AssessmentService assessmentService;
 
-    public AssessmentController(
-            AssessmentService assessmentService,
-            PatientService patientService,
-            AnswerService answerService) {
-        this.assessmentService = assessmentService;
-        this.patientService = patientService;
-        this.answerService = answerService;
-    }
+	private final PatientService patientService;
 
-    @GetMapping
-    public CollectionModel<AssessmentModel> getAllAssessments() {
-        List<AssessmentModel> assessmentModels
-                = assessmentService.findAll().stream()
-                        .map(
-                                assessment -> {
-                                    AssessmentModel model = new AssessmentModel(assessment);
-                                    model
-                                            .add(
-                                                    linkTo(
-                                                            methodOn(AssessmentController.class)
-                                                                    .getAssessmentById(assessment.getId()))
-                                                            .withSelfRel())
-                                            .add(
-                                                    linkTo(
-                                                            methodOn(PatientController.class)
-                                                                    .getPatientById(assessment.getPatientId()))
-                                                            .withRel("patient"))
-                                            .add(
-                                                    linkTo(
-                                                            methodOn(AssessmentController.class)
-                                                                    .getAssessmentAnswers(assessment.getId()))
-                                                            .withRel("answers"));
-                                    return model;
-                                })
-                        .collect(Collectors.toList());
+	private final AnswerService answerService;
 
-        return CollectionModel.of(assessmentModels)
-                .add(linkTo(methodOn(AssessmentController.class).getAllAssessments()).withSelfRel())
-                .add(linkTo(methodOn(AssessmentController.class).createAssessment(null)).withRel("create"));
-    }
+	public AssessmentController(AssessmentService assessmentService, PatientService patientService,
+			AnswerService answerService) {
+		this.assessmentService = assessmentService;
+		this.patientService = patientService;
+		this.answerService = answerService;
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Assessment>> getAssessmentById(@PathVariable Long id) {
-        Assessment assessment = assessmentService.findById(id);
-        if (assessment == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
-        }
-        // AssessmentModel assessmentModel = new AssessmentModel(assessment)
-        EntityModel<Assessment> assessmentModel
-                = EntityModel.of(assessment)
-                        .add(linkTo(methodOn(AssessmentController.class).getAssessmentById(id)).withSelfRel())
-                        .add(
-                                linkTo(methodOn(AssessmentController.class).getAllAssessments())
-                                        .withRel("assessments"))
-                        .add(
-                                linkTo(methodOn(PatientController.class).getPatientById(assessment.getPatientId()))
-                                        .withRel("patient"))
-                        .add(
-                                linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(id))
-                                        .withRel("answers"))
-                        .add(
-                                linkTo(methodOn(AssessmentController.class).updateAssessment(id, null))
-                                        .withRel("update"));
-        return ResponseEntity.ok(assessmentModel);
-    }
+	@GetMapping
+	public CollectionModel<AssessmentModel> getAllAssessments() {
+		List<AssessmentModel> assessmentModels = assessmentService.findAll().stream().map(assessment -> {
+			AssessmentModel model = new AssessmentModel(assessment);
+			model.add(linkTo(methodOn(AssessmentController.class).getAssessmentById(assessment.getId())).withSelfRel())
+				.add(linkTo(methodOn(PatientController.class).getPatientById(assessment.getPatientId()))
+					.withRel("patient"))
+				.add(linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(assessment.getId()))
+					.withRel("answers"));
+			return model;
+		}).collect(Collectors.toList());
 
-    @PostMapping
-    public ResponseEntity<EntityModel<Assessment>> createAssessment(
-            @RequestBody Assessment assessment) {
-        Assessment createdAssessment = assessmentService.save(assessment);
-        // AssessmentModel assessmentModel = new AssessmentModel(createdAssessment)
-        EntityModel<Assessment> assessmentModel
-                = EntityModel.of(createdAssessment)
-                        .add(
-                                linkTo(
-                                        methodOn(AssessmentController.class)
-                                                .getAssessmentById(createdAssessment.getId()))
-                                        .withSelfRel())
-                        .add(
-                                linkTo(methodOn(AssessmentController.class).getAllAssessments())
-                                        .withRel("assessments"))
-                        .add(
-                                linkTo(
-                                        methodOn(PatientController.class)
-                                                .getPatientById(createdAssessment.getPatientId()))
-                                        .withRel("patient"))
-                        .add(
-                                linkTo(
-                                        methodOn(AssessmentController.class)
-                                                .getAssessmentAnswers(createdAssessment.getId()))
-                                        .withRel("answers"));
-        return ResponseEntity.status(HttpStatus.CREATED).body(assessmentModel);
-    }
+		return CollectionModel.of(assessmentModels)
+			.add(linkTo(methodOn(AssessmentController.class).getAllAssessments()).withSelfRel())
+			.add(linkTo(methodOn(AssessmentController.class).createAssessment(null)).withRel("create"));
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<Assessment>> updateAssessment(
-            @PathVariable Long id, @RequestBody Assessment updatedAssessment) {
-        Assessment assessment = assessmentService.update(id, updatedAssessment);
-        if (assessment == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
-        }
+	@GetMapping("/{id}")
+	public ResponseEntity<EntityModel<Assessment>> getAssessmentById(@PathVariable Long id) {
+		Assessment assessment = assessmentService.findById(id);
+		if (assessment == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
+		}
+		// AssessmentModel assessmentModel = new AssessmentModel(assessment)
+		EntityModel<Assessment> assessmentModel = EntityModel.of(assessment)
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentById(id)).withSelfRel())
+			.add(linkTo(methodOn(AssessmentController.class).getAllAssessments()).withRel("assessments"))
+			.add(linkTo(methodOn(PatientController.class).getPatientById(assessment.getPatientId())).withRel("patient"))
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(id)).withRel("answers"))
+			.add(linkTo(methodOn(AssessmentController.class).updateAssessment(id, null)).withRel("update"));
+		return ResponseEntity.ok(assessmentModel);
+	}
 
-        // AssessmentModel assessmentModel = new AssessmentModel(assessment)
-        EntityModel<Assessment> assessmentModel
-                = EntityModel.of(assessment)
-                        .add(linkTo(methodOn(AssessmentController.class).getAssessmentById(id)).withSelfRel())
-                        .add(
-                                linkTo(methodOn(AssessmentController.class).getAllAssessments())
-                                        .withRel("assessments"))
-                        .add(
-                                linkTo(methodOn(PatientController.class).getPatientById(assessment.getPatientId()))
-                                        .withRel("patient"))
-                        .add(
-                                linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(id))
-                                        .withRel("answers"));
-        return ResponseEntity.ok(assessmentModel);
-    }
+	@PostMapping
+	public ResponseEntity<EntityModel<Assessment>> createAssessment(@RequestBody Assessment assessment) {
+		Assessment createdAssessment = assessmentService.save(assessment);
+		// AssessmentModel assessmentModel = new AssessmentModel(createdAssessment)
+		EntityModel<Assessment> assessmentModel = EntityModel.of(createdAssessment)
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentById(createdAssessment.getId()))
+				.withSelfRel())
+			.add(linkTo(methodOn(AssessmentController.class).getAllAssessments()).withRel("assessments"))
+			.add(linkTo(methodOn(PatientController.class).getPatientById(createdAssessment.getPatientId()))
+				.withRel("patient"))
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(createdAssessment.getId()))
+				.withRel("answers"));
+		return ResponseEntity.status(HttpStatus.CREATED).body(assessmentModel);
+	}
 
-    @GetMapping("/{assessmentId}/answers")
-    public CollectionModel<AnswerModel> getAssessmentAnswers(@PathVariable Long assessmentId) {
-        Assessment assessment = assessmentService.findById(assessmentId);
-        if (assessment == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
-        }
-        List<Answer> answers = assessmentService.findAnswersByAssessmentId(assessmentId, answerService);
-        List<AnswerModel> answerModels
-                = answers.stream()
-                        .map(
-                                answer -> {
-                                    AnswerModel model = new AnswerModel(answer);
-                                    model
-                                            .add(
-                                                    linkTo(methodOn(AnswerController.class).getAnswerById(answer.getId()))
-                                                            .withSelfRel())
-                                            .add(
-                                                    linkTo(
-                                                            methodOn(AssessmentController.class)
-                                                                    .getAssessmentById(assessmentId))
-                                                            .withRel("assessment"));
-                                    return model;
-                                })
-                        .collect(Collectors.toList());
+	@PutMapping("/{id}")
+	public ResponseEntity<EntityModel<Assessment>> updateAssessment(@PathVariable Long id,
+			@RequestBody Assessment updatedAssessment) {
+		Assessment assessment = assessmentService.update(id, updatedAssessment);
+		if (assessment == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
+		}
 
-        return CollectionModel.of(answerModels)
-                .add(
-                        linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(assessmentId))
-                                .withSelfRel())
-                .add(
-                        linkTo(methodOn(AssessmentController.class).getAssessmentById(assessmentId))
-                                .withRel("assessment"))
-                .add(
-                        linkTo(methodOn(AssessmentController.class).createAnswer(assessmentId, null))
-                                .withRel("create"));
-    }
+		// AssessmentModel assessmentModel = new AssessmentModel(assessment)
+		EntityModel<Assessment> assessmentModel = EntityModel.of(assessment)
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentById(id)).withSelfRel())
+			.add(linkTo(methodOn(AssessmentController.class).getAllAssessments()).withRel("assessments"))
+			.add(linkTo(methodOn(PatientController.class).getPatientById(assessment.getPatientId())).withRel("patient"))
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(id)).withRel("answers"));
+		return ResponseEntity.ok(assessmentModel);
+	}
 
-    @PostMapping("/{assessmentId}/answers")
-    public ResponseEntity<EntityModel<Answer>> createAnswer(
-            @PathVariable Long assessmentId, @RequestBody Answer answer) {
-        Assessment assessment = assessmentService.findById(assessmentId);
-        if (assessment == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
-        }
-        Answer createdAnswer
-                = answerService.save(
-                        new Answer(null, assessmentId, answer.getQuestionId(), answer.getAnswerText()));
-        // AnswerModel answerModel = new AnswerModel(createdAnswer)
-        EntityModel<Answer> answerModel
-                = EntityModel.of(createdAnswer)
-                        .add(
-                                linkTo(methodOn(AnswerController.class).getAnswerById(createdAnswer.getId()))
-                                        .withSelfRel())
-                        .add(
-                                linkTo(methodOn(AssessmentController.class).getAssessmentById(assessmentId))
-                                        .withRel("assessment"));
-        return ResponseEntity.status(HttpStatus.CREATED).body(answerModel);
-    }
+	@GetMapping("/{assessmentId}/answers")
+	public CollectionModel<AnswerModel> getAssessmentAnswers(@PathVariable Long assessmentId) {
+		Assessment assessment = assessmentService.findById(assessmentId);
+		if (assessment == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
+		}
+		List<Answer> answers = assessmentService.findAnswersByAssessmentId(assessmentId, answerService);
+		List<AnswerModel> answerModels = answers.stream().map(answer -> {
+			AnswerModel model = new AnswerModel(answer);
+			model.add(linkTo(methodOn(AnswerController.class).getAnswerById(answer.getId())).withSelfRel())
+				.add(linkTo(methodOn(AssessmentController.class).getAssessmentById(assessmentId))
+					.withRel("assessment"));
+			return model;
+		}).collect(Collectors.toList());
+
+		return CollectionModel.of(answerModels)
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentAnswers(assessmentId)).withSelfRel())
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentById(assessmentId)).withRel("assessment"))
+			.add(linkTo(methodOn(AssessmentController.class).createAnswer(assessmentId, null)).withRel("create"));
+	}
+
+	@PostMapping("/{assessmentId}/answers")
+	public ResponseEntity<EntityModel<Answer>> createAnswer(@PathVariable Long assessmentId,
+			@RequestBody Answer answer) {
+		Assessment assessment = assessmentService.findById(assessmentId);
+		if (assessment == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found");
+		}
+		Answer createdAnswer = answerService
+			.save(new Answer(null, assessmentId, answer.getQuestionId(), answer.getAnswerText()));
+		// AnswerModel answerModel = new AnswerModel(createdAnswer)
+		EntityModel<Answer> answerModel = EntityModel.of(createdAnswer)
+			.add(linkTo(methodOn(AnswerController.class).getAnswerById(createdAnswer.getId())).withSelfRel())
+			.add(linkTo(methodOn(AssessmentController.class).getAssessmentById(assessmentId)).withRel("assessment"));
+		return ResponseEntity.status(HttpStatus.CREATED).body(answerModel);
+	}
+
 }

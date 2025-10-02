@@ -23,13 +23,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "employee_profiles")
 public class EmployeeProfile {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String bio;
+	private String bio;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "employee_id")
+	private Employee employee;
+
 }

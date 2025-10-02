@@ -9,14 +9,15 @@ import java.util.UUID;
 
 public class DiagnosisAdded extends Event {
 
-    private final String diagnosis;
+	private final String diagnosis;
 
-    public DiagnosisAdded(UUID patientId, String diagnosis, Instant timestamp) {
-        super(patientId, timestamp);
-        this.diagnosis = diagnosis;
-    }
+	public DiagnosisAdded(UUID patientId, String diagnosis, Instant timestamp) {
+		super(patientId, timestamp);
+		this.diagnosis = diagnosis;
+	}
 
-    public String getDiagnosis() {
-        return diagnosis;
-    }
+	public String getDiagnosis() {
+		return diagnosis;
+	}
+
 }

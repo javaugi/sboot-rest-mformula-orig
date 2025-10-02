@@ -6,7 +6,8 @@ package com.spring5.validatorex;
 
 public class InvalidReviewScoreException extends Exception {
 
-    public InvalidReviewScoreException(String message) {
-        super(message);
-    }
+	public InvalidReviewScoreException(String message) {
+		super(message);
+	}
+
 }

@@ -19,7 +19,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class LineItem {
 
-    private long id;
-    private String name;
-    private String type;
+	private long id;
+
+	private String name;
+
+	private String type;
+
 }

@@ -20,37 +20,38 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("medicalDocuments")
 public class MedicalDocument {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Version
-    private Long version; // For optimistic locking
+	@Version
+	private Long version; // For optimistic locking
 
-    private String title;
+	private String title;
 
-    @Column("text_content")
-    private String textContent;
+	@Column("text_content")
+	private String textContent;
 
-    private String specialty;
+	private String specialty;
 
-    @Column("document_type")
-    private String documentType;
+	@Column("document_type")
+	private String documentType;
 
-    @Column("publication_date")
-    private OffsetDateTime publicationDate;
+	@Column("publication_date")
+	private OffsetDateTime publicationDate;
 
-    @Column("embedding")
-    private float[] embedding;
+	@Column("embedding")
+	private float[] embedding;
 
-    // For file content, we'll handle separately
-    @Column("pdf_content")
-    private byte[] pdfContent;
+	// For file content, we'll handle separately
+	@Column("pdf_content")
+	private byte[] pdfContent;
 
-    public void setEmbeddingFromList(List<Double> embeddingList) {
-        this.embedding = new float[embeddingList.size()];
-        for (int i = 0; i < embeddingList.size(); i++) {
-            this.embedding[i] = embeddingList.get(i).floatValue();
-        }
-    }
+	public void setEmbeddingFromList(List<Double> embeddingList) {
+		this.embedding = new float[embeddingList.size()];
+		for (int i = 0; i < embeddingList.size(); i++) {
+			this.embedding[i] = embeddingList.get(i).floatValue();
+		}
+	}
+
 }

@@ -15,32 +15,33 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ScheduledOutOfOrderEventProcessor {
 
-    private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_OBJ)
-    RedisTemplate<String, Object> redisTemplate;
-    private final KafkaOrderedConsumer eventConsumer;
+	private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_OBJ) RedisTemplate<String, Object> redisTemplate;
 
-    @Scheduled(fixedRate = 5000) // Run every 5 seconds
-    public void processOutOfOrderEvents() {
-        // Get all entity IDs with out-of-order events
-        Set<String> entityKeys = redisTemplate.keys("kafka:out-of-order:*");
+	private final KafkaOrderedConsumer eventConsumer;
 
-        for (String key : entityKeys) {
-            String entityId = key.substring("kafka:out-of-order:".length());
-            String sequenceKey = "kafka:sequence:" + entityId;
+	@Scheduled(fixedRate = 5000) // Run every 5 seconds
+	public void processOutOfOrderEvents() {
+		// Get all entity IDs with out-of-order events
+		Set<String> entityKeys = redisTemplate.keys("kafka:out-of-order:*");
 
-            Long lastSequence = (Long) redisTemplate.opsForValue().get(sequenceKey);
-            lastSequence = lastSequence == null ? 0L : lastSequence;
+		for (String key : entityKeys) {
+			String entityId = key.substring("kafka:out-of-order:".length());
+			String sequenceKey = "kafka:sequence:" + entityId;
 
-            // Peek at the next event without removing it
-            KafkaOrderedEvent nextEvent = (KafkaOrderedEvent) redisTemplate.opsForList().index(key, 0);
+			Long lastSequence = (Long) redisTemplate.opsForValue().get(sequenceKey);
+			lastSequence = lastSequence == null ? 0L : lastSequence;
 
-            if (nextEvent != null && nextEvent.getSequenceNumber() == lastSequence + 1) {
-                // Process the event
-                eventConsumer.processOrderedEvent(nextEvent);
+			// Peek at the next event without removing it
+			KafkaOrderedEvent nextEvent = (KafkaOrderedEvent) redisTemplate.opsForList().index(key, 0);
 
-                // Remove the processed event
-                redisTemplate.opsForList().leftPop(key);
-            }
-        }
-    }
+			if (nextEvent != null && nextEvent.getSequenceNumber() == lastSequence + 1) {
+				// Process the event
+				eventConsumer.processOrderedEvent(nextEvent);
+
+				// Remove the processed event
+				redisTemplate.opsForList().leftPop(key);
+			}
+		}
+	}
+
 }

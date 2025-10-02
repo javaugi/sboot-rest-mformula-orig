@@ -21,11 +21,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class SoftwareVersions {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private LocalDateTime releaseDate;
-    private String changelog;
-    private boolean critical;
+	private LocalDateTime releaseDate;
+
+	private String changelog;
+
+	private boolean critical;
+
 }

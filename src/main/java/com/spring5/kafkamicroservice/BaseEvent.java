@@ -21,7 +21,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class BaseEvent {
 
-    private String eventId;
-    private Instant timestamp;
-    private String sourceSystem;
+	private String eventId;
+
+	private Instant timestamp;
+
+	private String sourceSystem;
+
 }

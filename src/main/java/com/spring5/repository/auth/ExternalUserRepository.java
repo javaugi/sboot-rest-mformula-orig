@@ -13,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ExternalUserRepository extends JpaRepository<ExternalUser, Long> {
 
-    Optional<ExternalUser> findByEmailAndProvider(String email, String provider);
+	Optional<ExternalUser> findByEmailAndProvider(String email, String provider);
+
 }

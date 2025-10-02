@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 // Assumes PrescriptionOrder has an 'id' field annotated with @Id or equivalent
 @Repository
 public interface PrescriptionRepository extends CosmosRepository<PrescriptionOrder, String> {
-    // Custom query methods if needed, e.g.,
-    // List<PrescriptionOrder> findByPatientId(String patientId);
+
+	// Custom query methods if needed, e.g.,
+	// List<PrescriptionOrder> findByPatientId(String patientId);
+
 }

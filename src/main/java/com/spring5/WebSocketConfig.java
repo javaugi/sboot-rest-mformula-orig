@@ -20,33 +20,33 @@ import reactor.core.publisher.Flux;
 @Configuration
 public class WebSocketConfig {
 
-    @Autowired
-    private WebSocketHandler webSocketHandler;
+	@Autowired
+	private WebSocketHandler webSocketHandler;
 
-    @Bean
-    public HandlerMapping webSocketHandlerMapping() {
-        Map<String, WebSocketHandler> map = new HashMap<>();
-        map.put("/event-emitter", webSocketHandler);
-        // "ws://localhost:8080/event-emitter"  this is the websocket server
+	@Bean
+	public HandlerMapping webSocketHandlerMapping() {
+		Map<String, WebSocketHandler> map = new HashMap<>();
+		map.put("/event-emitter", webSocketHandler);
+		// "ws://localhost:8080/event-emitter" this is the websocket server
 
-        SimpleUrlHandlerMapping handlerMapping = new SimpleUrlHandlerMapping();
-        handlerMapping.setOrder(1);
-        handlerMapping.setUrlMap(map);
-        return handlerMapping;
-    }
+		SimpleUrlHandlerMapping handlerMapping = new SimpleUrlHandlerMapping();
+		handlerMapping.setOrder(1);
+		handlerMapping.setUrlMap(map);
+		return handlerMapping;
+	}
 
-    @Bean
-    public WebSocketHandlerAdapter handlerAdapter() {
-        return new WebSocketHandlerAdapter();
-    }
+	@Bean
+	public WebSocketHandlerAdapter handlerAdapter() {
+		return new WebSocketHandlerAdapter();
+	}
 
-    @Bean
-    public WebSocketHandler webSocketHandler() {
-        return session -> {
-            Flux<String> messageFlux
-                    = Flux.interval(Duration.ofSeconds(1)).map(index -> "Event - " + index);
-            Flux<WebSocketMessage> webSocketMessageFlux = messageFlux.map(session::textMessage);
-            return session.send(webSocketMessageFlux).then(session.receive().then());
-        };
-    }
+	@Bean
+	public WebSocketHandler webSocketHandler() {
+		return session -> {
+			Flux<String> messageFlux = Flux.interval(Duration.ofSeconds(1)).map(index -> "Event - " + index);
+			Flux<WebSocketMessage> webSocketMessageFlux = messageFlux.map(session::textMessage);
+			return session.send(webSocketMessageFlux).then(session.receive().then());
+		};
+	}
+
 }

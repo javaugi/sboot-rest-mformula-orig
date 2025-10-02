@@ -4,93 +4,98 @@ import java.util.HashMap;
 
 public class Cache {
 
-    public static int MAX_SIZE = 10;
-    public Node head;
-    public Node tail;
-    public HashMap<String, Node> map;
-    public int size = 0;
+	public static int MAX_SIZE = 10;
 
-    public Cache() {
-        map = new HashMap<String, Node>();
-    }
+	public Node head;
 
-    public void moveToFront(Node node) {
-        if (node == head) {
-            return;
-        }
-        removeFromLinkedList(node);
-        node.next = head;
-        if (head != null) {
-            head.prev = node;
-        }
-        head = node;
-        size++;
+	public Node tail;
 
-        if (tail == null) {
-            tail = node;
-        }
-    }
+	public HashMap<String, Node> map;
 
-    public void moveToFront(String query) {
-        Node node = map.get(query);
-        moveToFront(node);
-    }
+	public int size = 0;
 
-    public void removeFromLinkedList(Node node) {
-        if (node == null) {
-            return;
-        }
+	public Cache() {
+		map = new HashMap<String, Node>();
+	}
 
-        if (node.next != null || node.prev != null) {
-            size--;
-        }
+	public void moveToFront(Node node) {
+		if (node == head) {
+			return;
+		}
+		removeFromLinkedList(node);
+		node.next = head;
+		if (head != null) {
+			head.prev = node;
+		}
+		head = node;
+		size++;
 
-        Node prev = node.prev;
-        if (prev != null) {
-            prev.next = node.next;
-        }
+		if (tail == null) {
+			tail = node;
+		}
+	}
 
-        Node next = node.next;
-        if (next != null) {
-            next.prev = prev;
-        }
+	public void moveToFront(String query) {
+		Node node = map.get(query);
+		moveToFront(node);
+	}
 
-        if (node == head) {
-            head = next;
-        }
+	public void removeFromLinkedList(Node node) {
+		if (node == null) {
+			return;
+		}
 
-        if (node == tail) {
-            tail = prev;
-        }
+		if (node.next != null || node.prev != null) {
+			size--;
+		}
 
-        node.next = null;
-        node.prev = null;
-    }
+		Node prev = node.prev;
+		if (prev != null) {
+			prev.next = node.next;
+		}
 
-    public String[] getResults(String query) {
-        if (map.containsKey(query)) {
-            Node node = map.get(query);
-            moveToFront(node);
-            return node.results;
-        }
-        return null;
-    }
+		Node next = node.next;
+		if (next != null) {
+			next.prev = prev;
+		}
 
-    public void insertResults(String query, String[] results) {
-        if (map.containsKey(query)) {
-            Node node = map.get(query);
-            node.results = results;
-            moveToFront(node);
-            return;
-        }
+		if (node == head) {
+			head = next;
+		}
 
-        Node node = new Node(query, results);
-        moveToFront(node);
-        map.put(query, node);
+		if (node == tail) {
+			tail = prev;
+		}
 
-        if (size > MAX_SIZE) {
-            map.remove(tail.query);
-            removeFromLinkedList(tail);
-        }
-    }
+		node.next = null;
+		node.prev = null;
+	}
+
+	public String[] getResults(String query) {
+		if (map.containsKey(query)) {
+			Node node = map.get(query);
+			moveToFront(node);
+			return node.results;
+		}
+		return null;
+	}
+
+	public void insertResults(String query, String[] results) {
+		if (map.containsKey(query)) {
+			Node node = map.get(query);
+			node.results = results;
+			moveToFront(node);
+			return;
+		}
+
+		Node node = new Node(query, results);
+		moveToFront(node);
+		map.put(query, node);
+
+		if (size > MAX_SIZE) {
+			map.remove(tail.query);
+			removeFromLinkedList(tail);
+		}
+	}
+
 }

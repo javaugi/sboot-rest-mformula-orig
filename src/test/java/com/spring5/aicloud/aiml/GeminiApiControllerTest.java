@@ -26,109 +26,98 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 // @WebFluxTest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@Import({WebClientAutoConfiguration.class, TestPostgresConfig.class})
+@Import({ WebClientAutoConfiguration.class, TestPostgresConfig.class })
 @ActiveProfiles("test")
 @Disabled("Temporarily disabled for CICD")
 public class GeminiApiControllerTest {
 
-    // Create a request body as a Map, which will be serialized to JSON
-    Map<String, String> REQUEST_BODY
-            = Collections.singletonMap("prompt", "Explain quantum computing");
+	// Create a request body as a Map, which will be serialized to JSON
+	Map<String, String> REQUEST_BODY = Collections.singletonMap("prompt", "Explain quantum computing");
 
-    @Autowired
-    private WebTestClient webTestClient;
+	@Autowired
+	private WebTestClient webTestClient;
 
-    /*
-  @Mock
-  private WebClient.Builder webClientBuilder; // Mock the builder
+	/*
+	 * @Mock private WebClient.Builder webClientBuilder; // Mock the builder
+	 * 
+	 * @Mock private WebClient webClient; // Mock the WebClient built by the builder
+	 * 
+	 * // Mocks for the fluent API chain of WebClient
+	 * 
+	 * @Mock private RequestHeadersUriSpec requestHeadersUriSpec;
+	 * 
+	 * @Mock private RequestBodyUriSpec requestBodyUriSpec;
+	 * 
+	 * @Mock private ResponseSpec responseSpec;
+	 * 
+	 * @InjectMocks private GeminiApiService geminiApiService; // Inject mocks into your
+	 * service //
+	 */
+	@BeforeEach
+	void setUp() {
+		/*
+		 * // Configure the mocked WebClient.Builder to return the mocked WebClient
+		 * when(webClientBuilder.build()).thenReturn(webClient);
+		 * 
+		 * // --- Mock the WebClient fluent API chain --- // For a POST request (assuming
+		 * GeminiApiService makes a POST)
+		 * when(webTestClient.post()).thenReturn(requestBodyUriSpec);
+		 * when(requestBodyUriSpec.uri(any(String.class))).thenReturn(requestBodyUriSpec);
+		 * when(requestBodyUriSpec.bodyValue(any())).thenReturn(requestHeadersUriSpec); //
+		 * or body(Mono.just(any()), AnyClass.class)
+		 * when(requestHeadersUriSpec.exchange()).thenReturn(responseSpec); //
+		 */
+		// when(responseSpec.bodyToMono(String.class)).thenReturn(Mono.just("mocked Gemini
+		// API
+		// response"));
+		// Adjust the above chain based on how your GeminiApiService actually uses
+		// WebClient
+		// e.g., if it uses .get(), .put(), .exchange(), etc.
+	}
 
-  @Mock
-  private WebClient webClient; // Mock the WebClient built by the builder
+	@Test
+	public void testGeminiApiByWebClient() {
+		webTestClient.mutate()
+			.responseTimeout(Duration.ofSeconds(30)) // Increase timeout
+			.build()
+			.post()
+			.uri(uriBuilder -> uriBuilder.path("/api/gemini").queryParam("prompt", "Explain quantum computing").build())
+			.contentType(MediaType.APPLICATION_JSON) // Specify the content type
+			.bodyValue(REQUEST_BODY) // Send the JSON body
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(String.class)
+			.consumeWith(result -> {
+				String response = result.getResponseBody();
+				System.out.println("Response: " + response);
+				// Add your assertions here
+				assertNotNull(response);
+				assertTrue(response.contains("quantum")); // Simple assertion example
+			});
+	}
 
-  // Mocks for the fluent API chain of WebClient
-  @Mock
-  private RequestHeadersUriSpec requestHeadersUriSpec;
-  @Mock
-  private RequestBodyUriSpec requestBodyUriSpec;
-  @Mock
-  private ResponseSpec responseSpec;
+	@Test
+	public void testGeminiApiByTemplate() {
+		webTestClient.mutate()
+			.responseTimeout(Duration.ofSeconds(30)) // Increase timeout
+			.build()
+			.post()
+			.uri(uriBuilder -> uriBuilder.path("/api/gemini/query")
+				.queryParam("prompt", "Explain quantum computing")
+				.build())
+			.contentType(MediaType.APPLICATION_JSON) // Specify the content type
+			.bodyValue(REQUEST_BODY) // Send the JSON body
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(String.class)
+			.consumeWith(result -> {
+				String response = result.getResponseBody();
+				System.out.println("Response: " + response);
+				assertNotNull(response);
+				assertTrue(response.contains("quantum"));
+			});
+	}
 
-  @InjectMocks
-  private GeminiApiService geminiApiService; // Inject mocks into your service
-  // */
-    @BeforeEach
-    void setUp() {
-        /*
-    // Configure the mocked WebClient.Builder to return the mocked WebClient
-    when(webClientBuilder.build()).thenReturn(webClient);
-
-    // --- Mock the WebClient fluent API chain ---
-    // For a POST request (assuming GeminiApiService makes a POST)
-    when(webTestClient.post()).thenReturn(requestBodyUriSpec);
-    when(requestBodyUriSpec.uri(any(String.class))).thenReturn(requestBodyUriSpec);
-    when(requestBodyUriSpec.bodyValue(any())).thenReturn(requestHeadersUriSpec); // or body(Mono.just(any()), AnyClass.class)
-    when(requestHeadersUriSpec.exchange()).thenReturn(responseSpec);
-    // */
-        // when(responseSpec.bodyToMono(String.class)).thenReturn(Mono.just("mocked Gemini API
-        // response"));
-        // Adjust the above chain based on how your GeminiApiService actually uses WebClient
-        // e.g., if it uses .get(), .put(), .exchange(), etc.
-    }
-
-    @Test
-    public void testGeminiApiByWebClient() {
-        webTestClient
-                .mutate()
-                .responseTimeout(Duration.ofSeconds(30)) // Increase timeout
-                .build()
-                .post()
-                .uri(
-                        uriBuilder
-                        -> uriBuilder
-                                .path("/api/gemini")
-                                .queryParam("prompt", "Explain quantum computing")
-                                .build())
-                .contentType(MediaType.APPLICATION_JSON) // Specify the content type
-                .bodyValue(REQUEST_BODY) // Send the JSON body
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(String.class)
-                .consumeWith(
-                        result -> {
-                            String response = result.getResponseBody();
-                            System.out.println("Response: " + response);
-                            // Add your assertions here
-                            assertNotNull(response);
-                            assertTrue(response.contains("quantum")); // Simple assertion example
-                        });
-    }
-
-    @Test
-    public void testGeminiApiByTemplate() {
-        webTestClient
-                .mutate()
-                .responseTimeout(Duration.ofSeconds(30)) // Increase timeout
-                .build()
-                .post()
-                .uri(
-                        uriBuilder
-                        -> uriBuilder
-                                .path("/api/gemini/query")
-                                .queryParam("prompt", "Explain quantum computing")
-                                .build())
-                .contentType(MediaType.APPLICATION_JSON) // Specify the content type
-                .bodyValue(REQUEST_BODY) // Send the JSON body
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(String.class)
-                .consumeWith(
-                        result -> {
-                            String response = result.getResponseBody();
-                            System.out.println("Response: " + response);
-                            assertNotNull(response);
-                            assertTrue(response.contains("quantum"));
-                        });
-    }
 }

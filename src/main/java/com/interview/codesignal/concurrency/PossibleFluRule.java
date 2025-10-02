@@ -11,24 +11,25 @@ import java.util.Set;
  */
 public class PossibleFluRule implements Rule {
 
-    @Override
-    public boolean evaluate(Set<Fact> facts) {
-        boolean highTemperature = false;
-        boolean hasCough = false;
+	@Override
+	public boolean evaluate(Set<Fact> facts) {
+		boolean highTemperature = false;
+		boolean hasCough = false;
 
-        for (Fact fact : facts) {
-            if (fact.getName().equals("temperature") && (Double) fact.getValue() > 38.0) {
-                highTemperature = true;
-            }
-            if (fact.getName().equals("cough") && (Boolean) fact.getValue()) {
-                hasCough = true;
-            }
-        }
-        return highTemperature && hasCough;
-    }
+		for (Fact fact : facts) {
+			if (fact.getName().equals("temperature") && (Double) fact.getValue() > 38.0) {
+				highTemperature = true;
+			}
+			if (fact.getName().equals("cough") && (Boolean) fact.getValue()) {
+				hasCough = true;
+			}
+		}
+		return highTemperature && hasCough;
+	}
 
-    @Override
-    public String getConclusion() {
-        return "Possible Flu";
-    }
+	@Override
+	public String getConclusion() {
+		return "Possible Flu";
+	}
+
 }

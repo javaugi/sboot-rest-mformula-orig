@@ -4,24 +4,28 @@ import java.util.Set;
 
 public class JukeBox {
 
-    private CDPlayer cdPlayer;
-    private Q83User user;
-    private Set<CD> cdCollection;
-    private SongSelector ts;
+	private CDPlayer cdPlayer;
 
-    public JukeBox(CDPlayer cdPlayer, Q83User user, Set<CD> cdCollection, SongSelector ts) {
-        super();
-        this.cdPlayer = cdPlayer;
-        this.user = user;
-        this.cdCollection = cdCollection;
-        this.ts = ts;
-    }
+	private Q83User user;
 
-    public Song getCurrentSong() {
-        return ts.getCurrentSong();
-    }
+	private Set<CD> cdCollection;
 
-    public void setUser(Q83User u) {
-        this.user = u;
-    }
+	private SongSelector ts;
+
+	public JukeBox(CDPlayer cdPlayer, Q83User user, Set<CD> cdCollection, SongSelector ts) {
+		super();
+		this.cdPlayer = cdPlayer;
+		this.user = user;
+		this.cdCollection = cdCollection;
+		this.ts = ts;
+	}
+
+	public Song getCurrentSong() {
+		return ts.getCurrentSong();
+	}
+
+	public void setUser(Q83User u) {
+		this.user = u;
+	}
+
 }

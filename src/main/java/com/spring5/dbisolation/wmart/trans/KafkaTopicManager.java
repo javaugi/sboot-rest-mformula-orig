@@ -20,38 +20,37 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaTopicManager {
 
-    private final AdminClient adminClient;
+	private final AdminClient adminClient;
 
-    public KafkaTopicManager(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
-        Properties props = new Properties();
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        this.adminClient = AdminClient.create(props);
-    }
+	public KafkaTopicManager(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
+		Properties props = new Properties();
+		props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		this.adminClient = AdminClient.create(props);
+	}
 
-    public void createStorePartitionedTopic(
-            String topicName, int partitions, short replicationFactor) {
-        NewTopic newTopic = new NewTopic(topicName, partitions, replicationFactor);
+	public void createStorePartitionedTopic(String topicName, int partitions, short replicationFactor) {
+		NewTopic newTopic = new NewTopic(topicName, partitions, replicationFactor);
 
-        Map<String, String> configs = new HashMap<>();
-        configs.put("cleanup.policy", "compact"); // For key-based compaction if needed
-        configs.put("retention.ms", "604800000"); // 7 days retention
-        newTopic.configs(configs);
+		Map<String, String> configs = new HashMap<>();
+		configs.put("cleanup.policy", "compact"); // For key-based compaction if needed
+		configs.put("retention.ms", "604800000"); // 7 days retention
+		newTopic.configs(configs);
 
-        try {
-            adminClient.createTopics(Collections.singleton(newTopic)).all().get(30, TimeUnit.SECONDS);
-            log.info("Created topic: {} with {} partitions", topicName, partitions);
-        } catch (Exception e) {
-            log.warn("Topic creation failed (might already exist): {}", e.getMessage());
-        }
-    }
+		try {
+			adminClient.createTopics(Collections.singleton(newTopic)).all().get(30, TimeUnit.SECONDS);
+			log.info("Created topic: {} with {} partitions", topicName, partitions);
+		}
+		catch (Exception e) {
+			log.warn("Topic creation failed (might already exist): {}", e.getMessage());
+		}
+	}
+
 }
 /*
-Key Benefits of This Implementation:
-    Per-Store Ordering: Same storeId always routes to same partition
-    Locality: Related store transactions processed together
-    Scalability: Multiple partitions allow parallel processing
-    Order Guarantee: Sequential processing within each partition
-    Monitoring: Comprehensive logging and metrics
-    Error Handling: Graceful error recovery without blocking entire partitions
-    Performance: Batch processing and async operations
+ * Key Benefits of This Implementation: Per-Store Ordering: Same storeId always routes to
+ * same partition Locality: Related store transactions processed together Scalability:
+ * Multiple partitions allow parallel processing Order Guarantee: Sequential processing
+ * within each partition Monitoring: Comprehensive logging and metrics Error Handling:
+ * Graceful error recovery without blocking entire partitions Performance: Batch
+ * processing and async operations
  */

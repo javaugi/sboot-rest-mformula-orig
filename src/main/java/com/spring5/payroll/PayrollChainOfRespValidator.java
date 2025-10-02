@@ -12,16 +12,17 @@ import com.spring5.empbilpayroll.PayrollData;
  */
 public abstract class PayrollChainOfRespValidator {
 
-    private PayrollChainOfRespValidator next;
+	private PayrollChainOfRespValidator next;
 
-    public PayrollChainOfRespValidator linkWith(PayrollChainOfRespValidator next) {
-        this.next = next;
-        return next;
-    }
+	public PayrollChainOfRespValidator linkWith(PayrollChainOfRespValidator next) {
+		this.next = next;
+		return next;
+	}
 
-    public abstract boolean validate(Employee employee, PayrollData data) throws Exception;
+	public abstract boolean validate(Employee employee, PayrollData data) throws Exception;
 
-    protected boolean validateNext(Employee employee, PayrollData data) throws Exception {
-        return (next == null) || next.validate(employee, data);
-    }
+	protected boolean validateNext(Employee employee, PayrollData data) throws Exception {
+		return (next == null) || next.validate(employee, data);
+	}
+
 }

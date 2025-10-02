@@ -13,30 +13,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class BulkInsertService {
 
-    public void bulkInsertEntities(
-            EntityManager entityManager, List<Customer> entities, int batchSize) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try (entityManager) {
-            transaction.begin();
-            for (int i = 0; i < entities.size(); i++) {
-                entityManager.persist(entities.get(i));
+	public void bulkInsertEntities(EntityManager entityManager, List<Customer> entities, int batchSize) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		try (entityManager) {
+			transaction.begin();
+			for (int i = 0; i < entities.size(); i++) {
+				entityManager.persist(entities.get(i));
 
-                if ((i + 1) % batchSize == 0) {
-                    // Flush the batch and clear the persistence context
-                    entityManager.flush();
-                    entityManager.clear();
-                    // Begin a new transaction for the next batch
-                    transaction.commit();
-                    transaction.begin();
-                }
-            }
-            // Commit any remaining entities in the last batch
-            transaction.commit();
-        } catch (RuntimeException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw e;
-        }
-    }
+				if ((i + 1) % batchSize == 0) {
+					// Flush the batch and clear the persistence context
+					entityManager.flush();
+					entityManager.clear();
+					// Begin a new transaction for the next batch
+					transaction.commit();
+					transaction.begin();
+				}
+			}
+			// Commit any remaining entities in the last batch
+			transaction.commit();
+		}
+		catch (RuntimeException e) {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			throw e;
+		}
+	}
+
 }

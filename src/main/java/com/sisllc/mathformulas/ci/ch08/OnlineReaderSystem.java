@@ -2,46 +2,50 @@ package com.sisllc.mathformulas.ci.ch08;
 
 public class OnlineReaderSystem {
 
-    private Library library;
-    private UserManager userManager;
-    private Display display;
+	private Library library;
 
-    private Book activeBook;
-    private Q83User activeUser;
+	private UserManager userManager;
 
-    public OnlineReaderSystem() {
-        userManager = new UserManager();
-        library = new Library();
-        display = new Display();
-    }
+	private Display display;
 
-    public Library getLibrary() {
-        return library;
-    }
+	private Book activeBook;
 
-    public UserManager getUserManager() {
-        return userManager;
-    }
+	private Q83User activeUser;
 
-    public Display getDisplay() {
-        return display;
-    }
+	public OnlineReaderSystem() {
+		userManager = new UserManager();
+		library = new Library();
+		display = new Display();
+	}
 
-    public Book getActiveBook() {
-        return activeBook;
-    }
+	public Library getLibrary() {
+		return library;
+	}
 
-    public void setActiveBook(Book book) {
-        display.displayBook(book);
-        activeBook = book;
-    }
+	public UserManager getUserManager() {
+		return userManager;
+	}
 
-    public Q83User getActiveUser() {
-        return activeUser;
-    }
+	public Display getDisplay() {
+		return display;
+	}
 
-    public void setActiveUser(Q83User user) {
-        activeUser = user;
-        display.displayUser(user);
-    }
+	public Book getActiveBook() {
+		return activeBook;
+	}
+
+	public void setActiveBook(Book book) {
+		display.displayBook(book);
+		activeBook = book;
+	}
+
+	public Q83User getActiveUser() {
+		return activeUser;
+	}
+
+	public void setActiveUser(Q83User user) {
+		activeUser = user;
+		display.displayUser(user);
+	}
+
 }

@@ -12,10 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoyaltyProgramRepository extends JpaRepository<LoyaltyProgram, Long> {
 
-    List<LoyaltyProgram> findByPatientId(String patientId);
+	List<LoyaltyProgram> findByPatientId(String patientId);
 
-    @Query("SELECT l FROM LoyaltyProgram l WHERE l.privacyConsent = true")
-    List<LoyaltyProgram> findWithPrivacyConsent();
+	@Query("SELECT l FROM LoyaltyProgram l WHERE l.privacyConsent = true")
+	List<LoyaltyProgram> findWithPrivacyConsent();
 
-    Long countByProgramName(String programName);
+	Long countByProgramName(String programName);
+
 }

@@ -2,19 +2,21 @@ package com.sisllc.mathformulas.ci.ch08.ch87;
 
 public class UserStatus {
 
-    private String message;
-    private UserStatusType type;
+	private String message;
 
-    public UserStatus(UserStatusType type, String message) {
-        this.type = type;
-        this.message = message;
-    }
+	private UserStatusType type;
 
-    public UserStatusType getStatusType() {
-        return type;
-    }
+	public UserStatus(UserStatusType type, String message) {
+		this.type = type;
+		this.message = message;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public UserStatusType getStatusType() {
+		return type;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
 }

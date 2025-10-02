@@ -12,20 +12,21 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ShapeFactory extends AbstractFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(ShapeFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(ShapeFactory.class);
 
-    @Override
-    public Shape getShape(String shapeType) {
-        if (shapeType.equalsIgnoreCase("RECTANGLE")) {
-            return new Rectangle();
-        } else if (shapeType.equalsIgnoreCase("SQUARE")) {
-            return new Square();
-        }
-        return null;
-    }
+	@Override
+	public Shape getShape(String shapeType) {
+		if (shapeType.equalsIgnoreCase("RECTANGLE")) {
+			return new Rectangle();
+		}
+		else if (shapeType.equalsIgnoreCase("SQUARE")) {
+			return new Square();
+		}
+		return null;
+	}
+
 }

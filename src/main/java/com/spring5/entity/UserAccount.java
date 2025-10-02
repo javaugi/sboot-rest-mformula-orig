@@ -39,23 +39,23 @@ import lombok.ToString;
 @Cacheable
 public class UserAccount {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String account;
-    private AccountType accountType;
-    private BigDecimal cashBalance;
-    private BigDecimal accountBalance;
+	private String account;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+	private AccountType accountType;
 
-    @OneToMany(
-            mappedBy = "userAccount",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            targetEntity = Trade.class)
-    private Set<Trade> trades;
+	private BigDecimal cashBalance;
+
+	private BigDecimal accountBalance;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Trade.class)
+	private Set<Trade> trades;
+
 }

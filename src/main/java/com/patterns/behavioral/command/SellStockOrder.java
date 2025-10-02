@@ -9,19 +9,19 @@ package com.patterns.behavioral.command;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class SellStockOrder implements OrderCommand {
 
-    private Stock abcStock;
+	private Stock abcStock;
 
-    public SellStockOrder(Stock abcStock) {
-        this.abcStock = abcStock;
-    }
+	public SellStockOrder(Stock abcStock) {
+		this.abcStock = abcStock;
+	}
 
-    @Override
-    public void execute() {
-        abcStock.sell();
-    }
+	@Override
+	public void execute() {
+		abcStock.sell();
+	}
+
 }

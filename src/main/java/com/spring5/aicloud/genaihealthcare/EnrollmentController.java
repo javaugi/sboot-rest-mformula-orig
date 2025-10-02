@@ -16,23 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/aiapi/enrollments")
 public class EnrollmentController {
 
-    private final EnrollmentService service;
+	private final EnrollmentService service;
 
-    public EnrollmentController(EnrollmentService service) {
-        this.service = service;
-    }
+	public EnrollmentController(EnrollmentService service) {
+		this.service = service;
+	}
 
-    @PostMapping
-    public ResponseEntity<EnrollmentResponse> enroll(@Valid @RequestBody EnrollmentRequest req) {
-        EnrollmentResult r
-                = service.enrollPatient(
-                        req.patientId, req.consentId, req.email, req.acceptMarketing, req.freeText);
-        EnrollmentResponse resp = new EnrollmentResponse();
-        resp.enrollmentId = r.success ? r.idOrMessage : null;
-        resp.success = r.success;
-        resp.message = r.success ? "Enrolled" : r.idOrMessage;
-        resp.confidenceScore = r.confidence;
-        resp.explanation = r.explanation;
-        return ResponseEntity.ok(resp);
-    }
+	@PostMapping
+	public ResponseEntity<EnrollmentResponse> enroll(@Valid @RequestBody EnrollmentRequest req) {
+		EnrollmentResult r = service.enrollPatient(req.patientId, req.consentId, req.email, req.acceptMarketing,
+				req.freeText);
+		EnrollmentResponse resp = new EnrollmentResponse();
+		resp.enrollmentId = r.success ? r.idOrMessage : null;
+		resp.success = r.success;
+		resp.message = r.success ? "Enrolled" : r.idOrMessage;
+		resp.confidenceScore = r.confidence;
+		resp.explanation = r.explanation;
+		return ResponseEntity.ok(resp);
+	}
+
 }

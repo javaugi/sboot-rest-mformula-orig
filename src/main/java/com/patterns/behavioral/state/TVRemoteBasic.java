@@ -9,32 +9,33 @@ package com.patterns.behavioral.state;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class TVRemoteBasic {
 
-    private String state = "";
+	private String state = "";
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    public void doAction() {
-        if (state.equalsIgnoreCase("ON")) {
-            System.out.println("TV is turned ON");
-        } else if (state.equalsIgnoreCase("OFF")) {
-            System.out.println("TV is turned OFF");
-        }
-    }
+	public void doAction() {
+		if (state.equalsIgnoreCase("ON")) {
+			System.out.println("TV is turned ON");
+		}
+		else if (state.equalsIgnoreCase("OFF")) {
+			System.out.println("TV is turned OFF");
+		}
+	}
 
-    public static void main(String args[]) {
-        TVRemoteBasic remote = new TVRemoteBasic();
+	public static void main(String args[]) {
+		TVRemoteBasic remote = new TVRemoteBasic();
 
-        remote.setState("ON");
-        remote.doAction();
+		remote.setState("ON");
+		remote.doAction();
 
-        remote.setState("OFF");
-        remote.doAction();
-    }
+		remote.setState("OFF");
+		remote.doAction();
+	}
+
 }

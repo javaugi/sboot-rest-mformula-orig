@@ -11,20 +11,20 @@ import java.util.List;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ShoppingCart {
 
-    List<Item> getCoupons();
+	List<Item> getCoupons();
 
-    List<Item> getItems();
+	List<Item> getItems();
 
-    void setCoupons(List<Item> coupons);
+	void setCoupons(List<Item> coupons);
 
-    void setItems(List<Item> items);
+	void setItems(List<Item> items);
 
-    void addItem(Item item);
+	void addItem(Item item);
 
-    void removeItem(Item item);
+	void removeItem(Item item);
+
 }

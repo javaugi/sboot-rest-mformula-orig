@@ -7,17 +7,18 @@ package com.spring5.aicloud.genaihealthcare;
 import org.springframework.stereotype.Service;
 
 /**
- * Stub: check whether given consentId permits the requested operation. In
- * production connect to a consent management store.
+ * Stub: check whether given consentId permits the requested operation. In production
+ * connect to a consent management store.
  */
 @Service
 public class ConsentService {
 
-    public boolean hasGivenConsent(String patientId, String consentId, String purpose) {
-        // For demo, accept if consentId != null and not "deny"
-        if (consentId == null) {
-            return false;
-        }
-        return !"deny".equalsIgnoreCase(consentId);
-    }
+	public boolean hasGivenConsent(String patientId, String consentId, String purpose) {
+		// For demo, accept if consentId != null and not "deny"
+		if (consentId == null) {
+			return false;
+		}
+		return !"deny".equalsIgnoreCase(consentId);
+	}
+
 }

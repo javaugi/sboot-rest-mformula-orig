@@ -27,21 +27,23 @@ import lombok.NoArgsConstructor;
 @Table(name = "customers")
 public class Customer extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
-    private String email;
+	private String name;
 
-    // other fields
-    @OneToOne(fetch = FetchType.LAZY) // Recommended default
-    @JoinColumn(name = "loyalty_account_id")
-    private LoyaltyAccount loyaltyAccount;
+	private String email;
 
-    public Customer(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
+	// other fields
+	@OneToOne(fetch = FetchType.LAZY) // Recommended default
+	@JoinColumn(name = "loyalty_account_id")
+	private LoyaltyAccount loyaltyAccount;
+
+	public Customer(Long id, String name, String email) {
+		this.id = id;
+		this.name = name;
+		this.email = email;
+	}
+
 }

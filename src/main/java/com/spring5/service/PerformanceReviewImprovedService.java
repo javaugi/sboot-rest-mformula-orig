@@ -14,21 +14,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class PerformanceReviewImprovedService {
 
-    private final BonusConfig bonusConfig;
-    private final BonusRepository bonusRepo;
+	private final BonusConfig bonusConfig;
 
-    public double calculateBonus(String score) throws InvalidReviewScoreException {
-        // The service now delegates the logic to the config source.
-        // This is the Single Responsibility Principle: the service orchestrates, the config provides
-        // the values.
-        return bonusConfig.getMultiplierForScore(score);
-    }
+	private final BonusRepository bonusRepo;
 
-    public BonusMultiplier getReviewById(Long id) {
-        return bonusRepo.findById(id).orElse(new BonusMultiplier());
-    }
+	public double calculateBonus(String score) throws InvalidReviewScoreException {
+		// The service now delegates the logic to the config source.
+		// This is the Single Responsibility Principle: the service orchestrates, the
+		// config provides
+		// the values.
+		return bonusConfig.getMultiplierForScore(score);
+	}
 
-    public BonusMultiplier createReview(BonusMultiplier review) {
-        return bonusRepo.save(review);
-    }
+	public BonusMultiplier getReviewById(Long id) {
+		return bonusRepo.findById(id).orElse(new BonusMultiplier());
+	}
+
+	public BonusMultiplier createReview(BonusMultiplier review) {
+		return bonusRepo.save(review);
+	}
+
 }

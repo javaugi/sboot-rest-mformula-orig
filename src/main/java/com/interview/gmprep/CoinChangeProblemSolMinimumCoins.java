@@ -20,46 +20,44 @@ In summary, "Builds a DP array" means creating and filling a table (usually an a
 @Slf4j
 public class CoinChangeProblemSolMinimumCoins {
 
-    private static final CoinChangeProblemSolMinimumCoins main
-            = new CoinChangeProblemSolMinimumCoins();
+	private static final CoinChangeProblemSolMinimumCoins main = new CoinChangeProblemSolMinimumCoins();
 
-    public static void main(String[] args) {
-        // Problem: Given coins of different denominations and a total amount, find the minimum number
-        // of coins needed to make up that amount.
-        int[] coins = {1, 2, 5, 20, 30, 100};
-        int amount = 595;
-        log.info(
-                "\n min {} of coins needed to make {} \n from the coin collections {}",
-                main.coinChange(coins, amount),
-                amount,
-                Arrays.toString(coins));
-    }
+	public static void main(String[] args) {
+		// Problem: Given coins of different denominations and a total amount, find the
+		// minimum number
+		// of coins needed to make up that amount.
+		int[] coins = { 1, 2, 5, 20, 30, 100 };
+		int amount = 595;
+		log.info("\n min {} of coins needed to make {} \n from the coin collections {}", main.coinChange(coins, amount),
+				amount, Arrays.toString(coins));
+	}
 
-    /*
-  Key Insight:
-      Builds a DP array where dp[i] represents min coins for amount i
-      For each coin, updates all amounts that can be reached with that coin
-      Time: O(amount * n), Space: O(amount)
-     */
-    public int coinChange(int[] coins, int amount) {
-        if (coins == null || coins.length == 0 || amount == 0) {
-            return 0;
-        }
+	/*
+	 * Key Insight: Builds a DP array where dp[i] represents min coins for amount i For
+	 * each coin, updates all amounts that can be reached with that coin Time: O(amount *
+	 * n), Space: O(amount)
+	 */
+	public int coinChange(int[] coins, int amount) {
+		if (coins == null || coins.length == 0 || amount == 0) {
+			return 0;
+		}
 
-        int[] dp = new int[amount + 1];
-        // Assigns the specified (amount + 1) int value to each element of the specified dp array of
-        // ints.
-        Arrays.fill(dp, amount + 1);
-        dp[0] = 0;
+		int[] dp = new int[amount + 1];
+		// Assigns the specified (amount + 1) int value to each element of the specified
+		// dp array of
+		// ints.
+		Arrays.fill(dp, amount + 1);
+		dp[0] = 0;
 
-        for (int coin : coins) {
-            for (int i = coin; i <= amount; i++) {
-                // For each coin, updates all amounts that can be reached with that coin
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-            }
-        }
+		for (int coin : coins) {
+			for (int i = coin; i <= amount; i++) {
+				// For each coin, updates all amounts that can be reached with that coin
+				dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+			}
+		}
 
-        log.info("Final db array {}", Arrays.toString(dp));
-        return dp[amount] > amount ? -1 : dp[amount];
-    }
+		log.info("Final db array {}", Arrays.toString(dp));
+		return dp[amount] > amount ? -1 : dp[amount];
+	}
+
 }

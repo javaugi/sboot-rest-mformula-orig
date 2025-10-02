@@ -8,4 +8,5 @@ package com.spring5.dbisolation.wmart;
  * @author javau
  */
 public class OrderProcessor {
+
 }

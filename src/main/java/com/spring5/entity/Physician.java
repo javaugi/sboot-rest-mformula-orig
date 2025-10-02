@@ -26,29 +26,28 @@ import org.hibernate.annotations.BatchSize;
 @AllArgsConstructor
 public class Physician {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
-    private String firstName;
-    private String lastName;
-    private String licenseNumber;
-    private String specialization;
+	private String name;
 
-    @OneToMany(
-            mappedBy = "supervisingPhysician",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            targetEntity = Nurse.class)
-    @BatchSize(size = 20)
-    private List<Nurse> supervisedNurses;
+	private String firstName;
 
-    @OneToMany(
-            mappedBy = "physician",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            targetEntity = Appointment.class)
-    @BatchSize(size = 20)
-    private List<Appointment> appointments;
+	private String lastName;
+
+	private String licenseNumber;
+
+	private String specialization;
+
+	@OneToMany(mappedBy = "supervisingPhysician", cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+			targetEntity = Nurse.class)
+	@BatchSize(size = 20)
+	private List<Nurse> supervisedNurses;
+
+	@OneToMany(mappedBy = "physician", cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+			targetEntity = Appointment.class)
+	@BatchSize(size = 20)
+	private List<Appointment> appointments;
+
 }

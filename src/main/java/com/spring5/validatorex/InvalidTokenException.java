@@ -6,7 +6,8 @@ package com.spring5.validatorex;
 
 public class InvalidTokenException extends Exception {
 
-    public InvalidTokenException(String message) {
-        super(message);
-    }
+	public InvalidTokenException(String message) {
+		super(message);
+	}
+
 }

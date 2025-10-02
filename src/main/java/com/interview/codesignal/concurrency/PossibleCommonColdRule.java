@@ -11,24 +11,25 @@ import java.util.Set;
  */
 public class PossibleCommonColdRule implements Rule {
 
-    @Override
-    public boolean evaluate(Set<Fact> facts) {
-        boolean hasSoreThroat = false;
-        boolean hasRunnyNose = false;
+	@Override
+	public boolean evaluate(Set<Fact> facts) {
+		boolean hasSoreThroat = false;
+		boolean hasRunnyNose = false;
 
-        for (Fact fact : facts) {
-            if (fact.getName().equals("soreThroat") && (Boolean) fact.getValue()) {
-                hasSoreThroat = true;
-            }
-            if (fact.getName().equals("runnyNose") && (Boolean) fact.getValue()) {
-                hasRunnyNose = true;
-            }
-        }
-        return hasSoreThroat && hasRunnyNose;
-    }
+		for (Fact fact : facts) {
+			if (fact.getName().equals("soreThroat") && (Boolean) fact.getValue()) {
+				hasSoreThroat = true;
+			}
+			if (fact.getName().equals("runnyNose") && (Boolean) fact.getValue()) {
+				hasRunnyNose = true;
+			}
+		}
+		return hasSoreThroat && hasRunnyNose;
+	}
 
-    @Override
-    public String getConclusion() {
-        return "Possible Common Cold";
-    }
+	@Override
+	public String getConclusion() {
+		return "Possible Common Cold";
+	}
+
 }

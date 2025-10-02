@@ -2,24 +2,26 @@ package com.sisllc.mathformulas.ci.ch03;
 
 public abstract class Q37Animal {
 
-    private int order;
-    protected String name;
+	private int order;
 
-    public Q37Animal(String n) {
-        name = n;
-    }
+	protected String name;
 
-    public abstract String name();
+	public Q37Animal(String n) {
+		name = n;
+	}
 
-    public void setOrder(int ord) {
-        order = ord;
-    }
+	public abstract String name();
 
-    public int getOrder() {
-        return order;
-    }
+	public void setOrder(int ord) {
+		order = ord;
+	}
 
-    public boolean isOlderThan(Q37Animal a) {
-        return this.order < a.getOrder();
-    }
+	public int getOrder() {
+		return order;
+	}
+
+	public boolean isOlderThan(Q37Animal a) {
+		return this.order < a.getOrder();
+	}
+
 }

@@ -11,8 +11,10 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class CustomerDto {
 
-    private Long id;
+	private Long id;
 
-    private String name;
-    private String email;
+	private String name;
+
+	private String email;
+
 }

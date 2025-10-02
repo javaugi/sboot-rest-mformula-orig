@@ -14,22 +14,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdyenPaymentEventProducer {
 
-    private final @Qualifier("paymentSuccessKafkaTemplate")
-    KafkaTemplate<
-          String, AdyenPaymentSuccessEvent> successTemplate;
-    private final @Qualifier("paymentFailedKafkaTemplate")
-    KafkaTemplate<
-          String, AdyenPaymentFailedEvent> failedTemplate;
+	private final @Qualifier("paymentSuccessKafkaTemplate") KafkaTemplate<String, AdyenPaymentSuccessEvent> successTemplate;
 
-    public void publishPaymentSuccess(String paymentId, AdyenPaymentResponse response) {
-        AdyenPaymentSuccessEvent event
-                = new AdyenPaymentSuccessEvent(
-                        paymentId, response.getPspReference(), response.getAmount(), Instant.now());
-        successTemplate.send("payment.success", event);
-    }
+	private final @Qualifier("paymentFailedKafkaTemplate") KafkaTemplate<String, AdyenPaymentFailedEvent> failedTemplate;
 
-    public void publishPaymentFailure(String paymentId, String reason) {
-        AdyenPaymentFailedEvent event = new AdyenPaymentFailedEvent(paymentId, reason, Instant.now());
-        failedTemplate.send("payment.failed", event);
-    }
+	public void publishPaymentSuccess(String paymentId, AdyenPaymentResponse response) {
+		AdyenPaymentSuccessEvent event = new AdyenPaymentSuccessEvent(paymentId, response.getPspReference(),
+				response.getAmount(), Instant.now());
+		successTemplate.send("payment.success", event);
+	}
+
+	public void publishPaymentFailure(String paymentId, String reason) {
+		AdyenPaymentFailedEvent event = new AdyenPaymentFailedEvent(paymentId, reason, Instant.now());
+		failedTemplate.send("payment.failed", event);
+	}
+
 }

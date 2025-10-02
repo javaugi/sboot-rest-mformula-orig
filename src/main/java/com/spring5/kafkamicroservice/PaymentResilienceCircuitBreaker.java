@@ -10,16 +10,18 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
  * @author javaugi
  */
 public class PaymentResilienceCircuitBreaker {
-    // see PaymentKafkaConfig
 
-    @CircuitBreaker(name = "stripe", fallbackMethod = "stripeFallback")
-    public PaymentResult processStripePayment(PaymentRequest request) {
-        // Stripe API call
-        return null;
-    }
+	// see PaymentKafkaConfig
 
-    public PaymentResult stripeFallback(PaymentRequest request, Exception ex) {
-        // Log, notify, or try alternative provider
-        return new PaymentResult(false, "STRIPE_UNAVAILABLE");
-    }
+	@CircuitBreaker(name = "stripe", fallbackMethod = "stripeFallback")
+	public PaymentResult processStripePayment(PaymentRequest request) {
+		// Stripe API call
+		return null;
+	}
+
+	public PaymentResult stripeFallback(PaymentRequest request, Exception ex) {
+		// Log, notify, or try alternative provider
+		return new PaymentResult(false, "STRIPE_UNAVAILABLE");
+	}
+
 }

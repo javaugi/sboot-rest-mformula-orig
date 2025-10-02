@@ -12,36 +12,38 @@ import java.io.PrintWriter;
 
 public class ContentCachingResponseWrapper extends HttpServletResponseWrapper {
 
-    private final ByteArrayOutputStream content = new ByteArrayOutputStream();
-    private PrintWriter writer;
+	private final ByteArrayOutputStream content = new ByteArrayOutputStream();
 
-    public ContentCachingResponseWrapper(HttpServletResponse response) {
-        super(response);
-    }
+	private PrintWriter writer;
 
-    @Override
-    public PrintWriter getWriter() throws IOException {
-        if (writer == null) {
-            writer = new PrintWriter(content);
-        }
-        return writer;
-    }
+	public ContentCachingResponseWrapper(HttpServletResponse response) {
+		super(response);
+	}
 
-    @Override
-    public String toString() {
-        flushBuffer();
-        return content.toString();
-    }
+	@Override
+	public PrintWriter getWriter() throws IOException {
+		if (writer == null) {
+			writer = new PrintWriter(content);
+		}
+		return writer;
+	}
 
-    public byte[] getContentAsByteArray() {
-        flushBuffer();
-        return content.toByteArray();
-    }
+	@Override
+	public String toString() {
+		flushBuffer();
+		return content.toString();
+	}
 
-    @Override
-    public void flushBuffer() {
-        if (writer != null) {
-            writer.flush();
-        }
-    }
+	public byte[] getContentAsByteArray() {
+		flushBuffer();
+		return content.toByteArray();
+	}
+
+	@Override
+	public void flushBuffer() {
+		if (writer != null) {
+			writer.flush();
+		}
+	}
+
 }

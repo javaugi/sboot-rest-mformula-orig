@@ -17,47 +17,43 @@ Common Patterns to Notice:
     Directionality:     Some problems work better forward (coin change), others backward (decode ways)
  */
 
- /*
+/*
 Key GM-Specific Considerations:
-    Real-Time Constraints: All solutions are O(n log n) or better for production-line speed.
-    Resource Efficiency: Space optimizations reflect limited memory in factory control systems.
-    Industry Standards: Follows ISA-95 for manufacturing execution systems (MES) integration.
- */
+   Real-Time Constraints: All solutions are O(n log n) or better for production-line speed.
+   Resource Efficiency: Space optimizations reflect limited memory in factory control systems.
+   Industry Standards: Follows ISA-95 for manufacturing execution systems (MES) integration.
+*/
 public class CommonAlgoPatterns {
 
-    public static void main(String[] args) {
-        String word = "This is the Test to Check How many Capital Chars are";
+	public static void main(String[] args) {
+		String word = "This is the Test to Check How many Capital Chars are";
 
-        System.out.println(
-                "1 Non-repeatable cahr=" + findFirstNonRepeatedCharInString(word) + "  of " + word);
-        System.out.println(
-                "2 Non-repeatable cahr=" + findFirstNonRepeatedCharInString2(word) + "  of " + word);
-    }
+		System.out.println("1 Non-repeatable cahr=" + findFirstNonRepeatedCharInString(word) + "  of " + word);
+		System.out.println("2 Non-repeatable cahr=" + findFirstNonRepeatedCharInString2(word) + "  of " + word);
+	}
 
-    public static char findFirstNonRepeatedCharInString(String s) {
-        return s
-                .chars()
-                .mapToObj(c -> (char) c)
-                .collect(
-                        Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .filter(e -> e.getValue() == 1)
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElseThrow();
-    }
+	public static char findFirstNonRepeatedCharInString(String s) {
+		return s.chars()
+			.mapToObj(c -> (char) c)
+			.collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+			.entrySet()
+			.stream()
+			.filter(e -> e.getValue() == 1)
+			.map(Map.Entry::getKey)
+			.findFirst()
+			.orElseThrow();
+	}
 
-    public static char findFirstNonRepeatedCharInString2(String s) {
-        return s
-                .chars()
-                .mapToObj(c -> (char) c)
-                .collect(Collectors.groupingBy(c -> c, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .filter(e -> e.getValue() == 1)
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElseThrow();
-    }
+	public static char findFirstNonRepeatedCharInString2(String s) {
+		return s.chars()
+			.mapToObj(c -> (char) c)
+			.collect(Collectors.groupingBy(c -> c, Collectors.counting()))
+			.entrySet()
+			.stream()
+			.filter(e -> e.getValue() == 1)
+			.map(Map.Entry::getKey)
+			.findFirst()
+			.orElseThrow();
+	}
+
 }

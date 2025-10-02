@@ -28,16 +28,17 @@ This comprehensive approach ensures your Spring Boot CRUD operations are protect
 @Service
 public class PatientJsonSchemaValidator {
 
-    private final Schema patientSchema;
+	private final Schema patientSchema;
 
-    public PatientJsonSchemaValidator() throws IOException {
-        InputStream schemaStream = getClass().getResourceAsStream("/jsonschemas/patient-schema.json");
-        JSONObject rawSchemaJSONObject = new JSONObject(new JSONTokener(schemaStream));
-        this.patientSchema = SchemaLoader.load(rawSchemaJSONObject);
-    }
+	public PatientJsonSchemaValidator() throws IOException {
+		InputStream schemaStream = getClass().getResourceAsStream("/jsonschemas/patient-schema.json");
+		JSONObject rawSchemaJSONObject = new JSONObject(new JSONTokener(schemaStream));
+		this.patientSchema = SchemaLoader.load(rawSchemaJSONObject);
+	}
 
-    public void validatePatientPayload(String patienPayload) throws ValidationException {
-        JSONObject patientJson = new JSONObject(patienPayload);
-        patientSchema.validate(patientJson);
-    }
+	public void validatePatientPayload(String patienPayload) throws ValidationException {
+		JSONObject patientJson = new JSONObject(patienPayload);
+		patientSchema.validate(patientJson);
+	}
+
 }

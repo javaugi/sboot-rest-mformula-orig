@@ -16,16 +16,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Outbox {
 
-    Long id;
-    Long pageNumber;
-    Long pageSize;
-    boolean published;
+	Long id;
 
-    String topic;
+	Long pageNumber;
 
-    String key;
+	Long pageSize;
 
-    String payload;
+	boolean published;
 
-    Instant publishedAt;
+	String topic;
+
+	String key;
+
+	String payload;
+
+	Instant publishedAt;
+
 }

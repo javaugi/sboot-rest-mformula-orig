@@ -13,11 +13,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class OllamaProperties {
 
-    private String baseUrl = "http://localhost:11434";
-    private String model = "llama3"; // or "mistral", "gemma", etc.
-    private String embeddingModel = "llama3";
-    private Double temperature = 0.7;
-    private String apiUrl = "http://localhost:11434/api/generate";
-    private Integer connTimeoutMillis = 5000;
-    private Integer respTimeoutMillis = 10000;
+	private String baseUrl = "http://localhost:11434";
+
+	private String model = "llama3"; // or "mistral", "gemma", etc.
+
+	private String embeddingModel = "llama3";
+
+	private Double temperature = 0.7;
+
+	private String apiUrl = "http://localhost:11434/api/generate";
+
+	private Integer connTimeoutMillis = 5000;
+
+	private Integer respTimeoutMillis = 10000;
+
 }

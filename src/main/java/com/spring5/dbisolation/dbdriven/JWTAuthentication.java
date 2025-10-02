@@ -15,5 +15,7 @@ JWT (JSON Web Token) authentication involves:
     Server validates JWT for each protected endpoint
  */
 public class JWTAuthentication {
-    // see com.spring5.JwtAuthenticationFilter and com.spring5.utils.JwtTokenProvider
+
+	// see com.spring5.JwtAuthenticationFilter and com.spring5.utils.JwtTokenProvider
+
 }

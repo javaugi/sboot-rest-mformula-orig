@@ -11,38 +11,38 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Property {
 
-    public void purchase();
+	public void purchase();
 
-    public void sell();
+	public void sell();
 
-    public void print();
+	public void print();
 
-    public void add(Property property);
+	public void add(Property property);
 
-    public void remove(Property property);
+	public void remove(Property property);
 
-    public float getPrice();
+	public float getPrice();
 
-    public void setPrice(float price);
+	public void setPrice(float price);
 
-    public String getAddress();
+	public String getAddress();
 
-    public void setAddress(String address);
+	public void setAddress(String address);
 
-    public String getBuilder();
+	public String getBuilder();
 
-    public void setBuilder(String builder);
+	public void setBuilder(String builder);
 
-    public AbstractProperty.PropertyType getType();
+	public AbstractProperty.PropertyType getType();
 
-    public void setType(AbstractProperty.PropertyType type);
+	public void setType(AbstractProperty.PropertyType type);
 
-    public List<Property> getProperties();
+	public List<Property> getProperties();
 
-    public void setProperties(List<Property> properties);
+	public void setProperties(List<Property> properties);
+
 }

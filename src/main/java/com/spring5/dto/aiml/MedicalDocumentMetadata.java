@@ -10,8 +10,12 @@ import lombok.Data;
 @Data
 public class MedicalDocumentMetadata {
 
-    private String title;
-    private String specialty;
-    private String documentType;
-    private OffsetDateTime publicationDate;
+	private String title;
+
+	private String specialty;
+
+	private String documentType;
+
+	private OffsetDateTime publicationDate;
+
 }

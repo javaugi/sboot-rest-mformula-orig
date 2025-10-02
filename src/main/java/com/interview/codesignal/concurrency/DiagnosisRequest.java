@@ -7,26 +7,28 @@ package com.interview.codesignal.concurrency;
 import java.util.Set;
 
 /**
- * // --- Concurrency for Processing Multiple Cases --- // Represents a single
- * diagnosis request
+ * // --- Concurrency for Processing Multiple Cases --- // Represents a single diagnosis
+ * request
  *
  * @author javaugi
  */
 public class DiagnosisRequest {
 
-    private int requestId;
-    private Set<Fact> symptoms;
+	private int requestId;
 
-    public DiagnosisRequest(int requestId, Set<Fact> symptoms) {
-        this.requestId = requestId;
-        this.symptoms = symptoms;
-    }
+	private Set<Fact> symptoms;
 
-    public int getRequestId() {
-        return requestId;
-    }
+	public DiagnosisRequest(int requestId, Set<Fact> symptoms) {
+		this.requestId = requestId;
+		this.symptoms = symptoms;
+	}
 
-    public Set<Fact> getSymptoms() {
-        return symptoms;
-    }
+	public int getRequestId() {
+		return requestId;
+	}
+
+	public Set<Fact> getSymptoms() {
+		return symptoms;
+	}
+
 }

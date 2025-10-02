@@ -6,7 +6,8 @@ package com.interview.cls.veh;
 
 public final class SUV extends Car {
 
-    public SUV(String manufacturer) {
-        super(manufacturer);
-    }
+	public SUV(String manufacturer) {
+		super(manufacturer);
+	}
+
 }

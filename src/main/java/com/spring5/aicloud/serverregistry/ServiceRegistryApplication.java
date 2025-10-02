@@ -11,7 +11,8 @@ package com.spring5.aicloud.serverregistry;
 // @EnableEurekaServer
 public class ServiceRegistryApplication {
 
-    public static void main(String[] args) {
-        // SpringApplication.run(ServiceRegistryApplication.class, args);
-    }
+	public static void main(String[] args) {
+		// SpringApplication.run(ServiceRegistryApplication.class, args);
+	}
+
 }

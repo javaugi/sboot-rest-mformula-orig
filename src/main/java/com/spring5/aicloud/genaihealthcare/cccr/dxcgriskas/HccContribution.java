@@ -11,8 +11,12 @@ import lombok.Data;
 @Builder
 public class HccContribution {
 
-    private String hccCode;
-    private String description;
-    private Double weight;
-    private Double contribution;
+	private String hccCode;
+
+	private String description;
+
+	private Double weight;
+
+	private Double contribution;
+
 }

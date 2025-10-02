@@ -29,118 +29,125 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/trading/traders")
 public class TradeController {
 
-    @Autowired
-    private TradeService tradeService;
+	@Autowired
+	private TradeService tradeService;
 
-    @GetMapping
-    public ResponseEntity<List<Trade>> getAllTrades() {
-        return ResponseEntity.ok(tradeService.getAllTrades());
-    }
+	@GetMapping
+	public ResponseEntity<List<Trade>> getAllTrades() {
+		return ResponseEntity.ok(tradeService.getAllTrades());
+	}
 
-    // @PostMapping("/create-trade")
-    // @PostMapping("/create-trade-by-account")
-    // @PostMapping(value = "/trade", consumes = "application/vnd.create-trade+json")
-    // @PostMapping(value = "/trade", params = "action=create")
-    @PostMapping("/create-trade")
-    public ResponseEntity<Trade> createTrade(@RequestBody Trade trade) {
-        Trade createdTrade = tradeService.createTrade(trade);
-        return new ResponseEntity<>(createdTrade, HttpStatus.CREATED);
-    }
+	// @PostMapping("/create-trade")
+	// @PostMapping("/create-trade-by-account")
+	// @PostMapping(value = "/trade", consumes = "application/vnd.create-trade+json")
+	// @PostMapping(value = "/trade", params = "action=create")
+	@PostMapping("/create-trade")
+	public ResponseEntity<Trade> createTrade(@RequestBody Trade trade) {
+		Trade createdTrade = tradeService.createTrade(trade);
+		return new ResponseEntity<>(createdTrade, HttpStatus.CREATED);
+	}
 
-    @PutMapping("/add-money")
-    public void addMoneyByUserAccountId(
-            @PathVariable long userAccountId, @PathVariable BigDecimal amount) {
-        try {
-            tradeService.addMoney(userAccountId, amount);
-            throw new NoException("OK");
-        } catch (Exception ex) {
-            throw new NotAcceptableException("Not Acceptable");
-        }
-    }
+	@PutMapping("/add-money")
+	public void addMoneyByUserAccountId(@PathVariable long userAccountId, @PathVariable BigDecimal amount) {
+		try {
+			tradeService.addMoney(userAccountId, amount);
+			throw new NoException("OK");
+		}
+		catch (Exception ex) {
+			throw new NotAcceptableException("Not Acceptable");
+		}
+	}
 
-    @PutMapping("/{userAccount}/{amount}")
-    public void addMoneyByUserAccountNumber(
-            @PathVariable String userAccountNumber, @PathVariable BigDecimal amount) {
-        try {
-            tradeService.addMoneyByAccount(userAccountNumber, amount);
-            throw new NoException("OK");
-        } catch (Exception ex) {
-            throw new NotAcceptableException("Not Acceptable");
-        }
-    }
+	@PutMapping("/{userAccount}/{amount}")
+	public void addMoneyByUserAccountNumber(@PathVariable String userAccountNumber, @PathVariable BigDecimal amount) {
+		try {
+			tradeService.addMoneyByAccount(userAccountNumber, amount);
+			throw new NoException("OK");
+		}
+		catch (Exception ex) {
+			throw new NotAcceptableException("Not Acceptable");
+		}
+	}
 
-    @ResponseStatus(HttpStatus.OK)
-    public class NoException extends RuntimeException {
+	@ResponseStatus(HttpStatus.OK)
+	public class NoException extends RuntimeException {
 
-        public NoException(String message) {
-            super(message);
-        }
-    }
+		public NoException(String message) {
+			super(message);
+		}
 
-    @PutMapping("/update-trade")
-    public ResponseEntity<Trade> updateTrade(RequestEntity<Trade> request) {
-        Trade trade = tradeService.updateTrade(request.getBody());
-        if (trade != null) {
-            return ResponseEntity.ok(trade);
-        } else {
-            throw new ResourceNotFoundException("No trades found");
-        }
-    }
+	}
 
-    @GetMapping("/{email}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Trade> getAllTradesByUserEmail(@PathVariable String userEmai) {
-        try {
-            List<Trade> trades = tradeService.getAllTradesByUserEmail(userEmai);
-            if (trades == null || trades.isEmpty()) {
-                throw new ResourceNotFoundException("No trades found");
-            }
-            return trades;
-        } catch (Exception ex) {
-            throw new ResourceNotFoundException("No trades found");
-        }
-    }
+	@PutMapping("/update-trade")
+	public ResponseEntity<Trade> updateTrade(RequestEntity<Trade> request) {
+		Trade trade = tradeService.updateTrade(request.getBody());
+		if (trade != null) {
+			return ResponseEntity.ok(trade);
+		}
+		else {
+			throw new ResourceNotFoundException("No trades found");
+		}
+	}
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public class ResourceNotFoundException extends RuntimeException {
+	@GetMapping("/{email}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Trade> getAllTradesByUserEmail(@PathVariable String userEmai) {
+		try {
+			List<Trade> trades = tradeService.getAllTradesByUserEmail(userEmai);
+			if (trades == null || trades.isEmpty()) {
+				throw new ResourceNotFoundException("No trades found");
+			}
+			return trades;
+		}
+		catch (Exception ex) {
+			throw new ResourceNotFoundException("No trades found");
+		}
+	}
 
-        public ResourceNotFoundException(String message) {
-            super(message);
-        }
-    }
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public class ResourceNotFoundException extends RuntimeException {
 
-    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
-    public class RequestTimeOutException extends RuntimeException {
+		public ResourceNotFoundException(String message) {
+			super(message);
+		}
 
-        public RequestTimeOutException(String message) {
-            super(message);
-        }
-    }
+	}
 
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public class NotAcceptableException extends RuntimeException {
+	@ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+	public class RequestTimeOutException extends RuntimeException {
 
-        public NotAcceptableException(String message) {
-            super(message);
-        }
-    }
+		public RequestTimeOutException(String message) {
+			super(message);
+		}
 
-    // Add proper exception handling
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex) {
-        return ResponseEntity.notFound().build();
-    }
+	}
 
-    @ExceptionHandler(RequestTimeOutException.class)
-    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
-    public ResponseEntity<?> handleNotFound(RequestTimeOutException ex) {
-        return ResponseEntity.notFound().build();
-    }
+	@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+	public class NotAcceptableException extends RuntimeException {
 
-    @ExceptionHandler(NotAcceptableException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ResponseEntity<?> notAcceptable(NotAcceptableException ex) {
-        return ResponseEntity.noContent().build();
-    }
+		public NotAcceptableException(String message) {
+			super(message);
+		}
+
+	}
+
+	// Add proper exception handling
+	@ExceptionHandler(ResourceNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex) {
+		return ResponseEntity.notFound().build();
+	}
+
+	@ExceptionHandler(RequestTimeOutException.class)
+	@ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+	public ResponseEntity<?> handleNotFound(RequestTimeOutException ex) {
+		return ResponseEntity.notFound().build();
+	}
+
+	@ExceptionHandler(NotAcceptableException.class)
+	@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+	public ResponseEntity<?> notAcceptable(NotAcceptableException ex) {
+		return ResponseEntity.noContent().build();
+	}
+
 }

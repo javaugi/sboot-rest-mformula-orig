@@ -20,73 +20,74 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class VeriskDxcgClient {
 
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+	private final RestTemplate restTemplate;
 
-    @Value("${verisk.dxcg.api.base-url}")
-    private String baseUrl;
+	private final ObjectMapper objectMapper;
 
-    @Value("${verisk.dxcg.api.key}")
-    private String apiKey;
+	@Value("${verisk.dxcg.api.base-url}")
+	private String baseUrl;
 
-    @Value("${verisk.dxcg.api.secret}")
-    private String apiSecret;
+	@Value("${verisk.dxcg.api.key}")
+	private String apiKey;
 
-    public VeriskDxcgClient(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-        this.restTemplate
-                = restTemplateBuilder
-                        .rootUri(baseUrl)
-                        .additionalInterceptors(new AuthInterceptor())
-                        .connectTimeout(Duration.ofSeconds(30))
-                        .readTimeout(Duration.ofSeconds(60))
-                        .build();
-    }
+	@Value("${verisk.dxcg.api.secret}")
+	private String apiSecret;
 
-    /**
-     * Submit claims data for risk scoring
-     */
-    public RiskScoreResponse submitRiskCalculation(RiskCalculationRequest request) {
-        try {
-            ResponseEntity<RiskScoreResponse> response
-                    = restTemplate.postForEntity("/risk/calculate", request, RiskScoreResponse.class);
+	public VeriskDxcgClient(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+		this.restTemplate = restTemplateBuilder.rootUri(baseUrl)
+			.additionalInterceptors(new AuthInterceptor())
+			.connectTimeout(Duration.ofSeconds(30))
+			.readTimeout(Duration.ofSeconds(60))
+			.build();
+	}
 
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
-            log.error("DxCG API error: {}", e.getResponseBodyAsString());
-            throw new DxcgIntegrationException("Failed to calculate risk score", e);
-        }
-    }
+	/**
+	 * Submit claims data for risk scoring
+	 */
+	public RiskScoreResponse submitRiskCalculation(RiskCalculationRequest request) {
+		try {
+			ResponseEntity<RiskScoreResponse> response = restTemplate.postForEntity("/risk/calculate", request,
+					RiskScoreResponse.class);
 
-    /**
-     * Batch risk score calculation
-     */
-    public BatchRiskResponse submitBatchRiskCalculation(List<RiskCalculationRequest> requests) {
-        BatchRiskRequest batchRequest
-                = BatchRiskRequest.builder()
-                        .requests(requests)
-                        .batchId(java.util.UUID.randomUUID().toString())
-                        .build();
+			return response.getBody();
+		}
+		catch (HttpClientErrorException e) {
+			log.error("DxCG API error: {}", e.getResponseBodyAsString());
+			throw new DxcgIntegrationException("Failed to calculate risk score", e);
+		}
+	}
 
-        try {
-            ResponseEntity<BatchRiskResponse> response
-                    = restTemplate.postForEntity(
-                            "/risk/batch/calculate", batchRequest, BatchRiskResponse.class);
+	/**
+	 * Batch risk score calculation
+	 */
+	public BatchRiskResponse submitBatchRiskCalculation(List<RiskCalculationRequest> requests) {
+		BatchRiskRequest batchRequest = BatchRiskRequest.builder()
+			.requests(requests)
+			.batchId(java.util.UUID.randomUUID().toString())
+			.build();
 
-            return response.getBody();
-        } catch (Exception e) {
-            throw new DxcgIntegrationException("Batch risk calculation failed", e);
-        }
-    }
+		try {
+			ResponseEntity<BatchRiskResponse> response = restTemplate.postForEntity("/risk/batch/calculate",
+					batchRequest, BatchRiskResponse.class);
 
-    /**
-     * Get model information and version
-     */
-    public ModelInfo getModelInfo(String modelType) {
-        try {
-            return restTemplate.getForObject("/models/{modelType}", ModelInfo.class, modelType);
-        } catch (Exception e) {
-            throw new DxcgIntegrationException("Failed to get model info", e);
-        }
-    }
+			return response.getBody();
+		}
+		catch (Exception e) {
+			throw new DxcgIntegrationException("Batch risk calculation failed", e);
+		}
+	}
+
+	/**
+	 * Get model information and version
+	 */
+	public ModelInfo getModelInfo(String modelType) {
+		try {
+			return restTemplate.getForObject("/models/{modelType}", ModelInfo.class, modelType);
+		}
+		catch (Exception e) {
+			throw new DxcgIntegrationException("Failed to get model info", e);
+		}
+	}
+
 }

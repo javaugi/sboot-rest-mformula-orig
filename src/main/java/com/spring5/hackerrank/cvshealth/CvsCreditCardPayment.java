@@ -10,26 +10,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class CvsCreditCardPayment implements CvsPaymentStrategy {
 
-    private String cardNumber;
-    private String expiryDate;
-    private String cvv;
+	private String cardNumber;
 
-    public CvsCreditCardPayment(String cardNumber, String expiryDate, String cvv) {
-        this.cardNumber = cardNumber;
-        this.expiryDate = expiryDate;
-        this.cvv = cvv;
-    }
+	private String expiryDate;
 
-    @Override
-    public void processPayment(double amount) {
-        // Simulate complex credit card processing logic, API calls, validation etc.
-        System.out.println(
-                "Processing credit card payment of $"
-                + amount
-                + " using card number: "
-                + cardNumber.substring(cardNumber.length() - 4)
-                + "...");
-        // Add actual payment gateway integration here
-        System.out.println("Credit card payment successful!");
-    }
+	private String cvv;
+
+	public CvsCreditCardPayment(String cardNumber, String expiryDate, String cvv) {
+		this.cardNumber = cardNumber;
+		this.expiryDate = expiryDate;
+		this.cvv = cvv;
+	}
+
+	@Override
+	public void processPayment(double amount) {
+		// Simulate complex credit card processing logic, API calls, validation etc.
+		System.out.println("Processing credit card payment of $" + amount + " using card number: "
+				+ cardNumber.substring(cardNumber.length() - 4) + "...");
+		// Add actual payment gateway integration here
+		System.out.println("Credit card payment successful!");
+	}
+
 }

@@ -14,33 +14,41 @@ import org.springframework.context.annotation.Configuration;
  * @author javaugi
  */
 public class PaymentSecPciDssSecretMan {
-    // See PaymentService and PaymentStripeConfig
 
-    private static final Logger log = LoggerFactory.getLogger(PaymentSecPciDssSecretMan.class);
+	// See PaymentService and PaymentStripeConfig
 
-    // 4. Security - PCI DSS Compliance: See PaymentService
-    class PaymentService {
-        // Never log full payment details
+	private static final Logger log = LoggerFactory.getLogger(PaymentSecPciDssSecretMan.class);
 
-        public void process(PaymentRequest request) {
-            log.info(
-                    "Processing payment {} for amount {}",
-                    maskPaymentId(request.getId()), // Shows only last 4 digits
-                    request.getAmount());
-        }
+	// 4. Security - PCI DSS Compliance: See PaymentService
+	class PaymentService {
 
-        private String maskPaymentId(String id) {
-            return "****" + id.substring(id.length() - 4);
-        }
-    }
+		// Never log full payment details
 
-    // Secret Management:  -- see PaymentStripeConfig
-    @Configuration
-    @ConfigurationProperties(prefix = "payment.stripe")
-    class StripeConfig {
+		public void process(PaymentRequest request) {
+			log.info("Processing payment {} for amount {}", maskPaymentId(request.getId()), // Shows
+																							// only
+																							// last
+																							// 4
+																							// digits
+					request.getAmount());
+		}
 
-        @Value("${vault.stripe.api-key}")
-        private String apiKey;
-        // ...
-    }
+		private String maskPaymentId(String id) {
+			return "****" + id.substring(id.length() - 4);
+		}
+
+	}
+
+	// Secret Management: -- see PaymentStripeConfig
+	@Configuration
+	@ConfigurationProperties(prefix = "payment.stripe")
+	class StripeConfig {
+
+		@Value("${vault.stripe.api-key}")
+		private String apiKey;
+
+		// ...
+
+	}
+
 }

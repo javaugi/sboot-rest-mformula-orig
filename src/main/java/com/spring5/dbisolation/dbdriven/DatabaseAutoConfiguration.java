@@ -25,16 +25,17 @@ Spring Boot auto-configuration attempts to automatically configure your Spring a
 @EnableConfigurationProperties(DatabaseProperties.class)
 public class DatabaseAutoConfiguration {
 
-    @Autowired
-    private DatabaseProperties properties;
+	@Autowired
+	private DatabaseProperties properties;
 
-    @Bean
-    @ConditionalOnMissingBean
-    public DataSource dataSource() {
-        return DataSourceBuilder.create()
-                .url(properties.getUrl())
-                .username(properties.getUsername())
-                .password(properties.getPassword())
-                .build();
-    }
+	@Bean
+	@ConditionalOnMissingBean
+	public DataSource dataSource() {
+		return DataSourceBuilder.create()
+			.url(properties.getUrl())
+			.username(properties.getUsername())
+			.password(properties.getPassword())
+			.build();
+	}
+
 }

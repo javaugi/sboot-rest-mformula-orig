@@ -11,23 +11,24 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class AndCriteria implements Criteria {
 
-    private Criteria criteria;
-    private Criteria otherCriteria;
+	private Criteria criteria;
 
-    public AndCriteria(Criteria criteria, Criteria otherCriteria) {
-        this.criteria = criteria;
-        this.otherCriteria = otherCriteria;
-    }
+	private Criteria otherCriteria;
 
-    @Override
-    public List<Person> meetCriteria(List<Person> persons) {
+	public AndCriteria(Criteria criteria, Criteria otherCriteria) {
+		this.criteria = criteria;
+		this.otherCriteria = otherCriteria;
+	}
 
-        List<Person> firstCriteriaPersons = criteria.meetCriteria(persons);
-        return otherCriteria.meetCriteria(firstCriteriaPersons);
-    }
+	@Override
+	public List<Person> meetCriteria(List<Person> persons) {
+
+		List<Person> firstCriteriaPersons = criteria.meetCriteria(persons);
+		return otherCriteria.meetCriteria(firstCriteriaPersons);
+	}
+
 }

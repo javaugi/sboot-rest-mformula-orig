@@ -15,18 +15,19 @@ import org.mapstruct.MappingTarget;
 @Mapper
 public interface UserMapperCustom {
 
-    UserDTO toDto(User user);
+	UserDTO toDto(User user);
 
-    default Integer calculateAge(LocalDate birthDate) {
-        if (birthDate == null) {
-            return null;
-        }
-        return Period.between(birthDate, LocalDate.now()).getYears();
-    }
+	default Integer calculateAge(LocalDate birthDate) {
+		if (birthDate == null) {
+			return null;
+		}
+		return Period.between(birthDate, LocalDate.now()).getYears();
+	}
 
-    // After mapping customization
-    @AfterMapping
-    default void calculateAge(User user, @MappingTarget UserDTO userDTO) {
-        userDTO.setAge(calculateAge(user.getBirthDate()));
-    }
+	// After mapping customization
+	@AfterMapping
+	default void calculateAge(User user, @MappingTarget UserDTO userDTO) {
+		userDTO.setAge(calculateAge(user.getBirthDate()));
+	}
+
 }

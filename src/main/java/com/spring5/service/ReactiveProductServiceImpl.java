@@ -18,22 +18,22 @@ import reactor.core.scheduler.Schedulers;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class ReactiveProductServiceImpl {
 
-    private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-    public Flux<Product> findAll() {
-        return Flux.fromIterable(productRepository.findAll()).subscribeOn(Schedulers.boundedElastic());
-    }
+	public Flux<Product> findAll() {
+		return Flux.fromIterable(productRepository.findAll()).subscribeOn(Schedulers.boundedElastic());
+	}
 
-    public Mono<Product> findProduct(Long id) {
-        return Mono.fromCallable(() -> productRepository.findById(id).orElse(null))
-                .subscribeOn(Schedulers.boundedElastic());
-    }
+	public Mono<Product> findProduct(Long id) {
+		return Mono.fromCallable(() -> productRepository.findById(id).orElse(null))
+			.subscribeOn(Schedulers.boundedElastic());
+	}
+
 }

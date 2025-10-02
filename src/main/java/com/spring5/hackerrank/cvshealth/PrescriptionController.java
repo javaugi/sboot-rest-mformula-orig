@@ -17,41 +17,42 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/azureapi/prescriptions")
 public class PrescriptionController {
 
-    private final PrescriptionRepository prescriptionRepository;
+	private final PrescriptionRepository prescriptionRepository;
 
-    @Autowired
-    public PrescriptionController(PrescriptionRepository prescriptionRepository) {
-        this.prescriptionRepository = prescriptionRepository;
-    }
+	@Autowired
+	public PrescriptionController(PrescriptionRepository prescriptionRepository) {
+		this.prescriptionRepository = prescriptionRepository;
+	}
 
-    @PostMapping
-    public ResponseEntity<PrescriptionOrder> createPrescription(
-            @RequestBody PrescriptionOrder order) {
-        if (order.getId() == null || order.getId().isEmpty()) {
-            order.setId(UUID.randomUUID().toString()); // Generate a unique ID if not provided
-        }
-        if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
-            order.setOrderId(
-                    order.getId()); // Use ID as orderId if not explicitly set for partition key demo
-        }
-        if (order.getOrderDate() == null) {
-            order.setOrderDate(Instant.now());
-        }
-        PrescriptionOrder savedOrder = prescriptionRepository.save(order);
-        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
-    }
+	@PostMapping
+	public ResponseEntity<PrescriptionOrder> createPrescription(@RequestBody PrescriptionOrder order) {
+		if (order.getId() == null || order.getId().isEmpty()) {
+			order.setId(UUID.randomUUID().toString()); // Generate a unique ID if not
+														// provided
+		}
+		if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
+			order.setOrderId(order.getId()); // Use ID as orderId if not explicitly set
+												// for partition key demo
+		}
+		if (order.getOrderDate() == null) {
+			order.setOrderDate(Instant.now());
+		}
+		PrescriptionOrder savedOrder = prescriptionRepository.save(order);
+		return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PrescriptionOrder> getPrescriptionById(@PathVariable String id) {
-        Optional<PrescriptionOrder> order = prescriptionRepository.findById(id);
-        return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<PrescriptionOrder> getPrescriptionById(@PathVariable String id) {
+		Optional<PrescriptionOrder> order = prescriptionRepository.findById(id);
+		return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
-    @GetMapping
-    public ResponseEntity<List<PrescriptionOrder>> getAllPrescriptions() {
-        List<PrescriptionOrder> orders = (List<PrescriptionOrder>) prescriptionRepository.findAll();
-        return ResponseEntity.ok(orders);
-    }
+	@GetMapping
+	public ResponseEntity<List<PrescriptionOrder>> getAllPrescriptions() {
+		List<PrescriptionOrder> orders = (List<PrescriptionOrder>) prescriptionRepository.findAll();
+		return ResponseEntity.ok(orders);
+	}
 
-    // You might also have methods for updating, deleting, or custom queries
+	// You might also have methods for updating, deleting, or custom queries
+
 }

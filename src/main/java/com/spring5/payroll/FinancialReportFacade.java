@@ -9,7 +9,8 @@ package com.spring5.payroll;
  */
 public class FinancialReportFacade {
 
-    public void generateAnnualReport(int year) {
-        // Aggregate data from payroll, billing, etc.
-    }
+	public void generateAnnualReport(int year) {
+		// Aggregate data from payroll, billing, etc.
+	}
+
 }

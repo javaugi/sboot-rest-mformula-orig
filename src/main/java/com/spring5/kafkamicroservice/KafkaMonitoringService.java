@@ -12,45 +12,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaMonitoringService {
 
-    private final MeterRegistry meterRegistry;
-    private final KafkaTemplate<?, ?> kafkaTemplate;
+	private final MeterRegistry meterRegistry;
 
-    public KafkaMonitoringService(
-            MeterRegistry meterRegistry,
-            @Qualifier("objectKafkaTemplate") KafkaTemplate<?, ?> kafkaTemplate) {
-        this.meterRegistry = meterRegistry;
-        this.kafkaTemplate = kafkaTemplate;
-        // monitorKafkaMetrics();
-    }
+	private final KafkaTemplate<?, ?> kafkaTemplate;
 
-    /* TODO
-  private void monitorKafkaMetrics() {
-      // Track message production rates
-      meterRegistry.gauge("kafka.producer.messages.sent",
-          kafkaTemplate.metrics().values().stream()
-              .filter(m -> m.metricName().name().equals("record-send-rate"))
-              .mapToDouble(Metric::value)
-              .sum());
+	public KafkaMonitoringService(MeterRegistry meterRegistry,
+			@Qualifier("objectKafkaTemplate") KafkaTemplate<?, ?> kafkaTemplate) {
+		this.meterRegistry = meterRegistry;
+		this.kafkaTemplate = kafkaTemplate;
+		// monitorKafkaMetrics();
+	}
 
-      // Track error rates
-      meterRegistry.gauge("kafka.producer.errors",
-          kafkaTemplate.metrics().values().stream()
-              .filter(m -> m.metricName().name().equals("record-error-rate"))
-              .mapToDouble(Metric::value)
-              .sum());
-  }
+	/*
+	 * TODO private void monitorKafkaMetrics() { // Track message production rates
+	 * meterRegistry.gauge("kafka.producer.messages.sent",
+	 * kafkaTemplate.metrics().values().stream() .filter(m ->
+	 * m.metricName().name().equals("record-send-rate")) .mapToDouble(Metric::value)
+	 * .sum());
+	 * 
+	 * // Track error rates meterRegistry.gauge("kafka.producer.errors",
+	 * kafkaTemplate.metrics().values().stream() .filter(m ->
+	 * m.metricName().name().equals("record-error-rate")) .mapToDouble(Metric::value)
+	 * .sum()); }
+	 * 
+	 * @Scheduled(fixedRate = 30000) public void logKafkaStatus() { Map<String,
+	 * Map<MetricName, ? extends Metric>> metrics = kafkaTemplate.metrics();
+	 * metrics.forEach((clientId, clientMetrics) -> { clientMetrics.forEach((name, metric)
+	 * -> { if (name.name().endsWith("-rate") || name.name().endsWith("-total")) {
+	 * LoggerFactory.getLogger(KafkaMonitoringService.class) .info("Kafka Metric {}: {}",
+	 * name, metric.value()); } }); }); } //
+	 */
 
-  @Scheduled(fixedRate = 30000)
-  public void logKafkaStatus() {
-      Map<String, Map<MetricName, ? extends Metric>> metrics = kafkaTemplate.metrics();
-      metrics.forEach((clientId, clientMetrics) -> {
-          clientMetrics.forEach((name, metric) -> {
-              if (name.name().endsWith("-rate") || name.name().endsWith("-total")) {
-                  LoggerFactory.getLogger(KafkaMonitoringService.class)
-                      .info("Kafka Metric {}: {}", name, metric.value());
-              }
-          });
-      });
-  }
-  // */
 }

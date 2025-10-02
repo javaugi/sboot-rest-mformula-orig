@@ -21,43 +21,42 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 /**
- *
  * @author javaugi
  */
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest
 public class UserServiceTest {
 
-    @Mock
-    private UserDao userDao;
+	@Mock
+	private UserDao userDao;
 
-    //When using Mockito Use @InjectMocks to inject Mocked beans to following class
-    @InjectMocks
-    private UserServiceImp userService;
+	// When using Mockito Use @InjectMocks to inject Mocked beans to following class
+	@InjectMocks
+	private UserServiceImp userService;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	public void setup() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    public void testNothing() {
-    }
+	@Test
+	public void testNothing() {
+	}
 
-    //@Test
-    public void testGetAllUsers() {
-        //given
-        long id = 1;
-        long id2 = 2;
-        User user = new User(id, "John Smith", "jsmith@email.com");
-        User user2 = new User(id2, "Kevin Hart", "khart@email.com");
-        //When
-        given(this.userDao.findAll())
-                .willReturn(List.of(user, user2));
-        List<User> userList = IterableToList.iterableToList(userService.findAll());
-        //Then
-        //Make sure to import assertThat From org.assertj.core.api package
-        assertThat(userList).isNotNull();
-        assertThat(userList.size()).isEqualTo(2);
-    }
+	// @Test
+	public void testGetAllUsers() {
+		// given
+		long id = 1;
+		long id2 = 2;
+		User user = new User(id, "John Smith", "jsmith@email.com");
+		User user2 = new User(id2, "Kevin Hart", "khart@email.com");
+		// When
+		given(this.userDao.findAll()).willReturn(List.of(user, user2));
+		List<User> userList = IterableToList.iterableToList(userService.findAll());
+		// Then
+		// Make sure to import assertThat From org.assertj.core.api package
+		assertThat(userList).isNotNull();
+		assertThat(userList.size()).isEqualTo(2);
+	}
+
 }

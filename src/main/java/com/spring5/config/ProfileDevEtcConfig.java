@@ -13,8 +13,10 @@ import org.springframework.core.env.Profiles;
 @Profile(ProfileDevEtcConfig.DEV_PROFILE)
 public class ProfileDevEtcConfig implements Serializable {
 
-    private static final long serialVersionUID = 321357244048L;
-    protected static final String DEV_PROFILE = "dev";
-    public static final Profiles DEV_PROFILES
-            = Profiles.of("dev", "test", "qa", "postgres", "staging", "snapshot");
+	private static final long serialVersionUID = 321357244048L;
+
+	protected static final String DEV_PROFILE = "dev";
+
+	public static final Profiles DEV_PROFILES = Profiles.of("dev", "test", "qa", "postgres", "staging", "snapshot");
+
 }

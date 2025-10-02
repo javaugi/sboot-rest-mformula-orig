@@ -14,21 +14,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserMapperSimple {
 
-    // Entity to DTO
-    public UserDTO toDto(User user) {
-        UserDTO dto = new UserDTO();
-        dto.setId(user.getId());
-        dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
-        return dto;
-    }
+	// Entity to DTO
+	public UserDTO toDto(User user) {
+		UserDTO dto = new UserDTO();
+		dto.setId(user.getId());
+		dto.setName(user.getName());
+		dto.setEmail(user.getEmail());
+		return dto;
+	}
 
-    // DTO to Entity
-    public User toEntity(UserDTO dto) {
-        User user = new User();
-        user.setId(dto.getId());
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        return user;
-    }
+	// DTO to Entity
+	public User toEntity(UserDTO dto) {
+		User user = new User();
+		user.setId(dto.getId());
+		user.setName(dto.getName());
+		user.setEmail(dto.getEmail());
+		return user;
+	}
+
 }

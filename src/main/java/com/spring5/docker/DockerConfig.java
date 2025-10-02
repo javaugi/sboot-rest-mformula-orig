@@ -8,6 +8,7 @@ package com.spring5.docker;
  * @author javaugi
  */
 public class DockerConfig {
+
 }
 
 // https://mkyong.com/docker/docker-spring-boot-examples/

@@ -18,31 +18,33 @@ import org.springframework.kafka.core.ProducerFactory;
 
 public class KafkaStoreTransProducerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServers;
+	@Value("${spring.kafka.bootstrap-servers}")
+	private String bootstrapServers;
 
-    public static final String KAFKA_PRODUCER_STORE_TRANS_EVENT = "KAFKA_PRODUCER_TRANS_EVENT";
-    public static final String KAFKA_TEMPLATE_STORE_TRANS_EVENT = "KAFKA_TEMPLATE_TRANS_EVENT";
+	public static final String KAFKA_PRODUCER_STORE_TRANS_EVENT = "KAFKA_PRODUCER_TRANS_EVENT";
 
-    @Bean(name = KAFKA_PRODUCER_STORE_TRANS_EVENT)
-    public ProducerFactory<String, StoreTransaction> transactionProducerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+	public static final String KAFKA_TEMPLATE_STORE_TRANS_EVENT = "KAFKA_TEMPLATE_TRANS_EVENT";
 
-        // Custom partitioner for store-based partitioning
-        configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, StoreIdPartitioner.class);
+	@Bean(name = KAFKA_PRODUCER_STORE_TRANS_EVENT)
+	public ProducerFactory<String, StoreTransaction> transactionProducerFactory() {
+		Map<String, Object> configProps = new HashMap<>();
+		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
-        // Enable idempotence and compression for better reliability/performance
-        configProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
-        configProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
+		// Custom partitioner for store-based partitioning
+		configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, StoreIdPartitioner.class);
 
-        return new DefaultKafkaProducerFactory<>(configProps);
-    }
+		// Enable idempotence and compression for better reliability/performance
+		configProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+		configProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
 
-    @Bean(name = KAFKA_TEMPLATE_STORE_TRANS_EVENT)
-    public KafkaTemplate<String, StoreTransaction> transactionKafkaTemplate() {
-        return new KafkaTemplate<>(transactionProducerFactory());
-    }
+		return new DefaultKafkaProducerFactory<>(configProps);
+	}
+
+	@Bean(name = KAFKA_TEMPLATE_STORE_TRANS_EVENT)
+	public KafkaTemplate<String, StoreTransaction> transactionKafkaTemplate() {
+		return new KafkaTemplate<>(transactionProducerFactory());
+	}
+
 }

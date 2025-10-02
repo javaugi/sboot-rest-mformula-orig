@@ -9,24 +9,26 @@ package com.interview.codesignal.concurrency;
  */
 public class Fact {
 
-    private String name;
-    private Object value;
+	private String name;
 
-    public Fact(String name, Object value) {
-        this.name = name;
-        this.value = value;
-    }
+	private Object value;
 
-    public String getName() {
-        return name;
-    }
+	public Fact(String name, Object value) {
+		this.name = name;
+		this.value = value;
+	}
 
-    public Object getValue() {
-        return value;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return name + "=" + value;
-    }
+	public Object getValue() {
+		return value;
+	}
+
+	@Override
+	public String toString() {
+		return name + "=" + value;
+	}
+
 }

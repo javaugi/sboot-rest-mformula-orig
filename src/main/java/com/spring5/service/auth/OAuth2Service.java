@@ -14,11 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class OAuth2Service {
 
-    public OAuth2UserInfo getUserInfo(String provider, String code) {
-        return OAuth2UserInfo.builder().provider(provider).code(code).build();
-    }
+	public OAuth2UserInfo getUserInfo(String provider, String code) {
+		return OAuth2UserInfo.builder().provider(provider).code(code).build();
+	}
 
-    public String getAuthorizationUrl(String provider) {
-        return "https://" + provider;
-    }
+	public String getAuthorizationUrl(String provider) {
+		return "https://" + provider;
+	}
+
 }

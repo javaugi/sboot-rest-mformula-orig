@@ -11,13 +11,14 @@ import com.spring5.empbilpayroll.Employee;
  */
 public class USPayrollRule implements PayrollRuleStrategy {
 
-    @Override
-    public double calculateOvertime(double hoursWorked, Employee employee) {
-        return (hoursWorked > 40) ? (hoursWorked - 40) * 1.5 : 0;
-    }
+	@Override
+	public double calculateOvertime(double hoursWorked, Employee employee) {
+		return (hoursWorked > 40) ? (hoursWorked - 40) * 1.5 : 0;
+	}
 
-    @Override
-    public double calculateTax(Employee employee) {
-        return employee.getSalary();
-    }
+	@Override
+	public double calculateTax(Employee employee) {
+		return employee.getSalary();
+	}
+
 }

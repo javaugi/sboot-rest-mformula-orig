@@ -15,14 +15,22 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class RiskScoreResponse {
 
-    private String memberId;
-    private String modelType;
-    private Double riskScore;
-    private Double predictedCost;
-    private LocalDate calculationDate;
-    private String modelVersion;
+	private String memberId;
 
-    private List<HccContribution> hccContributions;
-    private List<InteractionFactor> interactionFactors;
-    private DemographicFactor demographicFactors;
+	private String modelType;
+
+	private Double riskScore;
+
+	private Double predictedCost;
+
+	private LocalDate calculationDate;
+
+	private String modelVersion;
+
+	private List<HccContribution> hccContributions;
+
+	private List<InteractionFactor> interactionFactors;
+
+	private DemographicFactor demographicFactors;
+
 }

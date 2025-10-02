@@ -15,17 +15,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class OllamaConfig {
 
-    @Primary
-    @Bean
-    public WebClient ollamaWebClient(OllamaProperties properties) {
-        return WebClient.builder()
-                .baseUrl(properties.getBaseUrl())
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-    }
+	@Primary
+	@Bean
+	public WebClient ollamaWebClient(OllamaProperties properties) {
+		return WebClient.builder()
+			.baseUrl(properties.getBaseUrl())
+			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+			.build();
+	}
 
-    @Bean
-    public OllamaService ollamaService(OllamaProperties properties, WebClient ollamaWebClient) {
-        return new OllamaService(properties, ollamaWebClient);
-    }
+	@Bean
+	public OllamaService ollamaService(OllamaProperties properties, WebClient ollamaWebClient) {
+		return new OllamaService(properties, ollamaWebClient);
+	}
+
 }

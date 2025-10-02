@@ -6,12 +6,13 @@ package com.interview.cls.veh;
 
 public non-sealed class Truck extends Vehicle {
 
-    public Truck(String manufacturer) {
-        super(manufacturer);
-    }
+	public Truck(String manufacturer) {
+		super(manufacturer);
+	}
 
-    @Override
-    public void startEngine() {
-        System.out.println("Truck engine started");
-    }
+	@Override
+	public void startEngine() {
+		System.out.println("Truck engine started");
+	}
+
 }

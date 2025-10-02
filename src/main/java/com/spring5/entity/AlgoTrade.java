@@ -27,41 +27,45 @@ import lombok.NoArgsConstructor;
 @Table(name = "algoTrades")
 public class AlgoTrade {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Version
-    private Long version;
+	@Version
+	private Long version;
 
-    @ManyToOne
-    @JoinColumn(name = "user_account_id")
-    private UserAccount userAccount;
+	@ManyToOne
+	@JoinColumn(name = "user_account_id")
+	private UserAccount userAccount;
 
-    @JoinColumn(name = "order_id")
-    private String orderId;
+	@JoinColumn(name = "order_id")
+	private String orderId;
 
-    private String symbol;
+	private String symbol;
 
-    @Column(name = "instrument_id")
-    private String instrumentId;
+	@Column(name = "instrument_id")
+	private String instrumentId;
 
-    private Double quantity;
-    private Double price;
-    private String currency;
+	private Double quantity;
 
-    @Column(name = "execution_time")
-    private Instant executionTime;
+	private Double price;
 
-    @Column(name = "trade_type")
-    private String tradeType;
+	private String currency;
 
-    private String status;
-    private String description;
+	@Column(name = "execution_time")
+	private Instant executionTime;
 
-    @Column(name = "create_date")
-    private Instant createDate;
+	@Column(name = "trade_type")
+	private String tradeType;
 
-    @Column(name = "update_date")
-    private Instant updateDate;
+	private String status;
+
+	private String description;
+
+	@Column(name = "create_date")
+	private Instant createDate;
+
+	@Column(name = "update_date")
+	private Instant updateDate;
+
 }

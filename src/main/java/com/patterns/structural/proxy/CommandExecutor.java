@@ -9,10 +9,10 @@ package com.patterns.structural.proxy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface CommandExecutor {
 
-    void runCommand(String cmd) throws Exception;
+	void runCommand(String cmd) throws Exception;
+
 }

@@ -12,14 +12,16 @@ import org.apache.kafka.common.serialization.Serializer;
 // In a real application, you'd likely use Avro/Protobuf with Schema Registry
 public class ClickEventSerializer implements Serializer<ClickEvent> {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override
-    public byte[] serialize(String topic, ClickEvent data) {
-        try {
-            return objectMapper.writeValueAsBytes(data);
-        } catch (IOException e) {
-            throw new RuntimeException("Error serializing ClickEvent", e);
-        }
-    }
+	@Override
+	public byte[] serialize(String topic, ClickEvent data) {
+		try {
+			return objectMapper.writeValueAsBytes(data);
+		}
+		catch (IOException e) {
+			throw new RuntimeException("Error serializing ClickEvent", e);
+		}
+	}
+
 }

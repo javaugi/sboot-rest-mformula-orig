@@ -15,13 +15,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RateLimiterService {
 
-    // see RateLimitConfig for details
-    private final ProxyManager<String> proxyManager;
-    private final Bandwidth bandwidth;
+	// see RateLimitConfig for details
+	private final ProxyManager<String> proxyManager;
 
-    public boolean tryConsume(String clientId, int tokens) {
-        BucketConfiguration config = BucketConfiguration.builder().addLimit(bandwidth).build();
-        Bucket bucket = proxyManager.builder().build(clientId, config);
-        return bucket.tryConsume(tokens);
-    }
+	private final Bandwidth bandwidth;
+
+	public boolean tryConsume(String clientId, int tokens) {
+		BucketConfiguration config = BucketConfiguration.builder().addLimit(bandwidth).build();
+		Bucket bucket = proxyManager.builder().build(clientId, config);
+		return bucket.tryConsume(tokens);
+	}
+
 }

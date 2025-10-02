@@ -19,5 +19,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Word {
 
-    private String word;
+	private String word;
+
 }

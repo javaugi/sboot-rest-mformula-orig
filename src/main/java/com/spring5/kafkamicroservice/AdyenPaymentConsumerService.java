@@ -20,74 +20,74 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdyenPaymentConsumerService {
 
-    private static final Logger log = LoggerFactory.getLogger(AdyenPaymentConsumerService.class);
+	private static final Logger log = LoggerFactory.getLogger(AdyenPaymentConsumerService.class);
 
-    private final AdyenClient adyenClient;
-    private final AdyenConfig adyenConfig;
-    private final AdyenPaymentEventProducer paymentEventProducer;
-    private final AdyenPaymentRepository paymentRepository;
+	private final AdyenClient adyenClient;
 
-    @KafkaListener(topics = "payment.requests")
-    @CircuitBreaker(name = "adyenPayment", fallbackMethod = "processPaymentFallback")
-    @Retry(name = "adyenRetry")
-    public void processPayment(AdyenPaymentRequest request) {
-        AdyenPaymentResponse response = makeAdyenPayment(request);
+	private final AdyenConfig adyenConfig;
 
-        if (response.isAuthorised()) {
-            paymentEventProducer.publishPaymentSuccess(request.getPaymentId(), response);
-        } else {
-            paymentEventProducer.publishPaymentFailure(
-                    request.getPaymentId(), response.getRefusalReason());
-        }
-    }
+	private final AdyenPaymentEventProducer paymentEventProducer;
 
-    @KafkaListener(topics = "payments")
-    @Transactional
-    public void processPayment(
-            @Header(KafkaHeaders.RECEIVED_KEY) String key, AdyenPaymentRequest request) {
+	private final AdyenPaymentRepository paymentRepository;
 
-        if (paymentRepository.existsByIdempotencyKey(key)) {
-            return; // Deduplication
-        }
+	@KafkaListener(topics = "payment.requests")
+	@CircuitBreaker(name = "adyenPayment", fallbackMethod = "processPaymentFallback")
+	@Retry(name = "adyenRetry")
+	public void processPayment(AdyenPaymentRequest request) {
+		AdyenPaymentResponse response = makeAdyenPayment(request);
 
-        AdyenPayment payment = processWithAdyen(request);
-        payment.setIdempotencyKey(key);
-        paymentRepository.save(payment); // Atomic transaction
-    }
+		if (response.isAuthorised()) {
+			paymentEventProducer.publishPaymentSuccess(request.getPaymentId(), response);
+		}
+		else {
+			paymentEventProducer.publishPaymentFailure(request.getPaymentId(), response.getRefusalReason());
+		}
+	}
 
-    private AdyenPayment processWithAdyen(AdyenPaymentRequest request) {
-        return null;
-    }
+	@KafkaListener(topics = "payments")
+	@Transactional
+	public void processPayment(@Header(KafkaHeaders.RECEIVED_KEY) String key, AdyenPaymentRequest request) {
 
-    @Retry(name = "adyenRetry")
-    public AdyenPaymentResponse makeAdyenPayment(AdyenPaymentRequest request) {
-        AdyenPayments payments = new AdyenPayments(adyenClient);
+		if (paymentRepository.existsByIdempotencyKey(key)) {
+			return; // Deduplication
+		}
 
-        AdyenPaymentAmount amount
-                = AdyenPaymentAmount.builder()
-                        .currency(request.getCurrency())
-                        .value(request.getAmount().multiply(BigDecimal.valueOf(100)).longValue())
-                        .paymentMethod(request.getPaymentMethod().toString())
-                        .reference(request.getReference())
-                        .returnUrl(request.getReturnUrl())
-                        .build();
+		AdyenPayment payment = processWithAdyen(request);
+		payment.setIdempotencyKey(key);
+		paymentRepository.save(payment); // Atomic transaction
+	}
 
-        AdyenPaymentRequests adyenRequests
-                = AdyenPaymentRequests.builder()
-                        .merchantAccount(adyenConfig.getMerchantAccount())
-                        .amount(amount)
-                        .build();
+	private AdyenPayment processWithAdyen(AdyenPaymentRequest request) {
+		return null;
+	}
 
-        return payments.payments(adyenRequests);
-    }
+	@Retry(name = "adyenRetry")
+	public AdyenPaymentResponse makeAdyenPayment(AdyenPaymentRequest request) {
+		AdyenPayments payments = new AdyenPayments(adyenClient);
 
-    public void processPaymentFallback(AdyenPaymentRequest request, Exception ex) {
-        log.error("Payment failed after retries: {}", request.getPaymentId(), ex);
-        paymentEventProducer.publishPaymentFailure(
-                request.getPaymentId(), "Payment service unavailable");
-    }
+		AdyenPaymentAmount amount = AdyenPaymentAmount.builder()
+			.currency(request.getCurrency())
+			.value(request.getAmount().multiply(BigDecimal.valueOf(100)).longValue())
+			.paymentMethod(request.getPaymentMethod().toString())
+			.reference(request.getReference())
+			.returnUrl(request.getReturnUrl())
+			.build();
 
-    public boolean validate(AdyenPaymentRequest request) {
-        return true;
-    }
+		AdyenPaymentRequests adyenRequests = AdyenPaymentRequests.builder()
+			.merchantAccount(adyenConfig.getMerchantAccount())
+			.amount(amount)
+			.build();
+
+		return payments.payments(adyenRequests);
+	}
+
+	public void processPaymentFallback(AdyenPaymentRequest request, Exception ex) {
+		log.error("Payment failed after retries: {}", request.getPaymentId(), ex);
+		paymentEventProducer.publishPaymentFailure(request.getPaymentId(), "Payment service unavailable");
+	}
+
+	public boolean validate(AdyenPaymentRequest request) {
+		return true;
+	}
+
 }

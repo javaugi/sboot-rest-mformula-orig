@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface Neo4jPersonRepository extends Neo4jRepository<Neo4jPerson, Long> {
 
-    Neo4jPerson findByName(@Param("name") String name);
+	Neo4jPerson findByName(@Param("name") String name);
 
-    List<Neo4jPerson> findByTeammatesName(@Param("name") String name);
+	List<Neo4jPerson> findByTeammatesName(@Param("name") String name);
+
 }

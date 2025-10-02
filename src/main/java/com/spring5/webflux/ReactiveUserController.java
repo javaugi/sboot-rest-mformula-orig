@@ -15,40 +15,30 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/wfusers")
 public class ReactiveUserController {
 
-    private static final Logger log = LoggerFactory.getLogger(ReactiveUserController.class);
+	private static final Logger log = LoggerFactory.getLogger(ReactiveUserController.class);
 
-    /*
-  @Autowired
-  ReactiveUserRepository userRepository;
+	/*
+	 * @Autowired ReactiveUserRepository userRepository;
+	 * 
+	 * @GetMapping public Flux<RWFUser> getAllUsers() { return userRepository.findAll();
+	 * // Returns Flux<User> }
+	 * 
+	 * @GetMapping("/{id}") public Mono<RWFUser> getUserById(@PathVariable Long id) {
+	 * return userRepository.findById(id); // Returns Mono<User> } //
+	 */
+	public void subWebClient() {
+		WebClient client = WebClient.create("https://api.example.com");
 
-  @GetMapping
-  public Flux<RWFUser> getAllUsers() {
-      return userRepository.findAll(); // Returns Flux<User>
-  }
+		Mono<RWFUser> user = client.get().uri("/users/123").retrieve().bodyToMono(RWFUser.class);
 
-  @GetMapping("/{id}")
-  public Mono<RWFUser> getUserById(@PathVariable Long id) {
-      return userRepository.findById(id); // Returns Mono<User>
-  }
-  // */
-    public void subWebClient() {
-        WebClient client = WebClient.create("https://api.example.com");
+		user.subscribe(u -> System.out.println(u.getName()));
+	}
 
-        Mono<RWFUser> user = client.get().uri("/users/123").retrieve().bodyToMono(RWFUser.class);
+	/*
+	 * public void subReq() { Flux.range(1, 1000) // Publisher emits 1-1000
+	 * .onBackpressureBuffer(50) // Buffer 50 items max .subscribe( item -> process(item),
+	 * // Process items err -> log.error(err), // Handle errors () -> log.info("Done"),
+	 * subscription -> subscription.request(10) // Request 10 items initially ); } //
+	 */
 
-        user.subscribe(u -> System.out.println(u.getName()));
-    }
-
-    /*
-  public void subReq() {
-      Flux.range(1, 1000) // Publisher emits 1-1000
-              .onBackpressureBuffer(50) // Buffer 50 items max
-              .subscribe(
-                      item -> process(item), // Process items
-                      err -> log.error(err), // Handle errors
-                      () -> log.info("Done"),
-                      subscription -> subscription.request(10) // Request 10 items initially
-              );
-  }
-  // */
 }

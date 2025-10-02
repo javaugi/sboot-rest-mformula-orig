@@ -26,12 +26,16 @@ import lombok.Setter;
 @Entity
 public class Station {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    String city;
-    String state;
-    BigDecimal latN;
-    BigDecimal longW;
+	String city;
+
+	String state;
+
+	BigDecimal latN;
+
+	BigDecimal longW;
+
 }

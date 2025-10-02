@@ -9,34 +9,35 @@ package com.interview.shoppingcart.api.impl;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class WeightItem extends ItemImpl {
 
-    private double weightInPound;
-    private double pricePerPound;
+	private double weightInPound;
 
-    public WeightItem(String name, double weightInPound, double pricePerPound) {
-        super(name, weightInPound * pricePerPound);
-        this.weightInPound = weightInPound;
-        this.pricePerPound = pricePerPound;
-        super.setCategory(Category.Weight);
-    }
+	private double pricePerPound;
 
-    public double getWeightInPound() {
-        return weightInPound;
-    }
+	public WeightItem(String name, double weightInPound, double pricePerPound) {
+		super(name, weightInPound * pricePerPound);
+		this.weightInPound = weightInPound;
+		this.pricePerPound = pricePerPound;
+		super.setCategory(Category.Weight);
+	}
 
-    public void setWeightInPound(double weightInPound) {
-        this.weightInPound = weightInPound;
-    }
+	public double getWeightInPound() {
+		return weightInPound;
+	}
 
-    public double getPricePerPound() {
-        return pricePerPound;
-    }
+	public void setWeightInPound(double weightInPound) {
+		this.weightInPound = weightInPound;
+	}
 
-    public void setPricePerPound(double pricePerPound) {
-        this.pricePerPound = pricePerPound;
-    }
+	public double getPricePerPound() {
+		return pricePerPound;
+	}
+
+	public void setPricePerPound(double pricePerPound) {
+		this.pricePerPound = pricePerPound;
+	}
+
 }

@@ -12,22 +12,22 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class BrokerInvoker {
 
-    private List<OrderCommand> orderList = new ArrayList<OrderCommand>();
+	private List<OrderCommand> orderList = new ArrayList<OrderCommand>();
 
-    public void takeOrder(OrderCommand order) {
-        orderList.add(order);
-    }
+	public void takeOrder(OrderCommand order) {
+		orderList.add(order);
+	}
 
-    public void placeOrders() {
+	public void placeOrders() {
 
-        for (OrderCommand order : orderList) {
-            order.execute();
-        }
-        orderList.clear();
-    }
+		for (OrderCommand order : orderList) {
+			order.execute();
+		}
+		orderList.clear();
+	}
+
 }

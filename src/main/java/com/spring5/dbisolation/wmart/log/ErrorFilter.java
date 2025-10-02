@@ -11,10 +11,12 @@ package com.spring5.dbisolation.wmart.log;
  */
 public interface ErrorFilter {
 
-    boolean includes(LogEntry log);
+	boolean includes(LogEntry log);
 
-    ErrorFilter ERRORS_ONLY = LogEntry::isError;
-    ErrorFilter WARNINGS_AND_ERRORS
-            = log -> log.getLevel() == LogLevel.WARN || log.getLevel() == LogLevel.ERROR;
-    ErrorFilter ALL_LEVELS = log -> true;
+	ErrorFilter ERRORS_ONLY = LogEntry::isError;
+
+	ErrorFilter WARNINGS_AND_ERRORS = log -> log.getLevel() == LogLevel.WARN || log.getLevel() == LogLevel.ERROR;
+
+	ErrorFilter ALL_LEVELS = log -> true;
+
 }

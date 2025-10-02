@@ -36,32 +36,32 @@ import lombok.ToString;
 @ValidAppointment
 public class Appointment implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    @NotBlank(message = "Start time is required")
-    private LocalDateTime startTime;
+	@NotBlank(message = "Start time is required")
+	private LocalDateTime startTime;
 
-    @NotBlank(message = "End time is required")
-    private LocalDateTime endTime;
+	@NotBlank(message = "End time is required")
+	private LocalDateTime endTime;
 
-    private String reason;
+	private String reason;
 
-    @AllowedValues(
-            value = {"SCHEDULED", "COMPLETED", "CANCELLED"},
-            message = "Status must be SCHEDULED, COMPLETED, or CANCELLED")
-    private String status; // Scheduled, Completed, Cancelled
+	@AllowedValues(value = { "SCHEDULED", "COMPLETED", "CANCELLED" },
+			message = "Status must be SCHEDULED, COMPLETED, or CANCELLED")
+	private String status; // Scheduled, Completed, Cancelled
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+	@ManyToOne
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "nurse_id")
-    private Nurse nurse;
+	@ManyToOne
+	@JoinColumn(name = "nurse_id")
+	private Nurse nurse;
 
-    @ManyToOne
-    @JoinColumn(name = "physician_id")
-    private Physician physician;
+	@ManyToOne
+	@JoinColumn(name = "physician_id")
+	private Physician physician;
+
 }

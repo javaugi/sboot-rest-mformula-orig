@@ -18,22 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/reviews")
 public class PerformanceReviewController {
 
-    @Autowired
-    private PerformanceReviewImprovedService performanceReviewService;
+	@Autowired
+	private PerformanceReviewImprovedService performanceReviewService;
 
-    // Constructor injection
-    /*
-  public PerformanceReviewController(PerformanceReviewImprovedService performanceReviewService) {
-      this.performanceReviewService = performanceReviewService;
-  }
-  // */
-    @GetMapping("/{id}")
-    public BonusMultiplier getReview(@PathVariable Long id) {
-        return performanceReviewService.getReviewById(id);
-    }
+	// Constructor injection
+	/*
+	 * public PerformanceReviewController(PerformanceReviewImprovedService
+	 * performanceReviewService) { this.performanceReviewService =
+	 * performanceReviewService; } //
+	 */
+	@GetMapping("/{id}")
+	public BonusMultiplier getReview(@PathVariable Long id) {
+		return performanceReviewService.getReviewById(id);
+	}
 
-    @PostMapping
-    public BonusMultiplier createReview(@RequestBody BonusMultiplier review) {
-        return performanceReviewService.createReview(review);
-    }
+	@PostMapping
+	public BonusMultiplier createReview(@RequestBody BonusMultiplier review) {
+		return performanceReviewService.createReview(review);
+	}
+
 }

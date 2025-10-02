@@ -9,18 +9,19 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class Shape1 {
-    // Composition - implementor
 
-    protected ColorBridge color;
+	// Composition - implementor
 
-    // constructor with implementor as input argument
-    public Shape1(ColorBridge c) {
-        this.color = c;
-    }
+	protected ColorBridge color;
 
-    public abstract void applyColor();
+	// constructor with implementor as input argument
+	public Shape1(ColorBridge c) {
+		this.color = c;
+	}
+
+	public abstract void applyColor();
+
 }

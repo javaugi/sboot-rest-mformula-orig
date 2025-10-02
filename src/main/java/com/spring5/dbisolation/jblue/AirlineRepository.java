@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AirlineRepository extends CosmosRepository<Airline, String> {
 
-    Optional<Airline> findByAirlineCode(String airlineCode);
+	Optional<Airline> findByAirlineCode(String airlineCode);
 
-    List<Airline> findByAirlineCodeIn(Set<String> airlineCodes);
+	List<Airline> findByAirlineCodeIn(Set<String> airlineCodes);
+
 }

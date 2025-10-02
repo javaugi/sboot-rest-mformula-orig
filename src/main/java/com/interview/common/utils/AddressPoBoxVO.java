@@ -12,48 +12,51 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class AddressPoBoxVO {
 
-    String address;
-    String poBox;
-    boolean poBoxFound = false;
+	String address;
 
-    public String getAddress() {
-        return address;
-    }
+	String poBox;
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	boolean poBoxFound = false;
 
-    public String getPoBox() {
-        return poBox;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public void setPoBox(String poBox) {
-        this.poBox = poBox;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public int length() {
-        return StringUtils.length(address) + StringUtils.length(poBox);
-    }
+	public String getPoBox() {
+		return poBox;
+	}
 
-    public String getTrimmedAddress() {
-        return StringUtils.stripEnd(StringUtils.trim(address), ",");
-    }
+	public void setPoBox(String poBox) {
+		this.poBox = poBox;
+	}
 
-    public String getTrimmedPoBox() {
-        return StringUtils.trim(poBox);
-    }
+	public int length() {
+		return StringUtils.length(address) + StringUtils.length(poBox);
+	}
 
-    public boolean isPoBoxFound() {
-        return poBoxFound;
-    }
+	public String getTrimmedAddress() {
+		return StringUtils.stripEnd(StringUtils.trim(address), ",");
+	}
 
-    public void setPoBoxFound(boolean poBoxFound) {
-        this.poBoxFound = poBoxFound;
-    }
+	public String getTrimmedPoBox() {
+		return StringUtils.trim(poBox);
+	}
 
-    @Override
-    public String toString() {
-        return "AddressPoBoxVO{" + "address=" + address + ", poBox=" + poBox + '}';
-    }
+	public boolean isPoBoxFound() {
+		return poBoxFound;
+	}
+
+	public void setPoBoxFound(boolean poBoxFound) {
+		this.poBoxFound = poBoxFound;
+	}
+
+	@Override
+	public String toString() {
+		return "AddressPoBoxVO{" + "address=" + address + ", poBox=" + poBox + '}';
+	}
+
 }

@@ -9,5 +9,6 @@ package com.interview.hrank;
  */
 public interface GenericPrint<T> {
 
-    void print(T t);
+	void print(T t);
+
 }

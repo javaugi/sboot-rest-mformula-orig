@@ -20,45 +20,48 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Opt2ProductCacheListener {
 
-    private final Cache<Long, Boolean> debounceCache;
-    private final ProductRepository repo;
-    private final @Qualifier(REDIS_TPL_PRODUCT)
-    RedisTemplate<String, Product> redis;
-    private final Opt3RedisDebounceService debounceService;
+	private final Cache<Long, Boolean> debounceCache;
 
-    public static boolean option3 = false;
+	private final ProductRepository repo;
 
-    @EventListener
-    public void onUpdate(ProductCacheUpdateEvent event) {
-        if (option3) {
-            onUpdateOpt3(event);
-            return;
-        }
+	private final @Qualifier(REDIS_TPL_PRODUCT) RedisTemplate<String, Product> redis;
 
-        Long productId = event.getProductId();
-        if (debounceCache.getIfPresent(productId) != null) {
-            System.out.println("⏳ Skipped duplicate update for: " + productId);
-            return;
-        }
+	private final Opt3RedisDebounceService debounceService;
 
-        // Mark as seen
-        debounceCache.put(productId, true);
+	public static boolean option3 = false;
 
-        // Update Redis
-        Product product = repo.findById(productId).orElseThrow();
-        redis.opsForValue().set("product:" + productId, product, Duration.ofMinutes(30));
-        System.out.println("✅ Cache written for: " + productId);
-    }
+	@EventListener
+	public void onUpdate(ProductCacheUpdateEvent event) {
+		if (option3) {
+			onUpdateOpt3(event);
+			return;
+		}
 
-    public void onUpdateOpt3(ProductCacheUpdateEvent event) {
-        Long productId = event.getProductId();
-        if (!debounceService.shouldUpdate(productId, Duration.ofSeconds(10))) {
-            System.out.println("⏳ Skipped Redis-locked update for " + productId);
-            return;
-        }
+		Long productId = event.getProductId();
+		if (debounceCache.getIfPresent(productId) != null) {
+			System.out.println("⏳ Skipped duplicate update for: " + productId);
+			return;
+		}
 
-        Product product = repo.findById(productId).orElseThrow();
-        redis.opsForValue().set("product:" + productId, product, Duration.ofMinutes(30));
-        System.out.println("✅ Redis cache updated for " + productId);
-    }
+		// Mark as seen
+		debounceCache.put(productId, true);
+
+		// Update Redis
+		Product product = repo.findById(productId).orElseThrow();
+		redis.opsForValue().set("product:" + productId, product, Duration.ofMinutes(30));
+		System.out.println("✅ Cache written for: " + productId);
+	}
+
+	public void onUpdateOpt3(ProductCacheUpdateEvent event) {
+		Long productId = event.getProductId();
+		if (!debounceService.shouldUpdate(productId, Duration.ofSeconds(10))) {
+			System.out.println("⏳ Skipped Redis-locked update for " + productId);
+			return;
+		}
+
+		Product product = repo.findById(productId).orElseThrow();
+		redis.opsForValue().set("product:" + productId, product, Duration.ofMinutes(30));
+		System.out.println("✅ Redis cache updated for " + productId);
+	}
+
 }

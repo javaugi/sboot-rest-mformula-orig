@@ -15,23 +15,24 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PaymentStripeClient {
 
-    private final StripeProperties properties;
+	private final StripeProperties properties;
 
-    public PaymentResult charge(PaymentRequestEvent event) {
-        Stripe.apiKey = properties.getApiKey();
+	public PaymentResult charge(PaymentRequestEvent event) {
+		Stripe.apiKey = properties.getApiKey();
 
-        PaymentIntentCreateParams params
-                = PaymentIntentCreateParams.builder()
-                        .setAmount(event.amount().longValue() * 100) // in cents
-                        .setCurrency(event.currency())
-                        .putMetadata("orderId", event.orderId())
-                        .build();
+		PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+			.setAmount(event.amount().longValue() * 100) // in cents
+			.setCurrency(event.currency())
+			.putMetadata("orderId", event.orderId())
+			.build();
 
-        try {
-            PaymentIntent intent = PaymentIntent.create(params);
-            return new PaymentResult(true, intent.getId(), "Payment succeeded");
-        } catch (StripeException e) {
-            return new PaymentResult(false, null, e.getMessage());
-        }
-    }
+		try {
+			PaymentIntent intent = PaymentIntent.create(params);
+			return new PaymentResult(true, intent.getId(), "Payment succeeded");
+		}
+		catch (StripeException e) {
+			return new PaymentResult(false, null, e.getMessage());
+		}
+	}
+
 }

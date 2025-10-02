@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GraphAuthorQueryResolver implements GraphQLQueryResolver {
 
-    @Autowired
-    private GraphAuthorRepository repo;
+	@Autowired
+	private GraphAuthorRepository repo;
 
-    public GraphAuthor getGraphAuthor(String id) {
-        return repo.findById(id).orElseThrow();
-    }
+	public GraphAuthor getGraphAuthor(String id) {
+		return repo.findById(id).orElseThrow();
+	}
+
 }

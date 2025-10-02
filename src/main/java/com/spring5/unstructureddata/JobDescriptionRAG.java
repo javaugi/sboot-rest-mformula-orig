@@ -43,81 +43,73 @@ Retrieval-augmented generation, or RAG, introduces some serious capabilities to 
 @Service
 public class JobDescriptionRAG {
 
-    @Autowired
-    private @Qualifier("deekseekOpenAiChatModel")
-    OpenAiChatModel model;
+	@Autowired
+	private @Qualifier("deekseekOpenAiChatModel") OpenAiChatModel model;
 
-    public static void main(String[] args) {
-        JobDescriptionRAG main = new JobDescriptionRAG();
-        main.doRAGJobDesc();
-    }
+	public static void main(String[] args) {
+		JobDescriptionRAG main = new JobDescriptionRAG();
+		main.doRAGJobDesc();
+	}
 
-    private void doRAGJobDesc() {
-        // Step 1: Load Job Description
-        // Document jobDescDoc = Document.from(Path.of("job_desc.txt"), new TextDocumentParser());
-        Document jobDescDoc = Document.from("job_desc.txt");
-        List<TextSegment> jobDescSegments = DocumentSplitters.recursive(300, 900).split(jobDescDoc);
+	private void doRAGJobDesc() {
+		// Step 1: Load Job Description
+		// Document jobDescDoc = Document.from(Path.of("job_desc.txt"), new
+		// TextDocumentParser());
+		Document jobDescDoc = Document.from("job_desc.txt");
+		List<TextSegment> jobDescSegments = DocumentSplitters.recursive(300, 900).split(jobDescDoc);
 
-        // Step 2: Generate Embeddings
-        EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
-        EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
-        jobDescSegments.forEach(
-                seg -> {
-                    embeddingStore.add(embeddingModel.embed(seg).content(), seg);
-                });
+		// Step 2: Generate Embeddings
+		EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
+		EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
+		jobDescSegments.forEach(seg -> {
+			embeddingStore.add(embeddingModel.embed(seg).content(), seg);
+		});
 
-        // Step 3: Retrieve Relevant Context for a Resume
-        String resumeText = "Experienced Java developer with Spring Boot...";
-        // EmbeddingStoreRetriever retriever = EmbeddingStoreRetriever.from(embeddingStore,
-        // embeddingModel, 1);
+		// Step 3: Retrieve Relevant Context for a Resume
+		String resumeText = "Experienced Java developer with Spring Boot...";
+		// EmbeddingStoreRetriever retriever =
+		// EmbeddingStoreRetriever.from(embeddingStore,
+		// embeddingModel, 1);
 
-        EmbeddingSearchRequest reg = EmbeddingSearchRequest.builder().build();
+		EmbeddingSearchRequest reg = EmbeddingSearchRequest.builder().build();
 
-        EmbeddingSearchResult<TextSegment> results = embeddingStore.search(reg);
+		EmbeddingSearchResult<TextSegment> results = embeddingStore.search(reg);
 
-        // List<TextSegment> relevantContext = retriever.findRelevant(resumeText);
-        List<TextSegment> relevantContext = new ArrayList();
-        results
-                .matches()
-                .forEach(
-                        a -> {
-                            relevantContext.add(a.embedded());
-                        });
+		// List<TextSegment> relevantContext = retriever.findRelevant(resumeText);
+		List<TextSegment> relevantContext = new ArrayList();
+		results.matches().forEach(a -> {
+			relevantContext.add(a.embedded());
+		});
 
-        // Step 4: Augment LLM Prompt with Job Context
-        // OpenAiChatModel llm = OpenAiChatModel.withApiKey(OPENAI_API_KEY);
-        String prompt
-                = """
-                                            Based on the job description:
-                                            {{context}}
+		// Step 4: Augment LLM Prompt with Job Context
+		// OpenAiChatModel llm = OpenAiChatModel.withApiKey(OPENAI_API_KEY);
+		String prompt = """
+				Based on the job description:
+				{{context}}
 
-                                            Evaluate this resume:
-                                            {{resume}}
+				Evaluate this resume:
+				{{resume}}
 
-                                            Tasks:
-                                            1. Score the candidate (0-100).
-                                            2. Suggest 3 interview questions.
-                                            """
-                        .replace("{{context}}", relevantContext.get(0).text())
-                        .replace("{{resume}}", resumeText);
+				Tasks:
+				1. Score the candidate (0-100).
+				2. Suggest 3 interview questions.
+				""".replace("{{context}}", relevantContext.get(0).text()).replace("{{resume}}", resumeText);
 
-        String llmResponse = model.call(prompt);
-        System.out.println(llmResponse);
-    }
+		String llmResponse = model.call(prompt);
+		System.out.println(llmResponse);
+	}
+
 }
 
 /*
- Key Enhancements
-Feature	Implementation
-Dynamic Skill Weights	Adjust weights based on job description keywords.
-Multi-Model RAG	Combine OpenAI + local embeddings for cost savings.
-Bulk Processing	Score 1000s of resumes using parallel streams.
-🚀 Full Pipeline
-Ingest Resumes → Extract data (LLM + NLP).
-
-Load Job Description → Generate embeddings.
-
-Retrieve Context → Augment scoring/questions.
-
-Rank Candidates → Sort by score + RAG insights.
+ * Key Enhancements Feature Implementation Dynamic Skill Weights Adjust weights based on
+ * job description keywords. Multi-Model RAG Combine OpenAI + local embeddings for cost
+ * savings. Bulk Processing Score 1000s of resumes using parallel streams. 🚀 Full
+ * Pipeline Ingest Resumes → Extract data (LLM + NLP).
+ * 
+ * Load Job Description → Generate embeddings.
+ * 
+ * Retrieve Context → Augment scoring/questions.
+ * 
+ * Rank Candidates → Sort by score + RAG insights.
  */

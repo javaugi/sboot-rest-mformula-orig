@@ -9,25 +9,28 @@ package com.patterns.behavioral.strategy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class CreditCardStrategy implements PaymentStrategy {
 
-    private String name;
-    private String cardNumber;
-    private String cvv;
-    private String dateOfExpiry;
+	private String name;
 
-    public CreditCardStrategy(String nm, String ccNum, String cvv, String expiryDate) {
-        this.name = nm;
-        this.cardNumber = ccNum;
-        this.cvv = cvv;
-        this.dateOfExpiry = expiryDate;
-    }
+	private String cardNumber;
 
-    @Override
-    public void pay(int amount) {
-        System.out.println(amount + " paid with credit/debit card");
-    }
+	private String cvv;
+
+	private String dateOfExpiry;
+
+	public CreditCardStrategy(String nm, String ccNum, String cvv, String expiryDate) {
+		this.name = nm;
+		this.cardNumber = ccNum;
+		this.cvv = cvv;
+		this.dateOfExpiry = expiryDate;
+	}
+
+	@Override
+	public void pay(int amount) {
+		System.out.println(amount + " paid with credit/debit card");
+	}
+
 }

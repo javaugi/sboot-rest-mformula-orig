@@ -9,26 +9,27 @@ import org.springframework.web.client.RestTemplate;
 
 public class WmCurrencyService {
 
-    private final RestTemplate restTemplate;
+	private final RestTemplate restTemplate;
 
-    public WmCurrencyService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+	public WmCurrencyService(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
 
-    // A Circuit Breaker with a fallback method.
-    // If the call to the external currency service fails, the fallback method is executed.
-    @CircuitBreaker(name = "currencyService", fallbackMethod = "defaultRate")
-    public double getExchangeRate(String from, String to) {
-        // A real-world call to an external API
-        String url = String.format("http://currency-exchange-api/rate?from=%s&to=%s", from, to);
-        return restTemplate.getForObject(url, Double.class);
-    }
+	// A Circuit Breaker with a fallback method.
+	// If the call to the external currency service fails, the fallback method is
+	// executed.
+	@CircuitBreaker(name = "currencyService", fallbackMethod = "defaultRate")
+	public double getExchangeRate(String from, String to) {
+		// A real-world call to an external API
+		String url = String.format("http://currency-exchange-api/rate?from=%s&to=%s", from, to);
+		return restTemplate.getForObject(url, Double.class);
+	}
 
-    // Fallback method that provides a default, safe value
-    private double defaultRate(String from, String to, Throwable t) {
-        // Log the failure for analysis
-        System.err.println(
-                "Circuit breaker is open or call failed. Returning default rate. Error: " + t.getMessage());
-        return 1.0; // Return a default value to prevent application failure
-    }
+	// Fallback method that provides a default, safe value
+	private double defaultRate(String from, String to, Throwable t) {
+		// Log the failure for analysis
+		System.err.println("Circuit breaker is open or call failed. Returning default rate. Error: " + t.getMessage());
+		return 1.0; // Return a default value to prevent application failure
+	}
+
 }

@@ -8,7 +8,7 @@ package com.spring5.kafkamicroservice;
  * @author javaugi
  */
 public enum FileOperation {
-    UPLOAD,
-    DELETE,
-    UPDATE;
+
+	UPLOAD, DELETE, UPDATE;
+
 }

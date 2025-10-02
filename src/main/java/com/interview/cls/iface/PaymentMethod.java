@@ -8,5 +8,6 @@ package com.interview.cls.iface;
 // Sealed interface
 public sealed interface PaymentMethod permits CreditCard, PayPal, BankTransfer {
 
-    void processPayment(double amount);
+	void processPayment(double amount);
+
 }

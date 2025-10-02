@@ -6,8 +6,9 @@ package com.interview.cls.iface;
 
 public final class PayPal implements PaymentMethod {
 
-    @Override
-    public void processPayment(double amount) {
-        System.out.println("Processing PayPal payment: $" + amount);
-    }
+	@Override
+	public void processPayment(double amount) {
+		System.out.println("Processing PayPal payment: $" + amount);
+	}
+
 }

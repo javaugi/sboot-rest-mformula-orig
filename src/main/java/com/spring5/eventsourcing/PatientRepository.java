@@ -11,7 +11,8 @@ import java.util.UUID;
  */
 public interface PatientRepository {
 
-    PatientRecord getPatientRecord(UUID patientId);
+	PatientRecord getPatientRecord(UUID patientId);
 
-    void savePatientRecord(PatientRecord patientRecord);
+	void savePatientRecord(PatientRecord patientRecord);
+
 }

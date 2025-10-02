@@ -9,9 +9,10 @@ import lombok.Data;
 @Data
 public class LoginResponse {
 
-    String token;
+	String token;
 
-    public LoginResponse(String token) {
-        this.token = token;
-    }
+	public LoginResponse(String token) {
+		this.token = token;
+	}
+
 }

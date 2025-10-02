@@ -9,23 +9,23 @@ package com.patterns.behavioral.template;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Cricket extends Game {
 
-    @Override
-    void endPlay() {
-        System.out.println("Cricket Game Finished!");
-    }
+	@Override
+	void endPlay() {
+		System.out.println("Cricket Game Finished!");
+	}
 
-    @Override
-    void initialize() {
-        System.out.println("Cricket Game Initialized! Start playing.");
-    }
+	@Override
+	void initialize() {
+		System.out.println("Cricket Game Initialized! Start playing.");
+	}
 
-    @Override
-    void startPlay() {
-        System.out.println("Cricket Game Started. Enjoy the game!");
-    }
+	@Override
+	void startPlay() {
+		System.out.println("Cricket Game Started. Enjoy the game!");
+	}
+
 }

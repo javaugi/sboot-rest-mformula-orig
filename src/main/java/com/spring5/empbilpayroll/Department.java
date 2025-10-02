@@ -23,14 +23,16 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Department {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String name;
-    private String code;
+	private String name;
 
-    // OneToMany with Lazy loading (default for collections)
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Employee> employees = new ArrayList<>();
+	private String code;
+
+	// OneToMany with Lazy loading (default for collections)
+	@OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Employee> employees = new ArrayList<>();
+
 }

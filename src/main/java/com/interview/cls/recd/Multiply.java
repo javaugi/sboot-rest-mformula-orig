@@ -6,8 +6,8 @@ package com.interview.cls.recd;
 
 public record Multiply(Expression left, Expression right) implements Expression {
 
-    @Override
-    public double evaluate() {
-        return left.evaluate() * right.evaluate();
-    }
+	@Override
+	public double evaluate() {
+		return left.evaluate() * right.evaluate();
+	}
 }

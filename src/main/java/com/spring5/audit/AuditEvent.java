@@ -25,16 +25,24 @@ import lombok.ToString;
 @Entity
 public class AuditEvent extends Object implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    String eventId;
-    String userId;
-    Long entityId;
-    String action;
-    Instant timestamp;
-    String eventValue;
-    String eventType;
-    String details;
+	String eventId;
+
+	String userId;
+
+	Long entityId;
+
+	String action;
+
+	Instant timestamp;
+
+	String eventValue;
+
+	String eventType;
+
+	String details;
+
 }

@@ -21,113 +21,98 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class VastDataSetsDemo {
 
-    private final ExecutorService exeService = Executors.newFixedThreadPool(5);
+	private final ExecutorService exeService = Executors.newFixedThreadPool(5);
 
-    private static final List<String> VEH_MAKES = List.of("Ford", "Lincohn", "Buick");
-    private static final List<String> VEH_MODELS
-            = List.of(
-                    "MODEL 1",
-                    "MODEL 2",
-                    "MODEL 3",
-                    "MODEL 4",
-                    "MODEL 5",
-                    "MODEL 6",
-                    "MODEL 7",
-                    "MODEL 8",
-                    "MODEL 9",
-                    "MODEL 10");
-    private Random rand = new Random();
-    private int SIZE = 10;
+	private static final List<String> VEH_MAKES = List.of("Ford", "Lincohn", "Buick");
 
-    private List<Vehicle> vehicles = new ArrayList<>();
+	private static final List<String> VEH_MODELS = List.of("MODEL 1", "MODEL 2", "MODEL 3", "MODEL 4", "MODEL 5",
+			"MODEL 6", "MODEL 7", "MODEL 8", "MODEL 9", "MODEL 10");
 
-    public static void main(String[] args) {
-        VastDataSetsDemo main = new VastDataSetsDemo();
-        main.run();
-        System.exit(0);
-    }
+	private final Random RAND = new Random();
 
-    private void run() {
-        List<Integer> ids = this.produceLargeDataIds();
-        vehicles = this.produceVehicleDataByIds(ids);
-        List<Vehicle> vehiclesFound = this.findByIds(ids);
-        Map<String, List<Vehicle>> groupedVehicles = groupingVehiclesByMake(vehiclesFound);
+	private final int SIZE = 10;
 
-        printVehicleinfo(groupedVehicles);
-    }
+	private List<Vehicle> vehicles = new ArrayList<>();
 
-    private void printVehicleinfo(Map<String, List<Vehicle>> groupedVehicles) {
-        groupedVehicles.keySet().stream()
-                .forEach(
-                        k -> {
-                            log.info("  Make: {}", k);
-                            groupedVehicles.get(k).stream()
-                                    .forEach(
-                                            v -> {
-                                                log.info("          Model: {}", v.getModel());
-                                            });
-                        });
-    }
+	public static void main(String[] args) {
+		VastDataSetsDemo main = new VastDataSetsDemo();
+		main.run();
+		System.exit(0);
+	}
 
-    public Map<String, List<Vehicle>> groupingVehiclesByMake(List<Vehicle> vehiclesFound) {
-        return vehiclesFound.stream()
-                .filter(v -> v.getId() != null)
-                .sorted(Comparator.comparing(Vehicle::getMake).thenComparing(Vehicle::getModel))
-                .collect(Collectors.groupingBy(Vehicle::getMake));
-    }
+	private void run() {
+		List<Integer> ids = this.produceLargeDataIds();
+		vehicles = this.produceVehicleDataByIds(ids);
+		List<Vehicle> vehiclesFound = this.findByIds(ids);
+		Map<String, List<Vehicle>> groupedVehicles = groupingVehiclesByMake(vehiclesFound);
 
-    public List<Vehicle> findByIds(List<Integer> ids) {
-        List<CompletableFuture<Vehicle>> futures
-                = ids.stream()
-                        .map(vid -> CompletableFuture.supplyAsync(() -> findVehcileById(vid), exeService))
-                        .collect(Collectors.toList());
+		printVehicleinfo(groupedVehicles);
+	}
 
-        return futures.stream()
-                .map(CompletableFuture::join)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
+	private void printVehicleinfo(Map<String, List<Vehicle>> groupedVehicles) {
+		groupedVehicles.keySet().stream().forEach(k -> {
+			log.info("  Make: {}", k);
+			groupedVehicles.get(k).stream().forEach(v -> {
+				log.info("          Model: {}", v.getModel());
+			});
+		});
+	}
 
-    public Vehicle findVehcileById(Integer id) {
-        return vehicles.stream()
-                .filter(v -> id == v.getId())
-                .findFirst()
-                .orElse(Vehicle.builder().build());
-    }
+	public Map<String, List<Vehicle>> groupingVehiclesByMake(List<Vehicle> vehiclesFound) {
+		return vehiclesFound.stream()
+			.filter(v -> v.getId() != null)
+			.sorted(Comparator.comparing(Vehicle::getMake).thenComparing(Vehicle::getModel))
+			.collect(Collectors.groupingBy(Vehicle::getMake));
+	}
 
-    @Data
-    @Builder(toBuilder = true)
-    public static class Vehicle {
+	public List<Vehicle> findByIds(List<Integer> ids) {
+		List<CompletableFuture<Vehicle>> futures = ids.stream()
+			.map(vid -> CompletableFuture.supplyAsync(() -> findVehcileById(vid), exeService))
+			.collect(Collectors.toList());
 
-        Integer id;
-        String make;
-        String model;
-    }
+		return futures.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toList());
+	}
 
-    public List<Vehicle> produceVehicleDataByIds(List<Integer> records) {
-        List<CompletableFuture<Vehicle>> futures
-                = records.stream()
-                        .map(vid -> CompletableFuture.supplyAsync(() -> addVehcileById(vid), exeService))
-                        .collect(Collectors.toList());
+	public Vehicle findVehcileById(Integer id) {
+		return vehicles.stream()
+			.filter(v -> Objects.equals(id, v.getId()))
+			.findFirst()
+			.orElse(Vehicle.builder().build());
+	}
 
-        return futures.stream()
-                .map(CompletableFuture::join)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
+	@Data
+	@Builder(toBuilder = true)
+	public static class Vehicle {
 
-    public Vehicle addVehcileById(Integer id) {
-        String make = VEH_MAKES.get(rand.nextInt(VEH_MAKES.size()));
-        String model = VEH_MODELS.get(rand.nextInt(VEH_MODELS.size()));
-        return Vehicle.builder().id(id).make(make).model(model).build();
-    }
+		Integer id;
 
-    public List<Integer> produceLargeDataIds() {
-        List<Integer> list = new ArrayList<>(SIZE);
-        for (int i = 0; i < SIZE; i++) {
-            list.add(rand.nextInt());
-        }
+		String make;
 
-        return list;
-    }
+		String model;
+
+	}
+
+	public List<Vehicle> produceVehicleDataByIds(List<Integer> records) {
+		List<CompletableFuture<Vehicle>> futures = records.stream()
+			.map(vid -> CompletableFuture.supplyAsync(() -> addVehcileById(vid), exeService))
+			.collect(Collectors.toList());
+
+		return futures.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toList());
+	}
+
+	public Vehicle addVehcileById(Integer id) {
+		String make = VEH_MAKES.get(RAND.nextInt(VEH_MAKES.size()));
+		String model = VEH_MODELS.get(RAND.nextInt(VEH_MODELS.size()));
+		return Vehicle.builder().id(id).make(make).model(model).build();
+	}
+
+	public List<Integer> produceLargeDataIds() {
+		List<Integer> list = new ArrayList<>(SIZE);
+		for (int i = 0; i < SIZE; i++) {
+			list.add(RAND.nextInt());
+		}
+
+		return list;
+	}
+
 }

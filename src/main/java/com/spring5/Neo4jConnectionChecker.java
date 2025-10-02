@@ -24,82 +24,83 @@ import org.springframework.stereotype.Component;
 // @EnableNeo4jRepositories(basePackages = {MyApplication.PACKAGES_TO_SCAN})
 public class Neo4jConnectionChecker implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(Neo4jConnectionChecker.class);
+	private static final Logger log = LoggerFactory.getLogger(Neo4jConnectionChecker.class);
 
-    @Value("${app.neo4j.enabled}")
-    private Boolean neo4jDbEnabled;
+	@Value("${app.neo4j.enabled}")
+	private Boolean neo4jDbEnabled;
 
-    private final Driver driver;
-    private final Neo4jPersonRepository personRepository;
+	private final Driver driver;
 
-    public Neo4jConnectionChecker(Driver driver, Neo4jPersonRepository personRepository) {
-        this.driver = driver;
-        this.personRepository = personRepository;
-    }
+	private final Neo4jPersonRepository personRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
+	public Neo4jConnectionChecker(Driver driver, Neo4jPersonRepository personRepository) {
+		this.driver = driver;
+		this.personRepository = personRepository;
+	}
 
-        log.info("Neo4jConnectionChecker neo4jDbEnabled {}", neo4jDbEnabled);
-        if (neo4jDbEnabled) {
-            boolean neo4jRunning = neo4jDbConnectedRunning();
-            log.info("Checking Neo4j database connectivity neo4jRunning {}", neo4jRunning);
-            if (neo4jRunning) {
-                runNeo4jDemo();
-            }
-        }
-    }
+	@Override
+	public void run(String... args) throws Exception {
 
-    private boolean neo4jDbConnectedRunning() {
-        try {
-            driver.verifyConnectivity();
-            log.info("Neo4j database is running and connected.");
-            return true;
-        } catch (Exception e) {
-            log.error("Failed to connect to Neo4j database: " + e.getMessage(), e);
-            // Optionally, you can halt the application startup
-            // SpringApplication.exit(SpringApplicationContext.getAppContext(), () -> 1);
-            // System.exit(1);
-        }
+		log.info("Neo4jConnectionChecker neo4jDbEnabled {}", neo4jDbEnabled);
+		if (neo4jDbEnabled) {
+			boolean neo4jRunning = neo4jDbConnectedRunning();
+			log.info("Checking Neo4j database connectivity neo4jRunning {}", neo4jRunning);
+			if (neo4jRunning) {
+				runNeo4jDemo();
+			}
+		}
+	}
 
-        return false;
-    }
+	private boolean neo4jDbConnectedRunning() {
+		try {
+			driver.verifyConnectivity();
+			log.info("Neo4j database is running and connected.");
+			return true;
+		}
+		catch (Exception e) {
+			log.error("Failed to connect to Neo4j database: " + e.getMessage(), e);
+			// Optionally, you can halt the application startup
+			// SpringApplication.exit(SpringApplicationContext.getAppContext(), () -> 1);
+			// System.exit(1);
+		}
 
-    private void runNeo4jDemo() {
-        personRepository.deleteAll();
+		return false;
+	}
 
-        Neo4jPerson greg = new Neo4jPerson("Greg");
-        Neo4jPerson roy = new Neo4jPerson("Roy");
-        Neo4jPerson craig = new Neo4jPerson("Craig");
+	private void runNeo4jDemo() {
+		personRepository.deleteAll();
 
-        List<Neo4jPerson> team = Arrays.asList(greg, roy, craig);
+		Neo4jPerson greg = new Neo4jPerson("Greg");
+		Neo4jPerson roy = new Neo4jPerson("Roy");
+		Neo4jPerson craig = new Neo4jPerson("Craig");
 
-        log.info("Before linking up with Neo4j...");
+		List<Neo4jPerson> team = Arrays.asList(greg, roy, craig);
 
-        team.stream().forEach(person -> log.info("\t" + person.toString()));
+		log.info("Before linking up with Neo4j...");
 
-        personRepository.save(greg);
-        personRepository.save(roy);
-        personRepository.save(craig);
+		team.stream().forEach(person -> log.info("\t" + person.toString()));
 
-        greg = personRepository.findByName(greg.getName());
-        greg.worksWith(roy);
-        greg.worksWith(craig);
-        personRepository.save(greg);
+		personRepository.save(greg);
+		personRepository.save(roy);
+		personRepository.save(craig);
 
-        roy = personRepository.findByName(roy.getName());
-        roy.worksWith(craig);
-        // We already know that roy works with greg
-        personRepository.save(roy);
+		greg = personRepository.findByName(greg.getName());
+		greg.worksWith(roy);
+		greg.worksWith(craig);
+		personRepository.save(greg);
 
-        // We already know craig works with roy and greg
-        log.info("Lookup each person by name...");
-        team.stream()
-                .forEach(
-                        person -> log.info("\t" + personRepository.findByName(person.getName()).toString()));
+		roy = personRepository.findByName(roy.getName());
+		roy.worksWith(craig);
+		// We already know that roy works with greg
+		personRepository.save(roy);
 
-        List<Neo4jPerson> teammates = personRepository.findByTeammatesName(greg.getName());
-        log.info("The following have Greg as a teammate...");
-        teammates.stream().forEach(person -> log.info("\t" + person.getName()));
-    }
+		// We already know craig works with roy and greg
+		log.info("Lookup each person by name...");
+		team.stream().forEach(person -> log.info("\t" + personRepository.findByName(person.getName()).toString()));
+
+		List<Neo4jPerson> teammates = personRepository.findByTeammatesName(greg.getName());
+		log.info("The following have Greg as a teammate...");
+		teammates.stream().forEach(person -> log.info("\t" + person.getName()));
+	}
+
 }

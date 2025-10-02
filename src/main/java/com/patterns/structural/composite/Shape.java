@@ -9,10 +9,10 @@ package com.patterns.structural.composite;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Shape {
 
-    void draw(String fillColor);
+	void draw(String fillColor);
+
 }

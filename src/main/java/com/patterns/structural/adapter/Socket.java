@@ -9,12 +9,12 @@ package com.patterns.structural.adapter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Socket {
 
-    public Volt getVolt() {
-        return new Volt(120);
-    }
+	public Volt getVolt() {
+		return new Volt(120);
+	}
+
 }

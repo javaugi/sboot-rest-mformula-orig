@@ -11,6 +11,8 @@ import lombok.Getter;
 @Getter
 public class BillingErrorResponse {
 
-    private String message;
-    private String details;
+	private String message;
+
+	private String details;
+
 }

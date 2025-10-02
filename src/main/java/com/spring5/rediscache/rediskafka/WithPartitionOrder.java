@@ -11,15 +11,18 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class WithPartitionOrder {
 
-    String id;
-    String orderid;
-    String customerId;
+	String id;
 
-    public static WithPartitionOrder fromJson(String json) {
-        return WithPartitionOrder.builder().build();
-    }
+	String orderid;
 
-    public static String toJson() {
-        return WithPartitionOrder.builder().toString();
-    }
+	String customerId;
+
+	public static WithPartitionOrder fromJson(String json) {
+		return WithPartitionOrder.builder().build();
+	}
+
+	public static String toJson() {
+		return WithPartitionOrder.builder().toString();
+	}
+
 }

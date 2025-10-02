@@ -13,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
 
-    Page<Transaction> findByCriteria(TransactionQueryCriteria criteria, Pageable pageable);
+	Page<Transaction> findByCriteria(TransactionQueryCriteria criteria, Pageable pageable);
+
 }

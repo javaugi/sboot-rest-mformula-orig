@@ -11,22 +11,17 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class HateoasConfig {
-    /*
-  @Bean
-  public EntityLinks entityLinks(ApplicationContext applicationContext) {
-      return new DelegatingEntityLinks(
-          Collections.singletonList(new ControllerEntityLinks(applicationContext))
-      );
-  }
 
-  @Bean
-  public LinkRelationProvider linkRelationProvider() {
-      return new DefaultLinkRelationProvider();
-  }
+	/*
+	 * @Bean public EntityLinks entityLinks(ApplicationContext applicationContext) {
+	 * return new DelegatingEntityLinks( Collections.singletonList(new
+	 * ControllerEntityLinks(applicationContext)) ); }
+	 * 
+	 * @Bean public LinkRelationProvider linkRelationProvider() { return new
+	 * DefaultLinkRelationProvider(); }
+	 * 
+	 * @Bean public EntityLinks entityLinks(LinkRelationProvider relProvider) { return new
+	 * WebMvcEntityLinks(relProvider); } //
+	 */
 
-  @Bean
-  public EntityLinks entityLinks(LinkRelationProvider relProvider) {
-      return new WebMvcEntityLinks(relProvider);
-  }
-  // */
 }

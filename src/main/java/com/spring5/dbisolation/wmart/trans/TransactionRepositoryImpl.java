@@ -25,85 +25,82 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
 
-    private final EntityManager entityManager;
-    private final CriteriaBuilder criteriaBuilder;
+	private final EntityManager entityManager;
 
-    public TransactionRepositoryImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        this.criteriaBuilder = entityManager.getCriteriaBuilder();
-    }
+	private final CriteriaBuilder criteriaBuilder;
 
-    @Override
-    public Page<Transaction> findByCriteria(TransactionQueryCriteria criteria, Pageable pageable) {
-        CriteriaQuery<Transaction> query = criteriaBuilder.createQuery(Transaction.class);
-        Root<Transaction> root = query.from(Transaction.class);
+	public TransactionRepositoryImpl(EntityManager entityManager) {
+		this.entityManager = entityManager;
+		this.criteriaBuilder = entityManager.getCriteriaBuilder();
+	}
 
-        // Build predicates dynamically
-        List<Predicate> predicates = buildPredicates(criteria, root);
-        query.where(predicates.toArray(new Predicate[0]));
+	@Override
+	public Page<Transaction> findByCriteria(TransactionQueryCriteria criteria, Pageable pageable) {
+		CriteriaQuery<Transaction> query = criteriaBuilder.createQuery(Transaction.class);
+		Root<Transaction> root = query.from(Transaction.class);
 
-        // Add ordering
-        if (pageable.getSort().isSorted()) {
-            List<Order> orders = new ArrayList<>();
-            pageable
-                    .getSort()
-                    .forEach(
-                            order -> {
-                                if (order.isAscending()) {
-                                    orders.add(criteriaBuilder.asc(root.get(order.getProperty())));
-                                } else {
-                                    orders.add(criteriaBuilder.desc(root.get(order.getProperty())));
-                                }
-                            });
-            query.orderBy(orders);
-        }
+		// Build predicates dynamically
+		List<Predicate> predicates = buildPredicates(criteria, root);
+		query.where(predicates.toArray(new Predicate[0]));
 
-        // Execute query with pagination
-        TypedQuery<Transaction> typedQuery = entityManager.createQuery(query);
-        typedQuery.setFirstResult((int) pageable.getOffset());
-        typedQuery.setMaxResults(pageable.getPageSize());
+		// Add ordering
+		if (pageable.getSort().isSorted()) {
+			List<Order> orders = new ArrayList<>();
+			pageable.getSort().forEach(order -> {
+				if (order.isAscending()) {
+					orders.add(criteriaBuilder.asc(root.get(order.getProperty())));
+				}
+				else {
+					orders.add(criteriaBuilder.desc(root.get(order.getProperty())));
+				}
+			});
+			query.orderBy(orders);
+		}
 
-        List<Transaction> result = typedQuery.getResultList();
+		// Execute query with pagination
+		TypedQuery<Transaction> typedQuery = entityManager.createQuery(query);
+		typedQuery.setFirstResult((int) pageable.getOffset());
+		typedQuery.setMaxResults(pageable.getPageSize());
 
-        // Get total count for pagination
-        Long total = getTotalCount(criteria);
+		List<Transaction> result = typedQuery.getResultList();
 
-        return new PageImpl<>(result, pageable, total);
-    }
+		// Get total count for pagination
+		Long total = getTotalCount(criteria);
 
-    private List<Predicate> buildPredicates(
-            TransactionQueryCriteria criteria, Root<Transaction> root) {
-        List<Predicate> predicates = new ArrayList<>();
+		return new PageImpl<>(result, pageable, total);
+	}
 
-        predicates.add(criteriaBuilder.equal(root.get("userId"), criteria.getUserId()));
+	private List<Predicate> buildPredicates(TransactionQueryCriteria criteria, Root<Transaction> root) {
+		List<Predicate> predicates = new ArrayList<>();
 
-        if (criteria.getStartDate() != null) {
-            predicates.add(
-                    criteriaBuilder.greaterThanOrEqualTo(
-                            root.get("createdAt").as(LocalDate.class), criteria.getStartDate()));
-        }
+		predicates.add(criteriaBuilder.equal(root.get("userId"), criteria.getUserId()));
 
-        if (criteria.getEndDate() != null) {
-            predicates.add(
-                    criteriaBuilder.lessThanOrEqualTo(
-                            root.get("createdAt").as(LocalDate.class), criteria.getEndDate()));
-        }
+		if (criteria.getStartDate() != null) {
+			predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt").as(LocalDate.class),
+					criteria.getStartDate()));
+		}
 
-        if (criteria.getType() != null) {
-            predicates.add(criteriaBuilder.equal(root.get("type"), criteria.getType()));
-        }
+		if (criteria.getEndDate() != null) {
+			predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt").as(LocalDate.class),
+					criteria.getEndDate()));
+		}
 
-        return predicates;
-    }
+		if (criteria.getType() != null) {
+			predicates.add(criteriaBuilder.equal(root.get("type"), criteria.getType()));
+		}
 
-    private Long getTotalCount(TransactionQueryCriteria criteria) {
-        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
-        Root<Transaction> root = countQuery.from(Transaction.class);
+		return predicates;
+	}
 
-        List<Predicate> predicates = buildPredicates(criteria, root);
-        countQuery.select(criteriaBuilder.count(root));
-        countQuery.where(predicates.toArray(new Predicate[0]));
+	private Long getTotalCount(TransactionQueryCriteria criteria) {
+		CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+		Root<Transaction> root = countQuery.from(Transaction.class);
 
-        return entityManager.createQuery(countQuery).getSingleResult();
-    }
+		List<Predicate> predicates = buildPredicates(criteria, root);
+		countQuery.select(criteriaBuilder.count(root));
+		countQuery.where(predicates.toArray(new Predicate[0]));
+
+		return entityManager.createQuery(countQuery).getSingleResult();
+	}
+
 }

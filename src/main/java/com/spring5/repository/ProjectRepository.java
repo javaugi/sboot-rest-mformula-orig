@@ -13,5 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectRepository extends JpaRepository<EmployeeProject, Long> {
 
-    public List<ProjectDTO> findAllProjects();
+	public List<ProjectDTO> findAllProjects();
+
 }

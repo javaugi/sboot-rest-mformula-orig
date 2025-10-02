@@ -10,61 +10,60 @@ package com.interview.common.utils;
  */
 public class PhoneNumberExtensionVO {
 
-    String originalPhoneExtension;
-    String phoneNumber;
-    String formattedPhoneNumber;
-    String extension;
-    boolean valid = true;
+	String originalPhoneExtension;
 
-    public String getOriginalPhoneExtension() {
-        return originalPhoneExtension;
-    }
+	String phoneNumber;
 
-    public void setOriginalPhoneExtension(String originalPhoneExtension) {
-        this.originalPhoneExtension = originalPhoneExtension;
-    }
+	String formattedPhoneNumber;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	String extension;
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	boolean valid = true;
 
-    public String getFormattedPhoneNumber() {
-        return formattedPhoneNumber;
-    }
+	public String getOriginalPhoneExtension() {
+		return originalPhoneExtension;
+	}
 
-    public void setFormattedPhoneNumber(String formattedPhoneNumber) {
-        this.formattedPhoneNumber = formattedPhoneNumber;
-    }
+	public void setOriginalPhoneExtension(String originalPhoneExtension) {
+		this.originalPhoneExtension = originalPhoneExtension;
+	}
 
-    public String getExtension() {
-        return extension;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    public boolean isValid() {
-        return valid;
-    }
+	public String getFormattedPhoneNumber() {
+		return formattedPhoneNumber;
+	}
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
+	public void setFormattedPhoneNumber(String formattedPhoneNumber) {
+		this.formattedPhoneNumber = formattedPhoneNumber;
+	}
 
-    @Override
-    public String toString() {
-        return "PhoneNumberExtensionVO{"
-                + "originalPhoneExtension="
-                + originalPhoneExtension
-                + ", formattedPhoneNumber="
-                + formattedPhoneNumber
-                + ", extension="
-                + extension
-                + '}';
-    }
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
+
+	@Override
+	public String toString() {
+		return "PhoneNumberExtensionVO{" + "originalPhoneExtension=" + originalPhoneExtension
+				+ ", formattedPhoneNumber=" + formattedPhoneNumber + ", extension=" + extension + '}';
+	}
+
 }

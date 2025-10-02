@@ -7,4 +7,5 @@ package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 @lombok.Data
 @lombok.Builder(toBuilder = true)
 public class RiskDistribution {
+
 }

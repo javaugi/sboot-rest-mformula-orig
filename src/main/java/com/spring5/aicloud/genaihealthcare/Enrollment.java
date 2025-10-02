@@ -21,13 +21,17 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Enrollment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long id;
 
-    public String patientId;
-    public String emailHash; // hashed pseudo-identifier to avoid storing raw email
-    public boolean marketingAccepted;
-    @Builder.Default
-    public Instant createdAt = Instant.now();
+	public String patientId;
+
+	public String emailHash; // hashed pseudo-identifier to avoid storing raw email
+
+	public boolean marketingAccepted;
+
+	@Builder.Default
+	public Instant createdAt = Instant.now();
+
 }

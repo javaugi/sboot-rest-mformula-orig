@@ -9,17 +9,18 @@ package com.patterns.misc.delegate;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class BusinessLookUp {
 
-    public BusinessService getBusinessService(String serviceType) {
+	public BusinessService getBusinessService(String serviceType) {
 
-        if (serviceType.equalsIgnoreCase("EJB")) {
-            return new EJBService();
-        } else {
-            return new JMSService();
-        }
-    }
+		if (serviceType.equalsIgnoreCase("EJB")) {
+			return new EJBService();
+		}
+		else {
+			return new JMSService();
+		}
+	}
+
 }

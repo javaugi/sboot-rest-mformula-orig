@@ -15,53 +15,56 @@ import javax.crypto.spec.*;
 
 public class SecureSerialChannel {
 
-    private final SecretKey secretKey;
-    private final Cipher cipher;
-    private final IvParameterSpec ivParameterSpec;
+	private final SecretKey secretKey;
 
-    public SecureSerialChannel(String secret) throws GeneralSecurityException {
-        // Derive key from secret using PBKDF2
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(secret.toCharArray(), "salt".getBytes(), 65536, 256);
-        SecretKey tmp = factory.generateSecret(spec);
-        this.secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
+	private final Cipher cipher;
 
-        // Initialize cipher with AES/CBC/PKCS5Padding
-        this.cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        byte[] iv = new byte[16];
-        new SecureRandom().nextBytes(iv);
-        this.ivParameterSpec = new IvParameterSpec(iv);
-    }
+	private final IvParameterSpec ivParameterSpec;
 
-    public byte[] encrypt(SensorData data) throws IOException, GeneralSecurityException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(data);
-        oos.flush();
-        byte[] serialized = bos.toByteArray();
+	public SecureSerialChannel(String secret) throws GeneralSecurityException {
+		// Derive key from secret using PBKDF2
+		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+		KeySpec spec = new PBEKeySpec(secret.toCharArray(), "salt".getBytes(), 65536, 256);
+		SecretKey tmp = factory.generateSecret(spec);
+		this.secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
-        byte[] encrypted = cipher.doFinal(serialized);
+		// Initialize cipher with AES/CBC/PKCS5Padding
+		this.cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		byte[] iv = new byte[16];
+		new SecureRandom().nextBytes(iv);
+		this.ivParameterSpec = new IvParameterSpec(iv);
+	}
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        outputStream.write(ivParameterSpec.getIV());
-        outputStream.write(encrypted);
+	public byte[] encrypt(SensorData data) throws IOException, GeneralSecurityException {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		oos.writeObject(data);
+		oos.flush();
+		byte[] serialized = bos.toByteArray();
 
-        return outputStream.toByteArray();
-    }
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
+		byte[] encrypted = cipher.doFinal(serialized);
 
-    public SensorData decrypt(byte[] encryptedData)
-            throws IOException, GeneralSecurityException, ClassNotFoundException {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(encryptedData);
-        byte[] iv = new byte[16];
-        inputStream.read(iv);
-        byte[] encryptedPayload = inputStream.readAllBytes();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		outputStream.write(ivParameterSpec.getIV());
+		outputStream.write(encrypted);
 
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
-        byte[] decrypted = cipher.doFinal(encryptedPayload);
+		return outputStream.toByteArray();
+	}
 
-        ByteArrayInputStream bis = new ByteArrayInputStream(decrypted);
-        ObjectInputStream ois = new ObjectInputStream(bis);
-        return (SensorData) ois.readObject();
-    }
+	public SensorData decrypt(byte[] encryptedData)
+			throws IOException, GeneralSecurityException, ClassNotFoundException {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(encryptedData);
+		byte[] iv = new byte[16];
+		inputStream.read(iv);
+		byte[] encryptedPayload = inputStream.readAllBytes();
+
+		cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
+		byte[] decrypted = cipher.doFinal(encryptedPayload);
+
+		ByteArrayInputStream bis = new ByteArrayInputStream(decrypted);
+		ObjectInputStream ois = new ObjectInputStream(bis);
+		return (SensorData) ois.readObject();
+	}
+
 }

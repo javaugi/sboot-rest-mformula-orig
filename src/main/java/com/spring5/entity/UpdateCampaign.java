@@ -20,11 +20,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class UpdateCampaign {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private Long campaignId;
-    private Long targetVersionId;
-    private String rolloutStrategy;
+	private Long campaignId;
+
+	private Long targetVersionId;
+
+	private String rolloutStrategy;
+
 }

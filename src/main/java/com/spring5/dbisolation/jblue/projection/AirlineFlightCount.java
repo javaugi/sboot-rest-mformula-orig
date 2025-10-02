@@ -9,7 +9,8 @@ package com.spring5.dbisolation.jblue.projection;
  */
 public interface AirlineFlightCount {
 
-    String getAirlineCode();
+	String getAirlineCode();
 
-    int getFlightCount();
+	int getFlightCount();
+
 }

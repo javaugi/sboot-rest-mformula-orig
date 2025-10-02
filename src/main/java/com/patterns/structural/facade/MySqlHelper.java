@@ -13,22 +13,22 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class MySqlHelper implements DatabaseHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(MySqlHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(MySqlHelper.class);
 
-    public Connection getConnection() {
-        return null;
-    }
+	public Connection getConnection() {
+		return null;
+	}
 
-    public void generatePdfReport(Connection con) {
-        System.out.println("MySqlHelper.generatePdfReport");
-    }
+	public void generatePdfReport(Connection con) {
+		System.out.println("MySqlHelper.generatePdfReport");
+	}
 
-    public void generateHtmlReport(Connection con) {
-        System.out.println("MySqlHelper.generateHtmlReport");
-    }
+	public void generateHtmlReport(Connection con) {
+		System.out.println("MySqlHelper.generateHtmlReport");
+	}
+
 }

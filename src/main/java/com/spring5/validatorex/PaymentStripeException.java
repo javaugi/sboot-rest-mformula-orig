@@ -8,4 +8,5 @@ package com.spring5.validatorex;
  * @author javaugi
  */
 public class PaymentStripeException extends RuntimeException {
+
 }

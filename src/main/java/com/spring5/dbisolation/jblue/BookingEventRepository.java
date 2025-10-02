@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookingEventRepository extends CosmosRepository<BookingEvent, String> {
 
-    Optional<BookingEvent> findByFlightNumber(String bookingId);
+	Optional<BookingEvent> findByFlightNumber(String bookingId);
+
 }

@@ -9,15 +9,16 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class AssembleBridgeImplementor implements Workshop {
-    // Concrete implementation 2 for bridge pattern
 
-    @Override
-    public void work() {
-        System.out.print(" And");
-        System.out.println(" Assembled.");
-    }
+	// Concrete implementation 2 for bridge pattern
+
+	@Override
+	public void work() {
+		System.out.print(" And");
+		System.out.println(" Assembled.");
+	}
+
 }

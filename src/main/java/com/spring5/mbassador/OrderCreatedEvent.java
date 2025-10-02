@@ -9,40 +9,43 @@ package com.spring5.mbassador;
  */
 public class OrderCreatedEvent {
 
-    private String orderId;
-    private boolean success;
-    private String customerEmail;
+	private String orderId;
 
-    public OrderCreatedEvent(String orderId) {
-        this.orderId = orderId;
-    }
+	private boolean success;
 
-    public OrderCreatedEvent(String orderId, String email) {
-        this.orderId = orderId;
-        this.customerEmail = email;
-    }
+	private String customerEmail;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	public OrderCreatedEvent(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public OrderCreatedEvent(String orderId, String email) {
+		this.orderId = orderId;
+		this.customerEmail = email;
+	}
 
-    public boolean isSuccess() {
-        return success;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
+	public boolean isSuccess() {
+		return success;
+	}
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
 }

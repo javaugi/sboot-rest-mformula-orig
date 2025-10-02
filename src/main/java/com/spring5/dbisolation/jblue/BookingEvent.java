@@ -20,45 +20,41 @@ import lombok.Data;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @CosmosIndexingPolicy(
-        includePaths = {
-            "/flightNumber/?",
-            "/flightType/?",
-            "/flightDate/?",
-            "/price/?",
-            "/airlineCode/?",
-            "/departureTime/?",
-            "/flightDuration/?"
-        },
-        excludePaths = {"/*"},
-        compositeIndexes = {
-            // For queries: ORDER BY flightNumber ASC, flightDate DESC
-            @CompositeIndex(
-                    paths = {
-                        @CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
-                        @CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
-                        @CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
-                        @CompositeIndexPath(path = "/flightDuration", order = CompositePathSortOrder.DESCENDING)
-                    }),
-            // For queries: ORDER BY airlineCode ASC, departureTime DESC, flightNumber ASC
-            @CompositeIndex(
-                    paths = {
-                        @CompositeIndexPath(path = "/airlineCode", order = CompositePathSortOrder.ASCENDING),
-                        @CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
-                        @CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
-                        @CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
-                        @CompositeIndexPath(path = "/flightDuration", order = CompositePathSortOrder.DESCENDING)
-                    })
-        })
+		includePaths = { "/flightNumber/?", "/flightType/?", "/flightDate/?", "/price/?", "/airlineCode/?",
+				"/departureTime/?", "/flightDuration/?" },
+		excludePaths = { "/*" }, compositeIndexes = {
+				// For queries: ORDER BY flightNumber ASC, flightDate DESC
+				@CompositeIndex(
+						paths = { @CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
+								@CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
+								@CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
+								@CompositeIndexPath(path = "/flightDuration",
+										order = CompositePathSortOrder.DESCENDING) }),
+				// For queries: ORDER BY airlineCode ASC, departureTime DESC, flightNumber
+				// ASC
+				@CompositeIndex(
+						paths = { @CompositeIndexPath(path = "/airlineCode", order = CompositePathSortOrder.ASCENDING),
+								@CompositeIndexPath(path = "/flightNumber", order = CompositePathSortOrder.ASCENDING),
+								@CompositeIndexPath(path = "/flightDate", order = CompositePathSortOrder.DESCENDING),
+								@CompositeIndexPath(path = "/price", order = CompositePathSortOrder.DESCENDING),
+								@CompositeIndexPath(path = "/flightDuration",
+										order = CompositePathSortOrder.DESCENDING) }) })
 @Container(containerName = "bookingEvents", ru = "400")
 public class BookingEvent {
 
-    private String id; // unique event id (UUID)
+	private String id; // unique event id (UUID)
 
-    @PartitionKey
-    private String bookingId; // booking-level key (used for ordering)
-    private String flightId;
-    private String userId;
-    private String action; // BOOKED, CONFIRMED, CANCELLED
-    private Instant timestamp;
-    private Map<String, Object> payload;
+	@PartitionKey
+	private String bookingId; // booking-level key (used for ordering)
+
+	private String flightId;
+
+	private String userId;
+
+	private String action; // BOOKED, CONFIRMED, CANCELLED
+
+	private Instant timestamp;
+
+	private Map<String, Object> payload;
+
 }

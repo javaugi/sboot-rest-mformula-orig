@@ -12,30 +12,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("neo4jauthor")
 public class Neo4jAuthorController {
 
-    private final Neo4jAuthorService authorService;
+	private final Neo4jAuthorService authorService;
 
-    @Autowired
-    public Neo4jAuthorController(Neo4jAuthorService authorService) {
-        this.authorService = authorService;
-    }
+	@Autowired
+	public Neo4jAuthorController(Neo4jAuthorService authorService) {
+		this.authorService = authorService;
+	}
 
-    @GetMapping
-    public List<Neo4jAuthor> getAllAuthors() {
-        return authorService.getAllAuthors();
-    }
+	@GetMapping
+	public List<Neo4jAuthor> getAllAuthors() {
+		return authorService.getAllAuthors();
+	}
 
-    @PostMapping
-    public Neo4jAuthor addAuthor(@RequestBody Neo4jAuthor author) {
-        return authorService.addAuthor(author);
-    }
+	@PostMapping
+	public Neo4jAuthor addAuthor(@RequestBody Neo4jAuthor author) {
+		return authorService.addAuthor(author);
+	}
 
-    @PutMapping
-    public Neo4jAuthor updateAuthor(@RequestBody Neo4jAuthor author) {
-        return authorService.updateAuthor(author);
-    }
+	@PutMapping
+	public Neo4jAuthor updateAuthor(@RequestBody Neo4jAuthor author) {
+		return authorService.updateAuthor(author);
+	}
 
-    @DeleteMapping("/neo4jauthor/{authorId}")
-    public void deleteAuthor(@PathVariable Long authorId) {
-        authorService.deleteAuthor(authorId);
-    }
+	@DeleteMapping("/neo4jauthor/{authorId}")
+	public void deleteAuthor(@PathVariable Long authorId) {
+		authorService.deleteAuthor(authorId);
+	}
+
 }

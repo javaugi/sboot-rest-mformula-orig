@@ -14,31 +14,35 @@ import org.springframework.kafka.support.Acknowledgment;
 @RequiredArgsConstructor
 public class KafkaConsumerBookingService {
 
-    private final ObjectMapper mapper = new ObjectMapper();
-    private final IdempotencyStore idempotencyStore; // see below
-    private final BookingProcessor bookingProcessor; // business logic
+	private final ObjectMapper mapper = new ObjectMapper();
 
-    @KafkaListener(topics = "booking-events", groupId = "booking-processors", concurrency = "6")
-    public void listen(ConsumerRecord<String, String> record, Acknowledgment ack) {
-        try {
-            BookingEvent evt = mapper.readValue(record.value(), BookingEvent.class);
+	private final IdempotencyStore idempotencyStore; // see below
 
-            // Idempotency check
-            if (idempotencyStore.isProcessed(evt.getId())) {
-                ack.acknowledge(); // still acknowledge offset to advance
-                return;
-            }
+	private final BookingProcessor bookingProcessor; // business logic
 
-            // process business logic (synchronous)
-            bookingProcessor.handle(evt);
+	@KafkaListener(topics = "booking-events", groupId = "booking-processors", concurrency = "6")
+	public void listen(ConsumerRecord<String, String> record, Acknowledgment ack) {
+		try {
+			BookingEvent evt = mapper.readValue(record.value(), BookingEvent.class);
 
-            // mark processed
-            idempotencyStore.markProcessed(evt.getId());
-            ack.acknowledge(); // commit after success
-        } catch (JsonProcessingException e) {
-            // log and decide: retry, DLQ, skip
-            // Do NOT ack -> will be retried (at-least-once)
-            throw new RuntimeException(e);
-        }
-    }
+			// Idempotency check
+			if (idempotencyStore.isProcessed(evt.getId())) {
+				ack.acknowledge(); // still acknowledge offset to advance
+				return;
+			}
+
+			// process business logic (synchronous)
+			bookingProcessor.handle(evt);
+
+			// mark processed
+			idempotencyStore.markProcessed(evt.getId());
+			ack.acknowledge(); // commit after success
+		}
+		catch (JsonProcessingException e) {
+			// log and decide: retry, DLQ, skip
+			// Do NOT ack -> will be retried (at-least-once)
+			throw new RuntimeException(e);
+		}
+	}
+
 }

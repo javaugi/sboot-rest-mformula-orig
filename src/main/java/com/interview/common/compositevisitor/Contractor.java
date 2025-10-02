@@ -12,33 +12,33 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Contractor extends EmployeeAbstract {
 
-    private static final Logger log = LoggerFactory.getLogger(Contractor.class);
+	private static final Logger log = LoggerFactory.getLogger(Contractor.class);
 
-    Employee employee;
-    SalaryCalculator visitor;
+	Employee employee;
 
-    private Contractor(String name, int hours, double rate) {
-        super.setName(name);
-        super.setSalary(hours * rate);
-    }
+	SalaryCalculator visitor;
 
-    public static Employee makeEmployee() {
-        return new Contractor("Jim the SContractor", 8, 125);
-    }
+	private Contractor(String name, int hours, double rate) {
+		super.setName(name);
+		super.setSalary(hours * rate);
+	}
 
-    @Override
-    public void printSalary() {
-        System.out.println(
-                "Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
-    }
+	public static Employee makeEmployee() {
+		return new Contractor("Jim the SContractor", 8, 125);
+	}
 
-    @Override
-    public void accept(SalaryCalculator visitor) {
-        this.visitor = visitor;
-    }
+	@Override
+	public void printSalary() {
+		System.out.println("Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
+	}
+
+	@Override
+	public void accept(SalaryCalculator visitor) {
+		this.visitor = visitor;
+	}
+
 }

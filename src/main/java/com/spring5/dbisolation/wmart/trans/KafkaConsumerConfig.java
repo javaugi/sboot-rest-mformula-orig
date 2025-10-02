@@ -22,48 +22,45 @@ import org.springframework.kafka.listener.ContainerProperties;
 @EnableKafka
 public class KafkaConsumerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServers;
+	@Value("${spring.kafka.bootstrap-servers}")
+	private String bootstrapServers;
 
-    @Value("${app.kafka.consumer.group-id:store-transaction-processor}")
-    private String groupId;
+	@Value("${app.kafka.consumer.group-id:store-transaction-processor}")
+	private String groupId;
 
-    public Map<String, Object> consumerConfigs() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "100"); // Process in batches
+	public Map<String, Object> consumerConfigs() {
+		Map<String, Object> props = new HashMap<>();
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+		props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "100"); // Process in batches
 
-        // Important: Use custom partition assignor for store locality
-        props.put(
-                ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
-                StoreAwarePartitionAssignor.class.getName());
-        return props;
-    }
+		// Important: Use custom partition assignor for store locality
+		props.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, StoreAwarePartitionAssignor.class.getName());
+		return props;
+	}
 
-    @Bean
-    public ConsumerFactory<String, StoreTransaction> transactionConsumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
-        // return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
-        //   new StdDeserializer<>(StoreTransaction.class));
-    }
+	@Bean
+	public ConsumerFactory<String, StoreTransaction> transactionConsumerFactory() {
+		return new DefaultKafkaConsumerFactory<>(consumerConfigs());
+		// return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
+		// new StdDeserializer<>(StoreTransaction.class));
+	}
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, StoreTransaction>
-            kafkaListenerContainerFactory() {
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory<String, StoreTransaction> kafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<String, StoreTransaction> factory
-                = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(transactionConsumerFactory());
+		ConcurrentKafkaListenerContainerFactory<String, StoreTransaction> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(transactionConsumerFactory());
 
-        // Important: Ensure ordered processing within partitions
-        factory.setBatchListener(true);
-        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+		// Important: Ensure ordered processing within partitions
+		factory.setBatchListener(true);
+		factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
 
-        return factory;
-    }
+		return factory;
+	}
+
 }

@@ -23,27 +23,29 @@ import lombok.NoArgsConstructor;
 @Table(name = "bonus_multiplier")
 public class BonusMultiplier {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Explicit and safe and recommended
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Explicit and safe and
+														// recommended
+	Long id;
 
-    @Column(name = "score", unique = true, nullable = false)
-    private String score;
+	@Column(name = "score", unique = true, nullable = false)
+	private String score;
 
-    // The multiplier value for that score
-    @Column(name = "multiplier", nullable = false)
-    private double multiplier;
+	// The multiplier value for that score
+	@Column(name = "multiplier", nullable = false)
+	private double multiplier;
 
-    private String comments;
+	private String comments;
 
-    public BonusMultiplier(String score, double multiplier) {
-        this.score = score;
-        this.multiplier = multiplier;
-    }
+	public BonusMultiplier(String score, double multiplier) {
+		this.score = score;
+		this.multiplier = multiplier;
+	}
 
-    public BonusMultiplier(Long id, String score, String comments) {
-        this.id = id;
-        this.score = score;
-        this.comments = comments;
-    }
+	public BonusMultiplier(Long id, String score, String comments) {
+		this.id = id;
+		this.score = score;
+		this.comments = comments;
+	}
+
 }

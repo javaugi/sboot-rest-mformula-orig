@@ -9,21 +9,22 @@ package com.patterns.behavioral.strategy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class PaypalStrategy implements PaymentStrategy {
 
-    private String emailId;
-    private String password;
+	private String emailId;
 
-    public PaypalStrategy(String email, String pwd) {
-        this.emailId = email;
-        this.password = pwd;
-    }
+	private String password;
 
-    @Override
-    public void pay(int amount) {
-        System.out.println(amount + " paid using Paypal.");
-    }
+	public PaypalStrategy(String email, String pwd) {
+		this.emailId = email;
+		this.password = pwd;
+	}
+
+	@Override
+	public void pay(int amount) {
+		System.out.println(amount + " paid using Paypal.");
+	}
+
 }

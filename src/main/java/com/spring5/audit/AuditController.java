@@ -16,25 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuditController {
 
-    private final KafkaTemplate<String, AuditEvent> kafkaTemplate;
+	private final KafkaTemplate<String, AuditEvent> kafkaTemplate;
 
-    public AuditController(
-            @Qualifier("auditEventKafkaTemplate") KafkaTemplate<String, AuditEvent> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	public AuditController(@Qualifier("auditEventKafkaTemplate") KafkaTemplate<String, AuditEvent> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
 
-    @PostMapping("/audit-events")
-    public ResponseEntity<Void> logEvent(@RequestBody AuditEvent event) {
-        try {
-            if (event.getUserId() == null || event.getEntityId() == null) {
-                throw new BadRequestException("Missing required fields");
-            }
+	@PostMapping("/audit-events")
+	public ResponseEntity<Void> logEvent(@RequestBody AuditEvent event) {
+		try {
+			if (event.getUserId() == null || event.getEntityId() == null) {
+				throw new BadRequestException("Missing required fields");
+			}
 
-            // Send to Kafka (async)
-            kafkaTemplate.send("audit-events", event.getEventId(), event);
-        } catch (Exception ex) {
+			// Send to Kafka (async)
+			kafkaTemplate.send("audit-events", event.getEventId(), event);
+		}
+		catch (Exception ex) {
 
-        }
-        return ResponseEntity.accepted().build();
-    }
+		}
+		return ResponseEntity.accepted().build();
+	}
+
 }

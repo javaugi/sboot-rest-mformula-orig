@@ -22,39 +22,40 @@ import lombok.NoArgsConstructor;
 @Entity
 public class LoyaltyProgram {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "patient_id", nullable = false)
-    private String patientId;
+	@Column(name = "patient_id", nullable = false)
+	private String patientId;
 
-    @Column(name = "program_name", nullable = false)
-    private String programName;
+	@Column(name = "program_name", nullable = false)
+	private String programName;
 
-    @Column(name = "enrollment_date")
-    private LocalDateTime enrollmentDate;
+	@Column(name = "enrollment_date")
+	private LocalDateTime enrollmentDate;
 
-    @Builder.Default
-    @Column(name = "points_balance")
-    private Integer pointsBalance = 0;
+	@Builder.Default
+	@Column(name = "points_balance")
+	private Integer pointsBalance = 0;
 
-    @Builder.Default
-    @Column(name = "tier_level")
-    private String tierLevel = "BRONZE";
+	@Builder.Default
+	@Column(name = "tier_level")
+	private String tierLevel = "BRONZE";
 
-    @Column(name = "personalized_recommendations")
-    private String personalizedRecommendations;
+	@Column(name = "personalized_recommendations")
+	private String personalizedRecommendations;
 
-    @Column(name = "privacy_consent")
-    private Boolean privacyConsent;
+	@Column(name = "privacy_consent")
+	private Boolean privacyConsent;
 
-    @Column(name = "data_usage_preferences")
-    private String dataUsagePreferences;
+	@Column(name = "data_usage_preferences")
+	private String dataUsagePreferences;
 
-    public LoyaltyProgram(String patientId, String programName) {
-        this.patientId = patientId;
-        this.programName = programName;
-        this.enrollmentDate = LocalDateTime.now();
-    }
+	public LoyaltyProgram(String patientId, String programName) {
+		this.patientId = patientId;
+		this.programName = programName;
+		this.enrollmentDate = LocalDateTime.now();
+	}
+
 }

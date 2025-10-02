@@ -6,7 +6,8 @@ package com.spring5.dbisolation.wmart.trans;
 
 public class QueryRangeTooLargeException extends RuntimeException {
 
-    public QueryRangeTooLargeException(String message) {
-        super(message);
-    }
+	public QueryRangeTooLargeException(String message) {
+		super(message);
+	}
+
 }

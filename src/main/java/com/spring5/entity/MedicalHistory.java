@@ -31,13 +31,14 @@ import lombok.ToString;
 @Table(name = "MED_HISTORY")
 public class MedicalHistory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+	@ManyToOne
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
 
-    private String history;
+	private String history;
+
 }

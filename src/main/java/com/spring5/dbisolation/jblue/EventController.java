@@ -10,19 +10,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/events")
 public class EventController {
 
-    private final EventRecordRepository repo;
+	private final EventRecordRepository repo;
 
-    public EventController(EventRecordRepository repo) {
-        this.repo = repo;
-    }
+	public EventController(EventRecordRepository repo) {
+		this.repo = repo;
+	}
 
-    @GetMapping("/{id}")
-    public EventRecord get(@PathVariable String id) {
-        return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Event not found"));
-    }
+	@GetMapping("/{id}")
+	public EventRecord get(@PathVariable String id) {
+		return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+	}
 
-    @GetMapping("/health")
-    public String quickHealth() {
-        return "OK";
-    }
+	@GetMapping("/health")
+	public String quickHealth() {
+		return "OK";
+	}
+
 }

@@ -21,15 +21,17 @@ import lombok.Data;
 @Table(name = "BATTERY_MEASUREMENT")
 public class BatteryMeasurement {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
+	private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "batterytestdata_id")
-    private BatteryTestData batteryTestData;
+	@ManyToOne
+	@JoinColumn(name = "batterytestdata_id")
+	private BatteryTestData batteryTestData;
 
-    private double voltage;
-    private double temperature;
+	private double voltage;
+
+	private double temperature;
+
 }

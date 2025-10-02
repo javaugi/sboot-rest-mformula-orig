@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class FraudDetectionConsumer {
 
-    @KafkaListener(topics = "international-transactions-topic", groupId = "fraud-detection-group")
-    public void listen(String message) {
-        System.out.println("Received transaction for fraud detection: " + message);
-        // Implement idempotent fraud detection logic here
-    }
+	@KafkaListener(topics = "international-transactions-topic", groupId = "fraud-detection-group")
+	public void listen(String message) {
+		System.out.println("Received transaction for fraud detection: " + message);
+		// Implement idempotent fraud detection logic here
+	}
+
 }

@@ -19,9 +19,14 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PrescriptionRequest {
 
-    String status;
-    String message;
-    String requestId;
-    String medication;
-    long patientId;
+	String status;
+
+	String message;
+
+	String requestId;
+
+	String medication;
+
+	long patientId;
+
 }

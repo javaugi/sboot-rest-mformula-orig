@@ -13,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ApiClientRepository extends JpaRepository<ApiClient, Long> {
 
-    Optional<ApiClient> findByApiKey(String apiKey);
+	Optional<ApiClient> findByApiKey(String apiKey);
+
 }

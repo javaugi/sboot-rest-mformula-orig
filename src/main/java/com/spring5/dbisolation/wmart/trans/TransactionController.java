@@ -39,48 +39,44 @@ Key Best Practices Implemented:
 @Validated
 public class TransactionController {
 
-    private final TransactionService transactionService;
-    private final TransactionValidator transactionValidator;
+	private final TransactionService transactionService;
 
-    public TransactionController(
-            TransactionService transactionService, TransactionValidator transactionValidator) {
-        this.transactionService = transactionService;
-        this.transactionValidator = transactionValidator;
-    }
+	private final TransactionValidator transactionValidator;
 
-    /*
-  Type 1: API Implementation
-  Example Question: "Design an endpoint that returns a user's recent transactions with filtering capabilities."
+	public TransactionController(TransactionService transactionService, TransactionValidator transactionValidator) {
+		this.transactionService = transactionService;
+		this.transactionValidator = transactionValidator;
+	}
 
-  // Discussion points:
-  // - Pagination implementation
-  // - Filter validation
-  // - Performance considerations (indexing)
-  // - Error handling
-     */
-    @GetMapping
-    public ResponseEntity<PageResponse<TransactionDto>> getTransactions(
-            @PathVariable @NotBlank String userId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam(required = false) TransactionType type,
-            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+	/*
+	 * Type 1: API Implementation Example Question:
+	 * "Design an endpoint that returns a user's recent transactions with filtering capabilities."
+	 * 
+	 * // Discussion points: // - Pagination implementation // - Filter validation // -
+	 * Performance considerations (indexing) // - Error handling
+	 */
+	@GetMapping
+	public ResponseEntity<PageResponse<TransactionDto>> getTransactions(@PathVariable @NotBlank String userId,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+			@RequestParam(required = false) TransactionType type,
+			@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        // Validate input parameters
-        transactionValidator.validateTransactionQuery(userId, startDate, endDate);
+		// Validate input parameters
+		transactionValidator.validateTransactionQuery(userId, startDate, endDate);
 
-        // Build query criteria
-        TransactionQueryCriteria criteria
-                = TransactionQueryCriteria.builder()
-                        .userId(userId)
-                        .startDate(startDate)
-                        .endDate(endDate)
-                        .type(type)
-                        .build();
+		// Build query criteria
+		TransactionQueryCriteria criteria = TransactionQueryCriteria.builder()
+			.userId(userId)
+			.startDate(startDate)
+			.endDate(endDate)
+			.type(type)
+			.build();
 
-        // Fetch transactions
-        Page<TransactionDto> transactions = transactionService.getTransactions(criteria, pageable);
+		// Fetch transactions
+		Page<TransactionDto> transactions = transactionService.getTransactions(criteria, pageable);
 
-        return ResponseEntity.ok(PageResponse.from(transactions));
-    }
+		return ResponseEntity.ok(PageResponse.from(transactions));
+	}
+
 }

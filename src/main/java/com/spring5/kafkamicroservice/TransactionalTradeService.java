@@ -14,61 +14,62 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TransactionalTradeService {
 
-    @Autowired
-    private TradeRepository tradeRepository;
-    @Autowired
-    private DocumentRepository documentRepository;
+	@Autowired
+	private TradeRepository tradeRepository;
 
-    private final KafkaTemplate<String, DocumentEvent> kafkaDocTemplate;
-    private final KafkaTemplate<String, TradeEvent> kafkaTemplate;
-    private final JpaTransactionManager jpaTransactionManager;
+	@Autowired
+	private DocumentRepository documentRepository;
 
-    // private final ChainedKafkaTransactionManager<Object, Object> transactionManager;
-    // this causes conflict with the transaction manager in MyApplication
-    @Autowired
-    public TransactionalTradeService(
-            @Qualifier("docEventKafkaTemplate") KafkaTemplate<String, DocumentEvent> kafkaDocTemplate,
-            @Qualifier("tradeEventKafkaTemplate") KafkaTemplate<String, TradeEvent> kafkaTemplate,
-            JpaTransactionManager jpaTransactionManager) {
-        this.kafkaDocTemplate = kafkaDocTemplate;
-        this.kafkaTemplate = kafkaTemplate;
-        this.jpaTransactionManager = jpaTransactionManager;
-        /*
-    this.transactionManager = new ChainedKafkaTransactionManager<>(
-        new JpaTransactionManager(jpaTransactionManager.getEntityManagerFactory()),
-        new KafkaTransactionManager<>(kafkaTemplate.getProducerFactory())
-    );
-    // */
-    }
+	private final KafkaTemplate<String, DocumentEvent> kafkaDocTemplate;
 
-    @Transactional(transactionManager = "transactionManager")
-    public void executeAtomicTrade(Trade trade, KafkaDocument document) {
-        // 1. Save to DB
-        tradeRepository.save(trade);
-        documentRepository.save(document);
+	private final KafkaTemplate<String, TradeEvent> kafkaTemplate;
 
-        // 2. Publish events transactionally
-        TradeEvent tradeEvent = createTradeEvent(trade);
-        DocumentEvent docEvent = createDocumentEvent(document);
+	private final JpaTransactionManager jpaTransactionManager;
 
-        kafkaTemplate.send("trading.trade.events", String.valueOf(trade.getId()), tradeEvent);
-        kafkaDocTemplate.send("trading.document.events", String.valueOf(document.getId()), docEvent);
+	// private final ChainedKafkaTransactionManager<Object, Object> transactionManager;
+	// this causes conflict with the transaction manager in MyApplication
+	@Autowired
+	public TransactionalTradeService(
+			@Qualifier("docEventKafkaTemplate") KafkaTemplate<String, DocumentEvent> kafkaDocTemplate,
+			@Qualifier("tradeEventKafkaTemplate") KafkaTemplate<String, TradeEvent> kafkaTemplate,
+			JpaTransactionManager jpaTransactionManager) {
+		this.kafkaDocTemplate = kafkaDocTemplate;
+		this.kafkaTemplate = kafkaTemplate;
+		this.jpaTransactionManager = jpaTransactionManager;
+		/*
+		 * this.transactionManager = new ChainedKafkaTransactionManager<>( new
+		 * JpaTransactionManager(jpaTransactionManager.getEntityManagerFactory()), new
+		 * KafkaTransactionManager<>(kafkaTemplate.getProducerFactory()) ); //
+		 */
+	}
 
-        // 3. The commit will happen automatically if no exceptions
-    }
+	@Transactional(transactionManager = "transactionManager")
+	public void executeAtomicTrade(Trade trade, KafkaDocument document) {
+		// 1. Save to DB
+		tradeRepository.save(trade);
+		documentRepository.save(document);
 
-    public static DocumentEvent createDocumentEvent(KafkaDocument document) {
-        return new DocumentEvent(document.getId(), document.getText());
-    }
+		// 2. Publish events transactionally
+		TradeEvent tradeEvent = createTradeEvent(trade);
+		DocumentEvent docEvent = createDocumentEvent(document);
 
-    private TradeEvent createTradeEvent(Trade trade) {
-        return TradingEventPublisher.createTradeEventFromTrade(trade);
-    }
+		kafkaTemplate.send("trading.trade.events", String.valueOf(trade.getId()), tradeEvent);
+		kafkaDocTemplate.send("trading.document.events", String.valueOf(document.getId()), docEvent);
 
-    /*
-  @Bean
-  public ChainedKafkaTransactionManager<Object, Object> transactionManager() {
-      return transactionManager;
-  }
-  // */
+		// 3. The commit will happen automatically if no exceptions
+	}
+
+	public static DocumentEvent createDocumentEvent(KafkaDocument document) {
+		return new DocumentEvent(document.getId(), document.getText());
+	}
+
+	private TradeEvent createTradeEvent(Trade trade) {
+		return TradingEventPublisher.createTradeEventFromTrade(trade);
+	}
+
+	/*
+	 * @Bean public ChainedKafkaTransactionManager<Object, Object> transactionManager() {
+	 * return transactionManager; } //
+	 */
+
 }

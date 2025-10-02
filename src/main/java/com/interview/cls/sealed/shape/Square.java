@@ -7,14 +7,15 @@ package com.interview.cls.sealed.shape;
 // Non-sealed permitted subclass (can be extended by any class)
 public non-sealed class Square extends Shape {
 
-    private final double width;
+	private final double width;
 
-    public Square(double width) {
-        this.width = width;
-    }
+	public Square(double width) {
+		this.width = width;
+	}
 
-    @Override
-    public double area() {
-        return width * width;
-    }
+	@Override
+	public double area() {
+		return width * width;
+	}
+
 }

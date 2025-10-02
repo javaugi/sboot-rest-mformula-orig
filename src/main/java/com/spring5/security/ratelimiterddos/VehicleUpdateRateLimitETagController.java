@@ -29,53 +29,51 @@ These implementations provide:
 @RequestMapping("/api/vehicles/{vin}/updates")
 public class VehicleUpdateRateLimitETagController {
 
-    private final RateLimiterService rateLimiterService;
-    private final VehicleUpdateService updateService;
+	private final RateLimiterService rateLimiterService;
 
-    @PostMapping
-    public ResponseEntity<?> initiateUpdate(
-            @PathVariable String vin,
-            @RequestHeader("X-API-KEY") String apiKey,
-            @RequestBody UpdateRequest request) {
+	private final VehicleUpdateService updateService;
 
-        // Rate limiting check
-        if (!rateLimiterService.tryConsume(apiKey, 1)) {
-            return ResponseEntity.status(429).body("{\"error\": \"Too many requests\"}");
-        }
+	@PostMapping
+	public ResponseEntity<?> initiateUpdate(@PathVariable String vin, @RequestHeader("X-API-KEY") String apiKey,
+			@RequestBody UpdateRequest request) {
 
-        // Process update initiation
-        UpdateOperation operation = updateService.initiateUpdate(vin, request);
+		// Rate limiting check
+		if (!rateLimiterService.tryConsume(apiKey, 1)) {
+			return ResponseEntity.status(429).body("{\"error\": \"Too many requests\"}");
+		}
 
-        // Return with ETag for future status updates
-        String etag = calculateETag(operation);
+		// Process update initiation
+		UpdateOperation operation = updateService.initiateUpdate(vin, request);
 
-        return ResponseEntity.accepted().eTag(etag).body(operation);
-    }
+		// Return with ETag for future status updates
+		String etag = calculateETag(operation);
 
-    @GetMapping("/{operationId}")
-    public ResponseEntity<?> getUpdateStatus(
-            @PathVariable String vin,
-            @PathVariable String operationId,
-            @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch) {
+		return ResponseEntity.accepted().eTag(etag).body(operation);
+	}
 
-        UpdateOperation operation = updateService.getOperationStatus(operationId);
-        String currentETag = calculateETag(operation);
+	@GetMapping("/{operationId}")
+	public ResponseEntity<?> getUpdateStatus(@PathVariable String vin, @PathVariable String operationId,
+			@RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch) {
 
-        // If client has current version, return 304 Not Modified
-        if (ifNoneMatch != null && ifNoneMatch.equals(currentETag)) {
-            return ResponseEntity.status(304).build();
-        }
+		UpdateOperation operation = updateService.getOperationStatus(operationId);
+		String currentETag = calculateETag(operation);
 
-        return ResponseEntity.ok().eTag(currentETag).body(operation);
-    }
+		// If client has current version, return 304 Not Modified
+		if (ifNoneMatch != null && ifNoneMatch.equals(currentETag)) {
+			return ResponseEntity.status(304).build();
+		}
 
-    private String calculateETag(UpdateOperation operation) {
-        // Create a hash of the important fields that determine consistency
-        if (operation == null) {
-            return "";
-        }
-        // return "\"" + DigestUtils.md5DigestAsHex((operation.getId() + ":" +
-        // operation.getVersion()).getBytes()) + "\"";;
-        return "\"" + DigestUtils.md5DigestAsHex(operation.toString().getBytes()) + "\"";
-    }
+		return ResponseEntity.ok().eTag(currentETag).body(operation);
+	}
+
+	private String calculateETag(UpdateOperation operation) {
+		// Create a hash of the important fields that determine consistency
+		if (operation == null) {
+			return "";
+		}
+		// return "\"" + DigestUtils.md5DigestAsHex((operation.getId() + ":" +
+		// operation.getVersion()).getBytes()) + "\"";;
+		return "\"" + DigestUtils.md5DigestAsHex(operation.toString().getBytes()) + "\"";
+	}
+
 }

@@ -11,6 +11,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class EnrichedEvent {
 
-    private FlightEvent event;
-    private EnrichedReference ref;
+	private FlightEvent event;
+
+	private EnrichedReference ref;
+
 }

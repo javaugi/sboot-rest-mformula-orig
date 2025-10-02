@@ -22,54 +22,45 @@ import reactor.core.scheduler.Schedulers;
 @RequiredArgsConstructor
 public class DocumentEmbeddingService {
 
-    private final OpenAiService openAiService;
-    private final MedicalDocumentRepository documentRepository;
+	private final OpenAiService openAiService;
 
-    public Mono<String> embedAndStoreMedicalDocument(MedicalDocument document) {
-        return Mono.fromCallable(() -> extractTextFromPdf(document.getPdfContent()))
-                .subscribeOn(Schedulers.boundedElastic())
-                .flatMap(
-                        text -> {
-                            document.setTextContent(text);
-                            return generateEmbedding(text)
-                                    .flatMap(
-                                            embedding -> {
-                                                document.setEmbeddingFromList(embedding);
-                                                return saveDocumentToDatabase(document);
-                                            });
-                        });
-    }
+	private final MedicalDocumentRepository documentRepository;
 
-    private Mono<List<Double>> generateEmbedding(String text) {
-        return Mono.fromCallable(
-                () -> {
-                    EmbeddingRequest request
-                    = EmbeddingRequest.builder()
-                            .model("text-embedding-ada-002")
-                            .input(List.of(text))
-                            .build();
+	public Mono<String> embedAndStoreMedicalDocument(MedicalDocument document) {
+		return Mono.fromCallable(() -> extractTextFromPdf(document.getPdfContent()))
+			.subscribeOn(Schedulers.boundedElastic())
+			.flatMap(text -> {
+				document.setTextContent(text);
+				return generateEmbedding(text).flatMap(embedding -> {
+					document.setEmbeddingFromList(embedding);
+					return saveDocumentToDatabase(document);
+				});
+			});
+	}
 
-                    return openAiService.createEmbeddings(request).getData().get(0).getEmbedding();
-                })
-                .subscribeOn(Schedulers.boundedElastic());
-    }
+	private Mono<List<Double>> generateEmbedding(String text) {
+		return Mono.fromCallable(() -> {
+			EmbeddingRequest request = EmbeddingRequest.builder()
+				.model("text-embedding-ada-002")
+				.input(List.of(text))
+				.build();
 
-    private Mono<String> saveDocumentToDatabase(MedicalDocument document) {
-        return documentRepository
-                .saveDocument(
-                        document.getTitle(),
-                        document.getTextContent(),
-                        document.getSpecialty(),
-                        document.getDocumentType(),
-                        document.getPublicationDate(),
-                        document.getEmbedding())
-                .thenReturn("Document stored successfully");
-    }
+			return openAiService.createEmbeddings(request).getData().get(0).getEmbedding();
+		}).subscribeOn(Schedulers.boundedElastic());
+	}
 
-    private String extractTextFromPdf(byte[] pdfBytes) throws IOException {
-        try (PDDocument document = Loader.loadPDF(pdfBytes)) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            return stripper.getText(document);
-        }
-    }
+	private Mono<String> saveDocumentToDatabase(MedicalDocument document) {
+		return documentRepository
+			.saveDocument(document.getTitle(), document.getTextContent(), document.getSpecialty(),
+					document.getDocumentType(), document.getPublicationDate(), document.getEmbedding())
+			.thenReturn("Document stored successfully");
+	}
+
+	private String extractTextFromPdf(byte[] pdfBytes) throws IOException {
+		try (PDDocument document = Loader.loadPDF(pdfBytes)) {
+			PDFTextStripper stripper = new PDFTextStripper();
+			return stripper.getText(document);
+		}
+	}
+
 }

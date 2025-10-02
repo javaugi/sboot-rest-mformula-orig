@@ -19,14 +19,18 @@ import lombok.Data;
 @Table(name = "patient_engagement_events")
 public class PatientEngagementEvent {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String patientId;
-    private String eventType; // e.g., APPOINTMENT, CLAIM, LAB_RESULT
-    private Instant eventTime;
-    private String metadata; // JSON string with additional details
+	private String patientId;
 
-    // getters, setters
+	private String eventType; // e.g., APPOINTMENT, CLAIM, LAB_RESULT
+
+	private Instant eventTime;
+
+	private String metadata; // JSON string with additional details
+
+	// getters, setters
+
 }

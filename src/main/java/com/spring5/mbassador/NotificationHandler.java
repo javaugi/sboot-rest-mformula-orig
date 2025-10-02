@@ -11,18 +11,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotificationHandler {
 
-    @Handler
-    public void handleOrderCreated(OrderCreatedEvent event) {
-        System.out.printf(
-                "[Notification] Order %s created for %s%n", event.getOrderId(), event.getCustomerEmail());
-    }
+	@Handler
+	public void handleOrderCreated(OrderCreatedEvent event) {
+		System.out.printf("[Notification] Order %s created for %s%n", event.getOrderId(), event.getCustomerEmail());
+	}
 
-    @Handler(delivery = Invoke.Asynchronously)
-    public void handleSuccessfulPayment(PaymentProcessedEvent event) {
-        if (event.isSuccess()) {
-            System.out.printf(
-                    "[Notification] Payment processed for order %s: $%.2f%n",
-                    event.getOrderId(), event.getAmount());
-        }
-    }
+	@Handler(delivery = Invoke.Asynchronously)
+	public void handleSuccessfulPayment(PaymentProcessedEvent event) {
+		if (event.isSuccess()) {
+			System.out.printf("[Notification] Payment processed for order %s: $%.2f%n", event.getOrderId(),
+					event.getAmount());
+		}
+	}
+
 }

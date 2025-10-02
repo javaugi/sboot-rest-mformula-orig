@@ -19,6 +19,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PrescriptionResponse {
 
-    private String status;
-    private String message;
+	private String status;
+
+	private String message;
+
 }

@@ -17,61 +17,61 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlightServicePaginationParallelProcessing {
 
-    private final FlightRepositoryCustomAdvancedPaging customFlightRepository;
-    private final FlightEventRepository flightRepository;
+	private final FlightRepositoryCustomAdvancedPaging customFlightRepository;
 
-    // Example 1: Process large dataset with controlled RU consumption
-    public void processAllFlights(String airportCode) {
-        String query
-                = "SELECT c.flightNumber, c.airlineCode FROM c WHERE c.departureAirport = '"
-                + airportCode
-                + "'";
+	private final FlightEventRepository flightRepository;
 
-        // Process in small batches to avoid RU spikes
-        List<FlightEvent> results
-                = customFlightRepository.findLargeDatasetWithPagination(query, 100, null);
-        results.forEach(this::processFlight);
-    }
+	// Example 1: Process large dataset with controlled RU consumption
+	public void processAllFlights(String airportCode) {
+		String query = "SELECT c.flightNumber, c.airlineCode FROM c WHERE c.departureAirport = '" + airportCode + "'";
 
-    // Example 2: Using Spring Data's Pageable
-    public void processFlightsWithSpringPagination(String airportCode) {
-        int page = 0;
-        Pageable pageable = PageRequest.of(page, 50); // 50 items per page
+		// Process in small batches to avoid RU spikes
+		List<FlightEvent> results = customFlightRepository.findLargeDatasetWithPagination(query, 100, null);
+		results.forEach(this::processFlight);
+	}
 
-        Page<FlightProjection> resultPage;
-        do {
-            resultPage
-                    = PageableExecutionUtils.getPage(
-                            flightRepository.findByDepartureAirportPaginated(airportCode, pageable),
-                            pageable,
-                            () -> getCount(airportCode));
+	// Example 2: Using Spring Data's Pageable
+	public void processFlightsWithSpringPagination(String airportCode) {
+		int page = 0;
+		Pageable pageable = PageRequest.of(page, 50); // 50 items per page
 
-            processPage(resultPage.getContent());
-            pageable = pageable.next();
+		Page<FlightProjection> resultPage;
+		do {
+			resultPage = PageableExecutionUtils.getPage(
+					flightRepository.findByDepartureAirportPaginated(airportCode, pageable), pageable,
+					() -> getCount(airportCode));
 
-        } while (resultPage.hasNext());
-    }
+			processPage(resultPage.getContent());
+			pageable = pageable.next();
 
-    // Example 3: Parallel processing for very large datasets
-    public void processVeryLargeDataset() {
-        String query = "SELECT * FROM c WHERE c.departureTime > '2024-01-01'";
-        customFlightRepository.processLargeDatasetInParallel(
-                query, 1000, 4); // 4 threads, 1000 items per batch
-    }
+		}
+		while (resultPage.hasNext());
+	}
 
-    private long getCount(String airportCode) {
-        return flightRepository.countByDepartureAirport(airportCode);
-    }
+	// Example 3: Parallel processing for very large datasets
+	public void processVeryLargeDataset() {
+		String query = "SELECT * FROM c WHERE c.departureTime > '2024-01-01'";
+		customFlightRepository.processLargeDatasetInParallel(query, 1000, 4); // 4
+																				// threads,
+																				// 1000
+																				// items
+																				// per
+																				// batch
+	}
 
-    private void processPage(List<FlightProjection> flights) {
-        flights.forEach(
-                flight -> {
-                    // Process each flight with minimal data
-                    System.out.println("Processing: " + flight.getFlightNumber());
-                });
-    }
+	private long getCount(String airportCode) {
+		return flightRepository.countByDepartureAirport(airportCode);
+	}
 
-    private void processFlight(FlightEvent flight) {
-        // Processing logic
-    }
+	private void processPage(List<FlightProjection> flights) {
+		flights.forEach(flight -> {
+			// Process each flight with minimal data
+			System.out.println("Processing: " + flight.getFlightNumber());
+		});
+	}
+
+	private void processFlight(FlightEvent flight) {
+		// Processing logic
+	}
+
 }

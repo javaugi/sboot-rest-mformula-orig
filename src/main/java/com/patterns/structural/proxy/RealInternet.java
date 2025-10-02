@@ -9,13 +9,13 @@ package com.patterns.structural.proxy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class RealInternet implements Internet {
 
-    @Override
-    public void connectTo(String serverhost) {
-        System.out.println("Connecting to " + serverhost);
-    }
+	@Override
+	public void connectTo(String serverhost) {
+		System.out.println("Connecting to " + serverhost);
+	}
+
 }

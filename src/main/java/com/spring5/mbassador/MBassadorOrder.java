@@ -26,9 +26,10 @@ import lombok.ToString;
 @Table(name = "mbsassador_order")
 public class MBassadorOrder implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    double quantity;
+	double quantity;
+
 }

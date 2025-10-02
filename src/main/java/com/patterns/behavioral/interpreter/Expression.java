@@ -9,10 +9,10 @@ package com.patterns.behavioral.interpreter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Expression {
 
-    boolean interpret(String context);
+	boolean interpret(String context);
+
 }

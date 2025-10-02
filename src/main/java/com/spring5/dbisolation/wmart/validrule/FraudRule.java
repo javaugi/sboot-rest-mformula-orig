@@ -6,5 +6,6 @@ package com.spring5.dbisolation.wmart.validrule;
 
 public interface FraudRule {
 
-    boolean isSuspicious(Transaction transaction, FraudDetectionConfig config);
+	boolean isSuspicious(Transaction transaction, FraudDetectionConfig config);
+
 }

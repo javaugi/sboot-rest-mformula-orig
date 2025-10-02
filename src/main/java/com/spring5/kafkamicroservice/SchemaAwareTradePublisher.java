@@ -11,20 +11,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class SchemaAwareTradePublisher {
 
-    private final KafkaTemplate<String, TradeEvent> kafkaTemplate;
+	private final KafkaTemplate<String, TradeEvent> kafkaTemplate;
 
-    public SchemaAwareTradePublisher(
-            @Qualifier("tradeEventKafkaTemplate") KafkaTemplate<String, TradeEvent> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	public SchemaAwareTradePublisher(
+			@Qualifier("tradeEventKafkaTemplate") KafkaTemplate<String, TradeEvent> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
 
-    public void publishTradeEvent(Trade trade) {
-        TradeEvent event = TradingEventPublisher.createTradeEventFromTrade(trade);
+	public void publishTradeEvent(Trade trade) {
+		TradeEvent event = TradingEventPublisher.createTradeEventFromTrade(trade);
 
-        kafkaTemplate.send("trading.trade.events", String.valueOf(trade.getId()), event);
-    }
+		kafkaTemplate.send("trading.trade.events", String.valueOf(trade.getId()), event);
+	}
 
-    public static GenericRecord getGenericRecord(TradeEvent event) {
-        return new GenericRecord(event);
-    }
+	public static GenericRecord getGenericRecord(TradeEvent event) {
+		return new GenericRecord(event);
+	}
+
 }

@@ -9,30 +9,32 @@ package com.patterns.structural.facade;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ShapeMakerFacade {
 
-    private Shape circle;
-    private Shape rectangle;
-    private Shape square;
+	private Shape circle;
 
-    public ShapeMakerFacade() {
-        circle = new Circle();
-        rectangle = new Rectangle();
-        square = new Square();
-    }
+	private Shape rectangle;
 
-    public void drawCircle() {
-        circle.draw();
-    }
+	private Shape square;
 
-    public void drawRectangle() {
-        rectangle.draw();
-    }
+	public ShapeMakerFacade() {
+		circle = new Circle();
+		rectangle = new Rectangle();
+		square = new Square();
+	}
 
-    public void drawSquare() {
-        square.draw();
-    }
+	public void drawCircle() {
+		circle.draw();
+	}
+
+	public void drawRectangle() {
+		rectangle.draw();
+	}
+
+	public void drawSquare() {
+		square.draw();
+	}
+
 }

@@ -24,12 +24,16 @@ import lombok.NoArgsConstructor;
 @Table(indexes = @Index(name = "idx_author", columnList = "author"))
 public class Book {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String title;
-    private String author;
-    private String isbn;
-    // getters/setters
+	private String title;
+
+	private String author;
+
+	private String isbn;
+
+	// getters/setters
+
 }

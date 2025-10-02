@@ -19,46 +19,43 @@ import java.util.stream.Collectors;
 @org.springframework.stereotype.Service
 public class AssessmentService {
 
-    private final Map<Long, Assessment> assessments = new HashMap<>();
-    private long nextId = 1;
+	private final Map<Long, Assessment> assessments = new HashMap<>();
 
-    public Assessment save(Assessment assessment) {
-        Assessment newAssessment
-                = new Assessment(
-                        nextId++, assessment.getPatientId(), assessment.getDate(), assessment.getStatus());
-        assessments.put(newAssessment.getId(), newAssessment);
-        return newAssessment;
-    }
+	private long nextId = 1;
 
-    public static Assessment createAssessment(long patientId, LocalDate date, String status) {
-        return Assessment.builder().patientId(patientId).date(date).status(status).build();
-    }
+	public Assessment save(Assessment assessment) {
+		Assessment newAssessment = new Assessment(nextId++, assessment.getPatientId(), assessment.getDate(),
+				assessment.getStatus());
+		assessments.put(newAssessment.getId(), newAssessment);
+		return newAssessment;
+	}
 
-    public Assessment findById(Long id) {
-        return assessments.get(id);
-    }
+	public static Assessment createAssessment(long patientId, LocalDate date, String status) {
+		return Assessment.builder().patientId(patientId).date(date).status(status).build();
+	}
 
-    public List<Assessment> findAll() {
-        return new ArrayList<>(assessments.values());
-    }
+	public Assessment findById(Long id) {
+		return assessments.get(id);
+	}
 
-    public Assessment update(Long id, Assessment updatedAssessment) {
-        if (!assessments.containsKey(id)) {
-            return null;
-        }
-        assessments.put(
-                id,
-                new Assessment(
-                        id,
-                        updatedAssessment.getPatientId(),
-                        updatedAssessment.getDate(),
-                        updatedAssessment.getStatus()));
-        return assessments.get(id);
-    }
+	public List<Assessment> findAll() {
+		return new ArrayList<>(assessments.values());
+	}
 
-    public List<Answer> findAnswersByAssessmentId(Long assessmentId, AnswerService answerService) {
-        return answerService.findAll().stream()
-                .filter(answer -> answer.getAssessmentId().equals(assessmentId))
-                .collect(Collectors.toList());
-    }
+	public Assessment update(Long id, Assessment updatedAssessment) {
+		if (!assessments.containsKey(id)) {
+			return null;
+		}
+		assessments.put(id, new Assessment(id, updatedAssessment.getPatientId(), updatedAssessment.getDate(),
+				updatedAssessment.getStatus()));
+		return assessments.get(id);
+	}
+
+	public List<Answer> findAnswersByAssessmentId(Long assessmentId, AnswerService answerService) {
+		return answerService.findAll()
+			.stream()
+			.filter(answer -> answer.getAssessmentId().equals(assessmentId))
+			.collect(Collectors.toList());
+	}
+
 }

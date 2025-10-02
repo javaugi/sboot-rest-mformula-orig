@@ -23,21 +23,23 @@ import lombok.Data;
 @Table(name = "BATTERY_TEST_DATA")
 public class BatteryTestData {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
+	private long id;
 
-    private String testId;
-    private String vehicleId;
-    private double dischargeCurrent;
-    private long dischargeTimeSeconds;
-    private double ratedCapacity;
+	private String testId;
 
-    @OneToMany(
-            mappedBy = "batteryTestData",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            targetEntity = BatteryMeasurement.class)
-    private List<BatteryMeasurement> measurements;
+	private String vehicleId;
+
+	private double dischargeCurrent;
+
+	private long dischargeTimeSeconds;
+
+	private double ratedCapacity;
+
+	@OneToMany(mappedBy = "batteryTestData", cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+			targetEntity = BatteryMeasurement.class)
+	private List<BatteryMeasurement> measurements;
+
 }

@@ -9,13 +9,13 @@ package com.patterns.structural.decorator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Circle implements Shape {
 
-    @Override
-    public void draw() {
-        System.out.println("Drawing Circle");
-    }
+	@Override
+	public void draw() {
+		System.out.println("Drawing Circle");
+	}
+
 }

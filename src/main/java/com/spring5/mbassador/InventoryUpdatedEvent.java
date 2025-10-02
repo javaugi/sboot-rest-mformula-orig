@@ -9,27 +9,29 @@ package com.spring5.mbassador;
  */
 public class InventoryUpdatedEvent {
 
-    private String productId;
-    private int newQuantity;
+	private String productId;
 
-    public InventoryUpdatedEvent(String productId, int newQuantity) {
-        this.productId = productId;
-        this.newQuantity = newQuantity;
-    }
+	private int newQuantity;
 
-    public String getProductId() {
-        return productId;
-    }
+	public InventoryUpdatedEvent(String productId, int newQuantity) {
+		this.productId = productId;
+		this.newQuantity = newQuantity;
+	}
 
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
+	public String getProductId() {
+		return productId;
+	}
 
-    public int getNewQuantity() {
-        return newQuantity;
-    }
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 
-    public void setNewQuantity(int newQuantity) {
-        this.newQuantity = newQuantity;
-    }
+	public int getNewQuantity() {
+		return newQuantity;
+	}
+
+	public void setNewQuantity(int newQuantity) {
+		this.newQuantity = newQuantity;
+	}
+
 }

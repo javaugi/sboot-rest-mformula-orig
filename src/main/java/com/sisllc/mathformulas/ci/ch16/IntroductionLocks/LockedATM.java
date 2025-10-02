@@ -5,42 +5,46 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class LockedATM {
 
-    private Lock lock;
-    private int balance = 100;
+	private Lock lock;
 
-    public LockedATM() {
-        lock = new ReentrantLock();
-    }
+	private int balance = 100;
 
-    public int withdraw(int value) {
-        lock.lock();
-        int temp = balance;
-        try {
-            Thread.sleep(100);
-            temp = temp - value;
-            Thread.sleep(100);
-            balance = temp;
-        } catch (InterruptedException e) {
-        }
-        lock.unlock();
-        return temp;
-    }
+	public LockedATM() {
+		lock = new ReentrantLock();
+	}
 
-    public int deposit(int value) {
-        lock.lock();
-        int temp = balance;
-        try {
-            Thread.sleep(100);
-            temp = temp + value;
-            Thread.sleep(100);
-            balance = temp;
-        } catch (InterruptedException e) {
-        }
-        lock.unlock();
-        return temp;
-    }
+	public int withdraw(int value) {
+		lock.lock();
+		int temp = balance;
+		try {
+			Thread.sleep(100);
+			temp = temp - value;
+			Thread.sleep(100);
+			balance = temp;
+		}
+		catch (InterruptedException e) {
+		}
+		lock.unlock();
+		return temp;
+	}
 
-    public int getBalance() {
-        return balance;
-    }
+	public int deposit(int value) {
+		lock.lock();
+		int temp = balance;
+		try {
+			Thread.sleep(100);
+			temp = temp + value;
+			Thread.sleep(100);
+			balance = temp;
+		}
+		catch (InterruptedException e) {
+		}
+		lock.unlock();
+		return temp;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
 }

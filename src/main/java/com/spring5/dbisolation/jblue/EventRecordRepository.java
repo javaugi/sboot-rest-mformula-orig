@@ -8,5 +8,6 @@ import com.azure.spring.data.cosmos.repository.CosmosRepository;
 
 public interface EventRecordRepository extends CosmosRepository<EventRecord, String> {
 
-    boolean existsByEventId(String eventId);
+	boolean existsByEventId(String eventId);
+
 }

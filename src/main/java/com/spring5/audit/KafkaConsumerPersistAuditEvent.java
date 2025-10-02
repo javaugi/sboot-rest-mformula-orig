@@ -16,17 +16,19 @@ import org.springframework.kafka.annotation.KafkaListener;
  */
 public class KafkaConsumerPersistAuditEvent {
 
-    @Autowired
-    private ElasticsearchClient elasticsearchClient;
+	@Autowired
+	private ElasticsearchClient elasticsearchClient;
 
-    @KafkaListener(topics = "audit-events")
-    public void persistAuditEvent(AuditEvent event) {
-        // Index in Elasticsearch
-        try {
-            elasticsearchClient.index(
-                    IndexRequest.of(idx -> idx.index("audit-logs").id(event.getEventId()).document(event)));
-        } catch (ElasticsearchException | IOException ex) {
+	@KafkaListener(topics = "audit-events")
+	public void persistAuditEvent(AuditEvent event) {
+		// Index in Elasticsearch
+		try {
+			elasticsearchClient
+				.index(IndexRequest.of(idx -> idx.index("audit-logs").id(event.getEventId()).document(event)));
+		}
+		catch (ElasticsearchException | IOException ex) {
 
-        }
-    }
+		}
+	}
+
 }

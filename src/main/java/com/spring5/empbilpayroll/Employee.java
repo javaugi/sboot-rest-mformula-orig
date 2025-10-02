@@ -29,53 +29,48 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "Employee.findByDepartment", query = "FROM Employee WHERE department = :dept"),
-    @NamedQuery(name = "Employee.countAll", query = "SELECT COUNT(*) FROM Employee")
-})
+@NamedQueries({ @NamedQuery(name = "Employee.findByDepartment", query = "FROM Employee WHERE department = :dept"),
+		@NamedQuery(name = "Employee.countAll", query = "SELECT COUNT(*) FROM Employee") })
 @NamedEntityGraphs({
-    @NamedEntityGraph(
-            name = "employee.withDepartmentAndProfile",
-            attributeNodes = {
-                @NamedAttributeNode("department"),
-                @NamedAttributeNode("profile")}),
-    @NamedEntityGraph(
-            name = "employee.withAllRelations",
-            attributeNodes = {
-                @NamedAttributeNode("department"),
-                @NamedAttributeNode("profile"),
-                @NamedAttributeNode(value = "projects", subgraph = "projectSubgraph")
-            },
-            subgraphs = {
-                @NamedSubgraph(
-                        name = "projectSubgraph",
-                        attributeNodes = {
-                            @NamedAttributeNode("tasks"),
-                            @NamedAttributeNode("teamMembers")})
-            })
-})
+		@NamedEntityGraph(name = "employee.withDepartmentAndProfile",
+				attributeNodes = { @NamedAttributeNode("department"), @NamedAttributeNode("profile") }),
+		@NamedEntityGraph(name = "employee.withAllRelations",
+				attributeNodes = { @NamedAttributeNode("department"), @NamedAttributeNode("profile"),
+						@NamedAttributeNode(value = "projects", subgraph = "projectSubgraph") },
+				subgraphs = { @NamedSubgraph(name = "projectSubgraph",
+						attributeNodes = { @NamedAttributeNode("tasks"), @NamedAttributeNode("teamMembers") }) }) })
 public class Employee implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String name;
-    private String firstName;
-    private String lastName;
-    private String middleInitial;
-    private String deptCode;
-    private String departName;
-    private double salary;
-    private boolean nightShift;
-    private Region region;
-    double hoursWorked;
+	private String name;
 
-    // ManyToOne with Eager loading (default for single-valued associations)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "department_id")
-    private Department department;
+	private String firstName;
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private EmployeeProfile profile;
+	private String lastName;
+
+	private String middleInitial;
+
+	private String deptCode;
+
+	private String departName;
+
+	private double salary;
+
+	private boolean nightShift;
+
+	private Region region;
+
+	double hoursWorked;
+
+	// ManyToOne with Eager loading (default for single-valued associations)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "department_id")
+	private Department department;
+
+	@OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	private EmployeeProfile profile;
+
 }

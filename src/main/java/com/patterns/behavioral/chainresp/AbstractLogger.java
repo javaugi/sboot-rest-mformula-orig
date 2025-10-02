@@ -9,32 +9,34 @@ package com.patterns.behavioral.chainresp;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class AbstractLogger {
 
-    public static int INFO = 1;
-    public static int DEBUG = 2;
-    public static int ERROR = 3;
+	public static int INFO = 1;
 
-    protected int level;
+	public static int DEBUG = 2;
 
-    // next element in chain or responsibility
-    protected AbstractLogger nextLogger;
+	public static int ERROR = 3;
 
-    public void setNextLogger(AbstractLogger nextLogger) {
-        this.nextLogger = nextLogger;
-    }
+	protected int level;
 
-    public void logMessage(int level, String message) {
-        if (this.level <= level) {
-            write(message);
-        }
-        if (nextLogger != null) {
-            nextLogger.logMessage(level, message);
-        }
-    }
+	// next element in chain or responsibility
+	protected AbstractLogger nextLogger;
 
-    protected abstract void write(String message);
+	public void setNextLogger(AbstractLogger nextLogger) {
+		this.nextLogger = nextLogger;
+	}
+
+	public void logMessage(int level, String message) {
+		if (this.level <= level) {
+			write(message);
+		}
+		if (nextLogger != null) {
+			nextLogger.logMessage(level, message);
+		}
+	}
+
+	protected abstract void write(String message);
+
 }

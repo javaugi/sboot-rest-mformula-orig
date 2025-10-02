@@ -11,9 +11,10 @@ import java.util.Map;
  */
 public interface LLMClient {
 
-    /**
-     * Ask the LLM a prompt and return a structured response. providerMetadata
-     * should capture model name, version, temperature, promptTokens, etc.
-     */
-    LLMResponse generate(String prompt, Map<String, Object> providerMetadata);
+	/**
+	 * Ask the LLM a prompt and return a structured response. providerMetadata should
+	 * capture model name, version, temperature, promptTokens, etc.
+	 */
+	LLMResponse generate(String prompt, Map<String, Object> providerMetadata);
+
 }

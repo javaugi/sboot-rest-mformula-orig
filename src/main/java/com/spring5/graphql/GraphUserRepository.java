@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author javau
  */
 public interface GraphUserRepository extends JpaRepository<GraphUser, Long> {
+
 }

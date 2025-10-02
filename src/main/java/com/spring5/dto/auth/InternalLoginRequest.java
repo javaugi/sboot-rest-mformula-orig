@@ -15,8 +15,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InternalLoginRequest {
 
-    private String username;
-    private String password;
-    private String email;
-    private String role;
+	private String username;
+
+	private String password;
+
+	private String email;
+
+	private String role;
+
 }

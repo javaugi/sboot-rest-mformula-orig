@@ -2,15 +2,17 @@ package com.sisllc.mathformulas.ci.ch14.Question14_5;
 
 public class Rectangle {
 
-    private double width;
-    private double height;
+	private double width;
 
-    public Rectangle(double w, double h) {
-        width = w;
-        height = h;
-    }
+	private double height;
 
-    public double area() {
-        return width * height;
-    }
+	public Rectangle(double w, double h) {
+		width = w;
+		height = h;
+	}
+
+	public double area() {
+		return width * height;
+	}
+
 }

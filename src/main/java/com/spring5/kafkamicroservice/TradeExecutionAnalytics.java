@@ -10,41 +10,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class TradeExecutionAnalytics {
 
-    private final Tracer tracer;
+	private final Tracer tracer;
 
-    public TradeExecutionAnalytics(Tracer tracer) {
-        this.tracer = tracer;
-    }
+	public TradeExecutionAnalytics(Tracer tracer) {
+		this.tracer = tracer;
+	}
 
-    public void analyzeTradeFlow(String tradeId) {
-        /* TODO
-    Span span = tracer.spanBuilder("analyzeTradeFlow")
-        .setAttribute("trade.id", tradeId)
-        .startSpan();
+	public void analyzeTradeFlow(String tradeId) {
+		/*
+		 * TODO Span span = tracer.spanBuilder("analyzeTradeFlow")
+		 * .setAttribute("trade.id", tradeId) .startSpan();
+		 * 
+		 * try (Scope scope = span.makeCurrent()) { // 1. Get trade creation span
+		 * SpanContext tradeCreation = getSpanContextForTradeCreation(tradeId);
+		 * 
+		 * // 2. Get file processing span SpanContext fileProcessing =
+		 * getSpanContextForFileProcessing(tradeId);
+		 * 
+		 * // 3. Get audit spans List<SpanContext> auditSpans =
+		 * getAuditSpansForTrade(tradeId);
+		 * 
+		 * // Analyze timing and relationships analyzeTimings(tradeCreation,
+		 * fileProcessing, auditSpans);
+		 * 
+		 * } finally { span.end(); } //
+		 */
+	}
 
-    try (Scope scope = span.makeCurrent()) {
-        // 1. Get trade creation span
-        SpanContext tradeCreation = getSpanContextForTradeCreation(tradeId);
+	/*
+	 * private void analyzeTimings(SpanContext... contexts) { // Implementation would
+	 * query your tracing backend (Jaeger, Zipkin, etc.) // to analyze the full flow
+	 * across services } //
+	 */
 
-        // 2. Get file processing span
-        SpanContext fileProcessing = getSpanContextForFileProcessing(tradeId);
-
-        // 3. Get audit spans
-        List<SpanContext> auditSpans = getAuditSpansForTrade(tradeId);
-
-        // Analyze timing and relationships
-        analyzeTimings(tradeCreation, fileProcessing, auditSpans);
-
-    } finally {
-        span.end();
-    }
-    // */
-    }
-
-    /*
-  private void analyzeTimings(SpanContext... contexts) {
-      // Implementation would query your tracing backend (Jaeger, Zipkin, etc.)
-      // to analyze the full flow across services
-  }
-  // */
 }

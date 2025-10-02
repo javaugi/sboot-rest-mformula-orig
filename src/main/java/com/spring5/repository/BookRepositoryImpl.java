@@ -24,61 +24,58 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class BookRepositoryImpl {
 
-    @Autowired
-    private EntityManager entityManager;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private EntityManager entityManager;
 
-    // @Autowired
-    // private MongoTemplate mongoTemplate;
-    // Oracle Stored procedure
-    public int updatePricesByCategory(String category, double percentage) {
-        StoredProcedureQuery query
-                = entityManager
-                        .createStoredProcedureQuery("update_book_prices")
-                        .registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
-                        .registerStoredProcedureParameter(2, Double.class, ParameterMode.IN)
-                        .registerStoredProcedureParameter(3, Integer.class, ParameterMode.OUT)
-                        .setParameter(1, category)
-                        .setParameter(2, percentage);
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-        query.execute();
-        return (Integer) query.getOutputParameterValue(3);
-    }
+	// @Autowired
+	// private MongoTemplate mongoTemplate;
+	// Oracle Stored procedure
+	public int updatePricesByCategory(String category, double percentage) {
+		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("update_book_prices")
+			.registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
+			.registerStoredProcedureParameter(2, Double.class, ParameterMode.IN)
+			.registerStoredProcedureParameter(3, Integer.class, ParameterMode.OUT)
+			.setParameter(1, category)
+			.setParameter(2, percentage);
 
-    // SQL Server Stored procedure
-    public int archiveOldBooks(LocalDate cutoffDate, int archiveYear) {
-        SimpleJdbcCall call
-                = new SimpleJdbcCall(jdbcTemplate)
-                        .withProcedureName("sp_archive_old_books")
-                        .declareParameters(
-                                new SqlParameter("cutoff_date", Types.DATE),
-                                new SqlParameter("archive_year", Types.INTEGER),
-                                new SqlOutParameter("rows_affected", Types.INTEGER));
+		query.execute();
+		return (Integer) query.getOutputParameterValue(3);
+	}
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("cutoff_date", cutoffDate);
-        params.put("archive_year", archiveYear);
+	// SQL Server Stored procedure
+	public int archiveOldBooks(LocalDate cutoffDate, int archiveYear) {
+		SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate).withProcedureName("sp_archive_old_books")
+			.declareParameters(new SqlParameter("cutoff_date", Types.DATE),
+					new SqlParameter("archive_year", Types.INTEGER),
+					new SqlOutParameter("rows_affected", Types.INTEGER));
 
-        Map<String, Object> result = call.execute(params);
-        return (int) result.get("rows_affected");
-    }
+		Map<String, Object> params = new HashMap<>();
+		params.put("cutoff_date", cutoffDate);
+		params.put("archive_year", archiveYear);
 
-    // JS for MongoDB
-    /*
-  public String updateBookRatings() {
-      return (String)mongoTemplate.scriptOps().call("updateBookRatings", 2); // minReviews = 2
-  }
-  // */
-    // 4. Using Batch processing
-    @Transactional
-    public void batchInsert(List<Book> books) {
-        for (int i = 0; i < books.size(); i++) {
-            entityManager.persist(books.get(i));
-            if (i % 50 == 0) { // Flush every 50 records
-                entityManager.flush();
-                entityManager.clear();
-            }
-        }
-    }
+		Map<String, Object> result = call.execute(params);
+		return (int) result.get("rows_affected");
+	}
+
+	// JS for MongoDB
+	/*
+	 * public String updateBookRatings() { return
+	 * (String)mongoTemplate.scriptOps().call("updateBookRatings", 2); // minReviews = 2 }
+	 * //
+	 */
+	// 4. Using Batch processing
+	@Transactional
+	public void batchInsert(List<Book> books) {
+		for (int i = 0; i < books.size(); i++) {
+			entityManager.persist(books.get(i));
+			if (i % 50 == 0) { // Flush every 50 records
+				entityManager.flush();
+				entityManager.clear();
+			}
+		}
+	}
+
 }

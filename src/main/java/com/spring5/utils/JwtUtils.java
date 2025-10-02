@@ -13,15 +13,16 @@ import reactor.core.publisher.Mono;
  */
 public interface JwtUtils {
 
-    Mono<Boolean> validateToken(String token);
+	Mono<Boolean> validateToken(String token);
 
-    Mono<Boolean> validateToken(String token, UserDetails userDetails);
+	Mono<Boolean> validateToken(String token, UserDetails userDetails);
 
-    Mono<Authentication> getAuthentication(String token);
+	Mono<Authentication> getAuthentication(String token);
 
-    Mono<String> generateToken(UserDetails userDetails);
+	Mono<String> generateToken(UserDetails userDetails);
 
-    Mono<String> generateToken(Authentication auth);
+	Mono<String> generateToken(Authentication auth);
 
-    String extractUsername(String token);
+	String extractUsername(String token);
+
 }

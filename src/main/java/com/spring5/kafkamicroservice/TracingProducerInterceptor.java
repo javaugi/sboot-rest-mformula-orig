@@ -14,38 +14,31 @@ import org.apache.kafka.clients.producer.ProducerRecord;
  */
 public class TracingProducerInterceptor {
 
-    private final Tracer tracer;
+	private final Tracer tracer;
 
-    public TracingProducerInterceptor() {
-        this.tracer = GlobalOpenTelemetry.getTracer("trading-producer");
-    }
+	public TracingProducerInterceptor() {
+		this.tracer = GlobalOpenTelemetry.getTracer("trading-producer");
+	}
 
-    public ProducerRecord<String, Object> onSend(ProducerRecord<String, Object> record) {
-        Span span
-                = tracer
-                        .spanBuilder("kafka.send")
-                        .setAttribute("messaging.system", "kafka")
-                        .setAttribute("messaging.destination", record.topic())
-                        .setAttribute("messaging.destination_kind", "topic")
-                        .startSpan();
+	public ProducerRecord<String, Object> onSend(ProducerRecord<String, Object> record) {
+		Span span = tracer.spanBuilder("kafka.send")
+			.setAttribute("messaging.system", "kafka")
+			.setAttribute("messaging.destination", record.topic())
+			.setAttribute("messaging.destination_kind", "topic")
+			.startSpan();
 
-        /*
-    try (Scope scope = span.makeCurrent()) {
-        // Inject trace context into headers
-        GlobalOpenTelemetry.getPropagators().getTextMapPropagator()
-            .inject(Context.current(), record.headers(), (carrier, key, value) -> {
-                if (carrier != null) {
-                    carrier.add(new RecordHeader(key, value.getBytes(StandardCharsets.UTF_8)));
-                }
-            });
+		/*
+		 * try (Scope scope = span.makeCurrent()) { // Inject trace context into headers
+		 * GlobalOpenTelemetry.getPropagators().getTextMapPropagator()
+		 * .inject(Context.current(), record.headers(), (carrier, key, value) -> { if
+		 * (carrier != null) { carrier.add(new RecordHeader(key,
+		 * value.getBytes(StandardCharsets.UTF_8))); } });
+		 * 
+		 * return record; } finally { span.end(); } //
+		 */
+		return null;
+	}
 
-        return record;
-    } finally {
-        span.end();
-    }
-    // */
-        return null;
-    }
+	// Other required interceptor methods...
 
-    // Other required interceptor methods...
 }

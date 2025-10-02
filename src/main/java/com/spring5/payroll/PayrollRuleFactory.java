@@ -14,16 +14,16 @@ import static com.spring5.empbilpayroll.Region.EU;
  */
 public class PayrollRuleFactory {
 
-    public static PayrollRuleStrategy getRule(Region region) {
-        switch (region) {
-            case US -> {
-                return new USPayrollRule();
-            }
-            case EU -> {
-                return new EUPayrollRule();
-            }
-            default ->
-                throw new IllegalArgumentException("Unsupported region");
-        }
-    }
+	public static PayrollRuleStrategy getRule(Region region) {
+		switch (region) {
+			case US -> {
+				return new USPayrollRule();
+			}
+			case EU -> {
+				return new EUPayrollRule();
+			}
+			default -> throw new IllegalArgumentException("Unsupported region");
+		}
+	}
+
 }

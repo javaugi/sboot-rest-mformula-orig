@@ -18,39 +18,42 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyApplicationProfileChecker implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(MyApplicationProfileChecker.class);
+	private static final Logger log = LoggerFactory.getLogger(MyApplicationProfileChecker.class);
 
-    private static final String MONGO_PROFILE = "mongo";
-    private static final String FILE_PROFILE = "file";
+	private static final String MONGO_PROFILE = "mongo";
 
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("MyApplicationProfileChecker CommandLineRunner ...");
-    }
+	private static final String FILE_PROFILE = "file";
 
-    public void setupProfiles(ApplicationEnvironmentPreparedEvent event) {
-        List<String> activeProfiles = Arrays.asList(event.getEnvironment().getActiveProfiles());
-        boolean errorOccurred = false;
+	@Override
+	public void run(String... args) throws Exception {
+		log.info("MyApplicationProfileChecker CommandLineRunner ...");
+	}
 
-        if (activeProfiles.isEmpty()) {
-            errorOccurred = true;
-        } else if (!containsOperationModeProfile(activeProfiles)) {
-            errorOccurred = true;
-        }
-        log.info(
-                "MyApplicationProfileChecker activeProfiles {} running {}", activeProfiles, errorOccurred);
+	public void setupProfiles(ApplicationEnvironmentPreparedEvent event) {
+		List<String> activeProfiles = Arrays.asList(event.getEnvironment().getActiveProfiles());
+		boolean errorOccurred = false;
 
-        if (errorOccurred) {
-            try {
-                Thread.sleep(1000);
-                System.exit(1);
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
+		if (activeProfiles.isEmpty()) {
+			errorOccurred = true;
+		}
+		else if (!containsOperationModeProfile(activeProfiles)) {
+			errorOccurred = true;
+		}
+		log.info("MyApplicationProfileChecker activeProfiles {} running {}", activeProfiles, errorOccurred);
 
-    public boolean containsOperationModeProfile(List<String> activeProfiles) {
-        return activeProfiles.contains(MONGO_PROFILE) || activeProfiles.contains(FILE_PROFILE);
-    }
+		if (errorOccurred) {
+			try {
+				Thread.sleep(1000);
+				System.exit(1);
+			}
+			catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
+	public boolean containsOperationModeProfile(List<String> activeProfiles) {
+		return activeProfiles.contains(MONGO_PROFILE) || activeProfiles.contains(FILE_PROFILE);
+	}
+
 }

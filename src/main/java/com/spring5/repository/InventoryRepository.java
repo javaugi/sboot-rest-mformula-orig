@@ -8,9 +8,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
-    public Inventory findByProductId(@Param("productId") Long productId);
+	public Inventory findByProductId(@Param("productId") Long productId);
 
-    boolean isAvailable(@Param("vin") String vin, @Param("dealerId") String dealerId);
+	boolean isAvailable(@Param("vin") String vin, @Param("dealerId") String dealerId);
 
-    long getVersion(@Param("vin") String vin);
+	long getVersion(@Param("vin") String vin);
+
 }

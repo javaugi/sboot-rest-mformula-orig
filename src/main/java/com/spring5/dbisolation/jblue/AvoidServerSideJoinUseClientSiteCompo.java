@@ -8,4 +8,5 @@ package com.spring5.dbisolation.jblue;
  * @author javau
  */
 public class AvoidServerSideJoinUseClientSiteCompo {
+
 }

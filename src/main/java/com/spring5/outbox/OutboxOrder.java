@@ -26,9 +26,10 @@ import lombok.ToString;
 @Cacheable
 public class OutboxOrder {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String aggregateId;
+	private String aggregateId;
+
 }

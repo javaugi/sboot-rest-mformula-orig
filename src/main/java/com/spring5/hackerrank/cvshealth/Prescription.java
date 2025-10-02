@@ -9,5 +9,6 @@ import lombok.Data;
 @Data
 public class Prescription {
 
-    Long id;
+	Long id;
+
 }

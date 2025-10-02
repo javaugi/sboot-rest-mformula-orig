@@ -10,13 +10,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class GraphqlServerApplicationTests {
 
-    // @Test
-    public void contextLoads() {
-    }
+	// @Test
+	public void contextLoads() {
+	}
 
-    // @SpringBootTest gives compile error and SpringJUnit4ClassRunner needs one test method
-    // @Test
-    public void makeItTrue() {
-        assertTrue(true);
-    }
+	// @SpringBootTest gives compile error and SpringJUnit4ClassRunner needs one test
+	// method
+	// @Test
+	public void makeItTrue() {
+		assertTrue(true);
+	}
+
 }

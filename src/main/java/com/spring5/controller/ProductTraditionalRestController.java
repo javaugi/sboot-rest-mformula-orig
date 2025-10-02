@@ -6,7 +6,6 @@ package com.spring5.controller;
 
 // import static com.mongodb.client.model.Filters.where;
 import com.spring5.entity.Product;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,41 +28,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class ProductTraditionalRestController {
 
-    private final Map<Long, Product> productStore = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+	private final Map<Long, Product> productStore = new ConcurrentHashMap<>();
 
-    // POST - Create product
-    @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        long id = idGenerator.getAndIncrement();
-        product.setId(id);
-        productStore.put(id, product);
-        return ResponseEntity.created(URI.create("/api/products/" + id)).body(product);
-    }
+	private final AtomicLong idGenerator = new AtomicLong(1);
 
-    // PUT - Replace product
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> replaceProduct(
-            @PathVariable Long id, @RequestBody Product product) {
-        product.setId(id);
-        productStore.put(id, product);
-        return ResponseEntity.ok(product);
-    }
+	// POST - Create product
+	@PostMapping
+	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+		long id = idGenerator.getAndIncrement();
+		product.setId(id);
+		productStore.put(id, product);
+		return ResponseEntity.created(URI.create("/api/products/" + id)).body(product);
+	}
 
-    // PATCH - Partial update
-    @PatchMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(
-            @PathVariable Long id, @RequestBody Map<String, Object> updates) {
-        Product existing = productStore.get(id);
-        if (existing == null) {
-            return ResponseEntity.notFound().build();
-        }
-        if (updates.containsKey("name")) {
-            existing.setName((String) updates.get("name"));
-        }
-        if (updates.containsKey("price")) {
-            existing.setPrice(new BigDecimal(updates.get("price").toString()));
-        }
-        return ResponseEntity.ok(existing);
-    }
+	// PUT - Replace product
+	@PutMapping("/{id}")
+	public ResponseEntity<Product> replaceProduct(@PathVariable Long id, @RequestBody Product product) {
+		product.setId(id);
+		productStore.put(id, product);
+		return ResponseEntity.ok(product);
+	}
+
+	// PATCH - Partial update
+	@PatchMapping("/{id}")
+	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+		Product existing = productStore.get(id);
+		if (existing == null) {
+			return ResponseEntity.notFound().build();
+		}
+		if (updates.containsKey("name")) {
+			existing.setName((String) updates.get("name"));
+		}
+		if (updates.containsKey("price")) {
+			existing.setPrice(Double.valueOf(updates.get("price").toString()));
+		}
+		return ResponseEntity.ok(existing);
+	}
+
 }

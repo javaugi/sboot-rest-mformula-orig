@@ -17,32 +17,33 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderEventConsumer {
 
-    private final IdempotencyService idempotencyService;
+	private final IdempotencyService idempotencyService;
 
-    public OrderEventConsumer(IdempotencyService idempotencyService) {
-        this.idempotencyService = idempotencyService;
-    }
+	public OrderEventConsumer(IdempotencyService idempotencyService) {
+		this.idempotencyService = idempotencyService;
+	}
 
-    @KafkaListener(topics = "order-events", groupId = "orders-group")
-    public void listen(ConsumerRecord<String, String> record, Acknowledgment ack) {
-        String messageId
-                = Optional.ofNullable(record.headers().lastHeader("messageId"))
-                        .map(h -> new String(h.value(), StandardCharsets.UTF_8))
-                        .orElse(UUID.randomUUID().toString());
+	@KafkaListener(topics = "order-events", groupId = "orders-group")
+	public void listen(ConsumerRecord<String, String> record, Acknowledgment ack) {
+		String messageId = Optional.ofNullable(record.headers().lastHeader("messageId"))
+			.map(h -> new String(h.value(), StandardCharsets.UTF_8))
+			.orElse(UUID.randomUUID().toString());
 
-        if (!idempotencyService.claim("msg:" + messageId, "processing", Duration.ofMinutes(10))) {
-            // duplicate — skip
-            ack.acknowledge();
-            return;
-        }
-        try {
-            // process...
-            // save business data
-            idempotencyService.saveResponse("msg:" + messageId, "processed");
-            ack.acknowledge();
-        } catch (Exception ex) {
-            // do not ack => message will be redelivered; consider DLQ after retries
-            throw ex;
-        }
-    }
+		if (!idempotencyService.claim("msg:" + messageId, "processing", Duration.ofMinutes(10))) {
+			// duplicate — skip
+			ack.acknowledge();
+			return;
+		}
+		try {
+			// process...
+			// save business data
+			idempotencyService.saveResponse("msg:" + messageId, "processed");
+			ack.acknowledge();
+		}
+		catch (Exception ex) {
+			// do not ack => message will be redelivered; consider DLQ after retries
+			throw ex;
+		}
+	}
+
 }

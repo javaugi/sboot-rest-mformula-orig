@@ -9,12 +9,12 @@ package com.patterns.structural.adapter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface AdvancedMediaPlayer {
 
-    public void playVlc(String fileName);
+	public void playVlc(String fileName);
 
-    public void playMp4(String fileName);
+	public void playMp4(String fileName);
+
 }

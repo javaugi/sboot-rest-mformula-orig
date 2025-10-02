@@ -10,42 +10,45 @@ import java.util.Map;
 
 public class CoffeeMug extends Product {
 
-    Integer size;
-    String color;
-    private Map<String, String[]> variants;
+	Integer size;
 
-    public Integer getSize() {
-        return size;
-    }
+	String color;
 
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+	private Map<String, String[]> variants;
 
-    public String getColor() {
-        return color;
-    }
+	public Integer getSize() {
+		return size;
+	}
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+	public void setSize(Integer size) {
+		this.size = size;
+	}
 
-    @Override
-    public Map<String, String[]> getVariants() {
-        if (variants == null) {
-            variants = new HashMap<>();
-        }
-        if (size != null) {
-            variants.put("size", java.util.List.of(size.toString()).toArray(new String[1]));
-        }
-        if (color != null) {
-            variants.put("color", java.util.List.of(color).toArray(new String[1]));
-        }
-        return variants;
-    }
+	public String getColor() {
+		return color;
+	}
 
-    @Override
-    public void setVariants(Map<String, String[]> variants) {
-        this.variants = variants;
-    }
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	@Override
+	public Map<String, String[]> getVariants() {
+		if (variants == null) {
+			variants = new HashMap<>();
+		}
+		if (size != null) {
+			variants.put("size", java.util.List.of(size.toString()).toArray(new String[1]));
+		}
+		if (color != null) {
+			variants.put("color", java.util.List.of(color).toArray(new String[1]));
+		}
+		return variants;
+	}
+
+	@Override
+	public void setVariants(Map<String, String[]> variants) {
+		this.variants = variants;
+	}
+
 }

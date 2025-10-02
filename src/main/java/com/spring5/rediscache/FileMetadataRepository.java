@@ -14,4 +14,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface FileMetadataRepository extends JpaRepository<MedicalFileMetadata, Long> {
+
 }

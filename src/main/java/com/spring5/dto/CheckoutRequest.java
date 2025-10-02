@@ -9,23 +9,25 @@ import com.spring5.entity.shoppingcart.PaymentInfo;
 
 public class CheckoutRequest {
 
-    private CustomerInfo customerInfo;
-    private PaymentInfo paymentInfo;
+	private CustomerInfo customerInfo;
 
-    // Getters and Setters
-    public CustomerInfo getCustomerInfo() {
-        return customerInfo;
-    }
+	private PaymentInfo paymentInfo;
 
-    public void setCustomerInfo(CustomerInfo customerInfo) {
-        this.customerInfo = customerInfo;
-    }
+	// Getters and Setters
+	public CustomerInfo getCustomerInfo() {
+		return customerInfo;
+	}
 
-    public PaymentInfo getPaymentInfo() {
-        return paymentInfo;
-    }
+	public void setCustomerInfo(CustomerInfo customerInfo) {
+		this.customerInfo = customerInfo;
+	}
 
-    public void setPaymentInfo(PaymentInfo paymentInfo) {
-        this.paymentInfo = paymentInfo;
-    }
+	public PaymentInfo getPaymentInfo() {
+		return paymentInfo;
+	}
+
+	public void setPaymentInfo(PaymentInfo paymentInfo) {
+		this.paymentInfo = paymentInfo;
+	}
+
 }

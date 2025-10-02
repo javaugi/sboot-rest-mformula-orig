@@ -9,5 +9,6 @@ package com.interview.hrank;
  */
 public interface PerformOperation {
 
-    boolean check(int a);
+	boolean check(int a);
+
 }

@@ -9,14 +9,14 @@ package com.patterns.creational.builder;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Item {
 
-    String name();
+	String name();
 
-    Packing packing();
+	Packing packing();
 
-    float price();
+	float price();
+
 }

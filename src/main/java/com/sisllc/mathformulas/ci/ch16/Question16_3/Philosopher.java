@@ -4,66 +4,72 @@ import com.sisllc.mathformulas.ci.lib.AssortedMethods;
 
 public class Philosopher extends Thread {
 
-    private final int maxPause = 100;
-    private int bites = 10;
+	private final int maxPause = 100;
 
-    private Chopstick left;
-    private Chopstick right;
-    private int index;
+	private int bites = 10;
 
-    public Philosopher(int i, Chopstick left, Chopstick right) {
-        index = i;
-        this.left = left;
-        this.right = right;
-    }
+	private Chopstick left;
 
-    public void eat() {
-        System.out.println("Philosopher " + index + ": start eating");
-        if (pickUp()) {
-            chew();
-            putDown();
-            System.out.println("Philosopher " + index + ": done eating");
-        } else {
-            System.out.println("Philosopher " + index + ": gave up on eating");
-        }
-    }
+	private Chopstick right;
 
-    public boolean pickUp() {
-        pause();
-        if (!left.pickUp()) {
-            return false;
-        }
-        pause();
-        if (!right.pickUp()) {
-            left.putDown();
-            return false;
-        }
-        pause();
-        return true;
-    }
+	private int index;
 
-    public void chew() {
-        System.out.println("Philosopher " + index + ": eating");
-        pause();
-    }
+	public Philosopher(int i, Chopstick left, Chopstick right) {
+		index = i;
+		this.left = left;
+		this.right = right;
+	}
 
-    public void pause() {
-        try {
-            int pause = AssortedMethods.randomIntInRange(0, maxPause);
-            Thread.sleep(pause);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+	public void eat() {
+		System.out.println("Philosopher " + index + ": start eating");
+		if (pickUp()) {
+			chew();
+			putDown();
+			System.out.println("Philosopher " + index + ": done eating");
+		}
+		else {
+			System.out.println("Philosopher " + index + ": gave up on eating");
+		}
+	}
 
-    public void putDown() {
-        left.putDown();
-        right.putDown();
-    }
+	public boolean pickUp() {
+		pause();
+		if (!left.pickUp()) {
+			return false;
+		}
+		pause();
+		if (!right.pickUp()) {
+			left.putDown();
+			return false;
+		}
+		pause();
+		return true;
+	}
 
-    public void run() {
-        for (int i = 0; i < bites; i++) {
-            eat();
-        }
-    }
+	public void chew() {
+		System.out.println("Philosopher " + index + ": eating");
+		pause();
+	}
+
+	public void pause() {
+		try {
+			int pause = AssortedMethods.randomIntInRange(0, maxPause);
+			Thread.sleep(pause);
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void putDown() {
+		left.putDown();
+		right.putDown();
+	}
+
+	public void run() {
+		for (int i = 0; i < bites; i++) {
+			eat();
+		}
+	}
+
 }

@@ -22,41 +22,44 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MultiDBTransactionOrderService {
 
-    private final AuditOrderRepository orderRepository;
-    private final ProductRepository productRepository;
-    private final InventoryRepository inventoryRepository;
-    private final PaymentRepository paymentRepository;
+	private final AuditOrderRepository orderRepository;
 
-    @Transactional
-    public AuditOrder processOrder(OrderRequest request) {
-        // 1. Check inventory
-        // Inventory inventory  = inventoryRepository.findById(request.getItemId()).get()
-        Inventory inventory
-                = inventoryRepository
-                        .findById(request.getItemId())
-                        .orElseThrow(() -> new InventoryException("Item not found"));
+	private final ProductRepository productRepository;
 
-        if (inventory.getQuantity() < request.getQuantity()) {
-            throw new InventoryException("Not enough stock");
-        }
+	private final InventoryRepository inventoryRepository;
 
-        // 2. Process payment
-        Payment payment = null; // paymentRepository.processPayment(request.getPaymentDetails())
-        // .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
-        // .orElseThrow(() -> new PaymentException("Payment not found"));
+	private final PaymentRepository paymentRepository;
 
-        if (payment == null || !payment.isSuccess()) {
-            throw new PaymentException("Payment failed");
-        }
+	@Transactional
+	public AuditOrder processOrder(OrderRequest request) {
+		// 1. Check inventory
+		// Inventory inventory = inventoryRepository.findById(request.getItemId()).get()
+		Inventory inventory = inventoryRepository.findById(request.getItemId())
+			.orElseThrow(() -> new InventoryException("Item not found"));
 
-        // 3. Create order
-        AuditOrder order = new AuditOrder(request);
-        orderRepository.save(order);
+		if (inventory.getQuantity() < request.getQuantity()) {
+			throw new InventoryException("Not enough stock");
+		}
 
-        // 4. Update inventory
-        inventory.setQuantity(inventory.getQuantity() - request.getQuantity());
-        inventoryRepository.save(inventory);
+		// 2. Process payment
+		Payment payment = null; // paymentRepository.processPayment(request.getPaymentDetails())
+		// .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment
+		// not found"));
+		// .orElseThrow(() -> new PaymentException("Payment not found"));
 
-        return order;
-    }
+		if (payment == null || !payment.isSuccess()) {
+			throw new PaymentException("Payment failed");
+		}
+
+		// 3. Create order
+		AuditOrder order = new AuditOrder(request);
+		orderRepository.save(order);
+
+		// 4. Update inventory
+		inventory.setQuantity(inventory.getQuantity() - request.getQuantity());
+		inventoryRepository.save(inventory);
+
+		return order;
+	}
+
 }

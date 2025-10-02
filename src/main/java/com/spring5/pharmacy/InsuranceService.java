@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class InsuranceService {
 
-    public void revertCoverageCheck(String prescriptionId) {
-    }
+	public void revertCoverageCheck(String prescriptionId) {
+	}
 
-    public InsuranceResponse checkCoverage(String medication, String insruanceId) {
-        return null;
-    }
+	public InsuranceResponse checkCoverage(String medication, String insruanceId) {
+		return null;
+	}
+
 }

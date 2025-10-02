@@ -15,175 +15,176 @@ import javax.crypto.spec.*;
 
 public class MilitaryAuditLogger {
 
-    private final BlockingQueue<AuditEntry> logQueue = new LinkedBlockingQueue<>();
-    private final ExecutorService logExecutor = Executors.newSingleThreadExecutor();
-    private final Path logDirectory;
-    private final Cipher cipher;
-    private final SecretKeySpec secretKey;
+	private final BlockingQueue<AuditEntry> logQueue = new LinkedBlockingQueue<>();
 
-    private static final String LOG_PREFIX = "DMS"; // Defense Military System
-    private static final String LOG_EXT = ".enc";
-    private static final int MAX_LOG_SIZE = 10 * 1024 * 1024; // 10MB per file
+	private final ExecutorService logExecutor = Executors.newSingleThreadExecutor();
 
-    public MilitaryAuditLogger(String baseDir) throws GeneralSecurityException, IOException {
-        this.logDirectory = Paths.get(baseDir, "secure_logs");
-        Files.createDirectories(logDirectory);
+	private final Path logDirectory;
 
-        // Set military-grade encryption
-        this.cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        this.secretKey
-                = new SecretKeySpec(
-                        "DefenseLoggingKey123".getBytes(), "AES"); // In production, use HSM-managed key
+	private final Cipher cipher;
 
-        startLogProcessor();
-        Runtime.getRuntime().addShutdownHook(new Thread(this::flushOnShutdown));
-    }
+	private final SecretKeySpec secretKey;
 
-    public void logSecurityEvent(String eventType, String message, String userId) {
-        AuditEntry entry
-                = new AuditEntry(
-                        Instant.now(),
-                        eventType,
-                        message,
-                        userId,
-                        Thread.currentThread().getName(),
-                        getCallerClass());
+	private static final String LOG_PREFIX = "DMS"; // Defense Military System
 
-        if (!logQueue.offer(entry)) {
-            // Emergency fallback logging
-            System.err.println("CRITICAL: Audit log queue overflow - " + entry);
-        }
-    }
+	private static final String LOG_EXT = ".enc";
 
-    private void startLogProcessor() {
-        logExecutor.submit(
-                () -> {
-                    Path currentLogFile = null;
-                    OutputStream currentOutput = null;
+	private static final int MAX_LOG_SIZE = 10 * 1024 * 1024; // 10MB per file
 
-                    try {
-                        while (!Thread.currentThread().isInterrupted()) {
-                            AuditEntry entry = logQueue.poll(100, TimeUnit.MILLISECONDS);
+	public MilitaryAuditLogger(String baseDir) throws GeneralSecurityException, IOException {
+		this.logDirectory = Paths.get(baseDir, "secure_logs");
+		Files.createDirectories(logDirectory);
 
-                            if (entry != null) {
-                                // Rotate log file if needed
-                                if (currentLogFile == null
-                                        || (currentOutput != null && Files.size(currentLogFile) > MAX_LOG_SIZE)) {
+		// Set military-grade encryption
+		this.cipher = Cipher.getInstance("AES/GCM/NoPadding");
+		this.secretKey = new SecretKeySpec("DefenseLoggingKey123".getBytes(), "AES"); // In
+																						// production,
+																						// use
+																						// HSM-managed
+																						// key
 
-                                    if (currentOutput != null) {
-                                        currentOutput.close();
-                                    }
+		startLogProcessor();
+		Runtime.getRuntime().addShutdownHook(new Thread(this::flushOnShutdown));
+	}
 
-                                    currentLogFile = getNewLogFile();
-                                    currentOutput = getEncryptedOutput(currentLogFile);
-                                }
+	public void logSecurityEvent(String eventType, String message, String userId) {
+		AuditEntry entry = new AuditEntry(Instant.now(), eventType, message, userId, Thread.currentThread().getName(),
+				getCallerClass());
 
-                                // Write encrypted log entry
-                                byte[] logData = entry.toString().getBytes();
-                                byte[] encrypted = encryptLogEntry(logData);
+		if (!logQueue.offer(entry)) {
+			// Emergency fallback logging
+			System.err.println("CRITICAL: Audit log queue overflow - " + entry);
+		}
+	}
 
-                                currentOutput.write(encrypted);
-                                currentOutput.write('\n');
-                                currentOutput.flush();
-                            }
-                        }
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    } catch (Exception e) {
-                        // Critical failure handling
-                    } finally {
-                        try {
-                            if (currentOutput != null) {
-                                currentOutput.close();
-                            }
-                        } catch (IOException e) {
-                            // Handle
-                        }
-                    }
-                });
-    }
+	private void startLogProcessor() {
+		logExecutor.submit(() -> {
+			Path currentLogFile = null;
+			OutputStream currentOutput = null;
 
-    private byte[] encryptLogEntry(byte[] data) throws GeneralSecurityException {
-        byte[] iv = new byte[12]; // 96-bit IV
-        new SecureRandom().nextBytes(iv);
+			try {
+				while (!Thread.currentThread().isInterrupted()) {
+					AuditEntry entry = logQueue.poll(100, TimeUnit.MILLISECONDS);
 
-        GCMParameterSpec ivSpec = new GCMParameterSpec(128, iv);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
+					if (entry != null) {
+						// Rotate log file if needed
+						if (currentLogFile == null
+								|| (currentOutput != null && Files.size(currentLogFile) > MAX_LOG_SIZE)) {
 
-        byte[] encrypted = cipher.doFinal(data);
+							if (currentOutput != null) {
+								currentOutput.close();
+							}
 
-        // Prepend IV to encrypted data
-        byte[] result = new byte[iv.length + encrypted.length];
-        System.arraycopy(iv, 0, result, 0, iv.length);
-        System.arraycopy(encrypted, 0, result, iv.length, encrypted.length);
+							currentLogFile = getNewLogFile();
+							currentOutput = getEncryptedOutput(currentLogFile);
+						}
 
-        return result;
-    }
+						// Write encrypted log entry
+						byte[] logData = entry.toString().getBytes();
+						byte[] encrypted = encryptLogEntry(logData);
 
-    private Path getNewLogFile() throws IOException {
-        String timestamp = Instant.now().toString().replace(":", "");
-        return Files.createFile(logDirectory.resolve(LOG_PREFIX + timestamp + LOG_EXT));
-    }
+						currentOutput.write(encrypted);
+						currentOutput.write('\n');
+						currentOutput.flush();
+					}
+				}
+			}
+			catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			catch (Exception e) {
+				// Critical failure handling
+			}
+			finally {
+				try {
+					if (currentOutput != null) {
+						currentOutput.close();
+					}
+				}
+				catch (IOException e) {
+					// Handle
+				}
+			}
+		});
+	}
 
-    private OutputStream getEncryptedOutput(Path file) throws IOException {
-        return Files.newOutputStream(file, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-    }
+	private byte[] encryptLogEntry(byte[] data) throws GeneralSecurityException {
+		byte[] iv = new byte[12]; // 96-bit IV
+		new SecureRandom().nextBytes(iv);
 
-    private void flushOnShutdown() {
-        logExecutor.shutdown();
-        try {
-            if (!logExecutor.awaitTermination(10, TimeUnit.SECONDS)) {
-                logExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            logExecutor.shutdownNow();
-        }
-    }
+		GCMParameterSpec ivSpec = new GCMParameterSpec(128, iv);
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
 
-    private String getCallerClass() {
-        // Implementation would use StackWalker in Java 9+
-        return Arrays.stream(Thread.currentThread().getStackTrace())
-                .skip(3)
-                .findFirst()
-                .map(StackTraceElement::getClassName)
-                .orElse("UNKNOWN");
-    }
+		byte[] encrypted = cipher.doFinal(data);
 
-    private static class AuditEntry {
+		// Prepend IV to encrypted data
+		byte[] result = new byte[iv.length + encrypted.length];
+		System.arraycopy(iv, 0, result, 0, iv.length);
+		System.arraycopy(encrypted, 0, result, iv.length, encrypted.length);
 
-        private final Instant timestamp;
-        private final String eventType;
-        private final String message;
-        private final String userId;
-        private final String threadName;
-        private final String sourceClass;
+		return result;
+	}
 
-        public AuditEntry(
-                Instant timestamp,
-                String eventType,
-                String message,
-                String userId,
-                String threadName,
-                String sourceClass) {
-            this.timestamp = timestamp;
-            this.eventType = eventType;
-            this.message = message;
-            this.userId = userId;
-            this.threadName = threadName;
-            this.sourceClass = sourceClass;
-        }
+	private Path getNewLogFile() throws IOException {
+		String timestamp = Instant.now().toString().replace(":", "");
+		return Files.createFile(logDirectory.resolve(LOG_PREFIX + timestamp + LOG_EXT));
+	}
 
-        @Override
-        public String toString() {
-            return String.format(
-                    "%s|%s|%s|%s|%s|%s|%s",
-                    LOG_PREFIX,
-                    timestamp.toString(),
-                    eventType,
-                    userId,
-                    threadName,
-                    sourceClass,
-                    message.replace("|", "\\|"));
-        }
-    }
+	private OutputStream getEncryptedOutput(Path file) throws IOException {
+		return Files.newOutputStream(file, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+	}
+
+	private void flushOnShutdown() {
+		logExecutor.shutdown();
+		try {
+			if (!logExecutor.awaitTermination(10, TimeUnit.SECONDS)) {
+				logExecutor.shutdownNow();
+			}
+		}
+		catch (InterruptedException e) {
+			logExecutor.shutdownNow();
+		}
+	}
+
+	private String getCallerClass() {
+		// Implementation would use StackWalker in Java 9+
+		return Arrays.stream(Thread.currentThread().getStackTrace())
+			.skip(3)
+			.findFirst()
+			.map(StackTraceElement::getClassName)
+			.orElse("UNKNOWN");
+	}
+
+	private static class AuditEntry {
+
+		private final Instant timestamp;
+
+		private final String eventType;
+
+		private final String message;
+
+		private final String userId;
+
+		private final String threadName;
+
+		private final String sourceClass;
+
+		public AuditEntry(Instant timestamp, String eventType, String message, String userId, String threadName,
+				String sourceClass) {
+			this.timestamp = timestamp;
+			this.eventType = eventType;
+			this.message = message;
+			this.userId = userId;
+			this.threadName = threadName;
+			this.sourceClass = sourceClass;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s|%s|%s|%s|%s|%s|%s", LOG_PREFIX, timestamp.toString(), eventType, userId,
+					threadName, sourceClass, message.replace("|", "\\|"));
+		}
+
+	}
+
 }

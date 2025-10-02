@@ -12,20 +12,20 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class CriteriaFemale implements Criteria {
 
-    @Override
-    public List<Person> meetCriteria(List<Person> persons) {
-        List<Person> femalePersons = new ArrayList<Person>();
+	@Override
+	public List<Person> meetCriteria(List<Person> persons) {
+		List<Person> femalePersons = new ArrayList<Person>();
 
-        for (Person person : persons) {
-            if (person.getGender().equalsIgnoreCase("FEMALE")) {
-                femalePersons.add(person);
-            }
-        }
-        return femalePersons;
-    }
+		for (Person person : persons) {
+			if (person.getGender().equalsIgnoreCase("FEMALE")) {
+				femalePersons.add(person);
+			}
+		}
+		return femalePersons;
+	}
+
 }

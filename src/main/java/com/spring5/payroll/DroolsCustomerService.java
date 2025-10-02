@@ -15,32 +15,33 @@ import org.springframework.boot.CommandLineRunner;
 @org.springframework.core.annotation.Order(13)
 public class DroolsCustomerService implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(DroolsCustomerService.class);
+	private static final Logger log = LoggerFactory.getLogger(DroolsCustomerService.class);
 
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("DroolsCustomerService ");
-        main(args);
-    }
+	@Override
+	public void run(String... args) throws Exception {
+		log.info("DroolsCustomerService ");
+		main(args);
+	}
 
-    public static void main(String[] args) {
-        Customer customer = new Customer("Alice", "VIP", 1500.0);
+	public static void main(String[] args) {
+		Customer customer = new Customer("Alice", "VIP", 1500.0);
 
-        applyDroolsToCustomer(customer);
-    }
+		applyDroolsToCustomer(customer);
+	}
 
-    private static void applyDroolsToCustomer(Customer customer) {
-        if (customer == null) {
-            customer = new Customer("Alice", "VIP", 1500.0);
-        }
-        KieServices ks = KieServices.Factory.get();
-        KieContainer kc = ks.getKieClasspathContainer();
-        KieSession ksession = kc.newKieSession("ksession-rules");
+	private static void applyDroolsToCustomer(Customer customer) {
+		if (customer == null) {
+			customer = new Customer("Alice", "VIP", 1500.0);
+		}
+		KieServices ks = KieServices.Factory.get();
+		KieContainer kc = ks.getKieClasspathContainer();
+		KieSession ksession = kc.newKieSession("ksession-rules");
 
-        ksession.insert(customer);
-        ksession.fireAllRules();
-        ksession.dispose();
+		ksession.insert(customer);
+		ksession.fireAllRules();
+		ksession.dispose();
 
-        System.out.println("Final discount: " + customer.getDiscount());
-    }
+		System.out.println("Final discount: " + customer.getDiscount());
+	}
+
 }

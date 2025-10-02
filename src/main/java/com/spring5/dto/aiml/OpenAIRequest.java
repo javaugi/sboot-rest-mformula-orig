@@ -17,17 +17,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OpenAIRequest {
 
-    private String model; // e.g., "deepseek-chat"
-    private List<Message> messages;
-    private double temperature; // (Optional) Default: 0.7
-    private int max_tokens; // (Optional) Default: 512
+	private String model; // e.g., "deepseek-chat"
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Message {
+	private List<Message> messages;
 
-        private String role; // "user" or "assistant"
-        private String content;
-    }
+	private double temperature; // (Optional) Default: 0.7
+
+	private int max_tokens; // (Optional) Default: 512
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Message {
+
+		private String role; // "user" or "assistant"
+
+		private String content;
+
+	}
+
 }

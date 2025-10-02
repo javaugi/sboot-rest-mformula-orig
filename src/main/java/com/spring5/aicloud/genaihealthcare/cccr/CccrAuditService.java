@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CccrAuditService {
 
-    @Async // <-- Runs in a separate thread
-    @EventListener
-    public void handleClaimReviewedEvent(ClaimReviewedEvent event) {
-        // auditRepository.logEvent(event.getClaim(), event.getResult(), "REVIEW_COMPLETE");
-        // This can be slower without impacting the main workflow
-    }
+	@Async // <-- Runs in a separate thread
+	@EventListener
+	public void handleClaimReviewedEvent(ClaimReviewedEvent event) {
+		// auditRepository.logEvent(event.getClaim(), event.getResult(),
+		// "REVIEW_COMPLETE");
+		// This can be slower without impacting the main workflow
+	}
+
 }

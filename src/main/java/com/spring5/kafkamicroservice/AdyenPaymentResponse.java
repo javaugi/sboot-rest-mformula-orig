@@ -16,21 +16,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AdyenPaymentResponse {
 
-    private String pspReference;
-    private BigDecimal amount;
-    private boolean authorised;
-    private String refusalReason;
-    private String paymentId;
+	private String pspReference;
 
-    public AdyenPaymentResponse(String pspReference) {
-        this.pspReference = pspReference;
-    }
+	private BigDecimal amount;
 
-    public static AdyenPaymentResponse fromAdyenResponse(AdyenPaymentResponse response) {
-        return response;
-    }
+	private boolean authorised;
 
-    public static AdyenPaymentResponse pending(String paymentId) {
-        return AdyenPaymentResponse.builder().paymentId(paymentId).build();
-    }
+	private String refusalReason;
+
+	private String paymentId;
+
+	public AdyenPaymentResponse(String pspReference) {
+		this.pspReference = pspReference;
+	}
+
+	public static AdyenPaymentResponse fromAdyenResponse(AdyenPaymentResponse response) {
+		return response;
+	}
+
+	public static AdyenPaymentResponse pending(String paymentId) {
+		return AdyenPaymentResponse.builder().paymentId(paymentId).build();
+	}
+
 }

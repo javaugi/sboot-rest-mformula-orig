@@ -19,83 +19,83 @@ Problem Understanding:
 @Slf4j
 public class AssemblyLineParallelStationsWithFixedTransfer {
 
-    private static final AssemblyLineParallelStationsWithFixedTransfer main
-            = new AssemblyLineParallelStationsWithFixedTransfer();
+	private static final AssemblyLineParallelStationsWithFixedTransfer main = new AssemblyLineParallelStationsWithFixedTransfer();
 
-    public static void main(String[] args) {
-        int[] A = {5, 3, 4, 8, 9, 12, 7, 4};
-        int X = 8;
-        int[] B = {3, 7, 5, 10, 8, 3, 7, 3};
-        int Y = 4;
-        log.info("1 The solution {}", main.solution(A, B, X, Y));
-        log.info("2 The solutionOptimized {}", main.solutionOptimized(A, B, X, Y));
-        log.info("3 The solutionOptimizedMy {}", main.solutionOptimizedMy(A, B, X, Y));
-    }
+	public static void main(String[] args) {
+		int[] A = { 5, 3, 4, 8, 9, 12, 7, 4 };
+		int X = 8;
+		int[] B = { 3, 7, 5, 10, 8, 3, 7, 3 };
+		int Y = 4;
+		log.info("1 The solution {}", main.solution(A, B, X, Y));
+		log.info("2 The solutionOptimized {}", main.solutionOptimized(A, B, X, Y));
+		log.info("3 The solutionOptimizedMy {}", main.solutionOptimizedMy(A, B, X, Y));
+	}
 
-    public int solutionOptimizedMy(int[] A, int[] B, int X, int Y) {
-        if (A == null || B == null || A.length != B.length || A.length == 0) {
-            return 0;
-        }
+	public int solutionOptimizedMy(int[] A, int[] B, int X, int Y) {
+		if (A == null || B == null || A.length != B.length || A.length == 0) {
+			return 0;
+		}
 
-        int prevA = A[0];
-        int prevB = B[0];
+		int prevA = A[0];
+		int prevB = B[0];
 
-        for (int i = 1; i < A.length; i++) {
-            prevA = A[i] + Math.min(prevA, prevB + Y);
-            prevB = B[i] + Math.min(prevB, prevA + X);
-        }
+		for (int i = 1; i < A.length; i++) {
+			prevA = A[i] + Math.min(prevA, prevB + Y);
+			prevB = B[i] + Math.min(prevB, prevA + X);
+		}
 
-        log.info("solutionOptimizedMy The best A {} B {}", prevA, prevB);
-        return Math.min(prevA, prevB);
-    }
+		log.info("solutionOptimizedMy The best A {} B {}", prevA, prevB);
+		return Math.min(prevA, prevB);
+	}
 
-    public int solutionOptimized(int[] A, int[] B, int X, int Y) {
-        if (A == null || B == null || A.length != B.length || A.length == 0) {
-            return 0;
-        }
+	public int solutionOptimized(int[] A, int[] B, int X, int Y) {
+		if (A == null || B == null || A.length != B.length || A.length == 0) {
+			return 0;
+		}
 
-        int prevA = A[0];
-        int prevB = B[0];
+		int prevA = A[0];
+		int prevB = B[0];
 
-        for (int i = 1; i < A.length; i++) {
-            int currA = A[i] + Math.min(prevA, prevB + Y);
-            int currB = B[i] + Math.min(prevB, prevA + X);
+		for (int i = 1; i < A.length; i++) {
+			int currA = A[i] + Math.min(prevA, prevB + Y);
+			int currB = B[i] + Math.min(prevB, prevA + X);
 
-            prevA = currA;
-            prevB = currB;
-        }
+			prevA = currA;
+			prevB = currB;
+		}
 
-        log.info("solutionOptimized The best A {} B {}", prevA, prevB);
-        return Math.min(prevA, prevB);
-    }
+		log.info("solutionOptimized The best A {} B {}", prevA, prevB);
+		return Math.min(prevA, prevB);
+	}
 
-    public int solution(int[] A, int[] B, int X, int Y) {
-        if (A == null || B == null || A.length != B.length || A.length == 0) {
-            return 0; // or throw exception based on requirements
-        }
+	public int solution(int[] A, int[] B, int X, int Y) {
+		if (A == null || B == null || A.length != B.length || A.length == 0) {
+			return 0; // or throw exception based on requirements
+		}
 
-        int n = A.length;
-        // dpA[i] - min cost to reach station i in line A
-        // dpB[i] - min cost to reach station i in line B
-        int[] dpA = new int[n];
-        int[] dpB = new int[n];
+		int n = A.length;
+		// dpA[i] - min cost to reach station i in line A
+		// dpB[i] - min cost to reach station i in line B
+		int[] dpA = new int[n];
+		int[] dpB = new int[n];
 
-        // Base cases
-        dpA[0] = A[0]; // Start at line A
-        dpB[0] = B[0]; // Start at line B
+		// Base cases
+		dpA[0] = A[0]; // Start at line A
+		dpB[0] = B[0]; // Start at line B
 
-        for (int i = 1; i < n; i++) {
-            // Cost to reach station i in line A:
-            // Either continue on A or switch from B to A
-            dpA[i] = A[i] + Math.min(dpA[i - 1], dpB[i - 1] + Y);
+		for (int i = 1; i < n; i++) {
+			// Cost to reach station i in line A:
+			// Either continue on A or switch from B to A
+			dpA[i] = A[i] + Math.min(dpA[i - 1], dpB[i - 1] + Y);
 
-            // Cost to reach station i in line B:
-            // Either continue on B or switch from A to B
-            dpB[i] = B[i] + Math.min(dpB[i - 1], dpA[i - 1] + X);
-        }
+			// Cost to reach station i in line B:
+			// Either continue on B or switch from A to B
+			dpB[i] = B[i] + Math.min(dpB[i - 1], dpA[i - 1] + X);
+		}
 
-        // The answer is the minimum of last station in A or B
-        log.info("solutionOptimizedMy The best A {} B {}", dpA[n - 1], dpB[n - 1]);
-        return Math.min(dpA[n - 1], dpB[n - 1]);
-    }
+		// The answer is the minimum of last station in A or B
+		log.info("solutionOptimizedMy The best A {} B {}", dpA[n - 1], dpB[n - 1]);
+		return Math.min(dpA[n - 1], dpB[n - 1]);
+	}
+
 }

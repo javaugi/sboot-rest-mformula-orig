@@ -16,40 +16,35 @@ import org.springframework.graphql.test.tester.GraphQlTester;
 @GraphQlTest(GraphBookController.class)
 public class GraphBookControllerTests {
 
-    private static List<GraphAuthor> authors
-            = Arrays.asList(
-                    new GraphAuthor("author-1", "Joshua", "Bloch"),
-                    new GraphAuthor("author-2", "Douglas", "Adams"),
-                    new GraphAuthor("author-3", "Bill", "Bryson"));
-    private static List<GraphBook> books
-            = Arrays.asList(
-                    new GraphBook("book-1", "Effective Java", 416, "author-1"),
-                    new GraphBook("book-2", "Hitchhiker's Guide to the Galaxy", 208, "author-2"),
-                    new GraphBook("book-3", "Down Under", 436, "author-3"));
+	private static List<GraphAuthor> authors = Arrays.asList(new GraphAuthor("author-1", "Joshua", "Bloch"),
+			new GraphAuthor("author-2", "Douglas", "Adams"), new GraphAuthor("author-3", "Bill", "Bryson"));
 
-    // *
-    @Autowired
-    private GraphQlTester graphQlTester;
+	private static List<GraphBook> books = Arrays.asList(new GraphBook("book-1", "Effective Java", 416, "author-1"),
+			new GraphBook("book-2", "Hitchhiker's Guide to the Galaxy", 208, "author-2"),
+			new GraphBook("book-3", "Down Under", 436, "author-3"));
 
-    // @Test
-    public void shouldGetFirstBook() {
-        this.graphQlTester
-                .documentName("bookDetails")
-                .variable("id", "book-1")
-                .execute()
-                .path("bookById")
-                .matchesJson(
-                        """
-                    {
-                        "id": "book-1",
-                        "name": "Effective Java",
-                        "pageCount": 416,
-                        "author": {
-                          "firstName": "Joshua",
-                          "lastName": "Bloch"
-                        }
-                    }
-                """);
-    }
-    // */
+	// *
+	@Autowired
+	private GraphQlTester graphQlTester;
+
+	// @Test
+	public void shouldGetFirstBook() {
+		this.graphQlTester.documentName("bookDetails")
+			.variable("id", "book-1")
+			.execute()
+			.path("bookById")
+			.matchesJson("""
+					    {
+					        "id": "book-1",
+					        "name": "Effective Java",
+					        "pageCount": 416,
+					        "author": {
+					          "firstName": "Joshua",
+					          "lastName": "Bloch"
+					        }
+					    }
+					""");
+	}
+	// */
+
 }

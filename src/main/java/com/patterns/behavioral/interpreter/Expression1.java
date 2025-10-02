@@ -9,10 +9,10 @@ package com.patterns.behavioral.interpreter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Expression1 {
 
-    String interpret(InterpreterContext ic);
+	String interpret(InterpreterContext ic);
+
 }

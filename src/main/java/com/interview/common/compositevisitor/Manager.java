@@ -9,33 +9,33 @@ package com.interview.common.compositevisitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Manager extends EmployeeAbstract {
 
-    Employee employee;
-    SalaryCalculator visitor;
+	Employee employee;
 
-    private Manager(String name, double salary) {
-        super.setName(name);
-        super.setSalary(salary);
-    }
+	SalaryCalculator visitor;
 
-    public static Employee makeEmployee() {
-        double sal = 150000;
-        return new Manager("Jonh the Manager ", sal);
-    }
+	private Manager(String name, double salary) {
+		super.setName(name);
+		super.setSalary(salary);
+	}
 
-    @Override
-    public void printSalary() {
-        System.out.println(
-                "Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
-        super.printSalary();
-    }
+	public static Employee makeEmployee() {
+		double sal = 150000;
+		return new Manager("Jonh the Manager ", sal);
+	}
 
-    @Override
-    public void accept(SalaryCalculator visitor) {
-        this.visitor = visitor;
-    }
+	@Override
+	public void printSalary() {
+		System.out.println("Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
+		super.printSalary();
+	}
+
+	@Override
+	public void accept(SalaryCalculator visitor) {
+		this.visitor = visitor;
+	}
+
 }

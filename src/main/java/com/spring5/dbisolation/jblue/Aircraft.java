@@ -15,7 +15,10 @@ import lombok.Data;
 @Container(containerName = "airCrafts")
 public class Aircraft {
 
-    private String aircraftType;
-    private int capacity;
-    private int ageYears;
+	private String aircraftType;
+
+	private int capacity;
+
+	private int ageYears;
+
 }

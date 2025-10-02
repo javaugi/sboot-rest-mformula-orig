@@ -6,67 +6,72 @@ package com.interview.shoppingcart.api;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class AbstractProduct implements Product {
 
-    private String id;
-    private String name;
-    private ProductCategory productCategory;
-    private double unitPrice;
-    private double perUnit;
-    private double totalUnit;
+	private String id;
 
-    public String getId() {
-        return id;
-    }
+	private String name;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private ProductCategory productCategory;
 
-    public String getName() {
-        return name;
-    }
+	private double unitPrice;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	private double perUnit;
 
-    public ProductCategory getProductCategory() {
-        return productCategory;
-    }
+	private double totalUnit;
 
-    public void setProductCategory(ProductCategory productCategory) {
-        this.productCategory = productCategory;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public double getUnitPrice() {
-        return unitPrice;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public double getPerUnit() {
-        return perUnit;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setPerUnit(double perUnit) {
-        this.perUnit = perUnit;
-    }
+	public ProductCategory getProductCategory() {
+		return productCategory;
+	}
 
-    public double getTotalUnit() {
-        return totalUnit;
-    }
+	public void setProductCategory(ProductCategory productCategory) {
+		this.productCategory = productCategory;
+	}
 
-    public void setTotalUnit(double totalUnit) {
-        this.totalUnit = totalUnit;
-    }
+	public double getUnitPrice() {
+		return unitPrice;
+	}
 
-    public abstract double getPrice();
+	public void setUnitPrice(double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
 
-    public abstract void setPrice(double unitPrice);
+	public double getPerUnit() {
+		return perUnit;
+	}
+
+	public void setPerUnit(double perUnit) {
+		this.perUnit = perUnit;
+	}
+
+	public double getTotalUnit() {
+		return totalUnit;
+	}
+
+	public void setTotalUnit(double totalUnit) {
+		this.totalUnit = totalUnit;
+	}
+
+	public abstract double getPrice();
+
+	public abstract void setPrice(double unitPrice);
+
 }

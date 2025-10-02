@@ -14,34 +14,36 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResilientService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ResilientService.class);
-    private final Resilience4jExternalService externalService;
+	private static final Logger logger = LoggerFactory.getLogger(ResilientService.class);
 
-    public ResilientService(Resilience4jExternalService externalService) {
-        this.externalService = externalService;
-    }
+	private final Resilience4jExternalService externalService;
 
-    @CircuitBreaker(name = "externalService", fallbackMethod = "fallbackForExternalService")
-    public String performResilientOperation() {
-        logger.info("Attempting resilient operation...");
-        return externalService.callExternalSystem();
-    }
+	public ResilientService(Resilience4jExternalService externalService) {
+		this.externalService = externalService;
+	}
 
-    public String fallbackForExternalService(Throwable t) {
-        logger.warn("Executing fallback method due to: " + t.getMessage());
-        return "Fallback response: External service is currently unavailable.";
-    }
+	@CircuitBreaker(name = "externalService", fallbackMethod = "fallbackForExternalService")
+	public String performResilientOperation() {
+		logger.info("Attempting resilient operation...");
+		return externalService.callExternalSystem();
+	}
 
-    @Retry(name = "externalService")
-    public String callBackendWithRetry() {
-        if (Math.random() < 0.3) {
-            throw new RuntimeException("Retryable failure");
-        }
-        return "Call with retry successful";
-    }
+	public String fallbackForExternalService(Throwable t) {
+		logger.warn("Executing fallback method due to: " + t.getMessage());
+		return "Fallback response: External service is currently unavailable.";
+	}
 
-    @RateLimiter(name = "externalService")
-    public String callWithRateLimit() {
-        return "Call within rate limit";
-    }
+	@Retry(name = "externalService")
+	public String callBackendWithRetry() {
+		if (Math.random() < 0.3) {
+			throw new RuntimeException("Retryable failure");
+		}
+		return "Call with retry successful";
+	}
+
+	@RateLimiter(name = "externalService")
+	public String callWithRateLimit() {
+		return "Call within rate limit";
+	}
+
 }

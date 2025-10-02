@@ -11,5 +11,6 @@ import org.springframework.stereotype.Service;
 @Data
 public class StripeProperties {
 
-    private String apiKey;
+	private String apiKey;
+
 }

@@ -15,6 +15,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public final class UserAction {
 
-    private final String actionType;
-    private final long timestamp;
+	private final String actionType;
+
+	private final long timestamp;
+
 }

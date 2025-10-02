@@ -12,25 +12,26 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/claims")
 public class ClaimController {
 
-    private final ClaimService claimService;
+	private final ClaimService claimService;
 
-    public ClaimController(ClaimService claimService) {
-        this.claimService = claimService;
-    }
+	public ClaimController(ClaimService claimService) {
+		this.claimService = claimService;
+	}
 
-    @PostMapping
-    public ResponseEntity<Claim> ingest(@Valid @RequestBody Claim claim) {
-        Claim saved = claimService.ingestClaim(claim);
-        return ResponseEntity.ok(saved);
-    }
+	@PostMapping
+	public ResponseEntity<Claim> ingest(@Valid @RequestBody Claim claim) {
+		Claim saved = claimService.ingestClaim(claim);
+		return ResponseEntity.ok(saved);
+	}
 
-    @PostMapping("/process")
-    public ResponseEntity<ProcessResult> processClaim(@RequestBody Claim claim) {
-        return ResponseEntity.ok(claimService.processClaim(claim));
-    }
+	@PostMapping("/process")
+	public ResponseEntity<ProcessResult> processClaim(@RequestBody Claim claim) {
+		return ResponseEntity.ok(claimService.processClaim(claim));
+	}
 
-    @GetMapping("/stats/{providerId}")
-    public ResponseEntity<ProviderStats> getProviderStats(@PathVariable String providerId) {
-        return ResponseEntity.ok(claimService.getProviderStatistics(providerId));
-    }
+	@GetMapping("/stats/{providerId}")
+	public ResponseEntity<ProviderStats> getProviderStats(@PathVariable String providerId) {
+		return ResponseEntity.ok(claimService.getProviderStatistics(providerId));
+	}
+
 }

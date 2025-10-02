@@ -12,13 +12,12 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
-    public Optional<Claim> findByExternalId(String externalId);
+	public Optional<Claim> findByExternalId(String externalId);
 
-    @Query(
-            "select c from Claim c where c.patientId = :patientId and c.claimType = :claimType "
-            + "and c.claimDate between :from and :to")
-    public List<Claim> findByPatientAndTypeBetween(
-            String patientId, String claimType, LocalDate from, LocalDate to);
+	@Query("select c from Claim c where c.patientId = :patientId and c.claimType = :claimType "
+			+ "and c.claimDate between :from and :to")
+	public List<Claim> findByPatientAndTypeBetween(String patientId, String claimType, LocalDate from, LocalDate to);
 
-    public List<Claim> findByEncounterId(String encounterId);
+	public List<Claim> findByEncounterId(String encounterId);
+
 }

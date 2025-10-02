@@ -6,7 +6,8 @@ package com.interview.cls.veh;
 
 public final class Coupe extends Car {
 
-    public Coupe(String manufacturer) {
-        super(manufacturer);
-    }
+	public Coupe(String manufacturer) {
+		super(manufacturer);
+	}
+
 }

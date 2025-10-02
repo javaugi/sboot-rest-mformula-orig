@@ -9,12 +9,12 @@ package com.patterns.misc.interceptingfilter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class TargetHandler {
 
-    public void execute(String request) {
-        System.out.println("Executing request: " + request);
-    }
+	public void execute(String request) {
+		System.out.println("Executing request: " + request);
+	}
+
 }

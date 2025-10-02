@@ -9,7 +9,8 @@ package com.spring5.dbisolation.jblue;
  */
 public interface IdempotencyStore {
 
-    boolean isProcessed(String eventId);
+	boolean isProcessed(String eventId);
 
-    void markProcessed(String eventId);
+	void markProcessed(String eventId);
+
 }

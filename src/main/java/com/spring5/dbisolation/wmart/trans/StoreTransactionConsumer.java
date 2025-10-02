@@ -24,90 +24,77 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StoreTransactionConsumer {
 
-    private final Map<Integer, Queue<StoreTransaction>> partitionQueues = new ConcurrentHashMap<>();
-    private final ExecutorService partitionProcessors;
+	private final Map<Integer, Queue<StoreTransaction>> partitionQueues = new ConcurrentHashMap<>();
 
-    public StoreTransactionConsumer() {
-        // Create a dedicated thread pool for partition processing
-        this.partitionProcessors = Executors.newFixedThreadPool(10);
-    }
+	private final ExecutorService partitionProcessors;
 
-    @KafkaListener(topics = "store-transactions", groupId = "store-processor")
-    public void consumeBatch(
-            List<ConsumerRecord<String, StoreTransaction>> records, Acknowledgment ack) {
+	public StoreTransactionConsumer() {
+		// Create a dedicated thread pool for partition processing
+		this.partitionProcessors = Executors.newFixedThreadPool(10);
+	}
 
-        // Group records by partition for ordered processing
-        Map<Integer, List<ConsumerRecord<String, StoreTransaction>>> recordsByPartition
-                = records.stream().collect(Collectors.groupingBy(ConsumerRecord::partition));
+	@KafkaListener(topics = "store-transactions", groupId = "store-processor")
+	public void consumeBatch(List<ConsumerRecord<String, StoreTransaction>> records, Acknowledgment ack) {
 
-        List<CompletableFuture<Void>> processingFutures = new ArrayList<>();
+		// Group records by partition for ordered processing
+		Map<Integer, List<ConsumerRecord<String, StoreTransaction>>> recordsByPartition = records.stream()
+			.collect(Collectors.groupingBy(ConsumerRecord::partition));
 
-        // Process each partition's records sequentially but partitions in parallel
-        for (Map.Entry<Integer, List<ConsumerRecord<String, StoreTransaction>>> entry
-                : recordsByPartition.entrySet()) {
+		List<CompletableFuture<Void>> processingFutures = new ArrayList<>();
 
-            int partition = entry.getKey();
-            List<ConsumerRecord<String, StoreTransaction>> partitionRecords = entry.getValue();
+		// Process each partition's records sequentially but partitions in parallel
+		for (Map.Entry<Integer, List<ConsumerRecord<String, StoreTransaction>>> entry : recordsByPartition.entrySet()) {
 
-            CompletableFuture<Void> future
-                    = CompletableFuture.runAsync(
-                            () -> {
-                                processPartitionRecords(partition, partitionRecords);
-                            },
-                            partitionProcessors);
+			int partition = entry.getKey();
+			List<ConsumerRecord<String, StoreTransaction>> partitionRecords = entry.getValue();
 
-            processingFutures.add(future);
-        }
+			CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+				processPartitionRecords(partition, partitionRecords);
+			}, partitionProcessors);
 
-        // Wait for all partition processing to complete
-        CompletableFuture.allOf(processingFutures.toArray(new CompletableFuture[0]))
-                .thenRun(
-                        () -> {
-                            ack.acknowledge(); // Manual commit after successful processing
-                            log.info(
-                                    "Processed {} records across {} partitions",
-                                    records.size(),
-                                    recordsByPartition.size());
-                        })
-                .exceptionally(
-                        ex -> {
-                            log.error("Failed to process batch", ex);
-                            return null;
-                        });
-    }
+			processingFutures.add(future);
+		}
 
-    private void processPartitionRecords(
-            int partition, List<ConsumerRecord<String, StoreTransaction>> records) {
-        // Sort by offset to maintain order within partition
-        records.sort(Comparator.comparing(ConsumerRecord::offset));
+		// Wait for all partition processing to complete
+		CompletableFuture.allOf(processingFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
+			ack.acknowledge(); // Manual commit after successful processing
+			log.info("Processed {} records across {} partitions", records.size(), recordsByPartition.size());
+		}).exceptionally(ex -> {
+			log.error("Failed to process batch", ex);
+			return null;
+		});
+	}
 
-        for (ConsumerRecord<String, StoreTransaction> record : records) {
-            try {
-                processSingleRecord(record);
-            } catch (Exception e) {
-                log.error(
-                        "Failed to process record from partition {} offset {}", partition, record.offset(), e);
-                // Continue with next record to avoid blocking entire partition
-            }
-        }
-    }
+	private void processPartitionRecords(int partition, List<ConsumerRecord<String, StoreTransaction>> records) {
+		// Sort by offset to maintain order within partition
+		records.sort(Comparator.comparing(ConsumerRecord::offset));
 
-    private void processSingleRecord(ConsumerRecord<String, StoreTransaction> record) {
-        StoreTransaction transaction = record.value();
-        String storeId = transaction.getStoreId();
+		for (ConsumerRecord<String, StoreTransaction> record : records) {
+			try {
+				processSingleRecord(record);
+			}
+			catch (Exception e) {
+				log.error("Failed to process record from partition {} offset {}", partition, record.offset(), e);
+				// Continue with next record to avoid blocking entire partition
+			}
+		}
+	}
 
-        log.debug(
-                "Processing transaction for store: {} from partition: {} offset: {}",
-                storeId,
-                record.partition(),
-                record.offset());
+	private void processSingleRecord(ConsumerRecord<String, StoreTransaction> record) {
+		StoreTransaction transaction = record.value();
+		String storeId = transaction.getStoreId();
 
-        // Store-specific business logic here
-        processStoreTransaction(storeId, transaction);
-    }
+		log.debug("Processing transaction for store: {} from partition: {} offset: {}", storeId, record.partition(),
+				record.offset());
 
-    private void processStoreTransaction(String storeId, StoreTransaction transaction) {
-        // Implement store-specific processing logic
-        // This maintains ordering per store since same store always goes to same partition
-    }
+		// Store-specific business logic here
+		processStoreTransaction(storeId, transaction);
+	}
+
+	private void processStoreTransaction(String storeId, StoreTransaction transaction) {
+		// Implement store-specific processing logic
+		// This maintains ordering per store since same store always goes to same
+		// partition
+	}
+
 }

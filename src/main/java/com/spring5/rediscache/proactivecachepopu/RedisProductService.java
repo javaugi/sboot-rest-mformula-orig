@@ -14,17 +14,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RedisProductService {
 
-    private final ProductRepository productRepository;
-    private final ApplicationEventPublisher eventPublisher;
+	private final ProductRepository productRepository;
 
-    public Product updateProduct(Long id, Product updated) {
-        Product product = productRepository.findById(id).orElseThrow();
-        product.setName(updated.getName());
-        product.setPrice(updated.getPrice());
-        productRepository.save(product);
+	private final ApplicationEventPublisher eventPublisher;
 
-        // Proactive Cache Trigger
-        eventPublisher.publishEvent(new ProductCacheUpdateEvent(this, product.getId()));
-        return product;
-    }
+	public Product updateProduct(Long id, Product updated) {
+		Product product = productRepository.findById(id).orElseThrow();
+		product.setName(updated.getName());
+		product.setPrice(updated.getPrice());
+		productRepository.save(product);
+
+		// Proactive Cache Trigger
+		eventPublisher.publishEvent(new ProductCacheUpdateEvent(this, product.getId()));
+		return product;
+	}
+
 }

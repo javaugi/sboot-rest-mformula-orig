@@ -11,5 +11,6 @@ import org.springframework.stereotype.Service;
 // @AiService
 public interface AiAssistant {
 
-    String chat(String message);
+	String chat(String message);
+
 }

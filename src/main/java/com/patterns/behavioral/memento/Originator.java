@@ -9,26 +9,26 @@ package com.patterns.behavioral.memento;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Originator {
 
-    private String state;
+	private String state;
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    public String getState() {
-        return state;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public Memento saveStateToMemento() {
-        return new Memento(state);
-    }
+	public Memento saveStateToMemento() {
+		return new Memento(state);
+	}
 
-    public void getStateFromMemento(Memento memento) {
-        state = memento.getState();
-    }
+	public void getStateFromMemento(Memento memento) {
+		state = memento.getState();
+	}
+
 }

@@ -9,16 +9,16 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class Shape {
 
-    protected DrawApiBridge drawAPI;
+	protected DrawApiBridge drawAPI;
 
-    protected Shape(DrawApiBridge drawAPI) {
-        this.drawAPI = drawAPI;
-    }
+	protected Shape(DrawApiBridge drawAPI) {
+		this.drawAPI = drawAPI;
+	}
 
-    public abstract void draw();
+	public abstract void draw();
+
 }

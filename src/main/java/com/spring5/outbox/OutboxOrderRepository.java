@@ -7,4 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface OutboxOrderRepository extends JpaRepository<OutboxOrder, Long> {
+
 }

@@ -13,69 +13,33 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/nlp")
 public class NLPController {
 
-    @Autowired
-    private NLPService nlpService;
+	@Autowired
+	private NLPService nlpService;
 
-    @PostMapping("/process")
-    public Mono<Bundle> processText(@RequestBody ClinicalTextRequest request) {
-        return nlpService.processText(request.getText()).map(FHIRConverter::toFHIRBundle);
-    }
+	@PostMapping("/process")
+	public Mono<Bundle> processText(@RequestBody ClinicalTextRequest request) {
+		return nlpService.processText(request.getText()).map(FHIRConverter::toFHIRBundle);
+	}
+
 }
 /*
-7. Sample Request
-
-POST http://localhost:8080/api/nlp/process
-
-{
-  "text": "Patient John Doe, ID 12345, diagnosed with Diabetes on 2025-09-14. Prescribed Metformin 500mg daily."
-}
-
-8. Sample FHIR JSON Response
-{
-  "resourceType": "Bundle",
-  "type": "collection",
-  "entry": [
-    {
-      "resource": {
-        "resourceType": "Patient",
-        "id": "12345",
-        "identifier": [
-          {
-            "system": "http://hospital.org/patients",
-            "value": "12345"
-          }
-        ],
-        "name": [
-          {
-            "family": "Doe",
-            "given": ["John"]
-          }
-        ]
-      }
-    },
-    {
-      "resource": {
-        "resourceType": "Condition",
-        "id": "cond-12345",
-        "subject": { "reference": "Patient/12345" },
-        "code": {
-          "coding": [
-            {
-              "system": "http://snomed.info/sct",
-              "code": "44054006",
-              "display": "Diabetes"
-            }
-          ]
-        },
-        "recordedDate": "2025-09-14"
-      }
-    }
-  ]
-}
-
-
-This gives you:
-    Reactive WebFlux pipeline
-    Mock NLP extraction → Replace with real AI later
-    FHIR-compliant output ready for EHR or analytics
+ * 7. Sample Request
+ * 
+ * POST http://localhost:8080/api/nlp/process
+ * 
+ * { "text":
+ * "Patient John Doe, ID 12345, diagnosed with Diabetes on 2025-09-14. Prescribed Metformin 500mg daily."
+ * }
+ * 
+ * 8. Sample FHIR JSON Response { "resourceType": "Bundle", "type": "collection", "entry":
+ * [ { "resource": { "resourceType": "Patient", "id": "12345", "identifier": [ { "system":
+ * "http://hospital.org/patients", "value": "12345" } ], "name": [ { "family": "Doe",
+ * "given": ["John"] } ] } }, { "resource": { "resourceType": "Condition", "id":
+ * "cond-12345", "subject": { "reference": "Patient/12345" }, "code": { "coding": [ {
+ * "system": "http://snomed.info/sct", "code": "44054006", "display": "Diabetes" } ] },
+ * "recordedDate": "2025-09-14" } } ] }
+ * 
+ * 
+ * This gives you: Reactive WebFlux pipeline Mock NLP extraction → Replace with real AI
+ * later FHIR-compliant output ready for EHR or analytics
  */

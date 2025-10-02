@@ -6,8 +6,8 @@ package com.interview.cls.recd;
 
 public record Constant(double value) implements Expression {
 
-    @Override
-    public double evaluate() {
-        return value;
-    }
+	@Override
+	public double evaluate() {
+		return value;
+	}
 }

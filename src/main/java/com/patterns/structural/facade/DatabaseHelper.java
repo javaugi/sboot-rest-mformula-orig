@@ -11,14 +11,14 @@ import java.sql.Connection;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface DatabaseHelper {
 
-    Connection getConnection();
+	Connection getConnection();
 
-    void generatePdfReport(Connection con);
+	void generatePdfReport(Connection con);
 
-    void generateHtmlReport(Connection con);
+	void generateHtmlReport(Connection con);
+
 }

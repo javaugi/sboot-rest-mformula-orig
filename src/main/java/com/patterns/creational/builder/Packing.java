@@ -9,10 +9,10 @@ package com.patterns.creational.builder;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Packing {
 
-    String pack();
+	String pack();
+
 }

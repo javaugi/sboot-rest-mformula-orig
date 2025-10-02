@@ -9,35 +9,38 @@ package com.spring5.audit;
  */
 public class InventoryReservedEvent {
 
-    private String inventoryId;
-    private String orderId;
-    private boolean success;
+	private String inventoryId;
 
-    public InventoryReservedEvent(String orderId) {
-        this.orderId = orderId;
-    }
+	private String orderId;
 
-    public String getInventoryId() {
-        return inventoryId;
-    }
+	private boolean success;
 
-    public void setInventoryId(String inventoryId) {
-        this.inventoryId = inventoryId;
-    }
+	public InventoryReservedEvent(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public String getOrderId() {
-        return orderId;
-    }
+	public String getInventoryId() {
+		return inventoryId;
+	}
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public void setInventoryId(String inventoryId) {
+		this.inventoryId = inventoryId;
+	}
 
-    public boolean isSuccess() {
-        return success;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
 }

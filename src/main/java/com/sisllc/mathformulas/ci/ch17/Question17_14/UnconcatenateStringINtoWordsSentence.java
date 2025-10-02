@@ -7,116 +7,119 @@ import java.util.Set;
 
 public class UnconcatenateStringINtoWordsSentence {
 
-    public static String sentence;
-    public static Trie dictionary;
+	public static String sentence;
 
-    /* incomplete code */
-    public static Result parse(int wordStart, int wordEnd, Hashtable<Integer, Result> cache) {
-        if (wordEnd >= sentence.length()) {
-            return new Result(wordEnd - wordStart, sentence.substring(wordStart).toUpperCase());
-        }
-        if (cache.containsKey(wordStart)) {
-            return cache.get(wordStart).clone();
-        }
-        String currentWord = sentence.substring(wordStart, wordEnd + 1);
-        boolean validPartial = dictionary.contains(currentWord, false);
-        boolean validExact = validPartial && dictionary.contains(currentWord, true);
+	public static Trie dictionary;
 
-        /* break current word */
-        Result bestExact = parse(wordEnd + 1, wordEnd + 1, cache);
-        if (validExact) {
-            bestExact.parsed = currentWord + " " + bestExact.parsed;
-        } else {
-            bestExact.invalid += currentWord.length();
-            bestExact.parsed = currentWord.toUpperCase() + " " + bestExact.parsed;
-        }
+	/* incomplete code */
+	public static Result parse(int wordStart, int wordEnd, Hashtable<Integer, Result> cache) {
+		if (wordEnd >= sentence.length()) {
+			return new Result(wordEnd - wordStart, sentence.substring(wordStart).toUpperCase());
+		}
+		if (cache.containsKey(wordStart)) {
+			return cache.get(wordStart).clone();
+		}
+		String currentWord = sentence.substring(wordStart, wordEnd + 1);
+		boolean validPartial = dictionary.contains(currentWord, false);
+		boolean validExact = validPartial && dictionary.contains(currentWord, true);
 
-        /* extend current word */
-        Result bestExtend = null;
-        if (validPartial) {
-            bestExtend = parse(wordStart, wordEnd + 1, cache);
-        }
+		/* break current word */
+		Result bestExact = parse(wordEnd + 1, wordEnd + 1, cache);
+		if (validExact) {
+			bestExact.parsed = currentWord + " " + bestExact.parsed;
+		}
+		else {
+			bestExact.invalid += currentWord.length();
+			bestExact.parsed = currentWord.toUpperCase() + " " + bestExact.parsed;
+		}
 
-        /* find best */
-        Result best = Result.min(bestExact, bestExtend);
-        cache.put(wordStart, best.clone());
-        return best;
-    }
+		/* extend current word */
+		Result bestExtend = null;
+		if (validPartial) {
+			bestExtend = parse(wordStart, wordEnd + 1, cache);
+		}
 
-    public static int parseOptimized(int wordStart, int wordEnd, Hashtable<Integer, Integer> cache) {
-        if (wordEnd >= sentence.length()) {
-            return wordEnd - wordStart;
-        }
-        if (cache.containsKey(wordStart)) {
-            return cache.get(wordStart);
-        }
+		/* find best */
+		Result best = Result.min(bestExact, bestExtend);
+		cache.put(wordStart, best.clone());
+		return best;
+	}
 
-        String currentWord = sentence.substring(wordStart, wordEnd + 1);
-        boolean validPartial = dictionary.contains(currentWord, false);
+	public static int parseOptimized(int wordStart, int wordEnd, Hashtable<Integer, Integer> cache) {
+		if (wordEnd >= sentence.length()) {
+			return wordEnd - wordStart;
+		}
+		if (cache.containsKey(wordStart)) {
+			return cache.get(wordStart);
+		}
 
-        /* break current word */
-        int bestExact = parseOptimized(wordEnd + 1, wordEnd + 1, cache);
-        if (!validPartial || !dictionary.contains(currentWord, true)) {
-            bestExact += currentWord.length();
-        } else {
-            System.out.println("currentWord=" + currentWord);
-        }
+		String currentWord = sentence.substring(wordStart, wordEnd + 1);
+		boolean validPartial = dictionary.contains(currentWord, false);
 
-        /* extend current word */
-        int bestExtend = Integer.MAX_VALUE;
-        if (validPartial) {
-            bestExtend = parseOptimized(wordStart, wordEnd + 1, cache);
-        }
+		/* break current word */
+		int bestExact = parseOptimized(wordEnd + 1, wordEnd + 1, cache);
+		if (!validPartial || !dictionary.contains(currentWord, true)) {
+			bestExact += currentWord.length();
+		}
+		else {
+			System.out.println("currentWord=" + currentWord);
+		}
 
-        /* find best */
-        int min = Math.min(bestExact, bestExtend);
-        cache.put(wordStart, min);
-        return min;
-    }
+		/* extend current word */
+		int bestExtend = Integer.MAX_VALUE;
+		if (validPartial) {
+			bestExtend = parseOptimized(wordStart, wordEnd + 1, cache);
+		}
 
-    public static int parseSimple(int wordStart, int wordEnd) {
-        if (wordEnd >= sentence.length()) {
-            return wordEnd - wordStart;
-        }
+		/* find best */
+		int min = Math.min(bestExact, bestExtend);
+		cache.put(wordStart, min);
+		return min;
+	}
 
-        String word = sentence.substring(wordStart, wordEnd + 1);
+	public static int parseSimple(int wordStart, int wordEnd) {
+		if (wordEnd >= sentence.length()) {
+			return wordEnd - wordStart;
+		}
 
-        /* break current word */
-        int bestExact = parseSimple(wordEnd + 1, wordEnd + 1);
-        if (!dictionary.contains(word, true)) {
-            bestExact += word.length();
-        }
+		String word = sentence.substring(wordStart, wordEnd + 1);
 
-        /* extend current word */
-        int bestExtend = parseSimple(wordStart, wordEnd + 1);
+		/* break current word */
+		int bestExact = parseSimple(wordEnd + 1, wordEnd + 1);
+		if (!dictionary.contains(word, true)) {
+			bestExact += word.length();
+		}
 
-        /* find best */
-        return Math.min(bestExact, bestExtend);
-    }
+		/* extend current word */
+		int bestExtend = parseSimple(wordStart, wordEnd + 1);
 
-    public static String clean(String str) {
-        char[] punctuation = {',', '"', '!', '.', '\'', '?', ','};
-        for (char c : punctuation) {
-            str = str.replace(c, ' ');
-        }
-        return str.replace(" ", "").toLowerCase();
-    }
+		/* find best */
+		return Math.min(bestExact, bestExtend);
+	}
 
-    public static void main(String[] args) {
-        dictionary = AssortedMethods.getTrieDictionary();
-        sentence
-                = "As one of the top companies in the world, Google will surely attract the attention of computer gurus. This does not, however, mean the company is for everyone.";
-        sentence = clean(sentence);
-        System.out.println(sentence);
-        // Result v = parse(0, 0, new Hashtable<Integer, Result>());
-        // System.out.println(v.parsed);
+	public static String clean(String str) {
+		char[] punctuation = { ',', '"', '!', '.', '\'', '?', ',' };
+		for (char c : punctuation) {
+			str = str.replace(c, ' ');
+		}
+		return str.replace(" ", "").toLowerCase();
+	}
 
-        Hashtable<Integer, Integer> ht = new Hashtable<Integer, Integer>();
-        int v = parseOptimized(0, 0, ht);
-        System.out.println(v);
-        Set<Integer> keys = ht.keySet();
-        for (Integer key : keys) {
-            System.out.println("key = " + key + "-value" + ht.get(key));
-        }
-    }
+	public static void main(String[] args) {
+		dictionary = AssortedMethods.getTrieDictionary();
+		sentence = "As one of the top companies in the world, Google will surely attract the attention of computer gurus. This does not, however, mean the company is for everyone.";
+		sentence = clean(sentence);
+		System.out.println(sentence);
+		// Result v = parse(0, 0, new Hashtable<Integer, Result>());
+		// System.out.println(v.parsed);
+
+		Hashtable<Integer, Integer> ht = new Hashtable<Integer, Integer>();
+		int v = parseOptimized(0, 0, ht);
+		System.out.println(v);
+		Set<Integer> keys = ht.keySet();
+		for (Integer key : keys) {
+			System.out.println("key = " + key + "-value" + ht.get(key));
+		}
+	}
+
 }

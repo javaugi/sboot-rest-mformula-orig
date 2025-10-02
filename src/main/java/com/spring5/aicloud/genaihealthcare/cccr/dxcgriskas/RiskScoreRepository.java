@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RiskScoreRepository extends JpaRepository<RiskScore, Long> {
 
-    List<RiskScore> findByPlanTypeAndYear(String planType, Integer year);
+	List<RiskScore> findByPlanTypeAndYear(String planType, Integer year);
 
-    List<RiskScore> findLatestScores();
+	List<RiskScore> findLatestScores();
+
 }

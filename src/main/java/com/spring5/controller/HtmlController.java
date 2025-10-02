@@ -14,10 +14,11 @@ import reactor.core.publisher.Mono;
 @RestController
 public class HtmlController {
 
-    @RequestMapping("/{page:^(?!.*[.].*$).*$}")
-    public Mono<String> requestPage(@PathVariable("page") String page) {
-        String htmlPage = "/" + page + ".html";
-        log.debug("forwarding request to {}", htmlPage);
-        return Mono.just(htmlPage);
-    }
+	@RequestMapping("/{page:^(?!.*[.].*$).*$}")
+	public Mono<String> requestPage(@PathVariable("page") String page) {
+		String htmlPage = "/" + page + ".html";
+		log.debug("forwarding request to {}", htmlPage);
+		return Mono.just(htmlPage);
+	}
+
 }

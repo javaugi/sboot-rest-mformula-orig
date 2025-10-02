@@ -16,39 +16,37 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/api/openai")
 public class OpenAIController {
 
-    private static final Logger log = LoggerFactory.getLogger(OpenAIController.class);
+	private static final Logger log = LoggerFactory.getLogger(OpenAIController.class);
 
-    private final OpenAIService openAIService;
+	private final OpenAIService openAIService;
 
-    public OpenAIController(OpenAIService openAIService) {
-        this.openAIService = openAIService;
-    }
+	public OpenAIController(OpenAIService openAIService) {
+		this.openAIService = openAIService;
+	}
 
-    @GetMapping
-    public Flux<String> rootEndpoint() {
-        try {
-            return openAIService.getData();
-        } catch (JsonProcessingException e) {
-            log.error("Error while processing JSON", e);
-            return Flux.empty();
-        }
-    }
+	@GetMapping
+	public Flux<String> rootEndpoint() {
+		try {
+			return openAIService.getData();
+		}
+		catch (JsonProcessingException e) {
+			log.error("Error while processing JSON", e);
+			return Flux.empty();
+		}
+	}
+
 }
 /*
-
-@RestController
-public class OpenAIController {
-
-    private final OpenAIService openAIService;
-
-    public OpenAIController(OpenAIService openAIService) {
-        this.openAIService = openAIService;
-    }
-
-    //curl "http://localhost:8080/chat?prompt=Tell me a joke"
-    @GetMapping("/chat")
-    public String chat(@RequestParam String prompt) {
-        return openAIService.getResponse(prompt);
-    }
-}
-// */
+ * 
+ * @RestController public class OpenAIController {
+ * 
+ * private final OpenAIService openAIService;
+ * 
+ * public OpenAIController(OpenAIService openAIService) { this.openAIService =
+ * openAIService; }
+ * 
+ * //curl "http://localhost:8080/chat?prompt=Tell me a joke"
+ * 
+ * @GetMapping("/chat") public String chat(@RequestParam String prompt) { return
+ * openAIService.getResponse(prompt); } } //
+ */

@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AirportRepository extends CosmosRepository<AirPort, String> {
 
-    Optional<AirPort> findByAirportCode(String airportCode);
+	Optional<AirPort> findByAirportCode(String airportCode);
+
 }

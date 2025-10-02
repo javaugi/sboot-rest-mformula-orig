@@ -13,35 +13,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PrescriptionOrchestrator {
 
-    @Autowired
-    private PharmacyPatientDataService patientDataService;
+	@Autowired
+	private PharmacyPatientDataService patientDataService;
 
-    @Autowired
-    private InsuranceService insuranceService;
+	@Autowired
+	private InsuranceService insuranceService;
 
-    @Autowired
-    private AdjudicationService adjudicationService;
+	@Autowired
+	private AdjudicationService adjudicationService;
 
-    @Transactional
-    public PrescriptionResponse processPrescription(PrescriptionRequest request)
-            throws PrescriptionException {
-        // Step 1: Validate patient data
-        PatientData patient = patientDataService.validate(request.getPatientId());
+	@Transactional
+	public PrescriptionResponse processPrescription(PrescriptionRequest request) throws PrescriptionException {
+		// Step 1: Validate patient data
+		PatientData patient = patientDataService.validate(request.getPatientId());
 
-        // Step 2: Check insurance coverage
-        InsuranceResponse insurance
-                = insuranceService.checkCoverage(request.getMedication(), patient.getInsuranceId());
+		// Step 2: Check insurance coverage
+		InsuranceResponse insurance = insuranceService.checkCoverage(request.getMedication(), patient.getInsuranceId());
 
-        // Step 3: Adjudicate claim
-        AdjudicationResult adjudication
-                = adjudicationService.adjudicate(request.getMedication(), insurance.getPlanId());
+		// Step 3: Adjudicate claim
+		AdjudicationResult adjudication = adjudicationService.adjudicate(request.getMedication(),
+				insurance.getPlanId());
 
-        // Step 4: If all succeeded, create prescription
-        if (adjudication.isApproved()) {
-            return new PrescriptionResponse("APPROVED", "Prescription processed");
-        } else {
-            throw new PrescriptionException(
-                    "Claim denied: " + adjudication.getReason(), HttpStatus.BAD_REQUEST);
-        }
-    }
+		// Step 4: If all succeeded, create prescription
+		if (adjudication.isApproved()) {
+			return new PrescriptionResponse("APPROVED", "Prescription processed");
+		}
+		else {
+			throw new PrescriptionException("Claim denied: " + adjudication.getReason(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
 }

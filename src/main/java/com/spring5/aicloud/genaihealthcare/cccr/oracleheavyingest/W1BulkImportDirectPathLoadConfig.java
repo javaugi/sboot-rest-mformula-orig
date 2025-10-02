@@ -44,133 +44,134 @@ Key Points:
 @RequiredArgsConstructor
 public class W1BulkImportDirectPathLoadConfig {
 
-    /*
-  1. Bulk Import Strategies
-      Direct Path Load (SQL*Loader External Tables)
-      Use Case: Initial data loads, large batch imports
-     */
-    private final JobRepository jobRepository;
-    private final DataSource dataSource;
-    private final JdbcTemplate jdbcTemplate;
-    private final PlatformTransactionManager transactionManager;
+	/*
+	 * 1. Bulk Import Strategies Direct Path Load (SQL*Loader External Tables) Use Case:
+	 * Initial data loads, large batch imports
+	 */
+	private final JobRepository jobRepository;
 
-    @Bean
-    public JdbcCursorItemReader<ClaimRecord> claimReader() {
-        return new JdbcCursorItemReaderBuilder<ClaimRecord>()
-                .dataSource(dataSource)
-                .name("claimReader")
-                .sql("SELECT claim_id, patient_id, amount FROM external_claims")
-                .rowMapper(new BeanPropertyRowMapper<>(ClaimRecord.class))
-                .fetchSize(10000)
-                .build();
-    }
+	private final DataSource dataSource;
 
-    @Bean
-    public ItemWriter<ClaimRecord> directPathItemWriter() {
-        return items -> {
-            String sql
-                    = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) "
-                    + "VALUES (?, ?, ?)";
+	private final JdbcTemplate jdbcTemplate;
 
-            try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+	private final PlatformTransactionManager transactionManager;
 
-                // Use direct path insert (APPEND hint)
-                for (ClaimRecord item : items) {
-                    ps.setString(1, item.getClaimId());
-                    ps.setString(2, item.getPatientId());
-                    ps.setBigDecimal(3, item.getAmount());
-                    ps.addBatch();
-                }
+	@Bean
+	public JdbcCursorItemReader<ClaimRecord> claimReader() {
+		return new JdbcCursorItemReaderBuilder<ClaimRecord>().dataSource(dataSource)
+			.name("claimReader")
+			.sql("SELECT claim_id, patient_id, amount FROM external_claims")
+			.rowMapper(new BeanPropertyRowMapper<>(ClaimRecord.class))
+			.fetchSize(10000)
+			.build();
+	}
 
-                ps.executeBatch();
+	@Bean
+	public ItemWriter<ClaimRecord> directPathItemWriter() {
+		return items -> {
+			String sql = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) " + "VALUES (?, ?, ?)";
 
-            } catch (SQLException e) {
-                throw new RuntimeException("Direct path insert failed", e);
-            }
-        };
-    }
+			try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-    // Solution 2: Using JdbcBatchItemWriter (Recommended)
-    @Bean
-    public JdbcBatchItemWriter<ClaimRecord> directPathBatchItemWriter() {
-        String sql
-                = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) "
-                + "VALUES (:claimId, :patientId, :amount)";
+				// Use direct path insert (APPEND hint)
+				for (ClaimRecord item : items) {
+					ps.setString(1, item.getClaimId());
+					ps.setString(2, item.getPatientId());
+					ps.setBigDecimal(3, item.getAmount());
+					ps.addBatch();
+				}
 
-        JdbcBatchItemWriter<ClaimRecord> writer = new JdbcBatchItemWriter<>();
-        writer.setDataSource(dataSource);
-        writer.setSql(sql);
-        writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
+				ps.executeBatch();
 
-        // For direct path inserts, we need to handle differently
-        // This approach uses regular batch insert
-        return writer;
-    }
+			}
+			catch (SQLException e) {
+				throw new RuntimeException("Direct path insert failed", e);
+			}
+		};
+	}
 
-    // Solution 3: Oracle-Specific Direct Path Writer
-    @Bean
-    public ItemWriter<ClaimRecord> oracleDirectPathWriter() {
-        return items -> {
-            try (Connection conn = dataSource.getConnection(); PreparedStatement ps
-                    = conn.prepareStatement(
-                            "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) VALUES (?, ?, ?)")) {
+	// Solution 2: Using JdbcBatchItemWriter (Recommended)
+	@Bean
+	public JdbcBatchItemWriter<ClaimRecord> directPathBatchItemWriter() {
+		String sql = "INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) "
+				+ "VALUES (:claimId, :patientId, :amount)";
 
-                // Disable auto-commit for batch processing
-                conn.setAutoCommit(false);
+		JdbcBatchItemWriter<ClaimRecord> writer = new JdbcBatchItemWriter<>();
+		writer.setDataSource(dataSource);
+		writer.setSql(sql);
+		writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
 
-                for (ClaimRecord item : items) {
-                    ps.setString(1, item.getClaimId());
-                    ps.setString(2, item.getPatientId());
-                    ps.setBigDecimal(3, item.getAmount());
-                    ps.addBatch();
-                }
+		// For direct path inserts, we need to handle differently
+		// This approach uses regular batch insert
+		return writer;
+	}
 
-                ps.executeBatch();
-                conn.commit();
+	// Solution 3: Oracle-Specific Direct Path Writer
+	@Bean
+	public ItemWriter<ClaimRecord> oracleDirectPathWriter() {
+		return items -> {
+			try (Connection conn = dataSource.getConnection();
+					PreparedStatement ps = conn.prepareStatement(
+							"INSERT /*+ APPEND */ INTO claims_bulk (claim_id, patient_id, amount) VALUES (?, ?, ?)")) {
 
-            } catch (SQLException e) {
-                throw new RuntimeException("Failed to execute batch insert", e);
-            }
-        };
-    }
+				// Disable auto-commit for batch processing
+				conn.setAutoCommit(false);
 
-    @Bean
-    public Step bulkImportStep(ItemReader<ClaimRecord> reader, ItemWriter<ClaimRecord> writer) {
-        return new StepBuilder("bulkImportStep", jobRepository)
-                .<ClaimRecord, ClaimRecord>chunk(1000, transactionManager)
-                .reader(reader)
-                .writer(writer)
-                .build();
-    }
+				for (ClaimRecord item : items) {
+					ps.setString(1, item.getClaimId());
+					ps.setString(2, item.getPatientId());
+					ps.setBigDecimal(3, item.getAmount());
+					ps.addBatch();
+				}
 
-    @Bean
-    public Job bulkImportJob(Step bulkImportStep) {
-        return new JobBuilder("bulkImportJob", jobRepository).start(bulkImportStep).build();
-    }
+				ps.executeBatch();
+				conn.commit();
 
-    @Bean
-    public TaskExecutor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(25);
-        executor.setThreadNamePrefix("batch-");
-        executor.initialize();
-        return executor;
-    }
+			}
+			catch (SQLException e) {
+				throw new RuntimeException("Failed to execute batch insert", e);
+			}
+		};
+	}
 
-    @Bean
-    public JobExecutionListener jobExecutionListener() {
-        return new JobExecutionListener() {
-            @Override
-            public void beforeJob(JobExecution jobExecution) {
-                System.out.println("Starting bulk import job...");
-            }
+	@Bean
+	public Step bulkImportStep(ItemReader<ClaimRecord> reader, ItemWriter<ClaimRecord> writer) {
+		return new StepBuilder("bulkImportStep", jobRepository)
+			.<ClaimRecord, ClaimRecord>chunk(1000, transactionManager)
+			.reader(reader)
+			.writer(writer)
+			.build();
+	}
 
-            @Override
-            public void afterJob(JobExecution jobExecution) {
-                System.out.println("Bulk import job completed with status: " + jobExecution.getStatus());
-            }
-        };
-    }
+	@Bean
+	public Job bulkImportJob(Step bulkImportStep) {
+		return new JobBuilder("bulkImportJob", jobRepository).start(bulkImportStep).build();
+	}
+
+	@Bean
+	public TaskExecutor taskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(5);
+		executor.setMaxPoolSize(10);
+		executor.setQueueCapacity(25);
+		executor.setThreadNamePrefix("batch-");
+		executor.initialize();
+		return executor;
+	}
+
+	@Bean
+	public JobExecutionListener jobExecutionListener() {
+		return new JobExecutionListener() {
+			@Override
+			public void beforeJob(JobExecution jobExecution) {
+				System.out.println("Starting bulk import job...");
+			}
+
+			@Override
+			public void afterJob(JobExecution jobExecution) {
+				System.out.println("Bulk import job completed with status: " + jobExecution.getStatus());
+			}
+		};
+	}
+
 }

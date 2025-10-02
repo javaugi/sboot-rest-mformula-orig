@@ -14,20 +14,24 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class ReactiveReviewResult {
 
-    double estimatedSavings;
-    boolean valid;
-    boolean approved;
+	double estimatedSavings;
 
-    @Builder.Default
-    List<ValidationIssue> issues = new ArrayList<>();
-    @Builder.Default
-    List<ReviewOpportunity> opprs = new ArrayList<>();
+	boolean valid;
 
-    public void addIssue(ValidationIssue issue) {
-        this.issues.add(issue);
-    }
+	boolean approved;
 
-    public void addOpportunity(ReviewOpportunity oppr) {
-        opprs.add(oppr);
-    }
+	@Builder.Default
+	List<ValidationIssue> issues = new ArrayList<>();
+
+	@Builder.Default
+	List<ReviewOpportunity> opprs = new ArrayList<>();
+
+	public void addIssue(ValidationIssue issue) {
+		this.issues.add(issue);
+	}
+
+	public void addOpportunity(ReviewOpportunity oppr) {
+		opprs.add(oppr);
+	}
+
 }

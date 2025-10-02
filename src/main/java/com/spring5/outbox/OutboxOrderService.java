@@ -11,21 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OutboxOrderService {
 
-    @Autowired
-    private OutboxOrderRepository orderRepository;
-    @Autowired
-    private OutboxRepository outboxRepository;
-    @Autowired
-    private OutboxEventPublisher publisher;
+	@Autowired
+	private OutboxOrderRepository orderRepository;
 
-    @Transactional
-    public void createOrder(OutboxOrder order) {
-        orderRepository.save(order);
-        Outbox event = new Outbox();
-        event.setAggregateId(order.getAggregateId());
-        event.setEventType("OrderCreated");
-        event.setPayload("{ \"orderId\": \"" + order.getId() + "\"}");
-        outboxRepository.save(event);
-        publisher.publish(event);
-    }
+	@Autowired
+	private OutboxRepository outboxRepository;
+
+	@Autowired
+	private OutboxEventPublisher publisher;
+
+	@Transactional
+	public void createOrder(OutboxOrder order) {
+		orderRepository.save(order);
+		Outbox event = new Outbox();
+		event.setAggregateId(order.getAggregateId());
+		event.setEventType("OrderCreated");
+		event.setPayload("{ \"orderId\": \"" + order.getId() + "\"}");
+		outboxRepository.save(event);
+		publisher.publish(event);
+	}
+
 }

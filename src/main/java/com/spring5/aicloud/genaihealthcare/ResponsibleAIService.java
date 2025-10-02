@@ -9,9 +9,10 @@ package com.spring5.aicloud.genaihealthcare;
  */
 interface ResponsibleAIService {
 
-    void performPrivacyCheck(PatientInquiryRequest request);
+	void performPrivacyCheck(PatientInquiryRequest request);
 
-    void logAiInteraction(PatientInquiryRequest request, PatientInquiryResponse response);
+	void logAiInteraction(PatientInquiryRequest request, PatientInquiryResponse response);
 
-    void updateResponsibleAiIndex(PatientInquiryResponse response);
+	void updateResponsibleAiIndex(PatientInquiryResponse response);
+
 }

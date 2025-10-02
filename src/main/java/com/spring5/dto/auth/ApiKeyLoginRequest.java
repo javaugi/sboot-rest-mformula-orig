@@ -15,5 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApiKeyLoginRequest {
 
-    String apiKey;
+	String apiKey;
+
 }

@@ -18,9 +18,10 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Task {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    String name;
+	String name;
+
 }

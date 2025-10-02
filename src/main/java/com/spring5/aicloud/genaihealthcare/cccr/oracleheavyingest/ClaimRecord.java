@@ -12,7 +12,10 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class ClaimRecord {
 
-    String claimId;
-    String patientId;
-    BigDecimal amount;
+	String claimId;
+
+	String patientId;
+
+	BigDecimal amount;
+
 }

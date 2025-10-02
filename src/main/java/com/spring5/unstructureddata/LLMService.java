@@ -14,37 +14,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@StructuredPrompt(
-        """
-          Extract the following from the resume:
-        - Name: {{name}}
-        - Email: {{email}}
-        - Skills: {{skills}}
-        - Education: {{education}}
-        - Work Experience: {{work_experience}}
-        Return JSON.
-    """)
+@StructuredPrompt("""
+		      Extract the following from the resume:
+		    - Name: {{name}}
+		    - Email: {{email}}
+		    - Skills: {{skills}}
+		    - Education: {{education}}
+		    - Work Experience: {{work_experience}}
+		    Return JSON.
+		""")
 @Service
 public class LLMService {
-    // private static final OpenAiChatModel model = OpenAiChatModel.withApiKey(OPENAI_API_KEY);
 
-    @Autowired
-    private @Qualifier("deekseekOpenAiChatModel")
-    OpenAiChatModel model;
+	// private static final OpenAiChatModel model =
+	// OpenAiChatModel.withApiKey(OPENAI_API_KEY);
 
-    public JsonNode extractStructuredData(String resumeText) throws Exception {
-        Prompt prompt = new Prompt(resumeText);
-        String llmResponse = model.call(prompt.text());
-        return new ObjectMapper().readValue(llmResponse, JsonNode.class);
-    }
+	@Autowired
+	private @Qualifier("deekseekOpenAiChatModel") OpenAiChatModel model;
 
-    public JsonNode extractStructuredData2(String resumeText) throws Exception {
-        // Create structured prompt
-        ResumeExtractionPrompt prompt = new ResumeExtractionPrompt(resumeText);
-        String structuredPrompt = StructuredPromptProcessor.toPrompt(prompt).text();
+	public JsonNode extractStructuredData(String resumeText) throws Exception {
+		Prompt prompt = new Prompt(resumeText);
+		String llmResponse = model.call(prompt.text());
+		return new ObjectMapper().readValue(llmResponse, JsonNode.class);
+	}
 
-        // Call LLM
-        String llmResponse = model.call(structuredPrompt);
-        return new ObjectMapper().readValue(llmResponse, JsonNode.class);
-    }
+	public JsonNode extractStructuredData2(String resumeText) throws Exception {
+		// Create structured prompt
+		ResumeExtractionPrompt prompt = new ResumeExtractionPrompt(resumeText);
+		String structuredPrompt = StructuredPromptProcessor.toPrompt(prompt).text();
+
+		// Call LLM
+		String llmResponse = model.call(structuredPrompt);
+		return new ObjectMapper().readValue(llmResponse, JsonNode.class);
+	}
+
 }

@@ -27,9 +27,10 @@ import lombok.ToString;
 @Entity
 public class KafkaDocument {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    String text;
+	String text;
+
 }

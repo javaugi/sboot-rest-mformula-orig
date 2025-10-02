@@ -11,45 +11,48 @@ import org.springframework.stereotype.Service;
 @Service
 public class AIGovernanceService {
 
-    private Map<String, String> modelCertifications = new HashMap<>();
-    private Map<String, String> dataUsagePolicies = new HashMap<>();
+	private Map<String, String> modelCertifications = new HashMap<>();
 
-    public AIGovernanceService() {
-        // Initialize with sample policies
-        modelCertifications.put("patient_diagnosis_model", "HIPAA_COMPLIANT");
-        modelCertifications.put("treatment_recommendation_model", "FDA_APPROVED");
+	private Map<String, String> dataUsagePolicies = new HashMap<>();
 
-        dataUsagePolicies.put("minimal", "Only essential data collected with explicit consent");
-        dataUsagePolicies.put("analytical", "Data used for improving care quality and research");
-        dataUsagePolicies.put("commercial", "Data used for personalized health recommendations");
-    }
+	public AIGovernanceService() {
+		// Initialize with sample policies
+		modelCertifications.put("patient_diagnosis_model", "HIPAA_COMPLIANT");
+		modelCertifications.put("treatment_recommendation_model", "FDA_APPROVED");
 
-    public String validateModelCompliance(String modelName, String modelType) {
-        // Simulate compliance check with regulatory frameworks
-        if (modelType.equals("diagnostic")) {
-            return checkHIPAACompliance(modelName);
-        } else if (modelType.equals("treatment")) {
-            return checkFDACompliance(modelName);
-        }
-        return "PENDING_REVIEW";
-    }
+		dataUsagePolicies.put("minimal", "Only essential data collected with explicit consent");
+		dataUsagePolicies.put("analytical", "Data used for improving care quality and research");
+		dataUsagePolicies.put("commercial", "Data used for personalized health recommendations");
+	}
 
-    public String getDataUsagePolicy(String policyLevel) {
-        return dataUsagePolicies.getOrDefault(policyLevel, "Policy not defined");
-    }
+	public String validateModelCompliance(String modelName, String modelType) {
+		// Simulate compliance check with regulatory frameworks
+		if (modelType.equals("diagnostic")) {
+			return checkHIPAACompliance(modelName);
+		}
+		else if (modelType.equals("treatment")) {
+			return checkFDACompliance(modelName);
+		}
+		return "PENDING_REVIEW";
+	}
 
-    public boolean validatePatientConsent(String patientId, String consentType) {
-        // In a real implementation, this would check a consent management system
-        return true; // Simplified for example
-    }
+	public String getDataUsagePolicy(String policyLevel) {
+		return dataUsagePolicies.getOrDefault(policyLevel, "Policy not defined");
+	}
 
-    private String checkHIPAACompliance(String modelName) {
-        // Simulate HIPAA compliance check
-        return "HIPAA_COMPLIANT";
-    }
+	public boolean validatePatientConsent(String patientId, String consentType) {
+		// In a real implementation, this would check a consent management system
+		return true; // Simplified for example
+	}
 
-    private String checkFDACompliance(String modelName) {
-        // Simulate FDA compliance check
-        return "FDA_APPROVED";
-    }
+	private String checkHIPAACompliance(String modelName) {
+		// Simulate HIPAA compliance check
+		return "HIPAA_COMPLIANT";
+	}
+
+	private String checkFDACompliance(String modelName) {
+		// Simulate FDA compliance check
+		return "FDA_APPROVED";
+	}
+
 }

@@ -16,24 +16,24 @@ import org.springframework.data.domain.Sort;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface UserService {
 
-    void save(User user);
+	void save(User user);
 
-    void saveAll(List<User> users);
+	void saveAll(List<User> users);
 
-    Optional<User> findById(Long id);
+	Optional<User> findById(Long id);
 
-    Iterable<User> findAll();
+	Iterable<User> findAll();
 
-    Iterable<User> findAll(int offset, int limit);
+	Iterable<User> findAll(int offset, int limit);
 
-    public Iterable<User> findAll(Sort sort);
+	public Iterable<User> findAll(Sort sort);
 
-    public Page<User> findAll(Pageable pageable);
+	public Page<User> findAll(Pageable pageable);
 
-    public boolean validateUserExists(Long id);
+	public boolean validateUserExists(Long id);
+
 }

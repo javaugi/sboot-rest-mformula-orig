@@ -6,4 +6,5 @@ package com.spring5.utils;
 
 // https://github.com/lshannon/cf-flyway-db
 public class FlywayConfig {
+
 }

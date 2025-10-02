@@ -12,5 +12,6 @@ import java.math.BigDecimal;
  */
 public interface TaxCalculator {
 
-    BigDecimal calculate(Employee employee, PayrollContext context);
+	BigDecimal calculate(Employee employee, PayrollContext context);
+
 }

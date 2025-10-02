@@ -9,6 +9,8 @@ import lombok.Data;
 @Data // Lombok annotation
 public class PaginationRequest {
 
-    private Integer page = 0;
-    private Integer size = 20;
+	private Integer page = 0;
+
+	private Integer size = 20;
+
 }

@@ -9,17 +9,18 @@ package com.spring5.audit;
  */
 public class OrderCompletedEvent {
 
-    private String orderId;
+	private String orderId;
 
-    public OrderCompletedEvent(String orderId) {
-        this.orderId = orderId;
-    }
+	public OrderCompletedEvent(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public String getOrderId() {
-        return orderId;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
 }

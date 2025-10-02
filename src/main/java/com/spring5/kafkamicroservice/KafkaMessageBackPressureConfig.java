@@ -24,24 +24,25 @@ Best Practices Summary
  */
 public class KafkaMessageBackPressureConfig {
 
-    private void scaleConsumerHorizontally() {
-    }
+	private void scaleConsumerHorizontally() {
+	}
 
-    private void increaseConsumerThroughput() {
-    }
+	private void increaseConsumerThroughput() {
+	}
 
-    private void configKafkaHandleBackpressure() {
-    }
+	private void configKafkaHandleBackpressure() {
+	}
 
-    private void implementRateLimitingOnProducers() {
-    }
+	private void implementRateLimitingOnProducers() {
+	}
 
-    private void implementDLQForFailedMessages() {
-    }
+	private void implementDLQForFailedMessages() {
+	}
 
-    private void monitorAndAutoScale() {
-    }
+	private void monitorAndAutoScale() {
+	}
 
-    private void implementKafkaStreamForStatefulProcessing() {
-    }
+	private void implementKafkaStreamForStatefulProcessing() {
+	}
+
 }

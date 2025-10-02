@@ -9,23 +9,23 @@ package com.patterns.behavioral.state;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class TVContext implements TVState {
 
-    private TVState tvState;
+	private TVState tvState;
 
-    public void setState(TVState state) {
-        this.tvState = state;
-    }
+	public void setState(TVState state) {
+		this.tvState = state;
+	}
 
-    public TVState getState() {
-        return this.tvState;
-    }
+	public TVState getState() {
+		return this.tvState;
+	}
 
-    @Override
-    public void doAction() {
-        this.tvState.doAction();
-    }
+	@Override
+	public void doAction() {
+		this.tvState.doAction();
+	}
+
 }

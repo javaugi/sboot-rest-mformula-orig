@@ -8,7 +8,10 @@ package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
 @lombok.Builder(toBuilder = true)
 public class RiskValidationMetrics {
 
-    private Double rSquared;
-    private Double meanAbsoluteError;
-    private Double predictiveRatio;
+	private Double rSquared;
+
+	private Double meanAbsoluteError;
+
+	private Double predictiveRatio;
+
 }

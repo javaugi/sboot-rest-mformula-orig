@@ -12,23 +12,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class IdempotencyService {
 
-    private final StringRedisTemplate redis;
+	private final StringRedisTemplate redis;
 
-    public IdempotencyService(StringRedisTemplate redis) {
-        this.redis = redis;
-    }
+	public IdempotencyService(StringRedisTemplate redis) {
+		this.redis = redis;
+	}
 
-    public boolean claim(String key, String payloadHash, Duration ttl) {
-        // set if absent returns true if not present
-        Boolean ok = redis.opsForValue().setIfAbsent(key, payloadHash, ttl);
-        return Boolean.TRUE.equals(ok);
-    }
+	public boolean claim(String key, String payloadHash, Duration ttl) {
+		// set if absent returns true if not present
+		Boolean ok = redis.opsForValue().setIfAbsent(key, payloadHash, ttl);
+		return Boolean.TRUE.equals(ok);
+	}
 
-    public void saveResponse(String key, String responseJson) {
-        redis.opsForValue().set(key + ":resp", responseJson);
-    }
+	public void saveResponse(String key, String responseJson) {
+		redis.opsForValue().set(key + ":resp", responseJson);
+	}
 
-    public String getResponse(String key) {
-        return redis.opsForValue().get(key + ":resp");
-    }
+	public String getResponse(String key) {
+		return redis.opsForValue().get(key + ":resp");
+	}
+
 }

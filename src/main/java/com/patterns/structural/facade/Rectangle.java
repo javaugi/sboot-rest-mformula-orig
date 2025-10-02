@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Rectangle implements Shape {
 
-    private static final Logger log = LoggerFactory.getLogger(Rectangle.class);
+	private static final Logger log = LoggerFactory.getLogger(Rectangle.class);
 
-    @Override
-    public void draw() {
-        System.out.println("Inside Rectangle::draw() method.");
-    }
+	@Override
+	public void draw() {
+		System.out.println("Inside Rectangle::draw() method.");
+	}
+
 }

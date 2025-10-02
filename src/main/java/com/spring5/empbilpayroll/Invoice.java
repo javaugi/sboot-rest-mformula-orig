@@ -24,9 +24,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "invoices")
 public class Invoice {
 
-    @Id
-    private String id;
-    private String customerId;
-    private List<LineItem> items;
-    private BigDecimal total;
+	@Id
+	private String id;
+
+	private String customerId;
+
+	private List<LineItem> items;
+
+	private BigDecimal total;
+
 }

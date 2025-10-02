@@ -19,15 +19,18 @@ import lombok.NoArgsConstructor;
 @Table(name = "external_users")
 public class ExternalUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String email;
-    private String name;
+	private String email;
 
-    private String provider; // google, facebook
-    private String providerId;
+	private String name;
 
-    private LocalDateTime createdAt;
+	private String provider; // google, facebook
+
+	private String providerId;
+
+	private LocalDateTime createdAt;
+
 }

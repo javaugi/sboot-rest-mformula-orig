@@ -12,7 +12,10 @@ import com.spring5.entity.Product;
  */
 public class ProductMapperMain {
 
-    Product product = new Product();
-    ProductDTO prodDto = ProductMapper.INSTANCE.toDto(product);
-    Product prod = ProductMapper.INSTANCE.toEntity(prodDto);
+	Product product = new Product();
+
+	ProductDTO prodDto = ProductMapper.INSTANCE.toDto(product);
+
+	Product prod = ProductMapper.INSTANCE.toEntity(prodDto);
+
 }

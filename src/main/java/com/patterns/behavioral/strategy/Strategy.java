@@ -9,10 +9,10 @@ package com.patterns.behavioral.strategy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Strategy {
 
-    int doOperation(int num1, int num2);
+	int doOperation(int num1, int num2);
+
 }

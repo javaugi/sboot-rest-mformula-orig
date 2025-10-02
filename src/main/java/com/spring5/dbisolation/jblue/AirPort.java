@@ -15,8 +15,12 @@ import lombok.Data;
 @Container(containerName = "airPorts")
 public class AirPort {
 
-    private String airportCode;
-    private String airportName;
-    private String city;
-    private String country;
+	private String airportCode;
+
+	private String airportName;
+
+	private String city;
+
+	private String country;
+
 }

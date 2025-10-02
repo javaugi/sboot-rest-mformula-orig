@@ -15,17 +15,18 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class FraudScoreValidationRule implements ValidationRule {
 
-    private final FraudService fraudService;
+	private final FraudService fraudService;
 
-    @Override
-    @Cacheable(value = "fraudScores", key = "#payment.getUserId()")
-    public boolean validate(Payment payment) {
-        // This method's result is now cached based on the user ID
-        return fraudService.getScore(payment.getUserId()) < THRESHOLD;
-    }
+	@Override
+	@Cacheable(value = "fraudScores", key = "#payment.getUserId()")
+	public boolean validate(Payment payment) {
+		// This method's result is now cached based on the user ID
+		return fraudService.getScore(payment.getUserId()) < THRESHOLD;
+	}
 
-    @Override
-    public String getRuleName() {
-        return "RULE1";
-    }
+	@Override
+	public String getRuleName() {
+		return "RULE1";
+	}
+
 }

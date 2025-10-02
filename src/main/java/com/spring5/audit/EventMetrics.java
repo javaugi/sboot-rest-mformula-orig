@@ -16,38 +16,32 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EventMetrics {
 
-    private final MeterRegistry meterRegistry;
-    private final @Qualifier(EventBusConfig.MB_EVENT_BUS)
-    MBassador<Object> eventBus;
+	private final MeterRegistry meterRegistry;
 
-    @PostConstruct
-    public void setupMetrics() {
-        /*
-    // Count all published events
-    eventBus.subscribe((Object event) -> {
-        meterRegistry.counter("events.published",
-            "type", event.getClass().getSimpleName())
-            .increment();
-    });
+	private final @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus;
 
-    // Measure handling time
-    eventBus.addHandlerInterceptor(new HandlerInterceptor() {
-        @Override
-        public void onBeforeHandling(Object message, Subscription subscription, Object listener) {
-            Timer.Sample sample = Timer.start(meterRegistry);
-            subscription.getMetadata().setProperty("timer.sample", sample);
-        }
+	@PostConstruct
+	public void setupMetrics() {
+		/*
+		 * // Count all published events eventBus.subscribe((Object event) -> {
+		 * meterRegistry.counter("events.published", "type",
+		 * event.getClass().getSimpleName()) .increment(); });
+		 * 
+		 * // Measure handling time eventBus.addHandlerInterceptor(new
+		 * HandlerInterceptor() {
+		 * 
+		 * @Override public void onBeforeHandling(Object message, Subscription
+		 * subscription, Object listener) { Timer.Sample sample =
+		 * Timer.start(meterRegistry);
+		 * subscription.getMetadata().setProperty("timer.sample", sample); }
+		 * 
+		 * @Override public void onAfterHandling(Object message, Subscription
+		 * subscription, Object listener) { Timer.Sample sample = (Timer.Sample)
+		 * subscription.getMetadata().getProperty("timer.sample"); if (sample != null) {
+		 * sample.stop(meterRegistry.timer("events.handling.time", "type",
+		 * message.getClass().getSimpleName(), "handler",
+		 * listener.getClass().getSimpleName())); } } }); //
+		 */
+	}
 
-        @Override
-        public void onAfterHandling(Object message, Subscription subscription, Object listener) {
-            Timer.Sample sample = (Timer.Sample) subscription.getMetadata().getProperty("timer.sample");
-            if (sample != null) {
-                sample.stop(meterRegistry.timer("events.handling.time",
-                    "type", message.getClass().getSimpleName(),
-                    "handler", listener.getClass().getSimpleName()));
-            }
-        }
-    });
-    // */
-    }
 }

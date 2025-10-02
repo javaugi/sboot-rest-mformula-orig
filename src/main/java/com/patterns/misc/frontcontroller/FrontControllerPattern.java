@@ -8,33 +8,33 @@
 package com.patterns.misc.frontcontroller;
 
 /**
- * The front controller design pattern is used to provide a centralized request
- * handling mechanism so that all requests will be handled by a single handler.
- * This handler can do the authentication/ authorization/ logging or tracking of
- * request and then pass the requests to corresponding handlers. Following are
- * the entities of this type of design pattern.
+ * The front controller design pattern is used to provide a centralized request handling
+ * mechanism so that all requests will be handled by a single handler. This handler can do
+ * the authentication/ authorization/ logging or tracking of request and then pass the
+ * requests to corresponding handlers. Following are the entities of this type of design
+ * pattern.
  *
  * <p>
- * Front Controller - Single handler for all kinds of requests coming to the
- * application (either web based/ desktop based).
+ * Front Controller - Single handler for all kinds of requests coming to the application
+ * (either web based/ desktop based).
  *
  * <p>
- * Dispatcher - Front Controller may use a dispatcher object which can dispatch
- * the request to corresponding specific handler.
+ * Dispatcher - Front Controller may use a dispatcher object which can dispatch the
+ * request to corresponding specific handler.
  *
  * <p>
  * View - Views are the object for which the requests are made.
  *
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class FrontControllerPattern {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        FrontController frontController = new FrontController();
-        frontController.dispatchRequest("HOME");
-        frontController.dispatchRequest("STUDENT");
-    }
+		FrontController frontController = new FrontController();
+		frontController.dispatchRequest("HOME");
+		frontController.dispatchRequest("STUDENT");
+	}
+
 }

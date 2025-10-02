@@ -15,15 +15,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Idempotency {
 
-    Long id;
-    String key;
-    Long orderId;
-    Order order;
+	Long id;
 
-    public Idempotency(String key, Long orderid) {
-    }
+	String key;
 
-    public OrderDto toDto() {
-        return OrderDto.builder().amount(order.amount).build();
-    }
+	Long orderId;
+
+	Order order;
+
+	public Idempotency(String key, Long orderid) {
+	}
+
+	public OrderDto toDto() {
+		return OrderDto.builder().amount(order.amount).build();
+	}
+
 }

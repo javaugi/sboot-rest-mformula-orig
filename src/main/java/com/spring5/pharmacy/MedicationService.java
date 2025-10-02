@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class MedicationService {
 
-    public final MedicationRepository medicationRepository;
+	public final MedicationRepository medicationRepository;
 
-    public MedicationService(MedicationRepository medicationRepository) {
-        this.medicationRepository = medicationRepository;
-    }
+	public MedicationService(MedicationRepository medicationRepository) {
+		this.medicationRepository = medicationRepository;
+	}
 
-    public Medication getMedication(long medicationId) {
-        return medicationRepository.findById(medicationId).orElse(null);
-    }
+	public Medication getMedication(long medicationId) {
+		return medicationRepository.findById(medicationId).orElse(null);
+	}
+
 }

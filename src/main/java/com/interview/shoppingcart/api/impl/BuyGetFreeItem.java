@@ -9,49 +9,52 @@ package com.interview.shoppingcart.api.impl;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class BuyGetFreeItem extends ItemImpl {
 
-    private int getAmount;
-    private int freeAmout;
-    private int limitAmout;
-    public static final int LIMIT_AMOUNT = 1000;
+	private int getAmount;
 
-    public BuyGetFreeItem(String name, double price, int getAmount, int freeAmout) {
-        this(name, price, getAmount, freeAmout, LIMIT_AMOUNT);
-    }
+	private int freeAmout;
 
-    public BuyGetFreeItem(String name, double price, int getAmount, int freeAmout, int limitAmout) {
-        super(name, price);
-        super.setCategory(Category.BuyGetFree);
-        this.getAmount = getAmount;
-        this.freeAmout = freeAmout;
-        this.limitAmout = limitAmout;
-    }
+	private int limitAmout;
 
-    public int getGetAmount() {
-        return getAmount;
-    }
+	public static final int LIMIT_AMOUNT = 1000;
 
-    public void setGetAmount(int getAmount) {
-        this.getAmount = getAmount;
-    }
+	public BuyGetFreeItem(String name, double price, int getAmount, int freeAmout) {
+		this(name, price, getAmount, freeAmout, LIMIT_AMOUNT);
+	}
 
-    public int getFreeAmout() {
-        return freeAmout;
-    }
+	public BuyGetFreeItem(String name, double price, int getAmount, int freeAmout, int limitAmout) {
+		super(name, price);
+		super.setCategory(Category.BuyGetFree);
+		this.getAmount = getAmount;
+		this.freeAmout = freeAmout;
+		this.limitAmout = limitAmout;
+	}
 
-    public void setFreeAmout(int freeAmout) {
-        this.freeAmout = freeAmout;
-    }
+	public int getGetAmount() {
+		return getAmount;
+	}
 
-    public int getLimitAmout() {
-        return limitAmout;
-    }
+	public void setGetAmount(int getAmount) {
+		this.getAmount = getAmount;
+	}
 
-    public void setLimitAmout(int limitAmout) {
-        this.limitAmout = limitAmout;
-    }
+	public int getFreeAmout() {
+		return freeAmout;
+	}
+
+	public void setFreeAmout(int freeAmout) {
+		this.freeAmout = freeAmout;
+	}
+
+	public int getLimitAmout() {
+		return limitAmout;
+	}
+
+	public void setLimitAmout(int limitAmout) {
+		this.limitAmout = limitAmout;
+	}
+
 }

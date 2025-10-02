@@ -9,21 +9,22 @@ import org.springframework.data.domain.Sort;
 
 public interface UserDao {
 
-    void save(User user);
+	void save(User user);
 
-    void saveAll(List<User> users);
+	void saveAll(List<User> users);
 
-    Optional<User> findById(Long id);
+	Optional<User> findById(Long id);
 
-    public List<User> findAll();
+	public List<User> findAll();
 
-    Iterable<User> findAll(int offset, int limit);
+	Iterable<User> findAll(int offset, int limit);
 
-    Iterable<User> findAll(Sort sort);
+	Iterable<User> findAll(Sort sort);
 
-    Page<User> findAll(Pageable pageable);
+	Page<User> findAll(Pageable pageable);
 
-    List<User> findByName(String name);
+	List<User> findByName(String name);
 
-    List<User> findByName(String name, int limit, int offset);
+	List<User> findByName(String name, int limit, int offset);
+
 }

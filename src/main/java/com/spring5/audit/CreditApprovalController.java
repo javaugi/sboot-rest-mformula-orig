@@ -13,30 +13,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/credit")
 public class CreditApprovalController {
 
-    private final MeterRegistry meterRegistry;
+	private final MeterRegistry meterRegistry;
 
-    @Autowired
-    public CreditApprovalController(MeterRegistry meterRegistry) {
-        this.meterRegistry = meterRegistry;
-    }
+	@Autowired
+	public CreditApprovalController(MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
+	}
 
-    @PostMapping("/approve")
-    public String approveCredit(@RequestParam double amount) {
-        long start = System.nanoTime();
+	@PostMapping("/approve")
+	public String approveCredit(@RequestParam double amount) {
+		long start = System.nanoTime();
 
-        // Simulate some logic
-        try {
-            Thread.sleep((long) (Math.random() * 500)); // simulate latency
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+		// Simulate some logic
+		try {
+			Thread.sleep((long) (Math.random() * 500)); // simulate latency
+		}
+		catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 
-        long end = System.nanoTime();
-        long latencyInMillis = TimeUnit.NANOSECONDS.toMillis(end - start);
+		long end = System.nanoTime();
+		long latencyInMillis = TimeUnit.NANOSECONDS.toMillis(end - start);
 
-        // Record latency to Prometheus
-        meterRegistry.timer("credit_approval_latency").record(end - start, TimeUnit.NANOSECONDS);
+		// Record latency to Prometheus
+		meterRegistry.timer("credit_approval_latency").record(end - start, TimeUnit.NANOSECONDS);
 
-        return "Approved $" + amount + " in " + latencyInMillis + " ms";
-    }
+		return "Approved $" + amount + " in " + latencyInMillis + " ms";
+	}
+
 }

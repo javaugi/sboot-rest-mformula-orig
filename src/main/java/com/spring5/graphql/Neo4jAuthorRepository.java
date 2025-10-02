@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface Neo4jAuthorRepository extends Neo4jRepository<Neo4jAuthor, Long> {
+
 }

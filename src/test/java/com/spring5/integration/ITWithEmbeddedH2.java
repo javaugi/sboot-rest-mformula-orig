@@ -22,32 +22,33 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ITWithEmbeddedH2 {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 
-    @Test
-    public void shouldSaveAndRetrieveCustomer() {
-        // Given
-        Customer customer = new Customer(1L, "John Doe", "john@example.com");
+	@Test
+	public void shouldSaveAndRetrieveCustomer() {
+		// Given
+		Customer customer = new Customer(1L, "John Doe", "john@example.com");
 
-        // When
-        Customer saved = customerRepository.save(customer);
-        Optional<Customer> found = customerRepository.findByEmail("john@example.com");
+		// When
+		Customer saved = customerRepository.save(customer);
+		Optional<Customer> found = customerRepository.findByEmail("john@example.com");
 
-        // Then
-        assertThat(found).isPresent();
-        assertThat(found.get().getName()).isEqualTo("John Doe");
-    }
+		// Then
+		assertThat(found).isPresent();
+		assertThat(found.get().getName()).isEqualTo("John Doe");
+	}
 
-    @TestConfiguration
-    public static class TestConfig {
+	@TestConfiguration
+	public static class TestConfig {
 
-        @Bean
-        public DataSource dataSource() {
-            return new EmbeddedDatabaseBuilder()
-                    .setType(EmbeddedDatabaseType.H2)
-                    .addScript("classpath:schema.sql")
-                    .build();
-        }
-    }
+		@Bean
+		public DataSource dataSource() {
+			return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
+				.addScript("classpath:schema.sql")
+				.build();
+		}
+
+	}
+
 }

@@ -12,9 +12,14 @@ import lombok.Setter;
 @Setter
 public class BillingPlanRequest {
 
-    private String planName;
-    private String description;
-    private String amount;
-    private String agreementName;
-    private String startDate; // ISO-8601 format
+	private String planName;
+
+	private String description;
+
+	private String amount;
+
+	private String agreementName;
+
+	private String startDate; // ISO-8601 format
+
 }

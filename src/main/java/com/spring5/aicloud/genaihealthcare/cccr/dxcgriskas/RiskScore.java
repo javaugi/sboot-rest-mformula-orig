@@ -25,22 +25,28 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class RiskScore {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Patient patient;
+	@ManyToOne
+	@JoinColumn(name = "member_id")
+	private Patient patient;
 
-    private LocalDate calculationDate;
-    private String modelType; // DxCG Medicare, Commercial, Rx
-    private Double riskScore;
-    private Double predictedCost;
-    private String planType;
-    private Integer year;
+	private LocalDate calculationDate;
 
-    @ElementCollection
-    @CollectionTable(name = "risk_score_hierarchies")
-    private Map<String, String> hierarchicalConditionCategories;
+	private String modelType; // DxCG Medicare, Commercial, Rx
+
+	private Double riskScore;
+
+	private Double predictedCost;
+
+	private String planType;
+
+	private Integer year;
+
+	@ElementCollection
+	@CollectionTable(name = "risk_score_hierarchies")
+	private Map<String, String> hierarchicalConditionCategories;
+
 }

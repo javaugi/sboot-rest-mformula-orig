@@ -9,6 +9,7 @@ package com.spring5.utils.common;
  */
 public class ReactivePaymentService {
 
-    public void processPayment(ReactiveClaimEvent event) {
-    }
+	public void processPayment(ReactiveClaimEvent event) {
+	}
+
 }

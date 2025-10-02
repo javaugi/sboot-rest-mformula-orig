@@ -5,7 +5,6 @@
 package com.spring5.repository;
 
 import com.spring5.entity.Product;
-import java.math.BigDecimal;
 import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,32 +26,33 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public class ProductRepositoryTest {
 
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:13");
+	@Container
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:13");
 
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
+	@DynamicPropertySource
+	static void configureProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", postgres::getJdbcUrl);
+		registry.add("spring.datasource.username", postgres::getUsername);
+		registry.add("spring.datasource.password", postgres::getPassword);
+	}
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	public void setup() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Mock
-    private ProductRepository productRepository;
+	@Mock
+	private ProductRepository productRepository;
 
-    //@Test
-    public void shouldSaveAndRetrieveProduct() {
-        ////new Product("Test Product", BigDecimal.valueOf(19.99));
-        Product product = Product.builder().name("Test Product").price(new BigDecimal(19.99)).build();
-        productRepository.save(product);
+	// @Test
+	public void shouldSaveAndRetrieveProduct() {
+		//// new Product("Test Product", BigDecimal.valueOf(19.99));
+		Product product = Product.builder().name("Test Product").price(19.99).build();
+		productRepository.save(product);
 
-        Optional<Product> found = productRepository.findById(product.getId());
-        assertThat(found).isPresent();
-        assertThat(found.get().getName()).isEqualTo("Test Product");
-    }
+		Optional<Product> found = productRepository.findById(product.getId());
+		assertThat(found).isPresent();
+		assertThat(found.get().getName()).isEqualTo("Test Product");
+	}
+
 }

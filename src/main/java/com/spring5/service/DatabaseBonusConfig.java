@@ -11,19 +11,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseBonusConfig implements BonusConfig {
 
-    private final BonusRepository bonusRepo; // Assume a JPA Repository
+	private final BonusRepository bonusRepo; // Assume a JPA Repository
 
-    public DatabaseBonusConfig(BonusRepository bonusRepo) {
-        this.bonusRepo = bonusRepo;
-    }
+	public DatabaseBonusConfig(BonusRepository bonusRepo) {
+		this.bonusRepo = bonusRepo;
+	}
 
-    @Override
-    public double getMultiplierForScore(String score) throws InvalidReviewScoreException {
-        // Fetch the value from the database. If not found, throw exception.
-        return bonusRepo
-                .findByScore(score)
-                // .map(BonusMultiplier::getMultiplier)
-                .orElseThrow(() -> new InvalidReviewScoreException("Invalid performance score: " + score))
-                .getMultiplier();
-    }
+	@Override
+	public double getMultiplierForScore(String score) throws InvalidReviewScoreException {
+		// Fetch the value from the database. If not found, throw exception.
+		return bonusRepo.findByScore(score)
+			// .map(BonusMultiplier::getMultiplier)
+			.orElseThrow(() -> new InvalidReviewScoreException("Invalid performance score: " + score))
+			.getMultiplier();
+	}
+
 }

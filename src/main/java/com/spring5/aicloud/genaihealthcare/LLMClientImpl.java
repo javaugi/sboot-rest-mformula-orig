@@ -12,14 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class LLMClientImpl implements LLMClient {
 
-    @Override
-    public LLMResponse generate(String prompt, Map<String, Object> providerMetadata) {
-        // IMPORTANT: This is a mock. Replace with an HTTP client to the LLM provider.
-        String modelName = "demo-model";
-        String modelVersion = "0.1";
-        String result = "Suggested enrollment message: Welcome! Based on your preferences we'll ...";
-        double confidence = 0.75;
-        String provenance = UUID.randomUUID().toString();
-        return new LLMResponse(result, confidence, modelName, modelVersion, provenance);
-    }
+	@Override
+	public LLMResponse generate(String prompt, Map<String, Object> providerMetadata) {
+		// IMPORTANT: This is a mock. Replace with an HTTP client to the LLM provider.
+		String modelName = "demo-model";
+		String modelVersion = "0.1";
+		String result = "Suggested enrollment message: Welcome! Based on your preferences we'll ...";
+		double confidence = 0.75;
+		String provenance = UUID.randomUUID().toString();
+		return new LLMResponse(result, confidence, modelName, modelVersion, provenance);
+	}
+
 }

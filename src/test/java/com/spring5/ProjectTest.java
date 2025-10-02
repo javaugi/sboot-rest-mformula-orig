@@ -15,42 +15,45 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@SpringBootTest
-@TestPropertySource(locations = {"classpath:application.properties", "classpath:applicationtest.properties"})
+// @SpringBootTest
+@TestPropertySource(locations = { "classpath:application.properties", "classpath:applicationtest.properties" })
 public class ProjectTest {
 
-    public static final Logger log = LoggerFactory.getLogger(ProjectTest.class);
+	public static final Logger log = LoggerFactory.getLogger(ProjectTest.class);
 
-    @Autowired
-    public Environment env;
+	@Autowired
+	public Environment env;
 
-    @Value("${com.ciminc.testProfile}")
-    public String testProfile;
+	@Value("${com.ciminc.testProfile}")
+	public String testProfile;
 
-    @Value("${app.npi.registry.enabled}")
-    public Boolean npiRegistryEnabled;
+	@Value("${app.npi.registry.enabled}")
+	public Boolean npiRegistryEnabled;
 
-    @Value("${npiRegistryUrl}")
-    public String npiRegistryUrl;
-    @Value("${validNpiValue}")
-    public String validNpiValue;
-    @Value("${invalidNpiValue}")
-    public String invalidNpiValue;
+	@Value("${npiRegistryUrl}")
+	public String npiRegistryUrl;
 
-    public ProjectTest() {
-        super();
-    }
+	@Value("${validNpiValue}")
+	public String validNpiValue;
 
-    @Test
-    public void checkTestSetup() {
-        Assert.assertTrue("npiRegistryUrl=" + npiRegistryUrl, StringUtils.isNotEmpty(npiRegistryUrl));
-    }
+	@Value("${invalidNpiValue}")
+	public String invalidNpiValue;
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	public ProjectTest() {
+		super();
+	}
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	@Test
+	public void checkTestSetup() {
+		Assert.assertTrue("npiRegistryUrl=" + npiRegistryUrl, StringUtils.isNotEmpty(npiRegistryUrl));
+	}
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
 }

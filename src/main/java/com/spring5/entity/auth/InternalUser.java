@@ -21,17 +21,21 @@ import lombok.NoArgsConstructor;
 @Table(name = "internal_users")
 public class InternalUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String username;
-    private String email;
-    private String password;
+	private String username;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+	private String email;
 
-    private boolean active;
-    private LocalDateTime createdAt;
+	private String password;
+
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
+
+	private boolean active;
+
+	private LocalDateTime createdAt;
+
 }

@@ -9,16 +9,16 @@ package com.patterns.behavioral.visitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ComputerPartVisitor {
 
-    public void visit(Computer computer);
+	public void visit(Computer computer);
 
-    public void visit(Mouse mouse);
+	public void visit(Mouse mouse);
 
-    public void visit(Keyboard keyboard);
+	public void visit(Keyboard keyboard);
 
-    public void visit(Monitor monitor);
+	public void visit(Monitor monitor);
+
 }

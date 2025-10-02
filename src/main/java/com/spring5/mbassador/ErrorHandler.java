@@ -11,9 +11,10 @@ import net.engio.mbassy.listener.Handler;
  */
 public class ErrorHandler {
 
-    @Handler
-    public void handleErrors(Throwable error) {
-        // Centralized error logging
-        System.err.println("Error occurred: " + error.getMessage());
-    }
+	@Handler
+	public void handleErrors(Throwable error) {
+		// Centralized error logging
+		System.err.println("Error occurred: " + error.getMessage());
+	}
+
 }

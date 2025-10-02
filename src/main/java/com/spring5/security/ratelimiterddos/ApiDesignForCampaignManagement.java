@@ -23,4 +23,5 @@ The design would use:
     Comprehensive documentation with Swagger/OpenAPI"
  */
 public class ApiDesignForCampaignManagement {
+
 }

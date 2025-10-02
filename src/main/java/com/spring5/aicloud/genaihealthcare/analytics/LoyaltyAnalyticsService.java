@@ -13,29 +13,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoyaltyAnalyticsService {
 
-    private final EngagementEventRepository repo;
+	private final EngagementEventRepository repo;
 
-    public LoyaltyAnalyticsService(EngagementEventRepository repo) {
-        this.repo = repo;
-    }
+	public LoyaltyAnalyticsService(EngagementEventRepository repo) {
+		this.repo = repo;
+	}
 
-    public Map<String, Object> computeLoyaltyScore(String patientId) {
-        List<PatientEngagementEvent> events = repo.findByPatientId(patientId);
+	public Map<String, Object> computeLoyaltyScore(String patientId) {
+		List<PatientEngagementEvent> events = repo.findByPatientId(patientId);
 
-        // Simple scoring: each event = +10 points
-        int score = events.size() * 10;
+		// Simple scoring: each event = +10 points
+		int score = events.size() * 10;
 
-        // Responsible AI Index (dummy values for demo)
-        Map<String, Object> responsibleAI = new HashMap<>();
-        responsibleAI.put("transparency", 0.95);
-        responsibleAI.put("fairness", 0.90);
-        responsibleAI.put("regulatoryCompliance", true);
+		// Responsible AI Index (dummy values for demo)
+		Map<String, Object> responsibleAI = new HashMap<>();
+		responsibleAI.put("transparency", 0.95);
+		responsibleAI.put("fairness", 0.90);
+		responsibleAI.put("regulatoryCompliance", true);
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("patientId", patientId);
-        result.put("loyaltyScore", score);
-        result.put("responsibleAIIndex", responsibleAI);
+		Map<String, Object> result = new HashMap<>();
+		result.put("patientId", patientId);
+		result.put("loyaltyScore", score);
+		result.put("responsibleAIIndex", responsibleAI);
 
-        return result;
-    }
+		return result;
+	}
+
 }

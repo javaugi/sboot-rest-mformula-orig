@@ -20,66 +20,54 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/monitoring")
 public class MonitoringController {
 
-    private final KafkaAdminClient adminClient;
-    private final MeterRegistry meterRegistry;
-    private final Tracer tracer;
+	private final KafkaAdminClient adminClient;
 
-    public MonitoringController(
-            KafkaAdminClient adminClient, MeterRegistry meterRegistry, Tracer tracer) {
-        this.adminClient = adminClient;
-        this.meterRegistry = meterRegistry;
-        this.tracer = tracer;
-        // this.tracer = GlobalOpenTelemetry.getTracer("trading-consumer");
-    }
+	private final MeterRegistry meterRegistry;
 
-    @GetMapping("/kafka-health")
-    public ResponseEntity<Map<String, Object>> getKafkaHealth() {
-        /* TODO
-    Span span = tracer.spanBuilder("checkKafkaHealth").startSpan();
-    try (Scope scope = span.makeCurrent()) {
-        Map<String, Object> healthInfo = new HashMap<>();
+	private final Tracer tracer;
 
-        // 1. Cluster health
-        healthInfo.put("cluster", adminClient.describeCluster().nodes().get()
-            .stream()
-            .map(node -> Map.of(
-                "id", node.idString(),
-                "host", node.host(),
-                "port", node.port(),
-                "rack", node.rack()
-            ))
-            .collect(Collectors.toList()));
+	public MonitoringController(KafkaAdminClient adminClient, MeterRegistry meterRegistry, Tracer tracer) {
+		this.adminClient = adminClient;
+		this.meterRegistry = meterRegistry;
+		this.tracer = tracer;
+		// this.tracer = GlobalOpenTelemetry.getTracer("trading-consumer");
+	}
 
-        // 2. Consumer lag
-        healthInfo.put("consumerLag", meterRegistry.find("kafka.consumer.lag")
-            .tags("group", "file-storage-group")
-            .gauge().value());
+	@GetMapping("/kafka-health")
+	public ResponseEntity<Map<String, Object>> getKafkaHealth() {
+		/*
+		 * TODO Span span = tracer.spanBuilder("checkKafkaHealth").startSpan(); try (Scope
+		 * scope = span.makeCurrent()) { Map<String, Object> healthInfo = new HashMap<>();
+		 * 
+		 * // 1. Cluster health healthInfo.put("cluster",
+		 * adminClient.describeCluster().nodes().get() .stream() .map(node -> Map.of(
+		 * "id", node.idString(), "host", node.host(), "port", node.port(), "rack",
+		 * node.rack() )) .collect(Collectors.toList()));
+		 * 
+		 * // 2. Consumer lag healthInfo.put("consumerLag",
+		 * meterRegistry.find("kafka.consumer.lag") .tags("group", "file-storage-group")
+		 * .gauge().value());
+		 * 
+		 * // 3. Producer metrics healthInfo.put("producerMetrics", Map.of( "sendRate",
+		 * meterRegistry.find("kafka.producer.record.send.rate").gauge().value(),
+		 * "errorRate",
+		 * meterRegistry.find("kafka.producer.record.error.rate").gauge().value() ));
+		 * 
+		 * return ResponseEntity.ok(healthInfo); } catch (Exception e) {
+		 * span.recordException(e); throw e; } finally { span.end(); } //
+		 */
 
-        // 3. Producer metrics
-        healthInfo.put("producerMetrics", Map.of(
-            "sendRate", meterRegistry.find("kafka.producer.record.send.rate").gauge().value(),
-            "errorRate", meterRegistry.find("kafka.producer.record.error.rate").gauge().value()
-        ));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
-        return ResponseEntity.ok(healthInfo);
-    } catch (Exception e) {
-        span.recordException(e);
-        throw e;
-    } finally {
-        span.end();
-    }
-    // */
+	@GetMapping("/trace/{tradeId}")
+	public ResponseEntity<Map<String, Object>> getTradeTrace(@PathVariable String tradeId) {
+		// Implementation would query your tracing backend
+		return ResponseEntity.ok(Map.of("tradeId", tradeId, "spans", getSpansForTrade(tradeId)));
+	}
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+	public String getSpansForTrade(String tradeId) {
+		return null;
+	}
 
-    @GetMapping("/trace/{tradeId}")
-    public ResponseEntity<Map<String, Object>> getTradeTrace(@PathVariable String tradeId) {
-        // Implementation would query your tracing backend
-        return ResponseEntity.ok(Map.of("tradeId", tradeId, "spans", getSpansForTrade(tradeId)));
-    }
-
-    public String getSpansForTrade(String tradeId) {
-        return null;
-    }
 }

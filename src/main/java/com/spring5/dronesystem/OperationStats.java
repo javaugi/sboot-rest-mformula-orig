@@ -17,38 +17,40 @@ import lombok.ToString;
 @ToString
 public class OperationStats {
 
-    private final AtomicLong count = new AtomicLong();
-    private final AtomicLong totalTime = new AtomicLong();
-    private final AtomicLong minTime = new AtomicLong(Long.MAX_VALUE);
-    private final AtomicLong maxTime = new AtomicLong(Long.MIN_VALUE);
+	private final AtomicLong count = new AtomicLong();
 
-    public static void main(String[] args) {
-        OperationStats main = new OperationStats(10);
-        main.test();
-    }
+	private final AtomicLong totalTime = new AtomicLong();
 
-    private void test() {
-        count.incrementAndGet();
-        System.out.println("count.incrementAndGet()=" + count.incrementAndGet());
-        System.out.println("totalTime.addAndGet(5)=" + totalTime.addAndGet(5));
-        System.out.println(
-                "minTime.accumulateAndGet(5, Math::min)=" + minTime.accumulateAndGet(5, Math::min));
-        System.out.println(
-                "maxTime.accumulateAndGet(5, Math::max)=" + maxTime.accumulateAndGet(5, Math::max));
-    }
+	private final AtomicLong minTime = new AtomicLong(Long.MAX_VALUE);
 
-    public OperationStats(long initialDuration) {
-        recordDuration(initialDuration);
-    }
+	private final AtomicLong maxTime = new AtomicLong(Long.MIN_VALUE);
 
-    public void recordDuration(long duration) {
-        count.incrementAndGet();
-        totalTime.addAndGet(duration);
-        minTime.accumulateAndGet(duration, Math::min);
-        maxTime.accumulateAndGet(duration, Math::max);
-    }
+	public static void main(String[] args) {
+		OperationStats main = new OperationStats(10);
+		main.test();
+	}
 
-    public double getAverageTime() {
-        return totalTime.get() / (double) count.get();
-    }
+	private void test() {
+		count.incrementAndGet();
+		System.out.println("count.incrementAndGet()=" + count.incrementAndGet());
+		System.out.println("totalTime.addAndGet(5)=" + totalTime.addAndGet(5));
+		System.out.println("minTime.accumulateAndGet(5, Math::min)=" + minTime.accumulateAndGet(5, Math::min));
+		System.out.println("maxTime.accumulateAndGet(5, Math::max)=" + maxTime.accumulateAndGet(5, Math::max));
+	}
+
+	public OperationStats(long initialDuration) {
+		recordDuration(initialDuration);
+	}
+
+	public void recordDuration(long duration) {
+		count.incrementAndGet();
+		totalTime.addAndGet(duration);
+		minTime.accumulateAndGet(duration, Math::min);
+		maxTime.accumulateAndGet(duration, Math::max);
+	}
+
+	public double getAverageTime() {
+		return totalTime.get() / (double) count.get();
+	}
+
 }

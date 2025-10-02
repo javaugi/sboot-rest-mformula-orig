@@ -9,25 +9,27 @@ package com.interview.hrank;
  */
 public class GenericOperations {
 
-    public static void main(String args[]) {
-        Integer[] intArray = {1, 2, 3};
-        String[] stringArray = {"Hello", "World"};
+	public static void main(String args[]) {
+		Integer[] intArray = { 1, 2, 3 };
+		String[] stringArray = { "Hello", "World" };
 
-        printArray(intArray);
-        printArray(stringArray);
-    }
+		printArray(intArray);
+		printArray(stringArray);
+	}
 
-    public static <T> void printArray(T[] array) {
-        for (T element : array) {
-            // System.out.println(element);
-            doPrint.print(element);
+	public static <T> void printArray(T[] array) {
+		for (T element : array) {
+			// System.out.println(element);
+			doPrint.print(element);
 
-            if (element instanceof Integer value) {
-                System.out.println("isOdd=" + isOdd.check(value));
-            }
-        }
-    }
+			if (element instanceof Integer value) {
+				System.out.println("isOdd=" + isOdd.check(value));
+			}
+		}
+	}
 
-    public static final GenericPrint doPrint = ele -> System.out.println(ele);
-    public static final PerformOperation isOdd = n -> n % 2 != 0;
+	public static final GenericPrint doPrint = ele -> System.out.println(ele);
+
+	public static final PerformOperation isOdd = n -> n % 2 != 0;
+
 }

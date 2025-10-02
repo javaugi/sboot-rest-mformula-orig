@@ -6,25 +6,25 @@ package com.spring5.unstructureddata;
 
 import dev.langchain4j.model.input.structured.StructuredPrompt;
 
-@StructuredPrompt(
-        """
-    Extract the following from the resume:
-    - Name: {{name}}
-    - Email: {{email}}
-    - Skills: {{skills}}
-    - Education: {{education}}
-    - Work Experience: {{work_experience}}
-    Return JSON.
-""")
+@StructuredPrompt("""
+		    Extract the following from the resume:
+		    - Name: {{name}}
+		    - Email: {{email}}
+		    - Skills: {{skills}}
+		    - Education: {{education}}
+		    - Work Experience: {{work_experience}}
+		    Return JSON.
+		""")
 public class ResumeExtractionPrompt {
 
-    private final String resumeText;
+	private final String resumeText;
 
-    public ResumeExtractionPrompt(String resumeText) {
-        this.resumeText = resumeText;
-    }
+	public ResumeExtractionPrompt(String resumeText) {
+		this.resumeText = resumeText;
+	}
 
-    public String getResumeText() {
-        return resumeText;
-    }
+	public String getResumeText() {
+		return resumeText;
+	}
+
 }

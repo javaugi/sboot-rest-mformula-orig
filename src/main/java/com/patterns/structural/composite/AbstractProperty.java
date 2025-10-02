@@ -14,68 +14,72 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class AbstractProperty implements Property {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractProperty.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractProperty.class);
 
-    enum PropertyType {
-        Apartment(1),
-        Tenement(2),
-        Bungalow(3),
-        Office(4);
-        int type;
+	enum PropertyType {
 
-        PropertyType(int type) {
-            this.type = type;
-        }
-    }
+		Apartment(1), Tenement(2), Bungalow(3), Office(4);
 
-    PropertyType type;
-    float price;
-    String address;
-    String builder;
-    List<Property> properties = new ArrayList();
+		int type;
 
-    public float getPrice() {
-        return price;
-    }
+		PropertyType(int type) {
+			this.type = type;
+		}
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	PropertyType type;
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	float price;
 
-    public String getBuilder() {
-        return builder;
-    }
+	String address;
 
-    public void setBuilder(String builder) {
-        this.builder = builder;
-    }
+	String builder;
 
-    public PropertyType getType() {
-        return type;
-    }
+	List<Property> properties = new ArrayList();
 
-    public void setType(PropertyType type) {
-        this.type = type;
-    }
+	public float getPrice() {
+		return price;
+	}
 
-    public List<Property> getProperties() {
-        return properties;
-    }
+	public void setPrice(float price) {
+		this.price = price;
+	}
 
-    public void setProperties(List<Property> properties) {
-        this.properties = properties;
-    }
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getBuilder() {
+		return builder;
+	}
+
+	public void setBuilder(String builder) {
+		this.builder = builder;
+	}
+
+	public PropertyType getType() {
+		return type;
+	}
+
+	public void setType(PropertyType type) {
+		this.type = type;
+	}
+
+	public List<Property> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(List<Property> properties) {
+		this.properties = properties;
+	}
+
 }

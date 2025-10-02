@@ -16,20 +16,21 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class DxcgApiClient {
 
-    private final RestTemplate restTemplate;
-    private final String baseUrl = "https://api.verisk.com/dxcg/v1";
+	private final RestTemplate restTemplate;
 
-    public DxcgApiClient(@Value("${verisk.api.key}") String apiKey) {
-        this.restTemplate = createRestTemplate(apiKey);
-    }
+	private final String baseUrl = "https://api.verisk.com/dxcg/v1";
 
-    private RestTemplate createRestTemplate(String apiKey) {
-        return new RestTemplateBuilder()
-                .rootUri(baseUrl)
-                .defaultHeader("X-API-Key", apiKey)
-                .defaultHeader("Content-Type", "application/json")
-                .connectTimeout(Duration.ofSeconds(30))
-                .readTimeout(Duration.ofSeconds(60))
-                .build();
-    }
+	public DxcgApiClient(@Value("${verisk.api.key}") String apiKey) {
+		this.restTemplate = createRestTemplate(apiKey);
+	}
+
+	private RestTemplate createRestTemplate(String apiKey) {
+		return new RestTemplateBuilder().rootUri(baseUrl)
+			.defaultHeader("X-API-Key", apiKey)
+			.defaultHeader("Content-Type", "application/json")
+			.connectTimeout(Duration.ofSeconds(30))
+			.readTimeout(Duration.ofSeconds(60))
+			.build();
+	}
+
 }

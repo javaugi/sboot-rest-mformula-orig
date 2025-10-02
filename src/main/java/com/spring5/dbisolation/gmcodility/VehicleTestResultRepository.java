@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VehicleTestResultRepository
-        extends JpaRepository<VehicleTestResult, Long>, JpaSpecificationExecutor<VehicleTestResult> {
+		extends JpaRepository<VehicleTestResult, Long>, JpaSpecificationExecutor<VehicleTestResult> {
+
 }

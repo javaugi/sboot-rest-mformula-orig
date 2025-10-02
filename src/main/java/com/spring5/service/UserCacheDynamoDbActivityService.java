@@ -23,71 +23,71 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class UserCacheDynamoDbActivityService {
 
-    private final UserRepository userRepository; // PostgreSQL (JPA)
-    private final UserCacheRepository userCacheRepository; // Redis
-    private final UserActivityRepository userActivityRepository; // DynamoDB
+	private final UserRepository userRepository; // PostgreSQL (JPA)
 
-    @Transactional
-    public UserDTO createUser(UserDTO userDTO) throws Exception {
-        // Validate input
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
-        }
+	private final UserCacheRepository userCacheRepository; // Redis
 
-        // PostgreSQL write
-        User user = userRepository.save(convertToEntity(userDTO));
+	private final UserActivityRepository userActivityRepository; // DynamoDB
 
-        // Redis cache warm-up
-        userCacheRepository.cacheUser(user);
+	@Transactional
+	public UserDTO createUser(UserDTO userDTO) throws Exception {
+		// Validate input
+		if (userRepository.existsByEmail(userDTO.getEmail())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
+		}
 
-        // Return DTO
-        return convertToDTO(user);
-    }
+		// PostgreSQL write
+		User user = userRepository.save(convertToEntity(userDTO));
 
-    @Cacheable(value = "users", key = "#id")
-    public UserDTO getUserById(Long id) {
-        // Check Redis first
-        User user = userCacheRepository.getUser(id);
-        if (user != null) {
-            return convertToDTO(user);
-        }
+		// Redis cache warm-up
+		userCacheRepository.cacheUser(user);
 
-        // Fallback to PostgreSQL
-        user
-                = userRepository
-                        .findById(id)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+		// Return DTO
+		return convertToDTO(user);
+	}
 
-        // Cache the result
-        UserDTO userDTO = convertToDTO(user);
-        userCacheRepository.cacheUser(userDTO);
+	@Cacheable(value = "users", key = "#id")
+	public UserDTO getUserById(Long id) {
+		// Check Redis first
+		User user = userCacheRepository.getUser(id);
+		if (user != null) {
+			return convertToDTO(user);
+		}
 
-        return userDTO;
-    }
+		// Fallback to PostgreSQL
+		user = userRepository.findById(id)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-    public void recordUserActivity(UserActivityDTO activityDTO) {
-        // Async write to DynamoDB for activity tracking
-        CompletableFuture.runAsync(
-                () -> {
-                    userActivityRepository.save(convertToEntity(activityDTO));
-                });
-    }
+		// Cache the result
+		UserDTO userDTO = convertToDTO(user);
+		userCacheRepository.cacheUser(userDTO);
 
-    private UserDTO convertToDTO(User entity) {
-        UserDTO dto = new UserDTO();
-        BeanUtils.copyProperties(entity, dto);
-        return dto;
-    }
+		return userDTO;
+	}
 
-    private User convertToEntity(UserDTO dto) {
-        User entity = new User();
-        BeanUtils.copyProperties(dto, entity);
-        return entity;
-    }
+	public void recordUserActivity(UserActivityDTO activityDTO) {
+		// Async write to DynamoDB for activity tracking
+		CompletableFuture.runAsync(() -> {
+			userActivityRepository.save(convertToEntity(activityDTO));
+		});
+	}
 
-    private User convertToEntity(UserActivityDTO dto) {
-        User entity = new User();
-        BeanUtils.copyProperties(dto, entity);
-        return entity;
-    }
+	private UserDTO convertToDTO(User entity) {
+		UserDTO dto = new UserDTO();
+		BeanUtils.copyProperties(entity, dto);
+		return dto;
+	}
+
+	private User convertToEntity(UserDTO dto) {
+		User entity = new User();
+		BeanUtils.copyProperties(dto, entity);
+		return entity;
+	}
+
+	private User convertToEntity(UserActivityDTO dto) {
+		User entity = new User();
+		BeanUtils.copyProperties(dto, entity);
+		return entity;
+	}
+
 }

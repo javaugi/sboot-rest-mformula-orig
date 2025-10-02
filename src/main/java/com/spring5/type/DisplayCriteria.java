@@ -9,32 +9,33 @@ package com.spring5.type;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class DisplayCriteria {
 
-    private int entry;
-    private String search = "";
+	private int entry;
 
-    public int getEntry() {
-        return entry;
-    }
+	private String search = "";
 
-    public void setEntry(int entry) {
-        this.entry = entry;
-    }
+	public int getEntry() {
+		return entry;
+	}
 
-    public String getSearch() {
-        return search;
-    }
+	public void setEntry(int entry) {
+		this.entry = entry;
+	}
 
-    public void setSearch(String search) {
-        this.search = search;
-    }
+	public String getSearch() {
+		return search;
+	}
 
-    @Override
-    public String toString() {
-        return "DisplayCriteria{" + "entry=" + entry + ", search=" + search + '}';
-    }
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	@Override
+	public String toString() {
+		return "DisplayCriteria{" + "entry=" + entry + ", search=" + search + '}';
+	}
+
 }

@@ -17,9 +17,10 @@ import org.springframework.data.neo4j.core.schema.Node;
 @Node("Neo4jBook")
 public class Neo4jBook {
 
-    @Id
-    @GeneratedValue
-    Long id;
+	@Id
+	@GeneratedValue
+	Long id;
 
-    String name;
+	String name;
+
 }

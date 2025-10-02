@@ -10,18 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class PseudonymService {
 
-    private final PatientIdPseudonymizer pseudonymizer;
+	private final PatientIdPseudonymizer pseudonymizer;
 
-    public PseudonymService(@Value("${spring.security.pseudonym-key}") String key) {
-        if (key == null) {
-            key = "secretKey";
-        }
-        this.pseudonymizer = new PatientIdPseudonymizer(key);
-    }
+	public PseudonymService(@Value("${spring.security.pseudonym-key}") String key) {
+		if (key == null) {
+			key = "secretKey";
+		}
+		this.pseudonymizer = new PatientIdPseudonymizer(key);
+	}
 
-    public String getPseudonym(String patientId) {
-        // 5. Optional: Adding a Salt or Context
-        String contextSpecificPseudonym = pseudonymizer.pseudonymize(patientId + "|modelA");
-        return pseudonymizer.pseudonymize(patientId);
-    }
+	public String getPseudonym(String patientId) {
+		// 5. Optional: Adding a Salt or Context
+		String contextSpecificPseudonym = pseudonymizer.pseudonymize(patientId + "|modelA");
+		return pseudonymizer.pseudonymize(patientId);
+	}
+
 }

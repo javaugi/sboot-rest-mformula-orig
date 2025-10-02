@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Repository
 public interface DepartmentRepository extends CrudRepository<Department, Long> {
+
 }

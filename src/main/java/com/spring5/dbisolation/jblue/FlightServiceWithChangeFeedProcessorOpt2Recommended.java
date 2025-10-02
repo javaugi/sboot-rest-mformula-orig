@@ -20,123 +20,119 @@ import org.springframework.stereotype.Component;
 @Component
 public class FlightServiceWithChangeFeedProcessorOpt2Recommended {
 
-    private final CosmosAsyncClient cosmosAsyncClient;
-    private final CosmosAsyncContainer leaseContainer;
+	private final CosmosAsyncClient cosmosAsyncClient;
 
-    public FlightServiceWithChangeFeedProcessorOpt2Recommended(CosmosAsyncClient cosmosAsyncClient) {
-        this.cosmosAsyncClient = cosmosAsyncClient;
+	private final CosmosAsyncContainer leaseContainer;
 
-        // Create lease container for change feed processor
-        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
-        this.leaseContainer = database.getContainer("leases");
-    }
+	public FlightServiceWithChangeFeedProcessorOpt2Recommended(CosmosAsyncClient cosmosAsyncClient) {
+		this.cosmosAsyncClient = cosmosAsyncClient;
 
-    @PostConstruct
-    public void initializeChangeFeed() {
-        startChangeFeedProcessor();
-    }
+		// Create lease container for change feed processor
+		CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
+		this.leaseContainer = database.getContainer("leases");
+	}
 
-    public void startChangeFeedProcessor() {
-        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
-        CosmosAsyncContainer flightEventsContainer = database.getContainer("flightEvents");
+	@PostConstruct
+	public void initializeChangeFeed() {
+		startChangeFeedProcessor();
+	}
 
-        // Configure change feed options
-        CosmosChangeFeedRequestOptions options
-                = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+	public void startChangeFeedProcessor() {
+		CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
+		CosmosAsyncContainer flightEventsContainer = database.getContainer("flightEvents");
 
-        options.setMaxItemCount(100); // Process in batches
+		// Configure change feed options
+		CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+			.createForProcessingFromBeginning(FeedRange.forFullRange());
 
-        // Create the change feed query
-        CosmosPagedFlux<FlightEvent> changeFeedFlux
-                = flightEventsContainer.queryChangeFeed(options, FlightEvent.class);
+		options.setMaxItemCount(100); // Process in batches
 
-        // Subscribe to process changes
-        changeFeedFlux
-                .byPage()
-                .subscribe(
-                        feedResponse -> processFeedResponse(feedResponse),
-                        error -> handleError(error),
-                        () -> System.out.println("Change feed processing completed"));
-    }
+		// Create the change feed query
+		CosmosPagedFlux<FlightEvent> changeFeedFlux = flightEventsContainer.queryChangeFeed(options, FlightEvent.class);
 
-    private void processFeedResponse(FeedResponse<FlightEvent> feedResponse) {
-        List<FlightEvent> events = feedResponse.getResults();
+		// Subscribe to process changes
+		changeFeedFlux.byPage()
+			.subscribe(feedResponse -> processFeedResponse(feedResponse), error -> handleError(error),
+					() -> System.out.println("Change feed processing completed"));
+	}
 
-        for (FlightEvent event : events) {
-            try {
-                processFlightEvent(event);
-            } catch (Exception e) {
-                System.err.println("Error processing event: " + e.getMessage());
-                // Implement retry logic here
-            }
-        }
+	private void processFeedResponse(FeedResponse<FlightEvent> feedResponse) {
+		List<FlightEvent> events = feedResponse.getResults();
 
-        // Get continuation token for next page
-        String continuationToken = feedResponse.getContinuationToken();
-        if (continuationToken != null) {
-            // Store continuation token for resuming
-            storeContinuationToken(continuationToken);
-        }
-    }
+		for (FlightEvent event : events) {
+			try {
+				processFlightEvent(event);
+			}
+			catch (Exception e) {
+				System.err.println("Error processing event: " + e.getMessage());
+				// Implement retry logic here
+			}
+		}
 
-    private void processFlightEvent(FlightEvent event) {
-        System.out.println("Processing flight event: " + event.getId());
-        System.out.println("Flight: " + event.getFlightNumber());
-        System.out.println("Event type: " + event.getEventType());
-        System.out.println("Timestamp: " + event.getTimestamp());
+		// Get continuation token for next page
+		String continuationToken = feedResponse.getContinuationToken();
+		if (continuationToken != null) {
+			// Store continuation token for resuming
+			storeContinuationToken(continuationToken);
+		}
+	}
 
-        // Your business logic here
-        switch (event.getEventType()) {
-            case "DEPARTURE":
-                handleDeparture(event);
-                break;
-            case "ARRIVAL":
-                handleArrival(event);
-                break;
-            case "DELAY":
-                handleDelay(event);
-                break;
-            default:
-                System.out.println("Unknown event type: " + event.getEventType());
-        }
-    }
+	private void processFlightEvent(FlightEvent event) {
+		System.out.println("Processing flight event: " + event.getId());
+		System.out.println("Flight: " + event.getFlightNumber());
+		System.out.println("Event type: " + event.getEventType());
+		System.out.println("Timestamp: " + event.getTimestamp());
 
-    private void handleDeparture(FlightEvent event) {
-        // Update flight status to departed
-        System.out.println("Flight " + event.getFlightNumber() + " has departed");
-    }
+		// Your business logic here
+		switch (event.getEventType()) {
+			case "DEPARTURE":
+				handleDeparture(event);
+				break;
+			case "ARRIVAL":
+				handleArrival(event);
+				break;
+			case "DELAY":
+				handleDelay(event);
+				break;
+			default:
+				System.out.println("Unknown event type: " + event.getEventType());
+		}
+	}
 
-    private void handleArrival(FlightEvent event) {
-        // Update flight status to arrived
-        System.out.println("Flight " + event.getFlightNumber() + " has arrived");
-    }
+	private void handleDeparture(FlightEvent event) {
+		// Update flight status to departed
+		System.out.println("Flight " + event.getFlightNumber() + " has departed");
+	}
 
-    private void handleDelay(FlightEvent event) {
-        // Handle flight delay
-        System.out.println("Flight " + event.getFlightNumber() + " is delayed");
-    }
+	private void handleArrival(FlightEvent event) {
+		// Update flight status to arrived
+		System.out.println("Flight " + event.getFlightNumber() + " has arrived");
+	}
 
-    private void handleError(Throwable error) {
-        System.err.println("Change feed error: " + error.getMessage());
-        // Implement error handling and retry logic
-    }
+	private void handleDelay(FlightEvent event) {
+		// Handle flight delay
+		System.out.println("Flight " + event.getFlightNumber() + " is delayed");
+	}
 
-    private void storeContinuationToken(String token) {
-        // Store continuation token in database or cache for resuming
-        System.out.println("Storing continuation token: " + token);
-    }
+	private void handleError(Throwable error) {
+		System.err.println("Change feed error: " + error.getMessage());
+		// Implement error handling and retry logic
+	}
 
-    // Method to resume from stored continuation token
-    public void resumeFromToken(String continuationToken) {
-        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
-        CosmosAsyncContainer flightEventsContainer = database.getContainer("flightEvents");
+	private void storeContinuationToken(String token) {
+		// Store continuation token in database or cache for resuming
+		System.out.println("Storing continuation token: " + token);
+	}
 
-        CosmosChangeFeedRequestOptions options
-                = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
+	// Method to resume from stored continuation token
+	public void resumeFromToken(String continuationToken) {
+		CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
+		CosmosAsyncContainer flightEventsContainer = database.getContainer("flightEvents");
 
-        flightEventsContainer
-                .queryChangeFeed(options, FlightEvent.class)
-                .byPage()
-                .subscribe(this::processFeedResponse);
-    }
+		CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+			.createForProcessingFromContinuation(continuationToken);
+
+		flightEventsContainer.queryChangeFeed(options, FlightEvent.class).byPage().subscribe(this::processFeedResponse);
+	}
+
 }

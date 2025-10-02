@@ -15,32 +15,32 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class IdempotencyInterceptor implements HandlerInterceptor {
 
-    private final Map<String, ResponseEntity<?>> cache = new ConcurrentHashMap<>();
+	private final Map<String, ResponseEntity<?>> cache = new ConcurrentHashMap<>();
 
-    @Override
-    public boolean preHandle(
-            HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
-            String key = request.getHeader("Idempotency-Key");
-            if (key != null && cache.containsKey(key)) {
-                ResponseEntity<?> cachedResponse = cache.get(key);
-                response.setStatus(cachedResponse.getStatusCodeValue());
-                // Write cached body if needed...
-                return false; // skip controller
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+		if ("POST".equalsIgnoreCase(request.getMethod())) {
+			String key = request.getHeader("Idempotency-Key");
+			if (key != null && cache.containsKey(key)) {
+				ResponseEntity<?> cachedResponse = cache.get(key);
+				response.setStatus(cachedResponse.getStatusCodeValue());
+				// Write cached body if needed...
+				return false; // skip controller
+			}
+		}
+		return true;
+	}
 
-    @Override
-    public void afterCompletion(
-            HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
-            String key = request.getHeader("Idempotency-Key");
-            if (key != null && !cache.containsKey(key)) {
-                // Simplified: store response code only; real impl needs response wrapper
-                cache.put(key, ResponseEntity.status(response.getStatus()).build());
-            }
-        }
-    }
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+			Exception ex) {
+		if ("POST".equalsIgnoreCase(request.getMethod())) {
+			String key = request.getHeader("Idempotency-Key");
+			if (key != null && !cache.containsKey(key)) {
+				// Simplified: store response code only; real impl needs response wrapper
+				cache.put(key, ResponseEntity.status(response.getStatus()).build());
+			}
+		}
+	}
+
 }

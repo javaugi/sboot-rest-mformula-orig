@@ -14,40 +14,41 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BatchVehicleService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+	@PersistenceContext
+	private EntityManager entityManager;
 
-    @Transactional
-    public void batchInsert(List<Vehicle> vehicles) {
-        int batchSize = 50;
-        for (int i = 0; i < vehicles.size(); i++) {
-            entityManager.persist(vehicles.get(i));
-            if (i > 0 && i % batchSize == 0) {
-                entityManager.flush();
-                entityManager.clear(); // prevents memory issues
-            }
-        }
-        entityManager.flush();
-        entityManager.clear();
-    }
+	@Transactional
+	public void batchInsert(List<Vehicle> vehicles) {
+		int batchSize = 50;
+		for (int i = 0; i < vehicles.size(); i++) {
+			entityManager.persist(vehicles.get(i));
+			if (i > 0 && i % batchSize == 0) {
+				entityManager.flush();
+				entityManager.clear(); // prevents memory issues
+			}
+		}
+		entityManager.flush();
+		entityManager.clear();
+	}
 
-    @Transactional
-    public void batchUpdate(List<Vehicle> vehicles) {
-        int batchSize = 50;
-        for (int i = 0; i < vehicles.size(); i++) {
-            Vehicle vehicle = vehicles.get(i);
-            Vehicle existing = entityManager.find(Vehicle.class, vehicle.getId());
-            if (existing != null) {
-                existing.setTargetVersionId(vehicle.getTargetVersionId());
-                // or other fields to update
-            }
+	@Transactional
+	public void batchUpdate(List<Vehicle> vehicles) {
+		int batchSize = 50;
+		for (int i = 0; i < vehicles.size(); i++) {
+			Vehicle vehicle = vehicles.get(i);
+			Vehicle existing = entityManager.find(Vehicle.class, vehicle.getId());
+			if (existing != null) {
+				existing.setTargetVersionId(vehicle.getTargetVersionId());
+				// or other fields to update
+			}
 
-            if (i > 0 && i % batchSize == 0) {
-                entityManager.flush();
-                entityManager.clear();
-            }
-        }
-        entityManager.flush();
-        entityManager.clear();
-    }
+			if (i > 0 && i % batchSize == 0) {
+				entityManager.flush();
+				entityManager.clear();
+			}
+		}
+		entityManager.flush();
+		entityManager.clear();
+	}
+
 }

@@ -11,21 +11,28 @@ import java.time.LocalDateTime;
  */
 public class FlightDetails {
 
-    private String flightNumber;
-    private String airlineCode;
-    private String airlineName;
-    private String departureAirport;
-    private String arrivalAirport;
-    private LocalDateTime departureTime;
-    private String country;
+	private String flightNumber;
 
-    public FlightDetails(FlightEvent flight, Airline airline) {
-        this.flightNumber = flight.getFlightNumber();
-        this.airlineCode = flight.getAirlineCode();
-        this.airlineName = airline.getAirlineName();
-        this.departureAirport = flight.getDepartureAirport();
-        this.arrivalAirport = flight.getArrivalAirport();
-        this.departureTime = flight.getDepartureTime();
-        this.country = airline.getCountry();
-    }
+	private String airlineCode;
+
+	private String airlineName;
+
+	private String departureAirport;
+
+	private String arrivalAirport;
+
+	private LocalDateTime departureTime;
+
+	private String country;
+
+	public FlightDetails(FlightEvent flight, Airline airline) {
+		this.flightNumber = flight.getFlightNumber();
+		this.airlineCode = flight.getAirlineCode();
+		this.airlineName = airline.getAirlineName();
+		this.departureAirport = flight.getDepartureAirport();
+		this.arrivalAirport = flight.getArrivalAirport();
+		this.departureTime = flight.getDepartureTime();
+		this.country = airline.getCountry();
+	}
+
 }

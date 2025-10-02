@@ -18,16 +18,20 @@ import lombok.Data;
 @Container(containerName = "airlines")
 public class Airline {
 
-    @Id
-    private String id;
+	@Id
+	private String id;
 
-    @PartitionKey
-    private String airlineCode;
+	@PartitionKey
+	private String airlineCode;
 
-    private String airlineName;
-    private String country;
-    private int fleetSize;
-    private String contactPhone;
+	private String airlineName;
 
-    // getters and setters
+	private String country;
+
+	private int fleetSize;
+
+	private String contactPhone;
+
+	// getters and setters
+
 }

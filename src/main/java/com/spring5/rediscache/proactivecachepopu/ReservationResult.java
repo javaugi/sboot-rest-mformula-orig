@@ -11,14 +11,16 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class ReservationResult {
 
-    static ReservationResult failure(String vehicle_not_available) {
-        return ReservationResult.builder().failure(vehicle_not_available).build();
-    }
+	static ReservationResult failure(String vehicle_not_available) {
+		return ReservationResult.builder().failure(vehicle_not_available).build();
+	}
 
-    static ReservationResult success(String eventId) {
-        return ReservationResult.builder().failure(eventId).build();
-    }
+	static ReservationResult success(String eventId) {
+		return ReservationResult.builder().failure(eventId).build();
+	}
 
-    String success;
-    String failure;
+	String success;
+
+	String failure;
+
 }

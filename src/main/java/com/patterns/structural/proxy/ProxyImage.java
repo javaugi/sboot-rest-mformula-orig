@@ -9,23 +9,24 @@ package com.patterns.structural.proxy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ProxyImage implements Image {
 
-    private RealImage realImage;
-    private String fileName;
+	private RealImage realImage;
 
-    public ProxyImage(String fileName) {
-        this.fileName = fileName;
-    }
+	private String fileName;
 
-    @Override
-    public void display() {
-        if (realImage == null) {
-            realImage = new RealImage(fileName);
-        }
-        realImage.display();
-    }
+	public ProxyImage(String fileName) {
+		this.fileName = fileName;
+	}
+
+	@Override
+	public void display() {
+		if (realImage == null) {
+			realImage = new RealImage(fileName);
+		}
+		realImage.display();
+	}
+
 }

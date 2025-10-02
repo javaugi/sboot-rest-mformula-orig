@@ -13,13 +13,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class EventStore {
 
-    private final ConcurrentHashMap<String, List<Event>> map = new ConcurrentHashMap();
+	private final ConcurrentHashMap<String, List<Event>> map = new ConcurrentHashMap();
 
-    public void saveEvents(UUID patientId, List<Event> events) {
-        map.put(patientId.toString(), events);
-    }
+	public void saveEvents(UUID patientId, List<Event> events) {
+		map.put(patientId.toString(), events);
+	}
 
-    public List<Event> getEventsForPatient(UUID patientId) {
-        return map.get(patientId.toString());
-    }
+	public List<Event> getEventsForPatient(UUID patientId) {
+		return map.get(patientId.toString());
+	}
+
 }

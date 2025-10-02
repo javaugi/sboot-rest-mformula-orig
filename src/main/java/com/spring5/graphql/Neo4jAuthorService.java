@@ -12,35 +12,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class Neo4jAuthorService {
 
-    private final Neo4jAuthorRepository authorRepository;
+	private final Neo4jAuthorRepository authorRepository;
 
-    @Autowired
-    public Neo4jAuthorService(Neo4jAuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
+	@Autowired
+	public Neo4jAuthorService(Neo4jAuthorRepository authorRepository) {
+		this.authorRepository = authorRepository;
+	}
 
-    public List<Neo4jAuthor> getAllAuthors() {
-        return authorRepository.findAll();
-    }
+	public List<Neo4jAuthor> getAllAuthors() {
+		return authorRepository.findAll();
+	}
 
-    public Neo4jAuthor addAuthor(Neo4jAuthor author) {
-        return authorRepository.save(author);
-    }
+	public Neo4jAuthor addAuthor(Neo4jAuthor author) {
+		return authorRepository.save(author);
+	}
 
-    public Neo4jAuthor updateAuthor(Neo4jAuthor author) {
-        Optional<Neo4jAuthor> authorFromDB = authorRepository.findById(author.getId());
-        if (authorFromDB.isPresent()) {
-            Neo4jAuthor authorFromDBVal = authorFromDB.get();
-            authorFromDBVal.setBooks(author.getBooks());
-            authorFromDBVal.setName(author.getName());
-            authorRepository.save(authorFromDBVal);
-        } else {
-            return null;
-        }
-        return author;
-    }
+	public Neo4jAuthor updateAuthor(Neo4jAuthor author) {
+		Optional<Neo4jAuthor> authorFromDB = authorRepository.findById(author.getId());
+		if (authorFromDB.isPresent()) {
+			Neo4jAuthor authorFromDBVal = authorFromDB.get();
+			authorFromDBVal.setBooks(author.getBooks());
+			authorFromDBVal.setName(author.getName());
+			authorRepository.save(authorFromDBVal);
+		}
+		else {
+			return null;
+		}
+		return author;
+	}
 
-    public void deleteAuthor(Long id) {
-        authorRepository.deleteById(id);
-    }
+	public void deleteAuthor(Long id) {
+		authorRepository.deleteById(id);
+	}
+
 }

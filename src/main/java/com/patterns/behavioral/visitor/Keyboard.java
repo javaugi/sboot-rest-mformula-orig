@@ -9,13 +9,13 @@ package com.patterns.behavioral.visitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Keyboard implements ComputerPart {
 
-    @Override
-    public void accept(ComputerPartVisitor computerPartVisitor) {
-        computerPartVisitor.visit(this);
-    }
+	@Override
+	public void accept(ComputerPartVisitor computerPartVisitor) {
+		computerPartVisitor.visit(this);
+	}
+
 }

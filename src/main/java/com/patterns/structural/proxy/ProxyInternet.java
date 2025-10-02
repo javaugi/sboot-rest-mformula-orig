@@ -12,28 +12,29 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ProxyInternet implements Internet {
 
-    private Internet internet = new RealInternet();
-    private static List<String> bannedSites;
+	private Internet internet = new RealInternet();
 
-    static {
-        bannedSites = new ArrayList<String>();
-        bannedSites.add("abc.com");
-        bannedSites.add("def.com");
-        bannedSites.add("ijk.com");
-        bannedSites.add("lnm.com");
-    }
+	private static List<String> bannedSites;
 
-    @Override
-    public void connectTo(String serverhost) throws Exception {
-        if (bannedSites.contains(serverhost.toLowerCase())) {
-            throw new Exception("Access Denied");
-        }
+	static {
+		bannedSites = new ArrayList<String>();
+		bannedSites.add("abc.com");
+		bannedSites.add("def.com");
+		bannedSites.add("ijk.com");
+		bannedSites.add("lnm.com");
+	}
 
-        internet.connectTo(serverhost);
-    }
+	@Override
+	public void connectTo(String serverhost) throws Exception {
+		if (bannedSites.contains(serverhost.toLowerCase())) {
+			throw new Exception("Access Denied");
+		}
+
+		internet.connectTo(serverhost);
+	}
+
 }

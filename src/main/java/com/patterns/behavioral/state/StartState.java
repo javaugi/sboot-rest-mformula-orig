@@ -9,17 +9,17 @@ package com.patterns.behavioral.state;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class StartState implements State {
 
-    public void doAction(Context context) {
-        System.out.println("Player is in start state");
-        context.setState(this);
-    }
+	public void doAction(Context context) {
+		System.out.println("Player is in start state");
+		context.setState(this);
+	}
 
-    public String toString() {
-        return "Start State";
-    }
+	public String toString() {
+		return "Start State";
+	}
+
 }

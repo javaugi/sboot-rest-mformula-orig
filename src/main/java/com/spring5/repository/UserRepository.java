@@ -18,20 +18,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Repository
 @Transactional
 public interface UserRepository extends CrudRepository<User, Long> {
 
-    @Query("SELECT u FROM User u WHERE u.name = (:name)")
-    List<User> findByName(@Param("name") String name);
+	@Query("SELECT u FROM User u WHERE u.name = (:name)")
+	List<User> findByName(@Param("name") String name);
 
-    @Query("SELECT u FROM User u WHERE u.username= (:username)")
-    Optional<User> findByUsername(@Param("username") String username);
+	@Query("SELECT u FROM User u WHERE u.username= (:username)")
+	Optional<User> findByUsername(@Param("username") String username);
 
-    boolean existsByEmail(@Param("email") String email);
+	boolean existsByEmail(@Param("email") String email);
 
-    List<User> findByStatus(String status);
+	List<User> findByStatus(String status);
+
 }

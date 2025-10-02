@@ -8,5 +8,6 @@ import com.spring5.validatorex.InvalidReviewScoreException;
 
 public interface BonusConfig {
 
-    double getMultiplierForScore(String score) throws InvalidReviewScoreException;
+	double getMultiplierForScore(String score) throws InvalidReviewScoreException;
+
 }

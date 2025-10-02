@@ -23,153 +23,125 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 // import org.hl7.fhir.r4.hapi.validation.InMemoryTerminologyServerValidationSupport;
 public class FhirValidationExample {
 
-    /*
-  Severity levels:
-      INFORMATION
-      WARNING
-      ERROR
-      FATAL
+	/*
+	 * Severity levels: INFORMATION WARNING ERROR FATAL
+	 * 
+	 * 5) Summary Default validation → DefaultProfileValidationSupport +
+	 * InMemoryTerminologyServerValidationSupport Custom profile validation →
+	 * PrePopulatedValidationSupport for loading StructureDefinitions Works for Patient,
+	 * Observation, Bundle, etc.
+	 */
+	public static void main(String[] args) {
+		try {
+			validate();
+		}
+		catch (Exception ex) {
 
-  5) Summary
-      Default validation → DefaultProfileValidationSupport + InMemoryTerminologyServerValidationSupport
-      Custom profile validation → PrePopulatedValidationSupport for loading StructureDefinitions
-      Works for Patient, Observation, Bundle, etc.
-     */
-    public static void main(String[] args) {
-        try {
-            validate();
-        } catch (Exception ex) {
+		}
+	}
 
-        }
-    }
+	// Basic Validator Setup
+	private static void validate() throws Exception {
+		// Create FHIR context for R4
+		FhirContext ctx = FhirContext.forR4();
 
-    // Basic Validator Setup
-    private static void validate() throws Exception {
-        // Create FHIR context for R4
-        FhirContext ctx = FhirContext.forR4();
+		// Create validator
+		FhirValidator validator = ctx.newValidator();
 
-        // Create validator
-        FhirValidator validator = ctx.newValidator();
+		// Add instance validator module
+		FhirInstanceValidator instanceValidator = new FhirInstanceValidator(
+				new ValidationSupportChain(new DefaultProfileValidationSupport(ctx), // Default
+																						// HL7
+																						// profiles
+						new InMemoryTerminologyServerValidationSupport(ctx) // Terminology
+																			// validation
+				));
 
-        // Add instance validator module
-        FhirInstanceValidator instanceValidator
-                = new FhirInstanceValidator(
-                        new ValidationSupportChain(
-                                new DefaultProfileValidationSupport(ctx), // Default HL7 profiles
-                                new InMemoryTerminologyServerValidationSupport(ctx) // Terminology validation
-                        ));
+		validator.registerValidatorModule(instanceValidator);
 
-        validator.registerValidatorModule(instanceValidator);
+		// Example: Create a FHIR Patient resource
+		Patient patient = new Patient();
+		patient.addName().setFamily("Smith").addGiven("John");
+		patient.setId("Patient/123");
 
-        // Example: Create a FHIR Patient resource
-        Patient patient = new Patient();
-        patient.addName().setFamily("Smith").addGiven("John");
-        patient.setId("Patient/123");
+		// Validate resource
+		ValidationResult result = validator.validateWithResult(patient);
 
-        // Validate resource
-        ValidationResult result = validator.validateWithResult(patient);
+		// Print results
+		if (result.isSuccessful()) {
+			System.out.println("Validation passed!");
+		}
+		else {
+			result.getMessages().forEach(next -> {
+				System.out.println(next.getSeverity() + " - " + next.getLocationString() + " - " + next.getMessage());
+			});
+		}
+	}
 
-        // Print results
-        if (result.isSuccessful()) {
-            System.out.println("Validation passed!");
-        } else {
-            result
-                    .getMessages()
-                    .forEach(
-                            next -> {
-                                System.out.println(
-                                        next.getSeverity()
-                                        + " - "
-                                        + next.getLocationString()
-                                        + " - "
-                                        + next.getMessage());
-                            });
-        }
-    }
+	// Validate Against a Custom FHIR Profile
+	/*
+	 * Here: We manually load the StructureDefinition. The patient resource references the
+	 * profile in its meta.profile.
+	 */
+	public void validateOnProfile() throws Exception {
+		// Create FHIR context for R4
+		FhirContext ctx = FhirContext.forR4();
 
-    // Validate Against a Custom FHIR Profile
-    /*
-  Here:
-      We manually load the StructureDefinition.
-      The patient resource references the profile in its meta.profile.
-     */
-    public void validateOnProfile() throws Exception {
-        // Create FHIR context for R4
-        FhirContext ctx = FhirContext.forR4();
+		// Create validator
+		FhirValidator validator = ctx.newValidator();
 
-        // Create validator
-        FhirValidator validator = ctx.newValidator();
+		// Add instance validator module
+		FhirInstanceValidator instanceValidator = new FhirInstanceValidator(
+				new ValidationSupportChain(new DefaultProfileValidationSupport(ctx), // Default
+																						// HL7
+																						// profiles
+						new InMemoryTerminologyServerValidationSupport(ctx) // Terminology
+																			// validation
+				));
 
-        // Add instance validator module
-        FhirInstanceValidator instanceValidator
-                = new FhirInstanceValidator(
-                        new ValidationSupportChain(
-                                new DefaultProfileValidationSupport(ctx), // Default HL7 profiles
-                                new InMemoryTerminologyServerValidationSupport(ctx) // Terminology validation
-                        ));
+		validator.registerValidatorModule(instanceValidator);
 
-        validator.registerValidatorModule(instanceValidator);
+		// Example: Create a FHIR Patient resource
+		Patient patient = new Patient();
+		patient.addName().setFamily("Smith").addGiven("John");
+		patient.setId("Patient/123");
 
-        // Example: Create a FHIR Patient resource
-        Patient patient = new Patient();
-        patient.addName().setFamily("Smith").addGiven("John");
-        patient.setId("Patient/123");
+		// Validate resource
+		ValidationResult result = validator.validateWithResult(patient);
 
-        // Validate resource
-        ValidationResult result = validator.validateWithResult(patient);
+		// Print results
+		if (result.isSuccessful()) {
+			System.out.println("Validation passed!");
+		}
+		else {
+			result.getMessages().forEach(next -> {
+				System.out.println(next.getSeverity() + " - " + next.getLocationString() + " - " + next.getMessage());
+			});
+		}
 
-        // Print results
-        if (result.isSuccessful()) {
-            System.out.println("Validation passed!");
-        } else {
-            result
-                    .getMessages()
-                    .forEach(
-                            next -> {
-                                System.out.println(
-                                        next.getSeverity()
-                                        + " - "
-                                        + next.getLocationString()
-                                        + " - "
-                                        + next.getMessage());
-                            });
-        }
+		PrePopulatedValidationSupport prePopulated = new PrePopulatedValidationSupport(ctx);
 
-        PrePopulatedValidationSupport prePopulated = new PrePopulatedValidationSupport(ctx);
+		// Load custom StructureDefinition
+		String profileJson = Files.readString(Paths.get("src/main/resources/jsonschemas/patient-profile.json"));
+		StructureDefinition myProfile = (StructureDefinition) ctx.newJsonParser().parseResource(profileJson);
+		prePopulated.addStructureDefinition(myProfile);
 
-        // Load custom StructureDefinition
-        String profileJson
-                = Files.readString(Paths.get("src/main/resources/jsonschemas/patient-profile.json"));
-        StructureDefinition myProfile
-                = (StructureDefinition) ctx.newJsonParser().parseResource(profileJson);
-        prePopulated.addStructureDefinition(myProfile);
+		ValidationSupportChain chain = new ValidationSupportChain(prePopulated,
+				new DefaultProfileValidationSupport(ctx), new InMemoryTerminologyServerValidationSupport(ctx));
 
-        ValidationSupportChain chain
-                = new ValidationSupportChain(
-                        prePopulated,
-                        new DefaultProfileValidationSupport(ctx),
-                        new InMemoryTerminologyServerValidationSupport(ctx));
+		// FhirInstanceValidator instanceValidator = new FhirInstanceValidator(chain);
+		// validator.registerValidatorModule(instanceValidator);
+		// Validate patient against the custom profile
+		patient.getMeta().addProfile("http://example.org/fhir/StructureDefinition/MyPatientProfile");
+		ValidationResult customResult = validator.validateWithResult(patient);
 
-        // FhirInstanceValidator instanceValidator = new FhirInstanceValidator(chain);
-        // validator.registerValidatorModule(instanceValidator);
-        // Validate patient against the custom profile
-        patient.getMeta().addProfile("http://example.org/fhir/StructureDefinition/MyPatientProfile");
-        ValidationResult customResult = validator.validateWithResult(patient);
+		// 4) Handling Validation Results
+		if (!customResult.isSuccessful()) {
+			customResult.getMessages().forEach(issue -> {
+				System.err.println("Severity: " + issue.getSeverity() + " | Location: " + issue.getLocationString()
+						+ " | Message: " + issue.getMessage());
+			});
+		}
+	}
 
-        // 4) Handling Validation Results
-        if (!customResult.isSuccessful()) {
-            customResult
-                    .getMessages()
-                    .forEach(
-                            issue -> {
-                                System.err.println(
-                                        "Severity: "
-                                        + issue.getSeverity()
-                                        + " | Location: "
-                                        + issue.getLocationString()
-                                        + " | Message: "
-                                        + issue.getMessage());
-                            });
-        }
-    }
 }

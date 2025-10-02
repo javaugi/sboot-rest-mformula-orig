@@ -19,21 +19,23 @@ import lombok.NoArgsConstructor;
 @Table(name = "orchestration_context")
 public class OrchestrationContextEntity {
 
-    @Id
-    private String correlationId;
+	@Id
+	private String correlationId;
 
-    @Lob
-    // @Convert(converter = ClaimEventConverter.class)
-    private ReactiveClaimEvent claimEvent;
+	@Lob
+	// @Convert(converter = ClaimEventConverter.class)
+	private ReactiveClaimEvent claimEvent;
 
-    @Lob
-    // @Convert(converter = HashMapConverter.class)
-    private Map<String, Object> processVariables;
+	@Lob
+	// @Convert(converter = HashMapConverter.class)
+	private Map<String, Object> processVariables;
 
-    private LocalDateTime timestamp;
-    private OrchestrationStatus status;
+	private LocalDateTime timestamp;
 
-    // @ElementCollection
-    // private List<OrchestrationStepEntity> completedSteps;
-    // Getters and setters
+	private OrchestrationStatus status;
+
+	// @ElementCollection
+	// private List<OrchestrationStepEntity> completedSteps;
+	// Getters and setters
+
 }

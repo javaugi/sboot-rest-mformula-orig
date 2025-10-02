@@ -14,53 +14,51 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RateLimiter100RequestPerUser {
 
-    private static final int MAX_REQUESTS_PER_MINUTE = 100;
-    private static final long ONE_MINUTE_TIME_WINDOW_MILLIS = 60 * 1000L;
-    // Key = userId, Value = timestamps of requests
-    private final ConcurrentHashMap<String, Deque<Long>> userIdTimeWindowMap
-            = new ConcurrentHashMap<>();
+	private static final int MAX_REQUESTS_PER_MINUTE = 100;
 
-    public boolean isAllowed(String userId) {
-        long now = Instant.now().toEpochMilli();
-        Deque<Long> timestamps = userIdTimeWindowMap.computeIfAbsent(userId, k -> new ArrayDeque<>());
+	private static final long ONE_MINUTE_TIME_WINDOW_MILLIS = 60 * 1000L;
 
-        synchronized (timestamps) {
-            // Remove timestamps older than 1 minute
-            while (!timestamps.isEmpty()
-                    && now - timestamps.peekFirst() > ONE_MINUTE_TIME_WINDOW_MILLIS) {
-                timestamps.pollFirst();
-            }
+	// Key = userId, Value = timestamps of requests
+	private final ConcurrentHashMap<String, Deque<Long>> userIdTimeWindowMap = new ConcurrentHashMap<>();
 
-            if (timestamps.size() < MAX_REQUESTS_PER_MINUTE) {
-                timestamps.addLast(now);
-                userIdTimeWindowMap.put(userId, timestamps);
-                return true; // Allow request
-            } else {
-                return false; // Too many requests
-            }
-        }
-    }
+	public boolean isAllowed(String userId) {
+		long now = Instant.now().toEpochMilli();
+		Deque<Long> timestamps = userIdTimeWindowMap.computeIfAbsent(userId, k -> new ArrayDeque<>());
 
-    public static void main(String[] args) {
-        RateLimiter100RequestPerUser m = new RateLimiter100RequestPerUser();
-        List<String> twoUserList = List.of("user1", "user2");
-        // First 100 requests should pass for each user
-        for (String userId : twoUserList) {
-            log.info(
-                    " userId="
-                    + userId
-                    + "-successful="
-                    + m.runAllowRequest(userId, (MAX_REQUESTS_PER_MINUTE + 5)));
-        }
-    }
+		synchronized (timestamps) {
+			// Remove timestamps older than 1 minute
+			while (!timestamps.isEmpty() && now - timestamps.peekFirst() > ONE_MINUTE_TIME_WINDOW_MILLIS) {
+				timestamps.pollFirst();
+			}
 
-    private boolean runAllowRequest(String userId, int tokenCount) {
-        boolean returnValue = true;
+			if (timestamps.size() < MAX_REQUESTS_PER_MINUTE) {
+				timestamps.addLast(now);
+				userIdTimeWindowMap.put(userId, timestamps);
+				return true; // Allow request
+			}
+			else {
+				return false; // Too many requests
+			}
+		}
+	}
 
-        for (int i = 0; i < tokenCount; i++) {
-            returnValue = returnValue && isAllowed(userId);
-        }
+	public static void main(String[] args) {
+		RateLimiter100RequestPerUser m = new RateLimiter100RequestPerUser();
+		List<String> twoUserList = List.of("user1", "user2");
+		// First 100 requests should pass for each user
+		for (String userId : twoUserList) {
+			log.info(" userId=" + userId + "-successful=" + m.runAllowRequest(userId, (MAX_REQUESTS_PER_MINUTE + 5)));
+		}
+	}
 
-        return returnValue;
-    }
+	private boolean runAllowRequest(String userId, int tokenCount) {
+		boolean returnValue = true;
+
+		for (int i = 0; i < tokenCount; i++) {
+			returnValue = returnValue && isAllowed(userId);
+		}
+
+		return returnValue;
+	}
+
 }

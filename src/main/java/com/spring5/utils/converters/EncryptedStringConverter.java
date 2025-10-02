@@ -11,24 +11,25 @@ import javax.persistence.Converter;
 @Converter
 public class EncryptedStringConverter implements AttributeConverter<String, String> {
 
-    // In reality, use a proper encryptor from Jasypt or Google Cloud KMS/AWS KMS
-    // @Autowired
-    // private StringEncryptor encryptor;
-    @Override
-    public String convertToDatabaseColumn(String attribute) {
-        if (attribute == null) {
-            return null;
-        }
-        // return encryptor.encrypt(attribute); // Real implementation
-        return "ENCRYPTED_" + attribute; // Placeholder logic
-    }
+	// In reality, use a proper encryptor from Jasypt or Google Cloud KMS/AWS KMS
+	// @Autowired
+	// private StringEncryptor encryptor;
+	@Override
+	public String convertToDatabaseColumn(String attribute) {
+		if (attribute == null) {
+			return null;
+		}
+		// return encryptor.encrypt(attribute); // Real implementation
+		return "ENCRYPTED_" + attribute; // Placeholder logic
+	}
 
-    @Override
-    public String convertToEntityAttribute(String dbData) {
-        if (dbData == null) {
-            return null;
-        }
-        // return encryptor.decrypt(dbData); // Real implementation
-        return dbData.replace("ENCRYPTED_", ""); // Placeholder logic
-    }
+	@Override
+	public String convertToEntityAttribute(String dbData) {
+		if (dbData == null) {
+			return null;
+		}
+		// return encryptor.decrypt(dbData); // Real implementation
+		return dbData.replace("ENCRYPTED_", ""); // Placeholder logic
+	}
+
 }

@@ -28,52 +28,53 @@ This implementation ensures that multiple identical requests with the same idemp
 @Component
 public class IdempotencyFilter extends OncePerRequestFilter {
 
-    private static final String IDEMPOTENCY_KEY_HEADER = "Idempotency-Key";
-    private static final Map<String, Object> idempotencyStore = new ConcurrentHashMap<>();
+	private static final String IDEMPOTENCY_KEY_HEADER = "Idempotency-Key";
 
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+	private static final Map<String, Object> idempotencyStore = new ConcurrentHashMap<>();
 
-        // Only check for POST and PUT requests
-        if ("POST".equalsIgnoreCase(request.getMethod())
-                || "PUT".equalsIgnoreCase(request.getMethod())) {
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 
-            String idempotencyKey = request.getHeader(IDEMPOTENCY_KEY_HEADER);
+		// Only check for POST and PUT requests
+		if ("POST".equalsIgnoreCase(request.getMethod()) || "PUT".equalsIgnoreCase(request.getMethod())) {
 
-            if (idempotencyKey != null && !idempotencyKey.isEmpty()) {
-                // Check if we've seen this key before
-                if (idempotencyStore.containsKey(idempotencyKey)) {
-                    // Return the cached response
-                    Object cachedResponse = idempotencyStore.get(idempotencyKey);
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    response.getWriter().write(cachedResponse.toString());
-                    return;
-                }
+			String idempotencyKey = request.getHeader(IDEMPOTENCY_KEY_HEADER);
 
-                // Wrap the response to cache it
-                ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
+			if (idempotencyKey != null && !idempotencyKey.isEmpty()) {
+				// Check if we've seen this key before
+				if (idempotencyStore.containsKey(idempotencyKey)) {
+					// Return the cached response
+					Object cachedResponse = idempotencyStore.get(idempotencyKey);
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().write(cachedResponse.toString());
+					return;
+				}
 
-                try {
-                    filterChain.doFilter(request, responseWrapper);
+				// Wrap the response to cache it
+				ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
-                    // Only cache successful responses (2xx)
-                    if (responseWrapper.getStatus() >= 200 && responseWrapper.getStatus() < 300) {
-                        byte[] responseBody = responseWrapper.getContentAsByteArray();
-                        idempotencyStore.put(idempotencyKey, new String(responseBody));
-                    }
+				try {
+					filterChain.doFilter(request, responseWrapper);
 
-                    // Write the response to the actual client
-                    responseWrapper.copyBodyToResponse();
-                } finally {
-                    responseWrapper.copyBodyToResponse();
-                }
-                return;
-            }
-        }
+					// Only cache successful responses (2xx)
+					if (responseWrapper.getStatus() >= 200 && responseWrapper.getStatus() < 300) {
+						byte[] responseBody = responseWrapper.getContentAsByteArray();
+						idempotencyStore.put(idempotencyKey, new String(responseBody));
+					}
 
-        // No idempotency key or not POST/PUT - proceed normally
-        filterChain.doFilter(request, response);
-    }
+					// Write the response to the actual client
+					responseWrapper.copyBodyToResponse();
+				}
+				finally {
+					responseWrapper.copyBodyToResponse();
+				}
+				return;
+			}
+		}
+
+		// No idempotency key or not POST/PUT - proceed normally
+		filterChain.doFilter(request, response);
+	}
+
 }

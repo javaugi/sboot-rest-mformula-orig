@@ -18,29 +18,32 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Transactional
 public class OrderServiceIntegrationTest {
 
-    @Autowired
-    private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 
-    @Autowired
-    private OrderRepository orderRepository;
+	@Autowired
+	private OrderRepository orderRepository;
 
-    //@Test
-    public void shouldProcessOrderSuccessfully() {
-        OrderRequest request = new OrderRequest(/* test data */);
-        AuditOrder order = orderService.processOrder(request);
+	// @Test
+	public void shouldProcessOrderSuccessfully() {
+		OrderRequest request = new OrderRequest(/* test data */);
+		AuditOrder order = orderService.processOrder(request);
 
-        assertThat(order).isNotNull();
-        assertThat(order.getStatus()).isEqualTo("PROCESSED");
-        assertThat(orderRepository.count()).isEqualTo(1);
-    }
+		assertThat(order).isNotNull();
+		assertThat(order.getStatus()).isEqualTo("PROCESSED");
+		assertThat(orderRepository.count()).isEqualTo(1);
+	}
 
-    //@Test
-    public void shouldRollbackWhenPaymentFails() {
-        OrderRequest request = new OrderRequest(/* test data that will cause payment to fail */);
+	// @Test
+	public void shouldRollbackWhenPaymentFails() {
+		OrderRequest request = new OrderRequest(/*
+												 * test data that will cause payment to
+												 * fail
+												 */);
 
-        assertThatThrownBy(() -> orderService.processOrder(request))
-                .isInstanceOf(PaymentException.class);
+		assertThatThrownBy(() -> orderService.processOrder(request)).isInstanceOf(PaymentException.class);
 
-        assertThat(orderRepository.count()).isEqualTo(0);
-    }
+		assertThat(orderRepository.count()).isEqualTo(0);
+	}
+
 }

@@ -20,42 +20,44 @@ import org.springframework.stereotype.Service;
 // @RequiredArgsConstructor
 public class IdempotentFileService {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private final FileProcessedRepository processedRepo;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public IdempotentFileService(
-            @Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate,
-            FileProcessedRepository processedRepo) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.processedRepo = processedRepo;
-    }
+	private final FileProcessedRepository processedRepo;
 
-    private boolean fileExistByEventId(String eventId) {
-        // return false;
-        return processedRepo.existsByEventId(eventId);
-    }
+	public IdempotentFileService(@Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate,
+			FileProcessedRepository processedRepo) {
+		this.kafkaTemplate = kafkaTemplate;
+		this.processedRepo = processedRepo;
+	}
 
-    @KafkaListener(topics = "${app.topics.file-events}", groupId = "file-storage-group")
-    public void handleFileEvent(ConsumerRecord<String, FileStorageEvent> record, Acknowledgment ack) {
-        // Check if we've already processed this event
-        if (fileExistByEventId(record.value().getEventId())) {
-            ack.acknowledge();
-            return;
-        }
+	private boolean fileExistByEventId(String eventId) {
+		// return false;
+		return processedRepo.existsByEventId(eventId);
+	}
 
-        try {
-            processFile(record.value());
+	@KafkaListener(topics = "${app.topics.file-events}", groupId = "file-storage-group")
+	public void handleFileEvent(ConsumerRecord<String, FileStorageEvent> record, Acknowledgment ack) {
+		// Check if we've already processed this event
+		if (fileExistByEventId(record.value().getEventId())) {
+			ack.acknowledge();
+			return;
+		}
 
-            // Record processing
-            processedRepo.save(new FileProcessedRecord(record.value().getEventId(), Instant.now()));
+		try {
+			processFile(record.value());
 
-            ack.acknowledge();
-        } catch (Exception e) {
-            throw new KafkaException("Processing failed", e);
-        }
-    }
+			// Record processing
+			processedRepo.save(new FileProcessedRecord(record.value().getEventId(), Instant.now()));
 
-    private void processFile(FileStorageEvent fileStorageEvent) {
-        System.out.println("processFile " + fileStorageEvent);
-    }
+			ack.acknowledge();
+		}
+		catch (Exception e) {
+			throw new KafkaException("Processing failed", e);
+		}
+	}
+
+	private void processFile(FileStorageEvent fileStorageEvent) {
+		System.out.println("processFile " + fileStorageEvent);
+	}
+
 }

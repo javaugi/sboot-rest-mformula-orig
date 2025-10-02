@@ -15,36 +15,47 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class RiskCalculationRequest {
 
-    @NotBlank
-    private String memberId;
+	@NotBlank
+	private String memberId;
 
-    @NotBlank
-    private String modelType; // CMS-HCC, HHS-HCC, RX-HCC, MEDICARE, COMMERCIAL, ACA
+	@NotBlank
+	private String modelType; // CMS-HCC, HHS-HCC, RX-HCC, MEDICARE, COMMERCIAL, ACA
 
-    @NotEmpty
-    private List<ClaimDiagnosis> diagnoses;
+	@NotEmpty
+	private List<ClaimDiagnosis> diagnoses;
 
-    private MemberDemographics demographics;
-    private PharmacyClaims pharmacyData;
+	private MemberDemographics demographics;
 
-    @Data
-    @Builder
-    public static class ClaimDiagnosis {
+	private PharmacyClaims pharmacyData;
 
-        private String icd10Code;
-        private LocalDate serviceDate;
-        private String claimType; // IP, OP, PROF
-        private String providerType;
-    }
+	@Data
+	@Builder
+	public static class ClaimDiagnosis {
 
-    @Data
-    @Builder
-    public static class MemberDemographics {
+		private String icd10Code;
 
-        private LocalDate dateOfBirth;
-        private String gender;
-        private String enrollmentType;
-        private String geographicRegion;
-        private String disabilityStatus;
-    }
+		private LocalDate serviceDate;
+
+		private String claimType; // IP, OP, PROF
+
+		private String providerType;
+
+	}
+
+	@Data
+	@Builder
+	public static class MemberDemographics {
+
+		private LocalDate dateOfBirth;
+
+		private String gender;
+
+		private String enrollmentType;
+
+		private String geographicRegion;
+
+		private String disabilityStatus;
+
+	}
+
 }

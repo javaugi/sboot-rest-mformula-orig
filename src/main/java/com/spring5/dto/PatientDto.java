@@ -19,20 +19,36 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PatientDto {
 
-    Long id;
-    Long version;
-    private String memberId;
-    private String name;
-    private String firstName;
-    private String lastName;
-    private String ssn;
-    private LocalDate dateOfBirth;
-    private String gender;
-    private String address;
-    private String userEmail;
-    private String phoneNumber;
-    private String planType;
-    private List<Appointment> appointments;
-    private Claim claim;
-    private List<Claim> claims;
+	Long id;
+
+	Long version;
+
+	private String memberId;
+
+	private String name;
+
+	private String firstName;
+
+	private String lastName;
+
+	private String ssn;
+
+	private LocalDate dateOfBirth;
+
+	private String gender;
+
+	private String address;
+
+	private String userEmail;
+
+	private String phoneNumber;
+
+	private String planType;
+
+	private List<Appointment> appointments;
+
+	private Claim claim;
+
+	private List<Claim> claims;
+
 }

@@ -9,35 +9,37 @@ package com.patterns.behavioral.visitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Fruit implements ItemElement {
 
-    private int pricePerKg;
-    private int weight;
-    private String name;
+	private int pricePerKg;
 
-    public Fruit(int priceKg, int wt, String nm) {
-        this.pricePerKg = priceKg;
-        this.weight = wt;
-        this.name = nm;
-    }
+	private int weight;
 
-    public int getPricePerKg() {
-        return pricePerKg;
-    }
+	private String name;
 
-    public int getWeight() {
-        return weight;
-    }
+	public Fruit(int priceKg, int wt, String nm) {
+		this.pricePerKg = priceKg;
+		this.weight = wt;
+		this.name = nm;
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	public int getPricePerKg() {
+		return pricePerKg;
+	}
 
-    @Override
-    public int accept(ShoppingCartVisitor visitor) {
-        return visitor.visit(this);
-    }
+	public int getWeight() {
+		return weight;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public int accept(ShoppingCartVisitor visitor) {
+		return visitor.visit(this);
+	}
+
 }

@@ -12,27 +12,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class PactPublisher {
 
-    @Value("${pact.broker.url}")
-    private String brokerUrl;
+	@Value("${pact.broker.url}")
+	private String brokerUrl;
 
-    @Value("${pact.broker.auth.username}")
-    private String username;
+	@Value("${pact.broker.auth.username}")
+	private String username;
 
-    @Value("${pact.broker.auth.password}")
-    private String password;
+	@Value("${pact.broker.auth.password}")
+	private String password;
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void publishPacts() {
-        // This is typically done via Maven/Gradle plugin, not in code
-        // But you can use PactPublisher if needed
-        // PactPublisher.publish("target/pacts");
-        /*
-    PactBrokerResultPublisher.publishPacts(
-        brokerUrl,
-        username,
-        password,
-        "target/pacts"
-    );
-    // */
-    }
+	@EventListener(ApplicationReadyEvent.class)
+	public void publishPacts() {
+		// This is typically done via Maven/Gradle plugin, not in code
+		// But you can use PactPublisher if needed
+		// PactPublisher.publish("target/pacts");
+		/*
+		 * PactBrokerResultPublisher.publishPacts( brokerUrl, username, password,
+		 * "target/pacts" ); //
+		 */
+	}
+
 }

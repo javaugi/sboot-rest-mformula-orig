@@ -19,9 +19,14 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PaymentResponse {
 
-    private String status; // e.g., "requires_action", "succeeded", "failed", "pending"
-    private String message; // User-friendly message
-    private String paymentIntentId; // Stripe's PaymentIntent ID
-    private String clientSecret; // Used by frontend for 3D Secure or other confirmations
-    private String orderId; // Your internal order ID
+	private String status; // e.g., "requires_action", "succeeded", "failed", "pending"
+
+	private String message; // User-friendly message
+
+	private String paymentIntentId; // Stripe's PaymentIntent ID
+
+	private String clientSecret; // Used by frontend for 3D Secure or other confirmations
+
+	private String orderId; // Your internal order ID
+
 }

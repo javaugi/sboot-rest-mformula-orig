@@ -20,32 +20,33 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * @author bill
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Profile(FILE_PROFILE)
 @Configuration
 @ConfigurationProperties(prefix = "com.spring5")
 public class StandardConfigProperties {
 
-    public static final String FILE_PROFILE = "file";
-    private static final Logger log = LoggerFactory.getLogger(StandardConfigProperties.class);
+	public static final String FILE_PROFILE = "file";
 
-    @Bean
-    public FileService getFileService() {
-        log.info("CONFIG - Using StandardFileService for data storage");
-        log.info("CONFIG - Directory Path: {}", getDirectoryPath());
-        return new StandardFileService();
-    }
+	private static final Logger log = LoggerFactory.getLogger(StandardConfigProperties.class);
 
-    @NotBlank
-    private String directoryPath;
+	@Bean
+	public FileService getFileService() {
+		log.info("CONFIG - Using StandardFileService for data storage");
+		log.info("CONFIG - Directory Path: {}", getDirectoryPath());
+		return new StandardFileService();
+	}
 
-    public String getDirectoryPath() {
-        return directoryPath;
-    }
+	@NotBlank
+	private String directoryPath;
 
-    public void setDirectoryPath(String directoryPath) {
-        this.directoryPath = directoryPath;
-    }
+	public String getDirectoryPath() {
+		return directoryPath;
+	}
+
+	public void setDirectoryPath(String directoryPath) {
+		this.directoryPath = directoryPath;
+	}
+
 }

@@ -24,13 +24,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "VEHICLE_TEST_RESULTS")
 public class VehicleTestResult {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
+	private long id;
 
-    private String testType;
-    private String vehicleId;
-    private LocalDate testDate;
-    private boolean passed;
+	private String testType;
+
+	private String vehicleId;
+
+	private LocalDate testDate;
+
+	private boolean passed;
+
 }

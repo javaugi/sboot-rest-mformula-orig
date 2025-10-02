@@ -13,25 +13,26 @@ import org.springframework.hateoas.EntityModel;
  */
 public class AssessmentModel extends EntityModel<Assessment> {
 
-    private final Assessment assessment;
+	private final Assessment assessment;
 
-    public AssessmentModel(Assessment assessment) {
-        this.assessment = assessment;
-    }
+	public AssessmentModel(Assessment assessment) {
+		this.assessment = assessment;
+	}
 
-    public Long getId() {
-        return assessment.getId();
-    }
+	public Long getId() {
+		return assessment.getId();
+	}
 
-    public Long getPatientId() {
-        return assessment.getPatientId();
-    }
+	public Long getPatientId() {
+		return assessment.getPatientId();
+	}
 
-    public LocalDate getDate() {
-        return assessment.getDate();
-    }
+	public LocalDate getDate() {
+		return assessment.getDate();
+	}
 
-    public String getStatus() {
-        return assessment.getStatus();
-    }
+	public String getStatus() {
+		return assessment.getStatus();
+	}
+
 }

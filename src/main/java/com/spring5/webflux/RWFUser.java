@@ -12,14 +12,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RWFUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String username;
-    private String password;
-    private String userEmail;
-    private String name;
-    private String lastName;
-    private String firstName;
+	private String username;
+
+	private String password;
+
+	private String userEmail;
+
+	private String name;
+
+	private String lastName;
+
+	private String firstName;
+
 }

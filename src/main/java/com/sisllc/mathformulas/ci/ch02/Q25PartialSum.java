@@ -6,12 +6,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Q25PartialSum {
 
-    private static final Logger log = LoggerFactory.getLogger(Q25PartialSum.class);
-    public LinkedListNode sum = null;
-    public int carry = 0;
+	private static final Logger log = LoggerFactory.getLogger(Q25PartialSum.class);
+
+	public LinkedListNode sum = null;
+
+	public int carry = 0;
+
 }

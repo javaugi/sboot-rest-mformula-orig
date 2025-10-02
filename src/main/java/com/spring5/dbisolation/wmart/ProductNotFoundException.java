@@ -9,7 +9,8 @@ package com.spring5.dbisolation.wmart;
  */
 public class ProductNotFoundException extends RuntimeException {
 
-    public ProductNotFoundException(String productId) {
-        super(productId);
-    }
+	public ProductNotFoundException(String productId) {
+		super(productId);
+	}
+
 }

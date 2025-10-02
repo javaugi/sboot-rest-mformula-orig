@@ -9,12 +9,12 @@ package com.patterns.behavioral.iterator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Iterator {
 
-    public boolean hasNext();
+	public boolean hasNext();
 
-    public Object next();
+	public Object next();
+
 }

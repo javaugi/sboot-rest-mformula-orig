@@ -9,14 +9,14 @@ package com.patterns.misc.mvc;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class StudentView {
 
-    public void printStudentDetails(String studentName, String studentRollNo) {
-        System.out.println("Student: ");
-        System.out.println("Name: " + studentName);
-        System.out.println("Roll No: " + studentRollNo);
-    }
+	public void printStudentDetails(String studentName, String studentRollNo) {
+		System.out.println("Student: ");
+		System.out.println("Name: " + studentName);
+		System.out.println("Roll No: " + studentRollNo);
+	}
+
 }

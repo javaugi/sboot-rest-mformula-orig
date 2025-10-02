@@ -8,10 +8,7 @@ package com.spring5.aicloud.genaihealthcare.cccr;
  * @author javau
  */
 public enum ClaimType {
-    PHYSICIAN,
-    PROFESSIONAL,
-    FACILITY,
-    INPATIENT,
-    OUTPATIENT,
-    PHARMACY;
+
+	PHYSICIAN, PROFESSIONAL, FACILITY, INPATIENT, OUTPATIENT, PHARMACY;
+
 }

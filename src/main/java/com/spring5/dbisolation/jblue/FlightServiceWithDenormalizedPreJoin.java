@@ -11,46 +11,47 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlightServiceWithDenormalizedPreJoin {
 
-    private final FlightDetailRepository flightDetailRepository;
+	private final FlightDetailRepository flightDetailRepository;
 
-    public void createFlightWithPreJoinedData(
-            FlightEvent flight, Airline airline, Aircraft aircraft, AirPort departure, AirPort arrival) {
+	public void createFlightWithPreJoinedData(FlightEvent flight, Airline airline, Aircraft aircraft, AirPort departure,
+			AirPort arrival) {
 
-        FlightDetail flightDetail = new FlightDetail();
-        flightDetail.setId(flight.getId());
-        flightDetail.setFlightNumber(flight.getFlightNumber());
-        flightDetail.setDepartureAirport(flight.getDepartureAirport());
-        flightDetail.setArrivalAirport(flight.getArrivalAirport());
-        flightDetail.setDepartureTime(flight.getDepartureTime());
+		FlightDetail flightDetail = new FlightDetail();
+		flightDetail.setId(flight.getId());
+		flightDetail.setFlightNumber(flight.getFlightNumber());
+		flightDetail.setDepartureAirport(flight.getDepartureAirport());
+		flightDetail.setArrivalAirport(flight.getArrivalAirport());
+		flightDetail.setDepartureTime(flight.getDepartureTime());
 
-        // Pre-join airline data
-        FlightDetail.AirlineInfo airlineInfo = new FlightDetail.AirlineInfo();
-        airlineInfo.setAirlineCode(airline.getAirlineCode());
-        airlineInfo.setAirlineName(airline.getAirlineName());
-        airlineInfo.setCountry(airline.getCountry());
-        airlineInfo.setContactPhone(airline.getContactPhone());
-        flightDetail.setAirline(airlineInfo);
+		// Pre-join airline data
+		FlightDetail.AirlineInfo airlineInfo = new FlightDetail.AirlineInfo();
+		airlineInfo.setAirlineCode(airline.getAirlineCode());
+		airlineInfo.setAirlineName(airline.getAirlineName());
+		airlineInfo.setCountry(airline.getCountry());
+		airlineInfo.setContactPhone(airline.getContactPhone());
+		flightDetail.setAirline(airlineInfo);
 
-        // Pre-join airport data
-        FlightDetail.AirportInfo depAirportInfo = new FlightDetail.AirportInfo();
-        depAirportInfo.setAirportCode(departure.getAirportCode());
-        depAirportInfo.setAirportName(departure.getAirportName());
-        depAirportInfo.setCity(departure.getCity());
-        depAirportInfo.setCountry(departure.getCountry());
-        flightDetail.setDepartureAirportInfo(depAirportInfo);
+		// Pre-join airport data
+		FlightDetail.AirportInfo depAirportInfo = new FlightDetail.AirportInfo();
+		depAirportInfo.setAirportCode(departure.getAirportCode());
+		depAirportInfo.setAirportName(departure.getAirportName());
+		depAirportInfo.setCity(departure.getCity());
+		depAirportInfo.setCountry(departure.getCountry());
+		flightDetail.setDepartureAirportInfo(depAirportInfo);
 
-        FlightDetail.AirportInfo arrAirportInfo = new FlightDetail.AirportInfo();
-        arrAirportInfo.setAirportCode(arrival.getAirportCode());
-        arrAirportInfo.setAirportName(arrival.getAirportName());
-        arrAirportInfo.setCity(arrival.getCity());
-        arrAirportInfo.setCountry(arrival.getCountry());
-        flightDetail.setArrivalAirportInfo(arrAirportInfo);
+		FlightDetail.AirportInfo arrAirportInfo = new FlightDetail.AirportInfo();
+		arrAirportInfo.setAirportCode(arrival.getAirportCode());
+		arrAirportInfo.setAirportName(arrival.getAirportName());
+		arrAirportInfo.setCity(arrival.getCity());
+		arrAirportInfo.setCountry(arrival.getCountry());
+		flightDetail.setArrivalAirportInfo(arrAirportInfo);
 
-        flightDetailRepository.save(flightDetail);
-    }
+		flightDetailRepository.save(flightDetail);
+	}
 
-    // Single query gets all related data
-    public FlightDetail getCompleteFlightDetails(String flightNumber) {
-        return flightDetailRepository.findByFlightNumber(flightNumber).orElse(new FlightDetail());
-    }
+	// Single query gets all related data
+	public FlightDetail getCompleteFlightDetails(String flightNumber) {
+		return flightDetailRepository.findByFlightNumber(flightNumber).orElse(new FlightDetail());
+	}
+
 }

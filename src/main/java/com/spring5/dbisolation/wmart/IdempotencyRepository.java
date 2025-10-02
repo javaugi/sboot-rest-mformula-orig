@@ -12,5 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface IdempotencyRepository extends JpaRepository<Idempotency, Long> {
 
-    Optional<Idempotency> findByKey(String key);
+	Optional<Idempotency> findByKey(String key);
+
 }

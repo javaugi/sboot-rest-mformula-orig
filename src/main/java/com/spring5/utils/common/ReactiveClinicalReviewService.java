@@ -13,43 +13,35 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ReactiveClinicalReviewService {
 
-    private final ReactiveKafkaProducer kafkaProducer;
-    private final ReactiveClinicalRulesEngine rulesEngine;
+	private final ReactiveKafkaProducer kafkaProducer;
 
-    public ReactiveClinicalReviewService(
-            ReactiveKafkaProducer kafkaProducer, ReactiveClinicalRulesEngine rulesEngine) {
-        this.kafkaProducer = kafkaProducer;
-        this.rulesEngine = rulesEngine;
-    }
+	private final ReactiveClinicalRulesEngine rulesEngine;
 
-    @KafkaListener(topics = "${app.topics.claim-validated}")
-    public void processValidatedClaim(ReactiveClaimEvent event) {
-        log.info("Reviewing validated claim: {}", event.id);
+	public ReactiveClinicalReviewService(ReactiveKafkaProducer kafkaProducer, ReactiveClinicalRulesEngine rulesEngine) {
+		this.kafkaProducer = kafkaProducer;
+		this.rulesEngine = rulesEngine;
+	}
 
-        rulesEngine
-                .applyClinicalRules(event)
-                .flatMap(
-                        reviewResult -> {
-                            ReactiveClaimEvent.ClaimStatus status
-                            = reviewResult.isApproved()
-                            ? ReactiveClaimEvent.ClaimStatus.APPROVED
-                            : ReactiveClaimEvent.ClaimStatus.REJECTED;
+	@KafkaListener(topics = "${app.topics.claim-validated}")
+	public void processValidatedClaim(ReactiveClaimEvent event) {
+		log.info("Reviewing validated claim: {}", event.id);
 
-                            ReactiveClaimEvent reviewedEvent = new ReactiveClaimEvent();
-                            BeanUtils.copyProperties(event, reviewedEvent);
-                            reviewedEvent.setStatus(status);
+		rulesEngine.applyClinicalRules(event).flatMap(reviewResult -> {
+			ReactiveClaimEvent.ClaimStatus status = reviewResult.isApproved() ? ReactiveClaimEvent.ClaimStatus.APPROVED
+					: ReactiveClaimEvent.ClaimStatus.REJECTED;
 
-                            return kafkaProducer.sendClaimReviewed(reviewedEvent);
-                        })
-                .onErrorResume(
-                        error -> {
-                            log.error("Clinical review failed for claim {}: {}", event.id, error.getMessage());
-                            return kafkaProducer.sendToDeadLetterTopic(
-                                    event.id, "Clinical review error: " + error.getMessage());
-                        })
-                .subscribe();
-    }
+			ReactiveClaimEvent reviewedEvent = new ReactiveClaimEvent();
+			BeanUtils.copyProperties(event, reviewedEvent);
+			reviewedEvent.setStatus(status);
 
-    public void processClaim(ReactiveClaimEvent event) {
-    }
+			return kafkaProducer.sendClaimReviewed(reviewedEvent);
+		}).onErrorResume(error -> {
+			log.error("Clinical review failed for claim {}: {}", event.id, error.getMessage());
+			return kafkaProducer.sendToDeadLetterTopic(event.id, "Clinical review error: " + error.getMessage());
+		}).subscribe();
+	}
+
+	public void processClaim(ReactiveClaimEvent event) {
+	}
+
 }

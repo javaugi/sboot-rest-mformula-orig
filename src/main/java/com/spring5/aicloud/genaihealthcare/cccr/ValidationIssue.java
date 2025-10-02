@@ -8,6 +8,7 @@ package com.spring5.aicloud.genaihealthcare.cccr;
  * @author javau
  */
 public enum ValidationIssue {
-    DUPLICATE_PROCEDURE,
-    MEDICAL_NECESSITY;
+
+	DUPLICATE_PROCEDURE, MEDICAL_NECESSITY;
+
 }

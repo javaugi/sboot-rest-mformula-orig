@@ -9,10 +9,10 @@ package com.patterns.misc.jdinjection;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface MessageService {
 
-    void sendMessage(String msg, String rec);
+	void sendMessage(String msg, String rec);
+
 }

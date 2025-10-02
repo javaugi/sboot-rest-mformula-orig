@@ -9,7 +9,8 @@ package com.spring5.validatorex;
  */
 public class DefenseSystemException extends Exception {
 
-    public DefenseSystemException(String message) {
-        super(message);
-    }
+	public DefenseSystemException(String message) {
+		super(message);
+	}
+
 }

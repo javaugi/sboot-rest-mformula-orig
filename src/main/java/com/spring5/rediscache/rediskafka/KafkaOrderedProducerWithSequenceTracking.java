@@ -14,22 +14,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaOrderedProducerWithSequenceTracking {
 
-    private final @Qualifier(KafkaRedisConfig.REDIS_KAFKA_ORDER_EVENT_TMPL)
-    KafkaTemplate<
-          String, KafkaOrderedEvent> kafkaTemplate;
-    private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_LONG)
-    RedisTemplate<String, Long> redisTemplate;
+	private final @Qualifier(KafkaRedisConfig.REDIS_KAFKA_ORDER_EVENT_TMPL) KafkaTemplate<String, KafkaOrderedEvent> kafkaTemplate;
 
-    public void sendOrderedEvent(String entityId, KafkaOrderedEvent event) {
-        // Get and increment sequence number atomically
-        String sequenceKey = "kafka:producer:sequence:" + entityId;
-        Long sequenceNumber = redisTemplate.opsForValue().increment(sequenceKey);
+	private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_LONG) RedisTemplate<String, Long> redisTemplate;
 
-        // Set the sequence number in the event
-        event.setSequenceNumber(sequenceNumber);
-        event.setEntityId(entityId);
+	public void sendOrderedEvent(String entityId, KafkaOrderedEvent event) {
+		// Get and increment sequence number atomically
+		String sequenceKey = "kafka:producer:sequence:" + entityId;
+		Long sequenceNumber = redisTemplate.opsForValue().increment(sequenceKey);
 
-        // Send to Kafka with entityId as key to ensure ordering
-        kafkaTemplate.send("ordered-events", entityId, event);
-    }
+		// Set the sequence number in the event
+		event.setSequenceNumber(sequenceNumber);
+		event.setEntityId(entityId);
+
+		// Send to Kafka with entityId as key to ensure ordering
+		kafkaTemplate.send("ordered-events", entityId, event);
+	}
+
 }

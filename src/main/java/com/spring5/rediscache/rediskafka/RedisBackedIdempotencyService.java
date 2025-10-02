@@ -14,22 +14,23 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RedisBackedIdempotencyService {
 
-    private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_OBJ)
-    RedisTemplate<String, Object> redisTemplate;
-    private static final String IDEMPOTENCY_PREFIX = "idempotency:";
-    private static final long IDEMPOTENCY_KEY_TTL = 24; // hours
+	private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_OBJ) RedisTemplate<String, Object> redisTemplate;
 
-    public boolean isDuplicate(String idempotencyKey) {
-        return redisTemplate.hasKey(IDEMPOTENCY_PREFIX + idempotencyKey);
-    }
+	private static final String IDEMPOTENCY_PREFIX = "idempotency:";
 
-    public void storeResponse(String idempotencyKey, Object response) {
-        redisTemplate
-                .opsForValue()
-                .set(IDEMPOTENCY_PREFIX + idempotencyKey, response, IDEMPOTENCY_KEY_TTL, TimeUnit.HOURS);
-    }
+	private static final long IDEMPOTENCY_KEY_TTL = 24; // hours
 
-    public Object getResponse(String idempotencyKey) {
-        return redisTemplate.opsForValue().get(IDEMPOTENCY_PREFIX + idempotencyKey);
-    }
+	public boolean isDuplicate(String idempotencyKey) {
+		return redisTemplate.hasKey(IDEMPOTENCY_PREFIX + idempotencyKey);
+	}
+
+	public void storeResponse(String idempotencyKey, Object response) {
+		redisTemplate.opsForValue()
+			.set(IDEMPOTENCY_PREFIX + idempotencyKey, response, IDEMPOTENCY_KEY_TTL, TimeUnit.HOURS);
+	}
+
+	public Object getResponse(String idempotencyKey) {
+		return redisTemplate.opsForValue().get(IDEMPOTENCY_PREFIX + idempotencyKey);
+	}
+
 }

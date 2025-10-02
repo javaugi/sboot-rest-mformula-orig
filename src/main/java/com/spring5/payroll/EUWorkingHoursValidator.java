@@ -13,11 +13,12 @@ import com.spring5.validatorex.PayrollValidationException;
  */
 public class EUWorkingHoursValidator extends PayrollChainOfRespValidator {
 
-    @Override
-    public boolean validate(Employee employee, PayrollData data) throws Exception {
-        if (data.getHoursWorked() > 48) {
-            throw new PayrollValidationException("EU max 48 hours/week");
-        }
-        return validateNext(employee, data);
-    }
+	@Override
+	public boolean validate(Employee employee, PayrollData data) throws Exception {
+		if (data.getHoursWorked() > 48) {
+			throw new PayrollValidationException("EU max 48 hours/week");
+		}
+		return validateNext(employee, data);
+	}
+
 }

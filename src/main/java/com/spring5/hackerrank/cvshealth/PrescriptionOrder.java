@@ -14,123 +14,105 @@ import org.springframework.data.annotation.Id;
 @Container(containerName = "Prescriptions")
 public class PrescriptionOrder {
 
-    @Id
-    private String id; // This will be mapped to the Cosmos DB 'id' field
-    @PartitionKey
-    private String orderId; // Matches your Cosmos DB partition key path
-    private String patientId;
-    private String drugName;
-    private int quantity;
-    private Instant orderDate; // Use Instant for timestamps
+	@Id
+	private String id; // This will be mapped to the Cosmos DB 'id' field
 
-    public PrescriptionOrder() {
-    }
+	@PartitionKey
+	private String orderId; // Matches your Cosmos DB partition key path
 
-    public PrescriptionOrder(
-            String id,
-            String orderId,
-            String patientId,
-            String drugName,
-            int quantity,
-            Instant orderDate) {
-        this.id = id;
-        this.orderId = orderId;
-        this.patientId = patientId;
-        this.drugName = drugName;
-        this.quantity = quantity;
-        this.orderDate = orderDate;
-    }
+	private String patientId;
 
-    // Getters and Setters (or use Lombok)
-    public String getId() {
-        return id;
-    }
+	private String drugName;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private int quantity;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	private Instant orderDate; // Use Instant for timestamps
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public PrescriptionOrder() {
+	}
 
-    public String getPatientId() {
-        return patientId;
-    }
+	public PrescriptionOrder(String id, String orderId, String patientId, String drugName, int quantity,
+			Instant orderDate) {
+		this.id = id;
+		this.orderId = orderId;
+		this.patientId = patientId;
+		this.drugName = drugName;
+		this.quantity = quantity;
+		this.orderDate = orderDate;
+	}
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
+	// Getters and Setters (or use Lombok)
+	public String getId() {
+		return id;
+	}
 
-    public String getDrugName() {
-        return drugName;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setDrugName(String drugName) {
-        this.drugName = drugName;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public int getQuantity() {
-        return quantity;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+	public String getPatientId() {
+		return patientId;
+	}
 
-    public Instant getOrderDate() {
-        return orderDate;
-    }
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
 
-    public void setOrderDate(Instant orderDate) {
-        this.orderDate = orderDate;
-    }
+	public String getDrugName() {
+		return drugName;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PrescriptionOrder that = (PrescriptionOrder) o;
-        return quantity == that.quantity
-                && Objects.equals(id, that.id)
-                && Objects.equals(orderId, that.orderId)
-                && Objects.equals(patientId, that.patientId)
-                && Objects.equals(drugName, that.drugName)
-                && Objects.equals(orderDate, that.orderDate);
-    }
+	public void setDrugName(String drugName) {
+		this.drugName = drugName;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, orderId, patientId, drugName, quantity, orderDate);
-    }
+	public int getQuantity() {
+		return quantity;
+	}
 
-    @Override
-    public String toString() {
-        return "PrescriptionOrder{"
-                + "id='"
-                + id
-                + '\''
-                + ", orderId='"
-                + orderId
-                + '\''
-                + ", patientId='"
-                + patientId
-                + '\''
-                + ", drugName='"
-                + drugName
-                + '\''
-                + ", quantity="
-                + quantity
-                + ", orderDate="
-                + orderDate
-                + '}';
-    }
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public Instant getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Instant orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		PrescriptionOrder that = (PrescriptionOrder) o;
+		return quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(orderId, that.orderId)
+				&& Objects.equals(patientId, that.patientId) && Objects.equals(drugName, that.drugName)
+				&& Objects.equals(orderDate, that.orderDate);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, orderId, patientId, drugName, quantity, orderDate);
+	}
+
+	@Override
+	public String toString() {
+		return "PrescriptionOrder{" + "id='" + id + '\'' + ", orderId='" + orderId + '\'' + ", patientId='" + patientId
+				+ '\'' + ", drugName='" + drugName + '\'' + ", quantity=" + quantity + ", orderDate=" + orderDate + '}';
+	}
+
 }

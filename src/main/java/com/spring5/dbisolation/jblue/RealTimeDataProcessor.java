@@ -21,52 +21,56 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/events")
 public class RealTimeDataProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(RealTimeDataProcessor.class);
-    private final KafkaTemplate<String, String> kafkaTemplate;
+	private static final Logger logger = LoggerFactory.getLogger(RealTimeDataProcessor.class);
 
-    @Autowired
-    public RealTimeDataProcessor(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    // 1. A REST endpoint to trigger an event.
-    // This demonstrates a microservice-based API, which is a key part of the job.
-    @PostMapping("/publish")
-    public String publishEvent(@RequestBody String message) {
-        logger.info("Received request to publish message: {}", message);
-        CompletableFuture<Void> future
-                = CompletableFuture.runAsync(
-                        () -> {
-                            try {
-                                // 2. Publish the message to a Kafka topic (simulating a real-time stream).
-                                // This shows proficiency in messaging and asynchronous operations.
-                                kafkaTemplate.send("jetblue-topic", message);
-                                logger.info("Successfully published message to Kafka: {}", message);
-                            } catch (Exception e) {
-                                logger.error("Failed to publish message to Kafka", e);
-                            }
-                        });
+	@Autowired
+	public RealTimeDataProcessor(KafkaTemplate<String, String> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
 
-        // The method returns immediately, making it non-blocking, a requirement for real-time systems.
-        return "Message publication is in progress...";
-    }
+	// 1. A REST endpoint to trigger an event.
+	// This demonstrates a microservice-based API, which is a key part of the job.
+	@PostMapping("/publish")
+	public String publishEvent(@RequestBody String message) {
+		logger.info("Received request to publish message: {}", message);
+		CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+			try {
+				// 2. Publish the message to a Kafka topic (simulating a real-time
+				// stream).
+				// This shows proficiency in messaging and asynchronous operations.
+				kafkaTemplate.send("jetblue-topic", message);
+				logger.info("Successfully published message to Kafka: {}", message);
+			}
+			catch (Exception e) {
+				logger.error("Failed to publish message to Kafka", e);
+			}
+		});
 
-    // 3. A Kafka listener to process the real-time messages.
-    // This demonstrates the "real-time message processing" requirement.
-    @KafkaListener(topics = "jetblue-topic", groupId = "jetblue-group")
-    public void consumeEvent(String message) {
-        logger.info("Consumed message from Kafka: {}", message);
-        // Simulate a complex, time-consuming operation
-        try {
-            Thread.sleep(1000); // Simulates processing time
-            logger.info("Finished processing message: {}", message);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            logger.error("Message processing interrupted", e);
-        }
-    }
+		// The method returns immediately, making it non-blocking, a requirement for
+		// real-time systems.
+		return "Message publication is in progress...";
+	}
 
-    public static void main(String[] args) {
-        SpringApplication.run(RealTimeDataProcessor.class, args);
-    }
+	// 3. A Kafka listener to process the real-time messages.
+	// This demonstrates the "real-time message processing" requirement.
+	@KafkaListener(topics = "jetblue-topic", groupId = "jetblue-group")
+	public void consumeEvent(String message) {
+		logger.info("Consumed message from Kafka: {}", message);
+		// Simulate a complex, time-consuming operation
+		try {
+			Thread.sleep(1000); // Simulates processing time
+			logger.info("Finished processing message: {}", message);
+		}
+		catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			logger.error("Message processing interrupted", e);
+		}
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(RealTimeDataProcessor.class, args);
+	}
+
 }

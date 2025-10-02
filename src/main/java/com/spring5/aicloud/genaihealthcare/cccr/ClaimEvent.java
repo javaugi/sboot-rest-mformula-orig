@@ -7,27 +7,18 @@ package com.spring5.aicloud.genaihealthcare.cccr;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record ClaimEvent(
-        String claimId,
-        String patientId,
-        String providerId,
-        ClaimType claimType,
-        BigDecimal amount,
-        LocalDateTime serviceDate,
-        ClaimStatus status,
-        String failureReason) {
+public record ClaimEvent(String claimId, String patientId, String providerId, ClaimType claimType, BigDecimal amount,
+		LocalDateTime serviceDate, ClaimStatus status, String failureReason) {
 
-    public enum ClaimType {
-        PHYSICIAN,
-        HOSPITAL,
-        OUTPATIENT
-    }
+	public enum ClaimType {
 
-    public enum ClaimStatus {
-        SUBMITTED,
-        VALIDATED,
-        APPROVED,
-        REJECTED,
-        PROCESSED
-    }
+		PHYSICIAN, HOSPITAL, OUTPATIENT
+
+	}
+
+	public enum ClaimStatus {
+
+		SUBMITTED, VALIDATED, APPROVED, REJECTED, PROCESSED
+
+	}
 }

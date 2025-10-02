@@ -15,8 +15,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ExtractedData {
 
-    private String patientId;
-    private String diagnosis;
-    private String diagnosisDate;
-    private String medication;
+	private String patientId;
+
+	private String diagnosis;
+
+	private String diagnosisDate;
+
+	private String medication;
+
 }

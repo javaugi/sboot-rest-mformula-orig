@@ -9,10 +9,10 @@ package com.patterns.behavioral.visitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ComputerPart {
 
-    void accept(ComputerPartVisitor computerPartVisitor);
+	void accept(ComputerPartVisitor computerPartVisitor);
+
 }

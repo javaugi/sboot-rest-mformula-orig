@@ -24,7 +24,8 @@ import lombok.ToString;
 @Entity
 public class PayrollRun {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
+
 }

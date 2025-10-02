@@ -2,41 +2,44 @@ package com.sisllc.mathformulas.ci.ch08;
 
 public class User {
 
-    private int userId;
-    private String details;
-    private int accountType;
+	private int userId;
 
-    public void renewMembership() {
-    }
+	private String details;
 
-    public User(int id, String details, int accountType) {
-        userId = id;
-        this.details = details;
-        this.accountType = accountType;
-    }
+	private int accountType;
 
-    /* getters and setters */
-    public int getID() {
-        return userId;
-    }
+	public void renewMembership() {
+	}
 
-    public void setID(int id) {
-        userId = id;
-    }
+	public User(int id, String details, int accountType) {
+		userId = id;
+		this.details = details;
+		this.accountType = accountType;
+	}
 
-    public String getDetails() {
-        return details;
-    }
+	/* getters and setters */
+	public int getID() {
+		return userId;
+	}
 
-    public void setDetails(String details) {
-        this.details = details;
-    }
+	public void setID(int id) {
+		userId = id;
+	}
 
-    public int getAccountType() {
-        return accountType;
-    }
+	public String getDetails() {
+		return details;
+	}
 
-    public void setAccountType(int accountType) {
-        this.accountType = accountType;
-    }
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	public int getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(int accountType) {
+		this.accountType = accountType;
+	}
+
 }

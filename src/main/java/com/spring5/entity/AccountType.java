@@ -8,8 +8,7 @@ package com.spring5.entity;
  * @author javaugi
  */
 public enum AccountType {
-    Regular,
-    RothIRA,
-    Roth401K,
-    EmployerOptions;
+
+	Regular, RothIRA, Roth401K, EmployerOptions;
+
 }

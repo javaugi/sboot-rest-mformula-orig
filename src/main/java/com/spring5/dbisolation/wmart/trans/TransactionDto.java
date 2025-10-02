@@ -15,10 +15,16 @@ import lombok.Getter;
 @Builder
 public class TransactionDto {
 
-    private String id;
-    private BigDecimal amount;
-    private TransactionType type;
-    private String description;
-    private LocalDateTime createdAt;
-    private String status;
+	private String id;
+
+	private BigDecimal amount;
+
+	private TransactionType type;
+
+	private String description;
+
+	private LocalDateTime createdAt;
+
+	private String status;
+
 }

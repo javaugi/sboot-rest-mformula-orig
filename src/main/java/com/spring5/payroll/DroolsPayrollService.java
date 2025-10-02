@@ -17,24 +17,25 @@ import org.springframework.stereotype.Service;
 @org.springframework.core.annotation.Order(14)
 public class DroolsPayrollService implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(DroolsPayrollService.class);
+	private static final Logger log = LoggerFactory.getLogger(DroolsPayrollService.class);
 
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("DroolsPayrollService ");
-        main(args);
-    }
+	@Override
+	public void run(String... args) throws Exception {
+		log.info("DroolsPayrollService ");
+		main(args);
+	}
 
-    public static void main(String[] args) {
-    }
+	public static void main(String[] args) {
+	}
 
-    public void applyDrools(Employee employee) {
-        // Kie = Knowledge Is Everything
-        KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer();
-        KieSession kSession = kContainer.newKieSession("payroll-rules");
-        kSession.insert(employee); // Insert employee facts into the rule engine
-        kSession.fireAllRules(); // Execute all matching rules
-        kSession.dispose(); // Clean up (important!)
-    }
+	public void applyDrools(Employee employee) {
+		// Kie = Knowledge Is Everything
+		KieServices ks = KieServices.Factory.get();
+		KieContainer kContainer = ks.getKieClasspathContainer();
+		KieSession kSession = kContainer.newKieSession("payroll-rules");
+		kSession.insert(employee); // Insert employee facts into the rule engine
+		kSession.fireAllRules(); // Execute all matching rules
+		kSession.dispose(); // Clean up (important!)
+	}
+
 }

@@ -32,24 +32,24 @@ Gracefully skips corrupt files.
  */
 public class OpenNLPPostNLPService {
 
-    private static final SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
+	private static final SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
 
-    public static JsonNode enrichWithNLP(JsonNode data) throws IOException {
-        ObjectNode enriched = (ObjectNode) data;
+	public static JsonNode enrichWithNLP(JsonNode data) throws IOException {
+		ObjectNode enriched = (ObjectNode) data;
 
-        // Extract entities using NLP
-        String text = data.get("work_experience").asText();
-        String[] tokens = tokenizer.tokenize(text);
+		// Extract entities using NLP
+		String text = data.get("work_experience").asText();
+		String[] tokens = tokenizer.tokenize(text);
 
-        // Load NER models (e.g., for skills)
-        NameFinderME nameFinder
-                = new NameFinderME(new TokenNameFinderModel(new File("en-ner-person.bin")));
+		// Load NER models (e.g., for skills)
+		NameFinderME nameFinder = new NameFinderME(new TokenNameFinderModel(new File("en-ner-person.bin")));
 
-        Span[] names = nameFinder.find(tokens);
-        if (names.length > 0) {
-            enriched.put("ner_identified_companies", tokens[names[0].getStart()]);
-        }
+		Span[] names = nameFinder.find(tokens);
+		if (names.length > 0) {
+			enriched.put("ner_identified_companies", tokens[names[0].getStart()]);
+		}
 
-        return enriched;
-    }
+		return enriched;
+	}
+
 }

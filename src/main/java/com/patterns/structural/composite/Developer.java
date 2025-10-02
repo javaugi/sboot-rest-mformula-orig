@@ -9,44 +9,45 @@ package com.patterns.structural.composite;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Developer implements Employee {
 
-    private String name;
-    private double salary;
+	private String name;
 
-    public Developer(String name, double salary) {
-        this.name = name;
-        this.salary = salary;
-    }
+	private double salary;
 
-    public void add(Employee employee) {
-        // this is leaf node so this method is not applicable to this class.
-    }
+	public Developer(String name, double salary) {
+		this.name = name;
+		this.salary = salary;
+	}
 
-    public Employee getChild(int i) {
-        // this is leaf node so this method is not applicable to this class.
-        return null;
-    }
+	public void add(Employee employee) {
+		// this is leaf node so this method is not applicable to this class.
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Employee getChild(int i) {
+		// this is leaf node so this method is not applicable to this class.
+		return null;
+	}
 
-    public double getSalary() {
-        return salary;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void print() {
-        System.out.println("-------------");
-        System.out.println("Name =" + getName());
-        System.out.println("Salary =" + getSalary());
-        System.out.println("-------------");
-    }
+	public double getSalary() {
+		return salary;
+	}
 
-    public void remove(Employee employee) {
-        // this is leaf node so this method is not applicable to this class.
-    }
+	public void print() {
+		System.out.println("-------------");
+		System.out.println("Name =" + getName());
+		System.out.println("Salary =" + getSalary());
+		System.out.println("-------------");
+	}
+
+	public void remove(Employee employee) {
+		// this is leaf node so this method is not applicable to this class.
+	}
+
 }

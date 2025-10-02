@@ -6,4 +6,5 @@ package com.spring5;
 
 // https://github.com/javaugi/kubernetes-client-java
 public class kubernetesConfig {
+
 }

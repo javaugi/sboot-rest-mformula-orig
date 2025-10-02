@@ -11,7 +11,8 @@ import com.spring5.empbilpayroll.Employee;
  */
 public interface PayrollRuleStrategy {
 
-    double calculateOvertime(double hoursWorked, Employee employee);
+	double calculateOvertime(double hoursWorked, Employee employee);
 
-    double calculateTax(Employee employee);
+	double calculateTax(Employee employee);
+
 }

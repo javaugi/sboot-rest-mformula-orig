@@ -15,5 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClinicalTextRequest {
 
-    private String text;
+	private String text;
+
 }

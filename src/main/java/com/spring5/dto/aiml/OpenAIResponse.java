@@ -11,24 +11,34 @@ import lombok.Data;
 @Data
 public class OpenAIResponse {
 
-    private String id;
-    private String object;
-    private long created;
-    private String model;
-    private List<Choice> choices = new ArrayList<>();
+	private String id;
 
-    @Data
-    public static class Choice {
+	private String object;
 
-        private Message message;
-        private int index;
-        private String finish_reason;
-    }
+	private long created;
 
-    @Data
-    public static class Message {
+	private String model;
 
-        private String role;
-        private String content;
-    }
+	private List<Choice> choices = new ArrayList<>();
+
+	@Data
+	public static class Choice {
+
+		private Message message;
+
+		private int index;
+
+		private String finish_reason;
+
+	}
+
+	@Data
+	public static class Message {
+
+		private String role;
+
+		private String content;
+
+	}
+
 }

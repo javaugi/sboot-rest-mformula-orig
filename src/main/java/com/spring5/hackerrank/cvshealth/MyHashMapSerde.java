@@ -12,7 +12,8 @@ import org.apache.kafka.common.serialization.Serdes;
  */
 public class MyHashMapSerde extends Serdes.WrapperSerde<Map<String, Long>> {
 
-    public MyHashMapSerde() {
-        super(new HashMapSerializer(), new HashMapDeserializer());
-    }
+	public MyHashMapSerde() {
+		super(new HashMapSerializer(), new HashMapDeserializer());
+	}
+
 }

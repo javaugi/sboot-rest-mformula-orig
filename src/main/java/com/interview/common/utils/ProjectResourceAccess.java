@@ -18,56 +18,59 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ProjectResourceAccess {
 
-    private static final Logger log = LoggerFactory.getLogger(ProjectResourceAccess.class);
-    private static final String SRC_MAIN_RESOURCE = "src/main/resources";
+	private static final Logger log = LoggerFactory.getLogger(ProjectResourceAccess.class);
 
-    public static void main(String[] args) {
-        try {
-            File file = getResourceFile("application.yml");
-            log.info("application.yml: ", Arrays.toString(file.list()));
-        } catch (Exception ex) {
-            log.error("Error pringting file {}", ex);
-        }
-    }
+	private static final String SRC_MAIN_RESOURCE = "src/main/resources";
 
-    public ProjectResourceAccess() {
-    }
+	public static void main(String[] args) {
+		try {
+			File file = getResourceFile("application.yml");
+			log.info("application.yml: ", Arrays.toString(file.list()));
+		}
+		catch (Exception ex) {
+			log.error("Error pringting file {}", ex);
+		}
+	}
 
-    public static File getResourceFile(String filename) {
-        File file = null;
+	public ProjectResourceAccess() {
+	}
 
-        try {
-            URL resource = ProjectResourceAccess.class.getResource(File.separator + filename);
-            file = Paths.get(resource.toURI()).toFile();
-        } catch (URISyntaxException ex) {
-            log.error("Error getResourceFile filename {}", filename, ex);
-        }
+	public static File getResourceFile(String filename) {
+		File file = null;
 
-        return file;
-    }
+		try {
+			URL resource = ProjectResourceAccess.class.getResource(File.separator + filename);
+			file = Paths.get(resource.toURI()).toFile();
+		}
+		catch (URISyntaxException ex) {
+			log.error("Error getResourceFile filename {}", filename, ex);
+		}
 
-    public static File createResourceFile(String filename) {
-        File file = null;
+		return file;
+	}
 
-        try {
-            String fileWithDir
-                    = new File(SRC_MAIN_RESOURCE).getAbsolutePath() + File.separator + filename;
-            log.info("fileWithDir {}", fileWithDir);
-            file = new File(fileWithDir);
-            if (!file.exists()) {
-                file.delete();
-            }
-            file.createNewFile();
-            file.setWritable(true);
-        } catch (IOException ex) {
-            log.error("Error createResourceFile filename {}", filename, ex);
-        }
+	public static File createResourceFile(String filename) {
+		File file = null;
 
-        return file;
-    }
+		try {
+			String fileWithDir = new File(SRC_MAIN_RESOURCE).getAbsolutePath() + File.separator + filename;
+			log.info("fileWithDir {}", fileWithDir);
+			file = new File(fileWithDir);
+			if (!file.exists()) {
+				file.delete();
+			}
+			file.createNewFile();
+			file.setWritable(true);
+		}
+		catch (IOException ex) {
+			log.error("Error createResourceFile filename {}", filename, ex);
+		}
+
+		return file;
+	}
+
 }

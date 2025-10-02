@@ -9,13 +9,10 @@ import java.util.List;
 
 public record GraphAuthor(String id, String firstName, String lastName) {
 
-    private static List<GraphAuthor> authors
-            = Arrays.asList(
-                    new GraphAuthor("author-1", "Joshua", "Bloch"),
-                    new GraphAuthor("author-2", "Douglas", "Adams"),
-                    new GraphAuthor("author-3", "Bill", "Bryson"));
+	private static List<GraphAuthor> authors = Arrays.asList(new GraphAuthor("author-1", "Joshua", "Bloch"),
+			new GraphAuthor("author-2", "Douglas", "Adams"), new GraphAuthor("author-3", "Bill", "Bryson"));
 
-    public static GraphAuthor getById(String id) {
-        return authors.stream().filter(author -> author.id().equals(id)).findFirst().orElse(null);
-    }
+	public static GraphAuthor getById(String id) {
+		return authors.stream().filter(author -> author.id().equals(id)).findFirst().orElse(null);
+	}
 }

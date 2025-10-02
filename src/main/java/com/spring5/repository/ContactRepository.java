@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
-    @Query("SELECT con FROM Contact con  WHERE con.phoneType=(:pType) AND con.lastName= (:lName)")
-    List<Contact> findByLastNameAndPhoneType(
-            @Param("pType") PhoneType pType, @Param("lName") String lName);
+	@Query("SELECT con FROM Contact con  WHERE con.phoneType=(:pType) AND con.lastName= (:lName)")
+	List<Contact> findByLastNameAndPhoneType(@Param("pType") PhoneType pType, @Param("lName") String lName);
+
 }

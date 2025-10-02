@@ -9,11 +9,12 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Workshop {
-    // Implementor for bridge pattern
 
-    public abstract void work();
+	// Implementor for bridge pattern
+
+	public abstract void work();
+
 }

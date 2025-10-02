@@ -15,16 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orders")
 public class WmOrderController {
 
-    private final WmOrderService orderService;
+	private final WmOrderService orderService;
 
-    public WmOrderController(WmOrderService orderService) {
-        this.orderService = orderService;
-    }
+	public WmOrderController(WmOrderService orderService) {
+		this.orderService = orderService;
+	}
 
-    @PostMapping
-    public ResponseEntity<OrderDto> create(
-            @RequestHeader("Idempotency-Key") String idempotencyKey, @RequestBody CreateOrderRequest r) {
-        OrderDto result = orderService.createOrder(idempotencyKey, r);
-        return ResponseEntity.ok(result);
-    }
+	@PostMapping
+	public ResponseEntity<OrderDto> create(@RequestHeader("Idempotency-Key") String idempotencyKey,
+			@RequestBody CreateOrderRequest r) {
+		OrderDto result = orderService.createOrder(idempotencyKey, r);
+		return ResponseEntity.ok(result);
+	}
+
 }

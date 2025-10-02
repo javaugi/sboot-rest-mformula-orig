@@ -14,5 +14,6 @@ import reactor.core.publisher.Flux;
 @Transactional
 public interface WebFluxProductRepository extends ReactiveCrudRepository<RWFProduct, Long> {
 
-    Flux<RWFProduct> findByCategory(@Param("category") String category);
+	Flux<RWFProduct> findByCategory(@Param("category") String category);
+
 }

@@ -16,27 +16,26 @@ import org.springframework.kafka.core.ProducerFactory;
  */
 public class PaymentObservabilityTracingCustomMetrics {
 
-    // 3. Observability - Distributed Tracing:
-    // See PaymentService
-    @Bean
-    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> pf) {
-        KafkaTemplate<String, String> template = new KafkaTemplate<>(pf);
-        // template.setObservationEnabled(true);
-        return template;
-    }
+	// 3. Observability - Distributed Tracing:
+	// See PaymentService
+	@Bean
+	public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> pf) {
+		KafkaTemplate<String, String> template = new KafkaTemplate<>(pf);
+		// template.setObservationEnabled(true);
+		return template;
+	}
 
-    // Observability - Custom Metrics:
-    @Bean
-    public MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
-        return registry
-                -> registry
-                        .config()
-                        .commonTags("application", "payment-service", "region", System.getenv("REGION"));
-    }
+	// Observability - Custom Metrics:
+	@Bean
+	public MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
+		return registry -> registry.config()
+			.commonTags("application", "payment-service", "region", System.getenv("REGION"));
+	}
 
-    @Timed(value = "payment.processing.time", description = "Time taken to process payment")
-    public PaymentResult processPayment(PaymentRequest request) {
-        // Payment processing
-        return null;
-    }
+	@Timed(value = "payment.processing.time", description = "Time taken to process payment")
+	public PaymentResult processPayment(PaymentRequest request) {
+		// Payment processing
+		return null;
+	}
+
 }

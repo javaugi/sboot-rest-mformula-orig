@@ -9,13 +9,13 @@ package com.patterns.misc.jdinjection;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class EmailServiceInjector implements MessageServiceInjector {
 
-    @Override
-    public Consumer getConsumer() {
-        return new ConsumerConstructorInjection(new EmailServiceImpl());
-    }
+	@Override
+	public Consumer getConsumer() {
+		return new ConsumerConstructorInjection(new EmailServiceImpl());
+	}
+
 }

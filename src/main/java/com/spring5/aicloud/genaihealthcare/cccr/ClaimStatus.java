@@ -5,5 +5,7 @@
 package com.spring5.aicloud.genaihealthcare.cccr;
 
 public enum ClaimStatus {
-    CCCR_ELIGIBLE;
+
+	CCCR_ELIGIBLE;
+
 }

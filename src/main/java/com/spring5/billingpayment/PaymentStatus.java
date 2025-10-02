@@ -8,9 +8,9 @@ package com.spring5.billingpayment;
  * @author javaugi
  */
 public enum PaymentStatus {
-    REQUIRES_ACTION, // Requires 3D Secure or other customer action
-    SUCCEEDED,
-    FAILED,
-    PENDING, // Initial state, awaiting confirmation via webhook
-    CANCELED
+
+	REQUIRES_ACTION, // Requires 3D Secure or other customer action
+	SUCCEEDED, FAILED, PENDING, // Initial state, awaiting confirmation via webhook
+	CANCELED
+
 }

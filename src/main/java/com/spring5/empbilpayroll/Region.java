@@ -8,7 +8,7 @@ package com.spring5.empbilpayroll;
  * @author javaugi
  */
 public enum Region {
-    US,
-    EU,
-    OTHERS;
+
+	US, EU, OTHERS;
+
 }

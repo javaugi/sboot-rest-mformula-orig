@@ -6,85 +6,92 @@ package com.interview.shoppingcart.api;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class AbstractCoupon implements Coupon, Product {
 
-    private CouponCategory couponCategory;
-    private Product product;
-    private int getAmount;
-    private int freeAmout;
-    private int limitAmout;
-    private double discountUnit;
-    private double discountAmount;
-    private double discountPercentage;
+	private CouponCategory couponCategory;
 
-    public Product getProduct() {
-        return product;
-    }
+	private Product product;
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+	private int getAmount;
 
-    public CouponCategory getCouponCategory() {
-        return couponCategory;
-    }
+	private int freeAmout;
 
-    public void setCouponCategory(CouponCategory couponCategory) {
-        this.couponCategory = couponCategory;
-    }
+	private int limitAmout;
 
-    public int getGetAmount() {
-        return getAmount;
-    }
+	private double discountUnit;
 
-    public void setGetAmount(int getAmount) {
-        this.getAmount = getAmount;
-    }
+	private double discountAmount;
 
-    public int getFreeAmout() {
-        return freeAmout;
-    }
+	private double discountPercentage;
 
-    public void setFreeAmout(int freeAmout) {
-        this.freeAmout = freeAmout;
-    }
+	public Product getProduct() {
+		return product;
+	}
 
-    public int getLimitAmout() {
-        return limitAmout;
-    }
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 
-    public void setLimitAmout(int limitAmout) {
-        this.limitAmout = limitAmout;
-    }
+	public CouponCategory getCouponCategory() {
+		return couponCategory;
+	}
 
-    public double getDiscountUnit() {
-        return discountUnit;
-    }
+	public void setCouponCategory(CouponCategory couponCategory) {
+		this.couponCategory = couponCategory;
+	}
 
-    public void setDiscountUnit(double discountUnit) {
-        this.discountUnit = discountUnit;
-    }
+	public int getGetAmount() {
+		return getAmount;
+	}
 
-    public double getDiscountAmount() {
-        return discountAmount;
-    }
+	public void setGetAmount(int getAmount) {
+		this.getAmount = getAmount;
+	}
 
-    public void setDiscountAmount(double discountAmount) {
-        this.discountAmount = discountAmount;
-    }
+	public int getFreeAmout() {
+		return freeAmout;
+	}
 
-    public double getDiscountPercentage() {
-        return discountPercentage;
-    }
+	public void setFreeAmout(int freeAmout) {
+		this.freeAmout = freeAmout;
+	}
 
-    public void setDiscountPercentage(double discountPercentage) {
-        this.discountPercentage = discountPercentage;
-    }
+	public int getLimitAmout() {
+		return limitAmout;
+	}
 
-    public abstract double getDiscount();
+	public void setLimitAmout(int limitAmout) {
+		this.limitAmout = limitAmout;
+	}
 
-    public abstract void setDiscount(double discount);
+	public double getDiscountUnit() {
+		return discountUnit;
+	}
+
+	public void setDiscountUnit(double discountUnit) {
+		this.discountUnit = discountUnit;
+	}
+
+	public double getDiscountAmount() {
+		return discountAmount;
+	}
+
+	public void setDiscountAmount(double discountAmount) {
+		this.discountAmount = discountAmount;
+	}
+
+	public double getDiscountPercentage() {
+		return discountPercentage;
+	}
+
+	public void setDiscountPercentage(double discountPercentage) {
+		this.discountPercentage = discountPercentage;
+	}
+
+	public abstract double getDiscount();
+
+	public abstract void setDiscount(double discount);
+
 }

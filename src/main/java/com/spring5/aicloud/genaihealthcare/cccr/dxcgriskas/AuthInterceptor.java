@@ -12,17 +12,19 @@ import org.springframework.http.client.ClientHttpResponse;
 
 public class AuthInterceptor implements ClientHttpRequestInterceptor {
 
-    private static final String apiKey = "apiKey";
-    private static final String apiSecret = "apiSecret";
+	private static final String apiKey = "apiKey";
 
-    @Override
-    public ClientHttpResponse intercept(
-            HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-        // Add Verisk-specific authentication headers
-        request.getHeaders().add("X-API-Key", apiKey);
-        request.getHeaders().add("X-API-Secret", apiSecret);
-        request.getHeaders().add("Timestamp", String.valueOf(System.currentTimeMillis()));
+	private static final String apiSecret = "apiSecret";
 
-        return execution.execute(request, body);
-    }
+	@Override
+	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+			throws IOException {
+		// Add Verisk-specific authentication headers
+		request.getHeaders().add("X-API-Key", apiKey);
+		request.getHeaders().add("X-API-Secret", apiSecret);
+		request.getHeaders().add("Timestamp", String.valueOf(System.currentTimeMillis()));
+
+		return execution.execute(request, body);
+	}
+
 }

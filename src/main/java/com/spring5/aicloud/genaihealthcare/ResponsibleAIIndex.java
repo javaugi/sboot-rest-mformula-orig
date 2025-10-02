@@ -22,45 +22,56 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ResponsibleAIIndex {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long id;
 
-    public String operation; // e.g. "LoyaltyEnrollment"
-    public String modelName;
-    public double transparencyScore;
-    public double fairnessScore;
-    public double privacyScore;
-    public double regulatoryAlignmentScore;
-    private Double overallScore;
-    public Instant createdAt;
-    private LocalDateTime lastUpdated;
-    public String notes; // JSON or text explaining scoring decisions
-    private String complianceStatus;
+	public String operation; // e.g. "LoyaltyEnrollment"
 
-    public Double calculateOverallScore() {
-        return (transparencyScore + fairnessScore + privacyScore + regulatoryAlignmentScore) / 4;
-    }
+	public String modelName;
 
-    public String calculateComplianceStatus() {
-        return overallScore >= 8.0 ? "COMPLIANT" : "NEEDS_REVIEW";
-    }
+	public double transparencyScore;
 
-    public void setTransparencyScore(Double transparencyScore) {
-        this.transparencyScore = transparencyScore;
-        this.overallScore = calculateOverallScore();
-        this.complianceStatus = calculateComplianceStatus();
-    }
+	public double fairnessScore;
 
-    public void setFairnessScore(Double fairnessScore) {
-        this.fairnessScore = fairnessScore;
-        this.overallScore = calculateOverallScore();
-        this.complianceStatus = calculateComplianceStatus();
-    }
+	public double privacyScore;
 
-    public void setRegulatoryAlignmentScore(Double regulatoryAlignmentScore) {
-        this.regulatoryAlignmentScore = regulatoryAlignmentScore;
-        this.overallScore = calculateOverallScore();
-        this.complianceStatus = calculateComplianceStatus();
-    }
+	public double regulatoryAlignmentScore;
+
+	private Double overallScore;
+
+	public Instant createdAt;
+
+	private LocalDateTime lastUpdated;
+
+	public String notes; // JSON or text explaining scoring decisions
+
+	private String complianceStatus;
+
+	public Double calculateOverallScore() {
+		return (transparencyScore + fairnessScore + privacyScore + regulatoryAlignmentScore) / 4;
+	}
+
+	public String calculateComplianceStatus() {
+		return overallScore >= 8.0 ? "COMPLIANT" : "NEEDS_REVIEW";
+	}
+
+	public void setTransparencyScore(Double transparencyScore) {
+		this.transparencyScore = transparencyScore;
+		this.overallScore = calculateOverallScore();
+		this.complianceStatus = calculateComplianceStatus();
+	}
+
+	public void setFairnessScore(Double fairnessScore) {
+		this.fairnessScore = fairnessScore;
+		this.overallScore = calculateOverallScore();
+		this.complianceStatus = calculateComplianceStatus();
+	}
+
+	public void setRegulatoryAlignmentScore(Double regulatoryAlignmentScore) {
+		this.regulatoryAlignmentScore = regulatoryAlignmentScore;
+		this.overallScore = calculateOverallScore();
+		this.complianceStatus = calculateComplianceStatus();
+	}
+
 }

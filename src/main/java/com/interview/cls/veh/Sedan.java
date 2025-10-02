@@ -6,7 +6,8 @@ package com.interview.cls.veh;
 
 public final class Sedan extends Car {
 
-    public Sedan(String manufacturer) {
-        super(manufacturer);
-    }
+	public Sedan(String manufacturer) {
+		super(manufacturer);
+	}
+
 }

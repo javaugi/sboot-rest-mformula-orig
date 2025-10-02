@@ -8,32 +8,35 @@ import java.util.Map;
 
 public class AddToCartRequest {
 
-    private Long productId;
-    private Map<String, String> variant;
-    private int quantity;
+	private Long productId;
 
-    // Getters and Setters
-    public Long getProductId() {
-        return productId;
-    }
+	private Map<String, String> variant;
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
+	private int quantity;
 
-    public Map<String, String> getVariant() {
-        return variant;
-    }
+	// Getters and Setters
+	public Long getProductId() {
+		return productId;
+	}
 
-    public void setVariant(Map<String, String> variant) {
-        this.variant = variant;
-    }
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
 
-    public int getQuantity() {
-        return quantity;
-    }
+	public Map<String, String> getVariant() {
+		return variant;
+	}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+	public void setVariant(Map<String, String> variant) {
+		this.variant = variant;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 }

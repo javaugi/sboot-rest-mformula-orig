@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class EventChoice {
 
-    private String text;
-    private String finishReason;
+	private String text;
+
+	private String finishReason;
+
 }

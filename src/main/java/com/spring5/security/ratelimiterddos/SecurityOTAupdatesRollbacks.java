@@ -30,4 +30,5 @@ Sample Answer:
 The database would track all these states to enable precise targeting of fixes."
  */
 public class SecurityOTAupdatesRollbacks {
+
 }

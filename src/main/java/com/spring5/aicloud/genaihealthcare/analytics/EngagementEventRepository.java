@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EngagementEventRepository extends JpaRepository<PatientEngagementEvent, Long> {
 
-    List<PatientEngagementEvent> findByPatientId(String patientId);
+	List<PatientEngagementEvent> findByPatientId(String patientId);
+
 }

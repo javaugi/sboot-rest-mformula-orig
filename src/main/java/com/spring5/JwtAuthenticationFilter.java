@@ -35,110 +35,108 @@ import reactor.core.publisher.Mono;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter implements GlobalFilter, Ordered {
 
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+	@Autowired
+	private JwtTokenProvider tokenProvider;
 
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
-            String jwt = getJwtFromRequest(request);
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                String username = tokenProvider.getUsernameFromJWT(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication
-                        = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (UsernameNotFoundException ex) {
-            log.error("Could not set user authentication in security context", ex);
-        }
-        filterChain.doFilter(request, response);
-    }
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String path = exchange.getRequest().getPath().value();
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		try {
+			String jwt = getJwtFromRequest(request);
+			if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+				String username = tokenProvider.getUsernameFromJWT(jwt);
+				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
+				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+		}
+		catch (UsernameNotFoundException ex) {
+			log.error("Could not set user authentication in security context", ex);
+		}
+		filterChain.doFilter(request, response);
+	}
 
-        // Skip authentication for public endpoints
-        if (isPublicEndpoint(path)) {
-            return chain.filter(exchange);
-        }
+	private String getJwtFromRequest(HttpServletRequest request) {
+		String bearerToken = request.getHeader("Authorization");
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7);
+		}
+		return null;
+	}
 
-        String token = extractToken(exchange.getRequest());
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		String path = exchange.getRequest().getPath().value();
 
-        if (token == null || !tokenProvider.validateToken(token)) {
-            return unauthorizedResponse(exchange);
-        }
+		// Skip authentication for public endpoints
+		if (isPublicEndpoint(path)) {
+			return chain.filter(exchange);
+		}
 
-        // Check if token is blacklisted (logout)
-        if (isTokenBlacklisted(token)) {
-            return unauthorizedResponse(exchange);
-        }
+		String token = extractToken(exchange.getRequest());
 
-        // Add user info to headers for downstream services
-        String username = tokenProvider.getUsernameFromToken(token);
-        ServerHttpRequest modifiedRequest
-                = exchange
-                        .getRequest()
-                        .mutate()
-                        .header("X-User-Id", username)
-                        .header("X-User-Role", getRoleFromToken(token))
-                        .header("X-User-Type", getUserTypeFromToken(token))
-                        .build();
+		if (token == null || !tokenProvider.validateToken(token)) {
+			return unauthorizedResponse(exchange);
+		}
 
-        return chain.filter(exchange.mutate().request(modifiedRequest).build());
-    }
+		// Check if token is blacklisted (logout)
+		if (isTokenBlacklisted(token)) {
+			return unauthorizedResponse(exchange);
+		}
 
-    private String getRoleFromToken(String token) {
-        return token;
-    }
+		// Add user info to headers for downstream services
+		String username = tokenProvider.getUsernameFromToken(token);
+		ServerHttpRequest modifiedRequest = exchange.getRequest()
+			.mutate()
+			.header("X-User-Id", username)
+			.header("X-User-Role", getRoleFromToken(token))
+			.header("X-User-Type", getUserTypeFromToken(token))
+			.build();
 
-    private String getUserTypeFromToken(String token) {
-        return token;
-    }
+		return chain.filter(exchange.mutate().request(modifiedRequest).build());
+	}
 
-    private boolean isPublicEndpoint(String path) {
-        return path.startsWith("/api/auth/login")
-                || path.startsWith("/api/auth/external")
-                || path.startsWith("/api/auth/refresh")
-                || path.startsWith("/actuator/health");
-    }
+	private String getRoleFromToken(String token) {
+		return token;
+	}
 
-    private String extractToken(ServerHttpRequest request) {
-        String bearerToken = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
+	private String getUserTypeFromToken(String token) {
+		return token;
+	}
 
-    private Mono<Void> unauthorizedResponse(ServerWebExchange exchange) {
-        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        return exchange.getResponse().setComplete();
-    }
+	private boolean isPublicEndpoint(String path) {
+		return path.startsWith("/api/auth/login") || path.startsWith("/api/auth/external")
+				|| path.startsWith("/api/auth/refresh") || path.startsWith("/actuator/health");
+	}
 
-    private boolean isTokenBlacklisted(String token) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey("blacklist:" + token));
-    }
+	private String extractToken(ServerHttpRequest request) {
+		String bearerToken = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7);
+		}
+		return null;
+	}
 
-    @Override
-    public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE;
-    }
+	private Mono<Void> unauthorizedResponse(ServerWebExchange exchange) {
+		exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+		return exchange.getResponse().setComplete();
+	}
+
+	private boolean isTokenBlacklisted(String token) {
+		return Boolean.TRUE.equals(redisTemplate.hasKey("blacklist:" + token));
+	}
+
+	@Override
+	public int getOrder() {
+		return Ordered.HIGHEST_PRECEDENCE;
+	}
+
 }

@@ -11,7 +11,8 @@ import java.math.BigDecimal;
  */
 public class ExternalCurrencyServiceClient {
 
-    public BigDecimal getConversionRate(String fromCurrency, String toCurrency) {
-        return new BigDecimal(0);
-    }
+	public BigDecimal getConversionRate(String fromCurrency, String toCurrency) {
+		return new BigDecimal(0);
+	}
+
 }

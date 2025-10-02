@@ -16,19 +16,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class VehicleService {
 
-    @Autowired
-    private VehicleRepository vehicleRepository;
+	@Autowired
+	private VehicleRepository vehicleRepository;
 
-    public List<Vehicle> getAllVehicles() {
-        return vehicleRepository.findAll();
-    }
+	public List<Vehicle> getAllVehicles() {
+		return vehicleRepository.findAll();
+	}
 
-    public Vehicle createVehicle(Vehicle trade) {
-        // Add validation logic here
-        return vehicleRepository.save(trade);
-    }
+	public Vehicle createVehicle(Vehicle trade) {
+		// Add validation logic here
+		return vehicleRepository.save(trade);
+	}
 
-    public Vehicle updateVehicle(Vehicle trade) {
-        return vehicleRepository.save(trade);
-    }
+	public Vehicle updateVehicle(Vehicle trade) {
+		return vehicleRepository.save(trade);
+	}
+
 }

@@ -35,41 +35,39 @@ import reactor.core.publisher.Mono;
 @Component
 public class PHIWebFilter implements WebFilter {
 
-    private static final PHIPseudonymizer pseudonymizer
-            = new PHIPseudonymizer(System.getenv().getOrDefault("PHI_KEY", "default-key"));
+	private static final PHIPseudonymizer pseudonymizer = new PHIPseudonymizer(
+			System.getenv().getOrDefault("PHI_KEY", "default-key"));
 
-    private static final Pattern PATIENT_ID_PATTERN = Pattern.compile("patientId=([A-Za-z0-9_-]+)");
+	private static final Pattern PATIENT_ID_PATTERN = Pattern.compile("patientId=([A-Za-z0-9_-]+)");
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
-        ServerHttpRequest request = exchange.getRequest();
-        ServerHttpResponse response = exchange.getResponse();
+		ServerHttpRequest request = exchange.getRequest();
+		ServerHttpResponse response = exchange.getResponse();
 
-        // Log pseudonymized request URI query params
-        String rawQuery = request.getURI().getQuery();
-        if (rawQuery != null) {
-            Matcher matcher = PATIENT_ID_PATTERN.matcher(rawQuery);
-            StringBuffer sb = new StringBuffer();
-            while (matcher.find()) {
-                String pseudonym = "patientId=" + pseudonymizer.pseudonymize(matcher.group(1));
-                matcher.appendReplacement(sb, Matcher.quoteReplacement(pseudonym));
-            }
-            matcher.appendTail(sb);
-            System.out.println(
-                    "Incoming Request: " + request.getMethod() + " " + request.getURI().getPath() + "?" + sb);
-        } else {
-            System.out.println(
-                    "Incoming Request: " + request.getMethod() + " " + request.getURI().getPath());
-        }
+		// Log pseudonymized request URI query params
+		String rawQuery = request.getURI().getQuery();
+		if (rawQuery != null) {
+			Matcher matcher = PATIENT_ID_PATTERN.matcher(rawQuery);
+			StringBuffer sb = new StringBuffer();
+			while (matcher.find()) {
+				String pseudonym = "patientId=" + pseudonymizer.pseudonymize(matcher.group(1));
+				matcher.appendReplacement(sb, Matcher.quoteReplacement(pseudonym));
+			}
+			matcher.appendTail(sb);
+			System.out
+				.println("Incoming Request: " + request.getMethod() + " " + request.getURI().getPath() + "?" + sb);
+		}
+		else {
+			System.out.println("Incoming Request: " + request.getMethod() + " " + request.getURI().getPath());
+		}
 
-        // Process request/response as usual
-        return chain
-                .filter(exchange)
-                .doOnTerminate(
-                        () -> {
-                            // Pseudonymize response status or body metadata if needed
-                            System.out.println("Response Status: " + response.getStatusCode());
-                        });
-    }
+		// Process request/response as usual
+		return chain.filter(exchange).doOnTerminate(() -> {
+			// Pseudonymize response status or body metadata if needed
+			System.out.println("Response Status: " + response.getStatusCode());
+		});
+	}
+
 }

@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Wrapper implements Packing {
 
-    private static final Logger log = LoggerFactory.getLogger(Wrapper.class);
+	private static final Logger log = LoggerFactory.getLogger(Wrapper.class);
 
-    @Override
-    public String pack() {
-        return "Wrapper";
-    }
+	@Override
+	public String pack() {
+		return "Wrapper";
+	}
+
 }

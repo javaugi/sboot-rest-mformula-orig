@@ -11,29 +11,31 @@ import java.util.UUID;
 
 public class PatientRecord {
 
-    private final UUID patientId;
-    private final List<Event> events;
+	private final UUID patientId;
 
-    public PatientRecord(UUID patientId) {
-        this.patientId = patientId;
-        this.events = new ArrayList<>();
-    }
+	private final List<Event> events;
 
-    public void addDiagnosis(String diagnosis) {
-        DiagnosisAdded event = new DiagnosisAdded(patientId, diagnosis, Instant.now());
-        events.add(event);
-    }
+	public PatientRecord(UUID patientId) {
+		this.patientId = patientId;
+		this.events = new ArrayList<>();
+	}
 
-    public void addTreatment(String treatment) {
-        TreatmentAdded event = new TreatmentAdded(patientId, treatment, Instant.now());
-        events.add(event);
-    }
+	public void addDiagnosis(String diagnosis) {
+		DiagnosisAdded event = new DiagnosisAdded(patientId, diagnosis, Instant.now());
+		events.add(event);
+	}
 
-    public UUID getPatientId() {
-        return patientId;
-    }
+	public void addTreatment(String treatment) {
+		TreatmentAdded event = new TreatmentAdded(patientId, treatment, Instant.now());
+		events.add(event);
+	}
 
-    public List<Event> getEvents() {
-        return events;
-    }
+	public UUID getPatientId() {
+		return patientId;
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
 }

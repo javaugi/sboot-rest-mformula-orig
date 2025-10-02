@@ -9,18 +9,18 @@ package com.patterns.misc.compositeentity;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class DependentObject1 {
 
-    private String data;
+	private String data;
 
-    public void setData(String data) {
-        this.data = data;
-    }
+	public void setData(String data) {
+		this.data = data;
+	}
 
-    public String getData() {
-        return data;
-    }
+	public String getData() {
+		return data;
+	}
+
 }

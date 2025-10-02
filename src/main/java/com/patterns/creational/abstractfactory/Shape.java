@@ -9,10 +9,10 @@ package com.patterns.creational.abstractfactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Shape {
 
-    void draw();
+	void draw();
+
 }

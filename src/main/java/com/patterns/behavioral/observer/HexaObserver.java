@@ -9,18 +9,18 @@ package com.patterns.behavioral.observer;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class HexaObserver extends Observer {
 
-    public HexaObserver(Subject subject) {
-        this.subject = subject;
-        this.subject.attach(this);
-    }
+	public HexaObserver(Subject subject) {
+		this.subject = subject;
+		this.subject.attach(this);
+	}
 
-    @Override
-    public void update() {
-        System.out.println("Hex String: " + Integer.toHexString(subject.getState()).toUpperCase());
-    }
+	@Override
+	public void update() {
+		System.out.println("Hex String: " + Integer.toHexString(subject.getState()).toUpperCase());
+	}
+
 }

@@ -9,12 +9,12 @@ package com.patterns.behavioral.chainresp;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface DispenseChain {
 
-    void setNextChain(DispenseChain nextChain);
+	void setNextChain(DispenseChain nextChain);
 
-    void dispense(Currency cur);
+	void dispense(Currency cur);
+
 }

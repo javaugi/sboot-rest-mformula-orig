@@ -12,20 +12,20 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ChickenBurger extends Burger {
 
-    private static final Logger log = LoggerFactory.getLogger(ChickenBurger.class);
+	private static final Logger log = LoggerFactory.getLogger(ChickenBurger.class);
 
-    @Override
-    public float price() {
-        return 50.5f;
-    }
+	@Override
+	public float price() {
+		return 50.5f;
+	}
 
-    @Override
-    public String name() {
-        return "Chicken Burger";
-    }
+	@Override
+	public String name() {
+		return "Chicken Burger";
+	}
+
 }

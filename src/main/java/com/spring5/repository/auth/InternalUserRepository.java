@@ -13,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface InternalUserRepository extends JpaRepository<InternalUser, Long> {
 
-    Optional<InternalUser> findByUsername(String username);
+	Optional<InternalUser> findByUsername(String username);
+
 }

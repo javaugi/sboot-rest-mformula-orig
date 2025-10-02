@@ -9,22 +9,22 @@ package com.patterns.structural.adapter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Volt {
 
-    private int volts;
+	private int volts;
 
-    public Volt(int v) {
-        this.volts = v;
-    }
+	public Volt(int v) {
+		this.volts = v;
+	}
 
-    public int getVolts() {
-        return volts;
-    }
+	public int getVolts() {
+		return volts;
+	}
 
-    public void setVolts(int volts) {
-        this.volts = volts;
-    }
+	public void setVolts(int volts) {
+		this.volts = volts;
+	}
+
 }

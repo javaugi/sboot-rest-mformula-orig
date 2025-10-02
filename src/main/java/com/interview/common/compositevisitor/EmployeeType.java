@@ -9,13 +9,10 @@ package com.interview.common.compositevisitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public enum EmployeeType {
-    Employee,
-    Manager,
-    Contractor,
-    Director,
-    President;
+
+	Employee, Manager, Contractor, Director, President;
+
 }

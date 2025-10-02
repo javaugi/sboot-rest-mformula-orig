@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface FileProcessedRepository extends JpaRepository<FileProcessedRecord, Long> {
 
-    @Query("SELECT f FROM FileProcessedRecord f  WHERE f.eventId=(:eventId)")
-    boolean existsByEventId(@Param("eventId") String eventId);
+	@Query("SELECT f FROM FileProcessedRecord f  WHERE f.eventId=(:eventId)")
+	boolean existsByEventId(@Param("eventId") String eventId);
+
 }

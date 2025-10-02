@@ -23,4 +23,5 @@ Query optimization involves:
     7. Denormalization carefully and used only if required and pay attention to data integrity with triigers setup properly
  */
 public class DbPerformanceOptimization {
+
 }

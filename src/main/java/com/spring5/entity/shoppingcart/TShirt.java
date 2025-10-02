@@ -10,42 +10,45 @@ import java.util.Map;
 
 public class TShirt extends Product {
 
-    Integer size;
-    String type;
-    private Map<String, String[]> variants;
+	Integer size;
 
-    public Integer getSize() {
-        return size;
-    }
+	String type;
 
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+	private Map<String, String[]> variants;
 
-    public String getType() {
-        return type;
-    }
+	public Integer getSize() {
+		return size;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setSize(Integer size) {
+		this.size = size;
+	}
 
-    @Override
-    public Map<String, String[]> getVariants() {
-        if (variants == null) {
-            variants = new HashMap<>();
-        }
-        if (size != null) {
-            variants.put("size", java.util.List.of(size.toString()).toArray(new String[1]));
-        }
-        if (type != null) {
-            variants.put("type", java.util.List.of(type).toArray(new String[1]));
-        }
-        return variants;
-    }
+	public String getType() {
+		return type;
+	}
 
-    @Override
-    public void setVariants(Map<String, String[]> variants) {
-        this.variants = variants;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	public Map<String, String[]> getVariants() {
+		if (variants == null) {
+			variants = new HashMap<>();
+		}
+		if (size != null) {
+			variants.put("size", java.util.List.of(size.toString()).toArray(new String[1]));
+		}
+		if (type != null) {
+			variants.put("type", java.util.List.of(type).toArray(new String[1]));
+		}
+		return variants;
+	}
+
+	@Override
+	public void setVariants(Map<String, String[]> variants) {
+		this.variants = variants;
+	}
+
 }

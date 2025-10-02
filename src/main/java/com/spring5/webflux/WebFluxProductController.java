@@ -10,23 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/wfproducts")
 public class WebFluxProductController {
-    /*
-  @Autowired
-  private WebFluxProductRepository productRepo;
 
-  @GetMapping("/products")
-  public Flux<RWFProduct> getAllProducts() {
-      return productRepo.findAll();
-  }
+	/*
+	 * @Autowired private WebFluxProductRepository productRepo;
+	 * 
+	 * @GetMapping("/products") public Flux<RWFProduct> getAllProducts() { return
+	 * productRepo.findAll(); }
+	 * 
+	 * @PostMapping("/product") public Mono<RWFProduct> addProduct(@RequestBody RWFProduct
+	 * product) { return productRepo.save(product); }
+	 * 
+	 * @PostMapping public Mono<RWFProduct> create(@RequestBody RWFProduct product) {
+	 * return productRepo.save(product); } //
+	 */
 
-  @PostMapping("/product")
-  public Mono<RWFProduct> addProduct(@RequestBody RWFProduct product) {
-      return productRepo.save(product);
-  }
-
-  @PostMapping
-  public Mono<RWFProduct> create(@RequestBody RWFProduct product) {
-      return productRepo.save(product);
-  }
-  // */
 }

@@ -10,13 +10,14 @@ import reactor.core.publisher.Mono;
 @Service
 public class NLPService {
 
-    public Mono<ExtractedData> processText(String text) {
-        // Mock extraction: look for simple patterns
-        ExtractedData data = new ExtractedData();
-        data.setPatientId("12345");
-        data.setDiagnosis("Diabetes");
-        data.setDiagnosisDate("2025-09-14");
-        data.setMedication("Metformin 500mg");
-        return Mono.just(data);
-    }
+	public Mono<ExtractedData> processText(String text) {
+		// Mock extraction: look for simple patterns
+		ExtractedData data = new ExtractedData();
+		data.setPatientId("12345");
+		data.setDiagnosis("Diabetes");
+		data.setDiagnosisDate("2025-09-14");
+		data.setMedication("Metformin 500mg");
+		return Mono.just(data);
+	}
+
 }

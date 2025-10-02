@@ -11,8 +11,9 @@ import org.springframework.web.context.ServletContextAware;
 @Component
 public class MyContextAwareBean implements ServletContextAware {
 
-    @Override
-    public void setServletContext(ServletContext servletContext) {
-        // Now safe to use servletContext
-    }
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		// Now safe to use servletContext
+	}
+
 }

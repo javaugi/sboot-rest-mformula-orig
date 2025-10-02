@@ -18,13 +18,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaEventConsumer {
 
-    private final @Qualifier(EventBusConfig.MB_EVENT_BUS)
-    MBassador<Object> eventBus;
-    private final ObjectMapper objectMapper;
+	private final @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus;
 
-    @KafkaListener(topics = "OrderCreatedEvent")
-    public void consumeOrderCreated(String message) throws IOException {
-        OrderCreatedEvent event = objectMapper.readValue(message, OrderCreatedEvent.class);
-        eventBus.publish(event);
-    }
+	private final ObjectMapper objectMapper;
+
+	@KafkaListener(topics = "OrderCreatedEvent")
+	public void consumeOrderCreated(String message) throws IOException {
+		OrderCreatedEvent event = objectMapper.readValue(message, OrderCreatedEvent.class);
+		eventBus.publish(event);
+	}
+
 }

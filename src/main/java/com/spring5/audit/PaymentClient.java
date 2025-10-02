@@ -8,5 +8,6 @@ import java.util.concurrent.CompletableFuture;
 
 public interface PaymentClient {
 
-    CompletableFuture<Boolean> processPayment(String orderId);
+	CompletableFuture<Boolean> processPayment(String orderId);
+
 }

@@ -12,24 +12,26 @@ import org.springframework.kafka.core.KafkaTemplate;
  */
 public class SagaChoreographyOrderService {
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-    @Autowired
-    private WmOrderRepository orderRepository;
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
 
-    public void createOrder(Order order) {
-        // 1. Save order in DB as PENDING
-        order.setStatus("PENDING");
-        orderRepository.save(order);
+	@Autowired
+	private WmOrderRepository orderRepository;
 
-        // 2. Publish an event for other services
-        kafkaTemplate.send("order-events", "OrderCreated:" + order.getOrderId());
-    }
+	public void createOrder(Order order) {
+		// 1. Save order in DB as PENDING
+		order.setStatus("PENDING");
+		orderRepository.save(order);
 
-    public void cancelOrder(String orderId) {
-        // Logic to update order status to CANCELLED
-        Order order = orderRepository.findById(Long.valueOf(orderId)).orElseThrow();
-        order.setStatus("CANCELLED");
-        orderRepository.save(order);
-    }
+		// 2. Publish an event for other services
+		kafkaTemplate.send("order-events", "OrderCreated:" + order.getOrderId());
+	}
+
+	public void cancelOrder(String orderId) {
+		// Logic to update order status to CANCELLED
+		Order order = orderRepository.findById(Long.valueOf(orderId)).orElseThrow();
+		order.setStatus("CANCELLED");
+		orderRepository.save(order);
+	}
+
 }

@@ -11,11 +11,12 @@ import java.time.LocalDateTime;
  */
 public interface FlightProjection {
 
-    String getFlightNumber();
+	String getFlightNumber();
 
-    String getAirlineCode();
+	String getAirlineCode();
 
-    LocalDateTime getDepartureTime();
+	LocalDateTime getDepartureTime();
 
-    String getArrivalAirport();
+	String getArrivalAirport();
+
 }

@@ -2,19 +2,22 @@ package com.sisllc.mathformulas.ci.ch16.IntroductionSynchronization;
 
 public class MyClass extends Thread {
 
-    private String name;
-    private MyObject myObj;
+	private String name;
 
-    public MyClass(MyObject obj, String n) {
-        name = n;
-        myObj = obj;
-    }
+	private MyObject myObj;
 
-    public void run() {
-        if (name.equals("1")) {
-            MyObject.foo(name);
-        } else if (name.equals("2")) {
-            MyObject.bar(name);
-        }
-    }
+	public MyClass(MyObject obj, String n) {
+		name = n;
+		myObj = obj;
+	}
+
+	public void run() {
+		if (name.equals("1")) {
+			MyObject.foo(name);
+		}
+		else if (name.equals("2")) {
+			MyObject.bar(name);
+		}
+	}
+
 }

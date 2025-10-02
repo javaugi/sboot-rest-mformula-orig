@@ -25,110 +25,101 @@ To your original question:
  */
 public class PrivateInnerClassMethod {
 
-    public static void main(String[] args) throws Exception {
-        runMain1();
-        printStudentMethods();
-    } // end of main
+	public static void main(String[] args) throws Exception {
+		runMain1();
+		printStudentMethods();
+	} // end of main
 
-    private static void runMain1()
-            throws IOException,
-            SecurityException,
-            ExitControl.ExitTrappedException,
-            IllegalAccessException,
-            NoSuchMethodException,
-            IllegalArgumentException,
-            InvocationTargetException {
-        ExitControl.forbidExit(405);
+	private static void runMain1() throws IOException, SecurityException, ExitControl.ExitTrappedException,
+			IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+		ExitControl.forbidExit(405);
 
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            int num = Integer.parseInt(br.readLine().trim());
-            Object o; // Must be used to hold the reference of the instance of the class
-            // Solution.Inner.Private
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			int num = Integer.parseInt(br.readLine().trim());
+			Object o; // Must be used to hold the reference of the instance of the class
+			// Solution.Inner.Private
 
-            // Write your code here
-            o = new Inner().new Private();
+			// Write your code here
+			o = new Inner().new Private();
 
-            Method method = o.getClass().getDeclaredMethod("powerof2", int.class);
-            method.setAccessible(true);
-            String result = (String) method.invoke(o, num);
-            System.out.println(num + " is " + result);
-            System.out.println(
-                    "An instance of class: " + o.getClass().getCanonicalName() + " has been created");
+			Method method = o.getClass().getDeclaredMethod("powerof2", int.class);
+			method.setAccessible(true);
+			String result = (String) method.invoke(o, num);
+			System.out.println(num + " is " + result);
+			System.out.println("An instance of class: " + o.getClass().getCanonicalName() + " has been created");
 
-        } // end of try
-        catch (ExitControl.ExitTrappedException e) {
-            System.out.println("Unsuccessful Termination!!");
-        }
-    }
+		} // end of try
+		catch (ExitControl.ExitTrappedException e) {
+			System.out.println("Unsuccessful Termination!!");
+		}
+	}
 
-    private static void printStudentMethods() {
-        Class student = Student.class;
-        Method[] methods = student.getDeclaredMethods();
+	private static void printStudentMethods() {
+		Class student = Student.class;
+		Method[] methods = student.getDeclaredMethods();
 
-        ArrayList<String> methodList = new ArrayList<>();
-        for (Method method : methods) {
-            methodList.add(method.getName());
-        }
-        Collections.sort(methodList);
-        for (String name : methodList) {
-            System.out.println(name);
-        }
-    }
+		ArrayList<String> methodList = new ArrayList<>();
+		for (Method method : methods) {
+			methodList.add(method.getName());
+		}
+		Collections.sort(methodList);
+		for (String name : methodList) {
+			System.out.println(name);
+		}
+	}
 
-    static class Inner {
+	static class Inner {
 
-        private class Private {
+		private class Private {
 
-            private String powerof2(int num) {
-                return ((num & num - 1) == 0) ? "power of 2" : "not a power of 2";
-            }
-        }
-    } // end of Inner
+			private String powerof2(int num) {
+				return ((num & num - 1) == 0) ? "power of 2" : "not a power of 2";
+			}
+
+		}
+
+	} // end of Inner
+
 } // end of Solution
 
 /*
-class DoNotTerminate { //This class prevents exit(0)
-
-    public static class ExitTrappedException extends SecurityException {
-
-        private static final long serialVersionUID = 1L;
-    }
-
-    public static void forbidExit() {
-        final SecurityManager securityManager = new SecurityManager() {
-            @Override
-            public void checkPermission(Permission permission) {
-                if (permission.getName().contains("exitVM")) {
-                    throw new ExitTrappedException();
-                }
-            }
-        };
-        System.setSecurityManager(securityManager);
-    }
-}
-// */
+ * class DoNotTerminate { //This class prevents exit(0)
+ * 
+ * public static class ExitTrappedException extends SecurityException {
+ * 
+ * private static final long serialVersionUID = 1L; }
+ * 
+ * public static void forbidExit() { final SecurityManager securityManager = new
+ * SecurityManager() {
+ * 
+ * @Override public void checkPermission(Permission permission) { if
+ * (permission.getName().contains("exitVM")) { throw new ExitTrappedException(); } } };
+ * System.setSecurityManager(securityManager); } } //
+ */
 class ExitControl {
 
-    public static class ExitTrappedException extends SecurityException {
+	public static class ExitTrappedException extends SecurityException {
 
-        public ExitTrappedException(String message) {
-            super(message);
-        }
+		public ExitTrappedException(String message) {
+			super(message);
+		}
 
-        private static final long serialVersionUID = 1L;
-    }
+		private static final long serialVersionUID = 1L;
 
-    private static boolean exitAllowed = true;
+	}
 
-    public static void allowExit(boolean allow) {
-        exitAllowed = allow;
-    }
+	private static boolean exitAllowed = true;
 
-    public static void forbidExit(int status) throws ExitTrappedException {
-        if (!exitAllowed) {
-            throw new ExitTrappedException("System.exit blocked with ThrowTrapperException");
-        }
-        System.exit(status);
-    }
+	public static void allowExit(boolean allow) {
+		exitAllowed = allow;
+	}
+
+	public static void forbidExit(int status) throws ExitTrappedException {
+		if (!exitAllowed) {
+			throw new ExitTrappedException("System.exit blocked with ThrowTrapperException");
+		}
+		System.exit(status);
+	}
+
 }

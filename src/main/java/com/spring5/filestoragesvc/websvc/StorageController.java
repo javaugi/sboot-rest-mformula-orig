@@ -23,49 +23,44 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author bill
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @RestController
 public class StorageController extends AbstractStorageController {
 
-    private static final Logger log = LoggerFactory.getLogger(StorageController.class);
+	private static final Logger log = LoggerFactory.getLogger(StorageController.class);
 
-    @Autowired
-    private ApplicationContext context;
+	@Autowired
+	private ApplicationContext context;
 
-    @RequestMapping(value = "/cim-file-service")
-    public String defaultMethod() {
-        return super.defaultMethod();
-    }
+	@RequestMapping(value = "/cim-file-service")
+	public String defaultMethod() {
+		return super.defaultMethod();
+	}
 
-    @RequestMapping(value = "/cim-file-service/upload")
-    public ResponseEntity uploadFile(
-            @RequestParam("guid") String guid,
-            @RequestParam("uploadedFile") MultipartFile uploadedFileRef) {
-        String fileName = uploadedFileRef.getOriginalFilename();
-        return super.uploadFile(
-                guid,
-                uploadedFileRef,
-                context.getBean(FileService.class),
-                URLConnection.guessContentTypeFromName(fileName));
-    }
+	@RequestMapping(value = "/cim-file-service/upload")
+	public ResponseEntity uploadFile(@RequestParam("guid") String guid,
+			@RequestParam("uploadedFile") MultipartFile uploadedFileRef) {
+		String fileName = uploadedFileRef.getOriginalFilename();
+		return super.uploadFile(guid, uploadedFileRef, context.getBean(FileService.class),
+				URLConnection.guessContentTypeFromName(fileName));
+	}
 
-    @GetMapping(value = "/cim-file-service/download")
-    public ResponseEntity<Resource> downloadFile(
-            @RequestParam("guid") String guid, @RequestParam("fileName") String fileName) {
-        return super.downloadFile(guid, context.getBean(FileService.class));
-    }
+	@GetMapping(value = "/cim-file-service/download")
+	public ResponseEntity<Resource> downloadFile(@RequestParam("guid") String guid,
+			@RequestParam("fileName") String fileName) {
+		return super.downloadFile(guid, context.getBean(FileService.class));
+	}
 
-    @RequestMapping(value = "/cim-file-service/delete")
-    public ResponseEntity deleteFile(
-            @RequestParam("guid") String guid, @RequestParam("fileName") String fileName) {
-        return super.deleteFile(guid, context.getBean(FileService.class));
-    }
+	@RequestMapping(value = "/cim-file-service/delete")
+	public ResponseEntity deleteFile(@RequestParam("guid") String guid, @RequestParam("fileName") String fileName) {
+		return super.deleteFile(guid, context.getBean(FileService.class));
+	}
 
-    @GetMapping(value = "/cim-file-service/exists")
-    public ResponseEntity<Resource> fileExists(
-            @RequestParam("guid") String guid, @RequestParam("fileName") String fileName) {
-        return super.fileExists(guid, context.getBean(FileService.class));
-    }
+	@GetMapping(value = "/cim-file-service/exists")
+	public ResponseEntity<Resource> fileExists(@RequestParam("guid") String guid,
+			@RequestParam("fileName") String fileName) {
+		return super.fileExists(guid, context.getBean(FileService.class));
+	}
+
 }

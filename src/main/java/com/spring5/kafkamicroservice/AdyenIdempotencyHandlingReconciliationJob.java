@@ -20,41 +20,41 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdyenIdempotencyHandlingReconciliationJob {
 
-    private static final Logger log
-            = LoggerFactory.getLogger(AdyenIdempotencyHandlingReconciliationJob.class);
+	private static final Logger log = LoggerFactory.getLogger(AdyenIdempotencyHandlingReconciliationJob.class);
 
-    private final AdyenPaymentRepository paymentRepository;
-    private final AdyenClient adyenClient;
+	private final AdyenPaymentRepository paymentRepository;
 
-    @KafkaListener(topics = "payment.requests")
-    public void processPayment(
-            @Payload AdyenPaymentRequest request, @Header(KafkaHeaders.RECEIVED_KEY) String paymentId) {
+	private final AdyenClient adyenClient;
 
-        if (paymentRepository.existsByIdAndStatusNot(paymentId, AdyenPaymentStatus.PENDING)) {
-            log.info("Duplicate payment request {}", paymentId);
-            return;
-        }
+	@KafkaListener(topics = "payment.requests")
+	public void processPayment(@Payload AdyenPaymentRequest request,
+			@Header(KafkaHeaders.RECEIVED_KEY) String paymentId) {
 
-        // Process payment
-    }
+		if (paymentRepository.existsByIdAndStatusNot(paymentId, AdyenPaymentStatus.PENDING)) {
+			log.info("Duplicate payment request {}", paymentId);
+			return;
+		}
 
-    @Scheduled(cron = "0 0 3 * * ?") // Daily at 3 AM
-    @Transactional
-    public void reconcilePayments() {
-        List<AdyenPayment> pendingPayments = paymentRepository.findByStatus(AdyenPaymentStatus.PENDING);
+		// Process payment
+	}
 
-        pendingPayments.forEach(
-                payment -> {
-                    try {
-                        AdyenPaymentResponse response
-                        = adyenClient.getPaymentDetails(payment.getPspReference());
-                        updatePaymentStatus(payment, response);
-                    } catch (Exception e) {
-                        log.error("Failed to reconcile payment {}", payment.getId(), e);
-                    }
-                });
-    }
+	@Scheduled(cron = "0 0 3 * * ?") // Daily at 3 AM
+	@Transactional
+	public void reconcilePayments() {
+		List<AdyenPayment> pendingPayments = paymentRepository.findByStatus(AdyenPaymentStatus.PENDING);
 
-    private void updatePaymentStatus(AdyenPayment payment, AdyenPaymentResponse response) {
-    }
+		pendingPayments.forEach(payment -> {
+			try {
+				AdyenPaymentResponse response = adyenClient.getPaymentDetails(payment.getPspReference());
+				updatePaymentStatus(payment, response);
+			}
+			catch (Exception e) {
+				log.error("Failed to reconcile payment {}", payment.getId(), e);
+			}
+		});
+	}
+
+	private void updatePaymentStatus(AdyenPayment payment, AdyenPaymentResponse response) {
+	}
+
 }

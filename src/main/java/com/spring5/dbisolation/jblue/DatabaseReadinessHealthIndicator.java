@@ -11,18 +11,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseReadinessHealthIndicator implements HealthIndicator {
 
-    @Override
-    public Health health() {
-        try {
-            // Example check: simulate DB connection
-            boolean dbIsUp = true; // Replace with real DB check
-            if (dbIsUp) {
-                return Health.up().withDetail("database", "Available").build();
-            } else {
-                return Health.down().withDetail("database", "Unavailable").build();
-            }
-        } catch (Exception e) {
-            return Health.down(e).build();
-        }
-    }
+	@Override
+	public Health health() {
+		try {
+			// Example check: simulate DB connection
+			boolean dbIsUp = true; // Replace with real DB check
+			if (dbIsUp) {
+				return Health.up().withDetail("database", "Available").build();
+			}
+			else {
+				return Health.down().withDetail("database", "Unavailable").build();
+			}
+		}
+		catch (Exception e) {
+			return Health.down(e).build();
+		}
+	}
+
 }

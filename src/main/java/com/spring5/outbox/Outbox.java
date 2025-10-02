@@ -28,17 +28,21 @@ import lombok.ToString;
 @Cacheable
 public class Outbox {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String aggregateId;
-    private String aggregateType;
-    private String eventType;
+	private String aggregateId;
 
-    @Column(columnDefinition = "json")
-    private String payload;
+	private String aggregateType;
 
-    private LocalDateTime createdAt;
-    private Boolean processed;
+	private String eventType;
+
+	@Column(columnDefinition = "json")
+	private String payload;
+
+	private LocalDateTime createdAt;
+
+	private Boolean processed;
+
 }

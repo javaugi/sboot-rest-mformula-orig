@@ -11,7 +11,8 @@ import org.apache.kafka.common.serialization.Serdes;
  */
 public class ClickEventSerde extends Serdes.WrapperSerde<ClickEvent> {
 
-    public ClickEventSerde() {
-        super(new ClickEventSerializer(), new ClickEventDeserializer());
-    }
+	public ClickEventSerde() {
+		super(new ClickEventSerializer(), new ClickEventDeserializer());
+	}
+
 }

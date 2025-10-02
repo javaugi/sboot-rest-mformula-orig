@@ -25,4 +25,5 @@ CREATE TABLE customer (
 ALTER TABLE customer ADD COLUMN phone VARCHAR(20);
  */
 public class DbMigrationPostgreSQL {
+
 }

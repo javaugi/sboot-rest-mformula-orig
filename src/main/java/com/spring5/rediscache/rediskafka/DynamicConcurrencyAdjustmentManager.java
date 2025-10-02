@@ -17,15 +17,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class DynamicConcurrencyAdjustmentManager {
 
-    private final ConcurrentKafkaListenerContainerFactory<String, String> containerFactory;
+	private final ConcurrentKafkaListenerContainerFactory<String, String> containerFactory;
 
-    private final KafkaListenerEndpointRegistry registry;
+	private final KafkaListenerEndpointRegistry registry;
 
-    public void adjustConcurrency(String listenerId, int newConcurrency) {
-        MessageListenerContainer container = registry.getListenerContainer(listenerId);
-        if (container instanceof ConcurrentMessageListenerContainer) {
-            ((ConcurrentMessageListenerContainer<?, ?>) container).setConcurrency(newConcurrency);
-            log.info("Adjusted concurrency for listener {} to {}", listenerId, newConcurrency);
-        }
-    }
+	public void adjustConcurrency(String listenerId, int newConcurrency) {
+		MessageListenerContainer container = registry.getListenerContainer(listenerId);
+		if (container instanceof ConcurrentMessageListenerContainer) {
+			((ConcurrentMessageListenerContainer<?, ?>) container).setConcurrency(newConcurrency);
+			log.info("Adjusted concurrency for listener {} to {}", listenerId, newConcurrency);
+		}
+	}
+
 }

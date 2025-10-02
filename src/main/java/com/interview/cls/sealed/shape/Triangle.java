@@ -6,16 +6,18 @@ package com.interview.cls.sealed.shape;
 
 public non-sealed class Triangle extends Shape {
 
-    private final double base;
-    private final double height;
+	private final double base;
 
-    public Triangle(double base, double height) {
-        this.base = base;
-        this.height = height;
-    }
+	private final double height;
 
-    @Override
-    public double area() {
-        return 0.5 * base * height;
-    }
+	public Triangle(double base, double height) {
+		this.base = base;
+		this.height = height;
+	}
+
+	@Override
+	public double area() {
+		return 0.5 * base * height;
+	}
+
 }

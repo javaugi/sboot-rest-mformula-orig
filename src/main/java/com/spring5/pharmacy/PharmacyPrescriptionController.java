@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/prescriptions")
 public class PharmacyPrescriptionController {
 
-    @Autowired
-    private PrescriptionOrchestrator orchestrator;
+	@Autowired
+	private PrescriptionOrchestrator orchestrator;
 
-    @PostMapping
-    public ResponseEntity<PrescriptionResponse> createPrescription(
-            @RequestBody PrescriptionRequest request) {
-        try {
-            PrescriptionResponse response = orchestrator.processPrescription(request);
-            return ResponseEntity.ok(response);
-        } catch (PrescriptionException ex) {
-            return ResponseEntity.status(ex.getStatus())
-                    .body(new PrescriptionResponse("FAILED", ex.getMessage()));
-        }
-    }
+	@PostMapping
+	public ResponseEntity<PrescriptionResponse> createPrescription(@RequestBody PrescriptionRequest request) {
+		try {
+			PrescriptionResponse response = orchestrator.processPrescription(request);
+			return ResponseEntity.ok(response);
+		}
+		catch (PrescriptionException ex) {
+			return ResponseEntity.status(ex.getStatus()).body(new PrescriptionResponse("FAILED", ex.getMessage()));
+		}
+	}
+
 }

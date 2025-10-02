@@ -15,41 +15,37 @@ import java.util.stream.Collectors;
  */
 public class DiagnosisTask implements Callable<String> {
 
-    private final DiagnosisRequest request;
-    private final List<Rule> rules;
+	private final DiagnosisRequest request;
 
-    public DiagnosisTask(DiagnosisRequest request, List<Rule> rules) {
-        this.request = request;
-        this.rules = rules;
-    }
+	private final List<Rule> rules;
 
-    @Override
-    public String call() throws Exception {
-        int requestId = request.getRequestId();
-        Set<Fact> facts = request.getSymptoms();
-        List<String> conclusions = new ArrayList<>();
+	public DiagnosisTask(DiagnosisRequest request, List<Rule> rules) {
+		this.request = request;
+		this.rules = rules;
+	}
 
-        System.out.println(
-                Thread.currentThread().getName()
-                + ": Processing request "
-                + requestId
-                + " with symptoms: "
-                + facts);
+	@Override
+	public String call() throws Exception {
+		int requestId = request.getRequestId();
+		Set<Fact> facts = request.getSymptoms();
+		List<String> conclusions = new ArrayList<>();
 
-        for (Rule rule : rules) {
-            if (rule.evaluate(facts)) {
-                conclusions.add(rule.getConclusion());
-            }
-        }
+		System.out.println(
+				Thread.currentThread().getName() + ": Processing request " + requestId + " with symptoms: " + facts);
 
-        if (conclusions.isEmpty()) {
-            return "Request " + requestId + ": No diagnosis found.";
-        } else {
-            return "Request "
-                    + requestId
-                    + ": Possible diagnoses - "
-                    + conclusions.stream().collect(Collectors.joining(", "))
-                    + ".";
-        }
-    }
+		for (Rule rule : rules) {
+			if (rule.evaluate(facts)) {
+				conclusions.add(rule.getConclusion());
+			}
+		}
+
+		if (conclusions.isEmpty()) {
+			return "Request " + requestId + ": No diagnosis found.";
+		}
+		else {
+			return "Request " + requestId + ": Possible diagnoses - "
+					+ conclusions.stream().collect(Collectors.joining(", ")) + ".";
+		}
+	}
+
 }

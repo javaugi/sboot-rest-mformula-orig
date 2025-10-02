@@ -13,16 +13,17 @@ import redis.clients.jedis.JedisCluster;
 @Service
 public class WithPartitionRedisServerSideCluster {
 
-    public void setup() {
-        Set<HostAndPort> clusterNodes = new HashSet<>();
-        clusterNodes.add(new HostAndPort("redis1.example.com", 6379));
-        clusterNodes.add(new HostAndPort("redis2.example.com", 6379));
-        clusterNodes.add(new HostAndPort("redis3.example.com", 6379));
+	public void setup() {
+		Set<HostAndPort> clusterNodes = new HashSet<>();
+		clusterNodes.add(new HostAndPort("redis1.example.com", 6379));
+		clusterNodes.add(new HostAndPort("redis2.example.com", 6379));
+		clusterNodes.add(new HostAndPort("redis3.example.com", 6379));
 
-        JedisCluster jedisCluster = new JedisCluster(clusterNodes);
+		JedisCluster jedisCluster = new JedisCluster(clusterNodes);
 
-        // Automatically routes to correct shard
-        jedisCluster.set("order:123", "order_data");
-        String value = jedisCluster.get("order:123");
-    }
+		// Automatically routes to correct shard
+		jedisCluster.set("order:123", "order_data");
+		String value = jedisCluster.get("order:123");
+	}
+
 }

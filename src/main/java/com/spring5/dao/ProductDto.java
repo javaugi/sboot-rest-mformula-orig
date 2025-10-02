@@ -10,10 +10,16 @@ import lombok.Data;
 @Data
 public class ProductDto {
 
-    private long id;
-    private String name;
-    private BigDecimal price;
-    private int quantity;
-    private String description;
-    private boolean status;
+	private long id;
+
+	private String name;
+
+	private BigDecimal price;
+
+	private int quantity;
+
+	private String description;
+
+	private boolean status;
+
 }

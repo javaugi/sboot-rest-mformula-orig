@@ -18,38 +18,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class RedisHealthService {
 
-    @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+	@Autowired
+	private RedisConnectionFactory redisConnectionFactory;
 
-    public HealthCheckResponse checkRedisHealth() {
-        try {
-            RedisConnection connection = redisConnectionFactory.getConnection();
-            String pong = connection.ping();
-            connection.close();
+	public HealthCheckResponse checkRedisHealth() {
+		try {
+			RedisConnection connection = redisConnectionFactory.getConnection();
+			String pong = connection.ping();
+			connection.close();
 
-            return new HealthCheckResponse(
-                    "Redis", "UP", Map.of("response", pong, "timestamp", Instant.now()));
-        } catch (DataAccessException e) {
-            return new HealthCheckResponse("Redis", "DOWN", Map.of("error", e.getMessage()));
-        }
-    }
+			return new HealthCheckResponse("Redis", "UP", Map.of("response", pong, "timestamp", Instant.now()));
+		}
+		catch (DataAccessException e) {
+			return new HealthCheckResponse("Redis", "DOWN", Map.of("error", e.getMessage()));
+		}
+	}
 
-    @Scheduled(fixedRate = 60000)
-    public void monitorRedisPerformance() {
-        try (RedisConnection connection = redisConnectionFactory.getConnection()) {
-            RedisServerCommands serverCommands = connection.serverCommands();
+	@Scheduled(fixedRate = 60000)
+	public void monitorRedisPerformance() {
+		try (RedisConnection connection = redisConnectionFactory.getConnection()) {
+			RedisServerCommands serverCommands = connection.serverCommands();
 
-            Map<String, Object> metrics = new HashMap<>();
-            metrics.put("used_memory", serverCommands.info("memory").getProperty("used_memory"));
-            metrics.put(
-                    "connected_clients", serverCommands.info("clients").getProperty("connected_clients"));
+			Map<String, Object> metrics = new HashMap<>();
+			metrics.put("used_memory", serverCommands.info("memory").getProperty("used_memory"));
+			metrics.put("connected_clients", serverCommands.info("clients").getProperty("connected_clients"));
 
-            // Log or send to monitoring system
-            logRedisMetrics(metrics);
-        }
-    }
+			// Log or send to monitoring system
+			logRedisMetrics(metrics);
+		}
+	}
 
-    private void logRedisMetrics(Map<String, Object> metrics) {
-        System.out.println("logRedisMetrics: " + metrics);
-    }
+	private void logRedisMetrics(Map<String, Object> metrics) {
+		System.out.println("logRedisMetrics: " + metrics);
+	}
+
 }

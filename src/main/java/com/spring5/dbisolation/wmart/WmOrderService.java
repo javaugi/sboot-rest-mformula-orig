@@ -12,22 +12,25 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class WmOrderService {
 
-    private final WmOrderRepository orderRepo;
-    private final IdempotencyRepository idemRepo; // DB table with unique constraint on key
+	private final WmOrderRepository orderRepo;
 
-    @Transactional
-    public OrderDto createOrder(String key, CreateOrderRequest r) {
-        Optional<Idempotency> existing = idemRepo.findByKey(key);
-        if (existing.isPresent()) {
-            // return stored response
-            return existing.get().toDto();
-        }
-        Order order = new Order(r.getOrderId(), r.getStoreId(), r.getAmount(), OrderStatus.CREATED);
-        orderRepo.save(order);
+	private final IdempotencyRepository idemRepo; // DB table with unique constraint on
+													// key
 
-        Idempotency idem = new Idempotency(key, order.getId());
-        idemRepo.save(idem);
+	@Transactional
+	public OrderDto createOrder(String key, CreateOrderRequest r) {
+		Optional<Idempotency> existing = idemRepo.findByKey(key);
+		if (existing.isPresent()) {
+			// return stored response
+			return existing.get().toDto();
+		}
+		Order order = new Order(r.getOrderId(), r.getStoreId(), r.getAmount(), OrderStatus.CREATED);
+		orderRepo.save(order);
 
-        return OrderDto.from(order);
-    }
+		Idempotency idem = new Idempotency(key, order.getId());
+		idemRepo.save(idem);
+
+		return OrderDto.from(order);
+	}
+
 }

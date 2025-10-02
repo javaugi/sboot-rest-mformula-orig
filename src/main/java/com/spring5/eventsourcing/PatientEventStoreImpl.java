@@ -9,19 +9,20 @@ import java.util.UUID;
 
 public class PatientEventStoreImpl implements PatientEventStore {
 
-    private final EventStore eventStore;
+	private final EventStore eventStore;
 
-    public PatientEventStoreImpl(EventStore eventStore) {
-        this.eventStore = eventStore;
-    }
+	public PatientEventStoreImpl(EventStore eventStore) {
+		this.eventStore = eventStore;
+	}
 
-    @Override
-    public void saveEvents(UUID patientId, List<Event> events) {
-        eventStore.saveEvents(patientId, events);
-    }
+	@Override
+	public void saveEvents(UUID patientId, List<Event> events) {
+		eventStore.saveEvents(patientId, events);
+	}
 
-    @Override
-    public List<Event> getEventsForPatient(UUID patientId) {
-        return eventStore.getEventsForPatient(patientId);
-    }
+	@Override
+	public List<Event> getEventsForPatient(UUID patientId) {
+		return eventStore.getEventsForPatient(patientId);
+	}
+
 }

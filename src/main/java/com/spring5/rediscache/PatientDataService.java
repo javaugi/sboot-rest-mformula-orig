@@ -25,58 +25,52 @@ import org.springframework.stereotype.Service;
 @Service
 public class PatientDataService {
 
-    private static final String PATIENT_CACHE = "patientCache";
+	private static final String PATIENT_CACHE = "patientCache";
 
-    @Autowired
-    private PatientRepository patientRepository;
+	@Autowired
+	private PatientRepository patientRepository;
 
-    @Autowired
-    private @Qualifier(RedisConfig.REDIS_TPL)
-    RedisTemplate<String, Object> redisTemplate;
+	@Autowired
+	private @Qualifier(RedisConfig.REDIS_TPL) RedisTemplate<String, Object> redisTemplate;
 
-    @Cacheable(value = PATIENT_CACHE, key = "#patientId")
-    public Patient getPatientById(Long patientId) throws Exception {
-        return patientRepository
-                .findById(patientId)
-                .orElseThrow(() -> new PatientNotFoundException("" + patientId));
-    }
+	@Cacheable(value = PATIENT_CACHE, key = "#patientId")
+	public Patient getPatientById(Long patientId) throws Exception {
+		return patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("" + patientId));
+	}
 
-    @CachePut(value = PATIENT_CACHE, key = "#patient.id")
-    public Patient updatePatient(Patient patient) {
-        return patientRepository.save(patient);
-    }
+	@CachePut(value = PATIENT_CACHE, key = "#patient.id")
+	public Patient updatePatient(Patient patient) {
+		return patientRepository.save(patient);
+	}
 
-    @CacheEvict(value = PATIENT_CACHE, key = "#patientId")
-    public void deletePatient(String patientId) {
-        patientRepository.deleteById(Long.valueOf(patientId));
-    }
+	@CacheEvict(value = PATIENT_CACHE, key = "#patientId")
+	public void deletePatient(String patientId) {
+		patientRepository.deleteById(Long.valueOf(patientId));
+	}
 
-    // Bulk operations with pipeline
-    public Map<Long, Patient> getMultiplePatients(List<String> patientIds) {
-        /*
-    return ((List<Patient>)redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
-        StringRedisConnection stringRedisConn = (StringRedisConnection) connection;
-        patientIds.forEach(id -> stringRedisConn.get("patientCache::" + id));
-        return null;
-    }));
-    // */
+	// Bulk operations with pipeline
+	public Map<Long, Patient> getMultiplePatients(List<String> patientIds) {
+		/*
+		 * return ((List<Patient>)redisTemplate.executePipelined((RedisCallback<Object>)
+		 * connection -> { StringRedisConnection stringRedisConn = (StringRedisConnection)
+		 * connection; patientIds.forEach(id -> stringRedisConn.get("patientCache::" +
+		 * id)); return null; })); //
+		 */
 
-        List<Object> patientsObj
-                = redisTemplate.executePipelined(
-                        (RedisCallback<Object>) connection -> {
-                            StringRedisConnection stringRedisConn = (StringRedisConnection) connection;
-                            patientIds.forEach(id -> stringRedisConn.get("patientCache::" + id));
-                            return null;
-                        });
+		List<Object> patientsObj = redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+			StringRedisConnection stringRedisConn = (StringRedisConnection) connection;
+			patientIds.forEach(id -> stringRedisConn.get("patientCache::" + id));
+			return null;
+		});
 
-        List<Patient> patientList
-                = patientsObj.stream()
-                        .filter(Patient.class::isInstance)
-                        .map(Patient.class::cast)
-                        .collect(Collectors.toList());
+		List<Patient> patientList = patientsObj.stream()
+			.filter(Patient.class::isInstance)
+			.map(Patient.class::cast)
+			.collect(Collectors.toList());
 
-        return patientList.stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(Patient::getId, Function.identity()));
-    }
+		return patientList.stream()
+			.filter(Objects::nonNull)
+			.collect(Collectors.toMap(Patient::getId, Function.identity()));
+	}
+
 }

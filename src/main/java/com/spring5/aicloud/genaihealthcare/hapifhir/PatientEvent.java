@@ -18,13 +18,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "patientEvents")
 public class PatientEvent implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    String patientId;
-    String eventType;
-    String payload;
+	String patientId;
 
-    java.time.Instant eventTime;
+	String eventType;
+
+	String payload;
+
+	java.time.Instant eventTime;
+
 }

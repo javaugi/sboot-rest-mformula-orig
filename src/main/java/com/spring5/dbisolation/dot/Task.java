@@ -14,12 +14,16 @@ import lombok.Data;
 // @Entity
 public class Task {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String title;
-    private String description;
-    private boolean completed;
-    private LocalDate dueDate;
+	private String title;
+
+	private String description;
+
+	private boolean completed;
+
+	private LocalDate dueDate;
+
 }

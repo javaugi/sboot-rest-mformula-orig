@@ -9,31 +9,33 @@ package com.spring5.audit;
  */
 public class OrderFailedEvent {
 
-    private String orderId;
-    private String message;
+	private String orderId;
 
-    public OrderFailedEvent(String orderId) {
-        this.orderId = orderId;
-    }
+	private String message;
 
-    public OrderFailedEvent(String orderId, String message) {
-        this.orderId = orderId;
-        this.message = message;
-    }
+	public OrderFailedEvent(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public String getOrderId() {
-        return orderId;
-    }
+	public OrderFailedEvent(String orderId, String message) {
+		this.orderId = orderId;
+		this.message = message;
+	}
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 }

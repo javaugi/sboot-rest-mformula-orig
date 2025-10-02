@@ -14,14 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/medications")
 public class MedicationController {
 
-    private final MedicationService service;
+	private final MedicationService service;
 
-    public MedicationController(MedicationService service) {
-        this.service = service;
-    }
+	public MedicationController(MedicationService service) {
+		this.service = service;
+	}
 
-    @GetMapping("/{id}")
-    public CompletableFuture<Medication> getMedication(@PathVariable long id) {
-        return CompletableFuture.supplyAsync(() -> service.getMedication(id));
-    }
+	@GetMapping("/{id}")
+	public CompletableFuture<Medication> getMedication(@PathVariable long id) {
+		return CompletableFuture.supplyAsync(() -> service.getMedication(id));
+	}
+
 }

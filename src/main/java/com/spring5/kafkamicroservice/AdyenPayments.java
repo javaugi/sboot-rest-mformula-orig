@@ -9,22 +9,28 @@ import lombok.Data;
 @Data
 public class AdyenPayments {
 
-    private AdyenPaymentRequest request;
-    private AdyenClient adyenClient;
-    private String apiKey;
-    private String merchantAccount;
-    private String environment;
-    private String endpoint;
+	private AdyenPaymentRequest request;
 
-    public AdyenPayments(AdyenPaymentRequest request) {
-        this.request = request;
-    }
+	private AdyenClient adyenClient;
 
-    public AdyenPaymentResponse payments(AdyenPaymentRequests requests) {
-        return null;
-    }
+	private String apiKey;
 
-    public AdyenPayments(AdyenClient adyenClient) {
-        this.adyenClient = adyenClient;
-    }
+	private String merchantAccount;
+
+	private String environment;
+
+	private String endpoint;
+
+	public AdyenPayments(AdyenPaymentRequest request) {
+		this.request = request;
+	}
+
+	public AdyenPaymentResponse payments(AdyenPaymentRequests requests) {
+		return null;
+	}
+
+	public AdyenPayments(AdyenClient adyenClient) {
+		this.adyenClient = adyenClient;
+	}
+
 }

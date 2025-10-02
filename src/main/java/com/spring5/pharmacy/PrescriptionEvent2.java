@@ -19,33 +19,36 @@ import lombok.With;
 @Entity
 public class PrescriptionEvent2 {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String eventId;
-    private String correlationId;
-    private String type; // "PRESCRIPTION_CREATED", "PATIENT_VALIDATED", etc.
+	private String eventId;
 
-    @OneToOne
-    private PrescriptionData payload;
+	private String correlationId;
 
-    private String status; // "SUCCESS", "FAILED"
-    private String errorMessage;
+	private String type; // "PRESCRIPTION_CREATED", "PATIENT_VALIDATED", etc.
 
-    // Example usage with Lombok
-    public static void main(String[] args) {
-        PrescriptionEvent2 original
-                = PrescriptionEvent2.builder()
-                        .eventId("event-123")
-                        .correlationId("corr-456")
-                        .type("PRESCRIPTION_CREATED")
-                        .status("PENDING")
-                        .build();
+	@OneToOne
+	private PrescriptionData payload;
 
-        PrescriptionEvent2 updated = original.withType("PATIENT_VALIDATED").withStatus("SUCCESS");
+	private String status; // "SUCCESS", "FAILED"
 
-        System.out.println("1 Original: " + original.getType()); // PRESCRIPTION_CREATED
-        System.out.println("2 Updated: " + updated.getType()); // PATIENT_VALIDATED
-    }
+	private String errorMessage;
+
+	// Example usage with Lombok
+	public static void main(String[] args) {
+		PrescriptionEvent2 original = PrescriptionEvent2.builder()
+			.eventId("event-123")
+			.correlationId("corr-456")
+			.type("PRESCRIPTION_CREATED")
+			.status("PENDING")
+			.build();
+
+		PrescriptionEvent2 updated = original.withType("PATIENT_VALIDATED").withStatus("SUCCESS");
+
+		System.out.println("1 Original: " + original.getType()); // PRESCRIPTION_CREATED
+		System.out.println("2 Updated: " + updated.getType()); // PATIENT_VALIDATED
+	}
+
 }

@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/private")
 public class RedirectController {
 
-    @GetMapping
-    public String redirectToRoot() {
-        return "redirect:/";
-    }
+	@GetMapping
+	public String redirectToRoot() {
+		return "redirect:/";
+	}
+
 }

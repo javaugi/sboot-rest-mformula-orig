@@ -29,62 +29,58 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/flights")
 public class FlightEventController {
 
-    private final CosmosContainer container;
-    private final FlightEventService flightService;
+	private final CosmosContainer container;
 
-    @Bean
-    public CosmosClient cosmosClient(
-            @Value("${azure.cosmos.uri}") String uri,
-            @Value("${azure.cosmos.key}") String key,
-            @Value("${azure.cosmos.preferredRegion:}") String preferredRegion) {
+	private final FlightEventService flightService;
 
-        CosmosClientBuilder builder
-                = new CosmosClientBuilder()
-                        .endpoint(uri)
-                        .key(key)
-                        .consistencyLevel(ConsistencyLevel.SESSION) // balanced
-                        .contentResponseOnWriteEnabled(true); // get RU charge on writes
+	@Bean
+	public CosmosClient cosmosClient(@Value("${azure.cosmos.uri}") String uri, @Value("${azure.cosmos.key}") String key,
+			@Value("${azure.cosmos.preferredRegion:}") String preferredRegion) {
 
-        // Direct mode recommended for performance
-        builder.directMode(); // default config; optionally configure connectionPool size, idle timeout
+		CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(uri)
+			.key(key)
+			.consistencyLevel(ConsistencyLevel.SESSION) // balanced
+			.contentResponseOnWriteEnabled(true); // get RU charge on writes
 
-        if (!preferredRegion.isBlank()) {
-            builder.preferredRegions(Collections.singletonList(preferredRegion));
-        }
-        return builder.buildClient();
-    }
+		// Direct mode recommended for performance
+		builder.directMode(); // default config; optionally configure connectionPool size,
+								// idle timeout
 
-    @Bean
-    public CosmosContainer cosmosContainer(
-            CosmosClient client,
-            @Value("${azure.cosmos.database}") String db,
-            @Value("${azure.cosmos.container}") String container) {
-        CosmosDatabase database = client.getDatabase(db);
-        return database.getContainer(container);
-    }
+		if (!preferredRegion.isBlank()) {
+			builder.preferredRegions(Collections.singletonList(preferredRegion));
+		}
+		return builder.buildClient();
+	}
 
-    // BAD: Blocks the thread, killing scalability
-    public FlightEvent getFlightEventBad(String id, String partitionKey) {
-        return container.readItem(id, new PartitionKey(partitionKey), FlightEvent.class).getItem();
-        // .block(); // BLOCKING CALL!
-    }
+	@Bean
+	public CosmosContainer cosmosContainer(CosmosClient client, @Value("${azure.cosmos.database}") String db,
+			@Value("${azure.cosmos.container}") String container) {
+		CosmosDatabase database = client.getDatabase(db);
+		return database.getContainer(container);
+	}
 
-    // GOOD: Returns the reactive type for non-blocking handling
-    public Mono<FlightEvent> getFlightEvent(String id, String partitionKey) {
-        return Mono.just(
-                container.readItem(id, new PartitionKey(partitionKey), FlightEvent.class).getItem());
-        // .map(itemResponse -> itemResponse.getItem());
-    }
+	// BAD: Blocks the thread, killing scalability
+	public FlightEvent getFlightEventBad(String id, String partitionKey) {
+		return container.readItem(id, new PartitionKey(partitionKey), FlightEvent.class).getItem();
+		// .block(); // BLOCKING CALL!
+	}
 
-    // This Mono can be seamlessly integrated into a Spring WebFlux endpoint
-    @GetMapping("/{id}")
-    public Mono<FlightEvent> getFlight(@PathVariable String id, @RequestParam String flightNumber) {
-        return flightService.getFlightEvent(id, flightNumber);
-    }
+	// GOOD: Returns the reactive type for non-blocking handling
+	public Mono<FlightEvent> getFlightEvent(String id, String partitionKey) {
+		return Mono.just(container.readItem(id, new PartitionKey(partitionKey), FlightEvent.class).getItem());
+		// .map(itemResponse -> itemResponse.getItem());
+	}
 
-    @PostMapping("/events")
-    public ResponseEntity<String> publishEvent(@RequestBody FlightEvent event) {
-        flightService.processEvent(event);
-        return ResponseEntity.ok("Event accepted for processing");
-    }
+	// This Mono can be seamlessly integrated into a Spring WebFlux endpoint
+	@GetMapping("/{id}")
+	public Mono<FlightEvent> getFlight(@PathVariable String id, @RequestParam String flightNumber) {
+		return flightService.getFlightEvent(id, flightNumber);
+	}
+
+	@PostMapping("/events")
+	public ResponseEntity<String> publishEvent(@RequestBody FlightEvent event) {
+		flightService.processEvent(event);
+		return ResponseEntity.ok("Event accepted for processing");
+	}
+
 }

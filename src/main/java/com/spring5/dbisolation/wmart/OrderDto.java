@@ -16,17 +16,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderDto {
 
-    Long id;
-    Long orderId;
+	Long id;
 
-    String storeId;
-    BigDecimal amount;
-    OrderStatus orderStatus;
+	Long orderId;
 
-    public OrderDto(String orderId, String storeId, String status) {
-    }
+	String storeId;
 
-    public static OrderDto from(Order order) {
-        return OrderDto.builder().amount(order.amount).build();
-    }
+	BigDecimal amount;
+
+	OrderStatus orderStatus;
+
+	public OrderDto(String orderId, String storeId, String status) {
+	}
+
+	public static OrderDto from(Order order) {
+		return OrderDto.builder().amount(order.amount).build();
+	}
+
 }

@@ -36,60 +36,52 @@ Each update would have states like QUEUED, DOWNLOADING, VERIFYING, INSTALLING, S
 @RequestMapping("/api/campaigns")
 public class UpdateCampaignController {
 
-    @Autowired
-    private CampaignRepository campaignRepository;
+	@Autowired
+	private CampaignRepository campaignRepository;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Campaign> getCampaign(@PathVariable Long id) {
-        Campaign campaign
-                = campaignRepository
-                        .findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Campaign not found"));
-        campaign
-                = campaignRepository
-                        .findById(id)
-                        .orElseThrow(
-                                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Campaign not found"));
-        // Entity Tags - an opaque string that represents the state of a resource at a specific point in
-        // time
-        String etag = calculateETag(campaign);
+	@GetMapping("/{id}")
+	public ResponseEntity<Campaign> getCampaign(@PathVariable Long id) {
+		Campaign campaign = campaignRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("Campaign not found"));
+		campaign = campaignRepository.findById(id)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Campaign not found"));
+		// Entity Tags - an opaque string that represents the state of a resource at a
+		// specific point in
+		// time
+		String etag = calculateETag(campaign);
 
-        return ResponseEntity.ok().eTag(etag).body(campaign);
-    }
+		return ResponseEntity.ok().eTag(etag).body(campaign);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateCampaign(
-            @PathVariable Long id,
-            @RequestBody Campaign updatedCampaign,
-            @RequestHeader("If-Match") String ifMatch) {
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateCampaign(@PathVariable Long id, @RequestBody Campaign updatedCampaign,
+			@RequestHeader("If-Match") String ifMatch) {
 
-        Campaign existingCampaign
-                = campaignRepository
-                        .findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Campaign not found"));
+		Campaign existingCampaign = campaignRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("Campaign not found"));
 
-        String currentETag = calculateETag(existingCampaign);
+		String currentETag = calculateETag(existingCampaign);
 
-        if (!currentETag.equals(ifMatch)) {
-            return ResponseEntity.status(412) // Precondition Failed
-                    .body("{\"error\": \"ETag mismatch. Resource was modified by another request.\"}");
-        }
+		if (!currentETag.equals(ifMatch)) {
+			return ResponseEntity.status(412) // Precondition Failed
+				.body("{\"error\": \"ETag mismatch. Resource was modified by another request.\"}");
+		}
 
-        // Update the campaign
-        existingCampaign.setName(updatedCampaign.getName());
-        existingCampaign.setTargetVersion(updatedCampaign.getTargetVersion());
-        // ... other fields
+		// Update the campaign
+		existingCampaign.setName(updatedCampaign.getName());
+		existingCampaign.setTargetVersion(updatedCampaign.getTargetVersion());
+		// ... other fields
 
-        Campaign savedCampaign = campaignRepository.save(existingCampaign);
-        String newETag = calculateETag(savedCampaign);
+		Campaign savedCampaign = campaignRepository.save(existingCampaign);
+		String newETag = calculateETag(savedCampaign);
 
-        return ResponseEntity.ok().eTag(newETag).body(savedCampaign);
-    }
+		return ResponseEntity.ok().eTag(newETag).body(savedCampaign);
+	}
 
-    private String calculateETag(Campaign campaign) {
-        // Create a hash of the important fields that determine consistency
-        String input
-                = campaign.getId() + ":" + campaign.getVersion() + ":" + campaign.getLastModified();
-        return "\"" + DigestUtils.md5DigestAsHex(input.getBytes()) + "\"";
-    }
+	private String calculateETag(Campaign campaign) {
+		// Create a hash of the important fields that determine consistency
+		String input = campaign.getId() + ":" + campaign.getVersion() + ":" + campaign.getLastModified();
+		return "\"" + DigestUtils.md5DigestAsHex(input.getBytes()) + "\"";
+	}
+
 }

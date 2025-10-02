@@ -16,24 +16,26 @@ import java.util.Map;
 @org.springframework.stereotype.Service
 public class QuestionService {
 
-    private final Map<Long, Question> questions = new HashMap<>();
-    private long nextId = 1;
+	private final Map<Long, Question> questions = new HashMap<>();
 
-    public Question save(Question question) {
-        Question newQuestion = new Question(nextId++, question.getText());
-        questions.put(newQuestion.getId(), newQuestion);
-        return newQuestion;
-    }
+	private long nextId = 1;
 
-    public static Question createQuestion(String text) {
-        return Question.builder().text(text).build();
-    }
+	public Question save(Question question) {
+		Question newQuestion = new Question(nextId++, question.getText());
+		questions.put(newQuestion.getId(), newQuestion);
+		return newQuestion;
+	}
 
-    public Question findById(Long id) {
-        return questions.get(id);
-    }
+	public static Question createQuestion(String text) {
+		return Question.builder().text(text).build();
+	}
 
-    public List<Question> findAll() {
-        return new ArrayList<>(questions.values());
-    }
+	public Question findById(Long id) {
+		return questions.get(id);
+	}
+
+	public List<Question> findAll() {
+		return new ArrayList<>(questions.values());
+	}
+
 }

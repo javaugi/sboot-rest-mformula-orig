@@ -19,12 +19,15 @@ import lombok.ToString;
 @AllArgsConstructor
 public class InsuranceResponse {
 
-    private String Status;
-    private String nextStep;
-    private String planId;
+	private String Status;
 
-    public InsuranceResponse(String status, String nextStep) {
-        this.Status = status;
-        this.nextStep = nextStep;
-    }
+	private String nextStep;
+
+	private String planId;
+
+	public InsuranceResponse(String status, String nextStep) {
+		this.Status = status;
+		this.nextStep = nextStep;
+	}
+
 }

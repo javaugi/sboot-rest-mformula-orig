@@ -21,35 +21,35 @@ import org.springframework.validation.Validator;
 @SpringBootTest
 public class PatientValidationTest {
 
-    // @Autowired
-    // private MockMvc mockMvc;
-    // @Autowired
-    // private ValidPatientValidator validator;
-    @Mock
-    private Validator validator;
+	// @Autowired
+	// private MockMvc mockMvc;
+	// @Autowired
+	// private ValidPatientValidator validator;
+	@Mock
+	private Validator validator;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	public void setup() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    // @Test
-    public void whenFirstNameIsBlank_thenValidationFails() {
-        Patient patient = new Patient();
-        patient.setUserEmail("");
-        patient.setPhoneNumber("");
+	// @Test
+	public void whenFirstNameIsBlank_thenValidationFails() {
+		Patient patient = new Patient();
+		patient.setUserEmail("");
+		patient.setPhoneNumber("");
 
-        Errors errors = this.validator.validateObject(patient);
-        assertFalse(errors.hasErrors());
-        assertTrue(errors != null && errors.getFieldError() != null);
-        assertEquals(
-                "Must provide either email or phone number or both",
-                errors.getFieldError().getDefaultMessage());
+		Errors errors = this.validator.validateObject(patient);
+		assertFalse(errors.hasErrors());
+		assertTrue(errors != null && errors.getFieldError() != null);
+		assertEquals("Must provide either email or phone number or both", errors.getFieldError().getDefaultMessage());
 
-        /* original code
-    Set<ConstraintViolation<Patient>> violations = validator.validate(patient);
-    assertFalse(violations.isEmpty());
-    assertEquals("First name is required", violations.iterator().next().getMessage());
-    // */
-    }
+		/*
+		 * original code Set<ConstraintViolation<Patient>> violations =
+		 * validator.validate(patient); assertFalse(violations.isEmpty());
+		 * assertEquals("First name is required",
+		 * violations.iterator().next().getMessage()); //
+		 */
+	}
+
 }

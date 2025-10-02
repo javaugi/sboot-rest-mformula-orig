@@ -18,33 +18,35 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class RedisInventoryService {
 
-    private final KafkaTemplate<String, InventoryEvent> kafkaTemplate;
-    private final InventoryRepository repository;
+	private final KafkaTemplate<String, InventoryEvent> kafkaTemplate;
 
-    @Transactional
-    public ReservationResult reserveVehicle(String vin, String dealerId, String customerId) {
-        // Optimistic lock check
-        long currentVersion = repository.getVersion(vin);
+	private final InventoryRepository repository;
 
-        if (!repository.isAvailable(vin, dealerId)) {
-            return ReservationResult.failure("Vehicle not available");
-        }
+	@Transactional
+	public ReservationResult reserveVehicle(String vin, String dealerId, String customerId) {
+		// Optimistic lock check
+		long currentVersion = repository.getVersion(vin);
 
-        var event
-                = InventoryEvent.builder()
-                        .eventId(UUID.toString())
-                        .vin(vin)
-                        .type(RESERVATION)
-                        .dealerId(dealerId)
-                        .details(Map.of("customerId", customerId))
-                        .version(currentVersion + 1)
-                        .build();
+		if (!repository.isAvailable(vin, dealerId)) {
+			return ReservationResult.failure("Vehicle not available");
+		}
 
-        try {
-            kafkaTemplate.send("inventory-events", vin, event);
-            return ReservationResult.success(event.getEventId());
-        } catch (Exception e) {
-            throw new InventoryException("Reservation failed", e);
-        }
-    }
+		var event = InventoryEvent.builder()
+			.eventId(UUID.toString())
+			.vin(vin)
+			.type(RESERVATION)
+			.dealerId(dealerId)
+			.details(Map.of("customerId", customerId))
+			.version(currentVersion + 1)
+			.build();
+
+		try {
+			kafkaTemplate.send("inventory-events", vin, event);
+			return ReservationResult.success(event.getEventId());
+		}
+		catch (Exception e) {
+			throw new InventoryException("Reservation failed", e);
+		}
+	}
+
 }

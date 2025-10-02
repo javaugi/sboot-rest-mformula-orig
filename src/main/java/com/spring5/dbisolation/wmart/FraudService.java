@@ -9,7 +9,8 @@ package com.spring5.dbisolation.wmart;
  */
 public class FraudService {
 
-    public int getScore(String userId) {
-        return 1;
-    }
+	public int getScore(String userId) {
+		return 1;
+	}
+
 }

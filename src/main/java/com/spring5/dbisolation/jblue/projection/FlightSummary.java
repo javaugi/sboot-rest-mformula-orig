@@ -9,11 +9,12 @@ package com.spring5.dbisolation.jblue.projection;
  */
 public interface FlightSummary {
 
-    String getId();
+	String getId();
 
-    String getFlightNumber();
+	String getFlightNumber();
 
-    String getAirlineName();
+	String getAirlineName();
 
-    String getDepartureCity();
+	String getDepartureCity();
+
 }

@@ -8,39 +8,38 @@
 package com.patterns.misc.compositeentity;
 
 /**
- * Composite Entity pattern is used in EJB persistence mechanism. A Composite
- * entity is an EJB entity bean which represents a graph of objects. When a
- * composite entity is updated, internally dependent objects beans get updated
- * automatically as being managed by EJB entity bean. Following are the
- * participants in Composite Entity Bean.
+ * Composite Entity pattern is used in EJB persistence mechanism. A Composite entity is an
+ * EJB entity bean which represents a graph of objects. When a composite entity is
+ * updated, internally dependent objects beans get updated automatically as being managed
+ * by EJB entity bean. Following are the participants in Composite Entity Bean.
  *
  * <p>
- * Composite Entity - It is primary entity bean. It can be coarse grained or can
- * contain a coarse grained object to be used for persistence purpose.
+ * Composite Entity - It is primary entity bean. It can be coarse grained or can contain a
+ * coarse grained object to be used for persistence purpose.
  *
  * <p>
- * Coarse-Grained Object - This object contains dependent objects. It has its
- * own life cycle and also manages life cycle of dependent objects.
+ * Coarse-Grained Object - This object contains dependent objects. It has its own life
+ * cycle and also manages life cycle of dependent objects.
  *
  * <p>
- * Dependent Object - Dependent object is an object which depends on coarse
- * grained object for its persistence lifecycle.
+ * Dependent Object - Dependent object is an object which depends on coarse grained object
+ * for its persistence lifecycle.
  *
  * <p>
  * Strategies - Strategies represents how to implement a Composite Entity.
  *
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class CompositeEntityPattern {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        Client client = new Client();
-        client.setData("Test", "Data");
-        client.printData();
-        client.setData("Second Test", "Data1");
-        client.printData();
-    }
+		Client client = new Client();
+		client.setData("Test", "Data");
+		client.printData();
+		client.setData("Second Test", "Data1");
+		client.printData();
+	}
+
 }

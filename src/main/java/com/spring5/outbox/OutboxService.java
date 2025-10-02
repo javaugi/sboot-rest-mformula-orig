@@ -11,28 +11,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OutboxService {
 
-    private final OutboxRepository outboxRepository;
-    private final KafkaProducerService kafkaProducerService;
+	private final OutboxRepository outboxRepository;
 
-    public OutboxService(
-            OutboxRepository outboxRepository, KafkaProducerService kafkaProducerService) {
-        this.outboxRepository = outboxRepository;
-        this.kafkaProducerService = kafkaProducerService;
-    }
+	private final KafkaProducerService kafkaProducerService;
 
-    @Transactional
-    public void createOutboxEvent(
-            String aggregateType, String aggregateId, String eventType, String payload) {
-        Outbox outbox = new Outbox();
-        outbox.setAggregateType(aggregateType);
-        outbox.setAggregateId(aggregateId);
-        outbox.setEventType(eventType);
-        outbox.setPayload(payload);
-        outbox.setCreatedAt(LocalDateTime.now());
+	public OutboxService(OutboxRepository outboxRepository, KafkaProducerService kafkaProducerService) {
+		this.outboxRepository = outboxRepository;
+		this.kafkaProducerService = kafkaProducerService;
+	}
 
-        outboxRepository.save(outbox);
+	@Transactional
+	public void createOutboxEvent(String aggregateType, String aggregateId, String eventType, String payload) {
+		Outbox outbox = new Outbox();
+		outbox.setAggregateType(aggregateType);
+		outbox.setAggregateId(aggregateId);
+		outbox.setEventType(eventType);
+		outbox.setPayload(payload);
+		outbox.setCreatedAt(LocalDateTime.now());
 
-        // Send to Kafka
-        kafkaProducerService.sendToOutboxTopic(aggregateId, payload);
-    }
+		outboxRepository.save(outbox);
+
+		// Send to Kafka
+		kafkaProducerService.sendToOutboxTopic(aggregateId, payload);
+	}
+
 }

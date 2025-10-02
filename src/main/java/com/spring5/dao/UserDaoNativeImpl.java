@@ -20,48 +20,51 @@ import org.springframework.data.domain.Pageable;
  */
 public class UserDaoNativeImpl extends UserDaoImpl {
 
-    @Autowired
-    private EntityManager entityManager;
-    @Autowired
-    private SessionFactory sessionFactory;
+	@Autowired
+	private EntityManager entityManager;
 
-    @Override
-    public Page<User> findAll(Pageable pageable) {
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        int max = pageable.toLimit().max();
+	@Autowired
+	private SessionFactory sessionFactory;
 
-        List<User> users = findAllList(startItem, max);
-        System.out.println("user id list=" + findAllIdList(startItem, max));
-        return convertListToPage(users, pageable, startItem);
-    }
+	@Override
+	public Page<User> findAll(Pageable pageable) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		int startItem = currentPage * pageSize;
+		int max = pageable.toLimit().max();
 
-    private List<String> findAllIdList(int offset, int limit) {
-        @SuppressWarnings("unchecked")
-        Query query = entityManager.createNativeQuery("select u.id from User u");
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
-    }
+		List<User> users = findAllList(startItem, max);
+		System.out.println("user id list=" + findAllIdList(startItem, max));
+		return convertListToPage(users, pageable, startItem);
+	}
 
-    private List<User> findAllList(int offset, int limit) {
-        @SuppressWarnings("unchecked")
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
-    }
+	private List<String> findAllIdList(int offset, int limit) {
+		@SuppressWarnings("unchecked")
+		Query query = entityManager.createNativeQuery("select u.id from User u");
+		query.setFirstResult(offset);
+		query.setMaxResults(limit);
+		return query.getResultList();
+	}
 
-    private Page<User> convertListToPage(List<User> list, Pageable pageable, int startItem) {
-        List<User> pageContent;
-        if (list.size() < startItem) {
-            pageContent = List.of(); // Return empty list if startItem is out of bounds
-        } else {
-            int toIndex = Math.min(startItem + pageable.getPageSize(), list.size());
-            pageContent = list.subList(startItem, toIndex);
-        }
+	private List<User> findAllList(int offset, int limit) {
+		@SuppressWarnings("unchecked")
+		TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
+		query.setFirstResult(offset);
+		query.setMaxResults(limit);
+		return query.getResultList();
+	}
 
-        return new PageImpl<>(pageContent, pageable, list.size());
-    }
+	private Page<User> convertListToPage(List<User> list, Pageable pageable, int startItem) {
+		List<User> pageContent;
+		if (list.size() < startItem) {
+			pageContent = List.of(); // Return empty list if startItem is out of bounds
+		}
+		else {
+			int toIndex = Math.min(startItem + pageable.getPageSize(), list.size());
+			pageContent = list.subList(startItem, toIndex);
+		}
+
+		return new PageImpl<>(pageContent, pageable, list.size());
+	}
+
 }

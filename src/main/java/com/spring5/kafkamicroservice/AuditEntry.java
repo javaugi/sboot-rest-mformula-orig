@@ -29,35 +29,38 @@ import lombok.ToString;
 @Entity
 public class AuditEntry {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String eventId;
-    private Instant timestamp;
-    private String sourceSystem;
-    private String entityId;
-    private EntityType entityType; // TRADE, FILE, USER
-    private AuditAction action; // CREATE, UPDATE, DELETE
-    private String userId;
+	private String eventId;
 
-    // You can change columnDefinition = "TEXT" to JSON or JSONB if you're using PostgreSQL.
-    // @Convert(converter = MapToJsonConverter.class)
-    // @Column(columnDefinition = "JSON")
-    // private Map<String, Object> metadata;
-    // See MapToJsonConverter on how to resove the issue
-    public AuditEntry(
-            String entityId,
-            EntityType entityType,
-            AuditAction action,
-            String userId,
-            Instant timestamp,
-            Map<String, Object> metadata) {
-        this.entityId = entityId;
-        this.entityType = entityType;
-        this.action = action;
-        this.userId = userId;
-        this.timestamp = timestamp;
-        // this.metadata =  metadata;
-    }
+	private Instant timestamp;
+
+	private String sourceSystem;
+
+	private String entityId;
+
+	private EntityType entityType; // TRADE, FILE, USER
+
+	private AuditAction action; // CREATE, UPDATE, DELETE
+
+	private String userId;
+
+	// You can change columnDefinition = "TEXT" to JSON or JSONB if you're using
+	// PostgreSQL.
+	// @Convert(converter = MapToJsonConverter.class)
+	// @Column(columnDefinition = "JSON")
+	// private Map<String, Object> metadata;
+	// See MapToJsonConverter on how to resove the issue
+	public AuditEntry(String entityId, EntityType entityType, AuditAction action, String userId, Instant timestamp,
+			Map<String, Object> metadata) {
+		this.entityId = entityId;
+		this.entityType = entityType;
+		this.action = action;
+		this.userId = userId;
+		this.timestamp = timestamp;
+		// this.metadata = metadata;
+	}
+
 }

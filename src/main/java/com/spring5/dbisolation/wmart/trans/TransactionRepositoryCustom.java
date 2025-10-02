@@ -12,5 +12,6 @@ import org.springframework.data.domain.Pageable;
  */
 public interface TransactionRepositoryCustom {
 
-    Page<Transaction> findByCriteria(TransactionQueryCriteria criteria, Pageable pageable);
+	Page<Transaction> findByCriteria(TransactionQueryCriteria criteria, Pageable pageable);
+
 }

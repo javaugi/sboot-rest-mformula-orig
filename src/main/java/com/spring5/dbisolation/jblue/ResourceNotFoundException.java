@@ -9,7 +9,8 @@ package com.spring5.dbisolation.jblue;
  */
 public class ResourceNotFoundException extends RuntimeException {
 
-    public ResourceNotFoundException(String message) {
-        super(message);
-    }
+	public ResourceNotFoundException(String message) {
+		super(message);
+	}
+
 }

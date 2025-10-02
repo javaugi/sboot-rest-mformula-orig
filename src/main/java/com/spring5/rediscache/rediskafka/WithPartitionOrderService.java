@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class WithPartitionOrderService {
 
-    public void process(WithPartitionOrder order) {
-    }
+	public void process(WithPartitionOrder order) {
+	}
+
 }

@@ -16,8 +16,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Data
 @Builder(toBuilder = true)
@@ -25,13 +24,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductDTO {
 
-    private long id;
-    private String name;
-    private BigDecimal price;
-    private int quantity;
-    private String description;
-    private boolean status;
-    private String category;
-    private double basePrice;
-    private Map<String, String[]> variants;
+	private long id;
+
+	private String name;
+
+	private BigDecimal price;
+
+	private int quantity;
+
+	private String description;
+
+	private boolean status;
+
+	private String category;
+
+	private double basePrice;
+
+	private Map<String, String[]> variants;
+
 }

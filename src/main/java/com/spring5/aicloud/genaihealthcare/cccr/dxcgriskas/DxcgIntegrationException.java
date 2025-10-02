@@ -9,11 +9,12 @@ package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
  */
 public class DxcgIntegrationException extends RuntimeException {
 
-    public DxcgIntegrationException(String msg) {
-        super(msg);
-    }
+	public DxcgIntegrationException(String msg) {
+		super(msg);
+	}
 
-    public DxcgIntegrationException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public DxcgIntegrationException(String msg, Throwable t) {
+		super(msg, t);
+	}
+
 }

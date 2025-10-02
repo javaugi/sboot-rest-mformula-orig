@@ -9,13 +9,13 @@ package com.patterns.behavioral.state;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class TVStopState implements TVState {
 
-    @Override
-    public void doAction() {
-        System.out.println("TV is turned OFF");
-    }
+	@Override
+	public void doAction() {
+		System.out.println("TV is turned OFF");
+	}
+
 }

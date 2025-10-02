@@ -12,72 +12,74 @@ import java.util.Objects;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ItemImpl implements Item {
 
-    private String name;
-    private Category category;
-    private double price;
+	private String name;
 
-    public ItemImpl(String name, double price) {
-        this.name = name;
-        this.price = price;
-        this.category = Category.Bagged;
-    }
+	private Category category;
 
-    public String getName() {
-        return name;
-    }
+	private double price;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public ItemImpl(String name, double price) {
+		this.name = name;
+		this.price = price;
+		this.category = Category.Bagged;
+	}
 
-    public Category getCategory() {
-        return category;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public Category getCategory() {
+		return category;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.name);
-        return hash;
-    }
+	public double getPrice() {
+		return price;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ItemImpl other = (ItemImpl) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
-    }
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
-    @Override
-    public String toString() {
-        return "Item{" + "name=" + name + '}';
-    }
+	@Override
+	public int hashCode() {
+		int hash = 5;
+		hash = 89 * hash + Objects.hashCode(this.name);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ItemImpl other = (ItemImpl) obj;
+		if (!Objects.equals(this.name, other.name)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Item{" + "name=" + name + '}';
+	}
+
 }

@@ -23,65 +23,62 @@ import reactor.core.publisher.Flux;
 @Service
 public class OpenAIService {
 
-    private static final Logger log = LoggerFactory.getLogger(OpenAIService.class);
+	private static final Logger log = LoggerFactory.getLogger(OpenAIService.class);
 
-    private final String prompt
-            = """
-                Give me a good French recipe for tonight's dinner.
-                """;
+	private final String prompt = """
+			Give me a good French recipe for tonight's dinner.
+			""";
 
-    @Value("${spring.ai.openai.uri}")
-    private String openAiUrl;
+	@Value("${spring.ai.openai.uri}")
+	private String openAiUrl;
 
-    @Value("${spring.ai.openai.api-key}")
-    private String openAiKey;
+	@Value("${spring.ai.openai.api-key}")
+	private String openAiKey;
 
-    private WebClient client;
+	private WebClient client;
 
-    private final ObjectMapper objectMapper
-            = new ObjectMapper()
-                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                    .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+	private final ObjectMapper objectMapper = new ObjectMapper()
+		.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+		.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
-    @PostConstruct
-    public void init() {
-        client
-                = WebClient.builder()
-                        .baseUrl(openAiUrl)
-                        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .defaultHeader("api-key", openAiKey)
-                        .build();
-    }
+	@PostConstruct
+	public void init() {
+		client = WebClient.builder()
+			.baseUrl(openAiUrl)
+			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+			.defaultHeader("api-key", openAiKey)
+			.build();
+	}
 
-    public Flux<String> getData() throws JsonProcessingException {
-        CompletionRequest request = new CompletionRequest();
-        request.setPrompt(prompt);
-        request.setMaxTokens(2048);
-        request.setTemperature(1.0);
-        request.setFrequencyPenalty(0.0);
-        request.setPresencePenalty(0.0);
-        request.setTopP(0.5);
-        request.setBestOf(1);
-        request.setStream(true);
-        request.setStop(null);
+	public Flux<String> getData() throws JsonProcessingException {
+		CompletionRequest request = new CompletionRequest();
+		request.setPrompt(prompt);
+		request.setMaxTokens(2048);
+		request.setTemperature(1.0);
+		request.setFrequencyPenalty(0.0);
+		request.setPresencePenalty(0.0);
+		request.setTopP(0.5);
+		request.setBestOf(1);
+		request.setStream(true);
+		request.setStop(null);
 
-        String requestValue = objectMapper.writeValueAsString(request);
-        return client
-                .post()
-                .bodyValue(requestValue)
-                .accept(MediaType.TEXT_EVENT_STREAM)
-                .retrieve()
-                .bodyToFlux(String.class)
-                .mapNotNull(
-                        event -> {
-                            try {
-                                String jsonData = event.substring(event.indexOf("{"), event.lastIndexOf("}") + 1);
-                                return objectMapper.readValue(jsonData, EventData.class);
-                            } catch (JsonProcessingException | StringIndexOutOfBoundsException e) {
-                                return null;
-                            }
-                        })
-                .skipUntil(event -> !event.getChoices().get(0).getText().equals("\n"))
-                .map(event -> event.getChoices().get(0).getText());
-    }
+		String requestValue = objectMapper.writeValueAsString(request);
+		return client.post()
+			.bodyValue(requestValue)
+			.accept(MediaType.TEXT_EVENT_STREAM)
+			.retrieve()
+			.bodyToFlux(String.class)
+			.mapNotNull(event -> {
+				try {
+					String jsonData = event.substring(event.indexOf("{"), event.lastIndexOf("}") + 1);
+					return objectMapper.readValue(jsonData, EventData.class);
+				}
+				catch (JsonProcessingException | StringIndexOutOfBoundsException e) {
+					return null;
+				}
+			})
+			.skipUntil(event -> !event.getChoices().get(0).getText().equals("\n"))
+			.map(event -> event.getChoices().get(0).getText());
+	}
+
 }

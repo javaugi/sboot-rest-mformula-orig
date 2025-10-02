@@ -6,6 +6,7 @@ package com.spring5.aicloud;
 
 public interface AiClient {
 
-    String generate(String message);
-    // AiResponse generate(Prompt prompt);
+	String generate(String message);
+	// AiResponse generate(Prompt prompt);
+
 }

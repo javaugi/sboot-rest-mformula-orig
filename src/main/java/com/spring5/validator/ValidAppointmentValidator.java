@@ -11,24 +11,23 @@ import jakarta.validation.ConstraintValidatorContext;
 /**
  * @author javaugi
  */
-public class ValidAppointmentValidator
-        implements ConstraintValidator<ValidAppointment, Appointment> {
+public class ValidAppointmentValidator implements ConstraintValidator<ValidAppointment, Appointment> {
 
-    @Override
-    public boolean isValid(Appointment appointment, ConstraintValidatorContext context) {
-        if (appointment.getStartTime() == null || appointment.getEndTime() == null) {
-            return true; // Let @NotNull handle these
-        }
+	@Override
+	public boolean isValid(Appointment appointment, ConstraintValidatorContext context) {
+		if (appointment.getStartTime() == null || appointment.getEndTime() == null) {
+			return true; // Let @NotNull handle these
+		}
 
-        if (appointment.getEndTime().isBefore(appointment.getStartTime())) {
-            context.disableDefaultConstraintViolation();
-            context
-                    .buildConstraintViolationWithTemplate("End time must be after start time")
-                    .addPropertyNode("endTime")
-                    .addConstraintViolation();
-            return false;
-        }
+		if (appointment.getEndTime().isBefore(appointment.getStartTime())) {
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate("End time must be after start time")
+				.addPropertyNode("endTime")
+				.addConstraintViolation();
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
+
 }

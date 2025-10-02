@@ -12,38 +12,38 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Cache {
 
-    private List<Service> services;
+	private List<Service> services;
 
-    public Cache() {
-        services = new ArrayList<Service>();
-    }
+	public Cache() {
+		services = new ArrayList<Service>();
+	}
 
-    public Service getService(String serviceName) {
+	public Service getService(String serviceName) {
 
-        for (Service service : services) {
-            if (service.getName().equalsIgnoreCase(serviceName)) {
-                System.out.println("Returning cached  " + serviceName + " object");
-                return service;
-            }
-        }
-        return null;
-    }
+		for (Service service : services) {
+			if (service.getName().equalsIgnoreCase(serviceName)) {
+				System.out.println("Returning cached  " + serviceName + " object");
+				return service;
+			}
+		}
+		return null;
+	}
 
-    public void addService(Service newService) {
-        boolean exists = false;
+	public void addService(Service newService) {
+		boolean exists = false;
 
-        for (Service service : services) {
-            if (service.getName().equalsIgnoreCase(newService.getName())) {
-                exists = true;
-            }
-        }
-        if (!exists) {
-            services.add(newService);
-        }
-    }
+		for (Service service : services) {
+			if (service.getName().equalsIgnoreCase(newService.getName())) {
+				exists = true;
+			}
+		}
+		if (!exists) {
+			services.add(newService);
+		}
+	}
+
 }

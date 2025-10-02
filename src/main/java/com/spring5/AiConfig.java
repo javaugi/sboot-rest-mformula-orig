@@ -35,55 +35,64 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AiConfig implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(AiConfig.class);
-    public static final String REST_TEMPLATE = "restTemplate";
-    public static final String SECURE_REST_TEMPLATE = "secureRestTemplate";
-    public static final String OPEN_AI_API = "openAiApi";
-    public static final String OPEN_AI_CHAT_MODEL = "openAiChatModel";
-    public static final String OPEN_AI_API_DS = "openAiApiDeepsk";
-    public static final String OPEN_AI_CHAT_MODEL_DS = "openAiChatModelDeepsk";
-    // Option 1: Run DeepSeek Locally with Ollama (Recommended for Free)
-    public static final String OLLAMA_BASE_API = "http://localhost:11434/v1/";
-    public static final String OLLAMA_DUMMY_API_KEY = "no-key-needed";
-    public static final String OLLAMA_API = OLLAMA_BASE_API + "generate";
+	private static final Logger log = LoggerFactory.getLogger(AiConfig.class);
 
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("AiDeepSeekConfig with args {}", Arrays.toString(args));
-    }
+	public static final String REST_TEMPLATE = "restTemplate";
 
-    @Primary
-    @Bean(name = REST_TEMPLATE)
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+	public static final String SECURE_REST_TEMPLATE = "secureRestTemplate";
 
-    @Bean
-    public RestTemplateBuilder builder() {
-        return new RestTemplateBuilder();
-    }
+	public static final String OPEN_AI_API = "openAiApi";
 
-    @Bean(name = SECURE_REST_TEMPLATE)
-    public RestTemplate secureRestTemplate(RestTemplateBuilder builder) throws Exception {
+	public static final String OPEN_AI_CHAT_MODEL = "openAiChatModel";
 
-        // This configuration allows your application to skip the SSL check
-        final TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;
-        final SSLContext sslContext
-                = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
+	public static final String OPEN_AI_API_DS = "openAiApiDeepsk";
 
-        final SSLConnectionSocketFactory sslsf
-                = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
-        final Registry<ConnectionSocketFactory> socketFactoryRegistry
-                = RegistryBuilder.<ConnectionSocketFactory>create()
-                        .register("https", sslsf)
-                        .register("http", new PlainConnectionSocketFactory())
-                        .build();
+	public static final String OPEN_AI_CHAT_MODEL_DS = "openAiChatModelDeepsk";
 
-        final BasicHttpClientConnectionManager connectionManager
-                = new BasicHttpClientConnectionManager(socketFactoryRegistry);
+	// Option 1: Run DeepSeek Locally with Ollama (Recommended for Free)
+	public static final String OLLAMA_BASE_API = "http://localhost:11434/v1/";
 
-        HttpClient client = HttpClients.custom().setConnectionManager(connectionManager).build();
+	public static final String OLLAMA_DUMMY_API_KEY = "no-key-needed";
 
-        return builder.requestFactory(() -> new HttpComponentsClientHttpRequestFactory(client)).build();
-    }
+	public static final String OLLAMA_API = OLLAMA_BASE_API + "generate";
+
+	@Override
+	public void run(String... args) throws Exception {
+		log.info("AiDeepSeekConfig with args {}", Arrays.toString(args));
+	}
+
+	@Primary
+	@Bean(name = REST_TEMPLATE)
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+
+	@Bean
+	public RestTemplateBuilder builder() {
+		return new RestTemplateBuilder();
+	}
+
+	@Bean(name = SECURE_REST_TEMPLATE)
+	public RestTemplate secureRestTemplate(RestTemplateBuilder builder) throws Exception {
+
+		// This configuration allows your application to skip the SSL check
+		final TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;
+		final SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
+
+		final SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,
+				NoopHostnameVerifier.INSTANCE);
+		final Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
+			.<ConnectionSocketFactory>create()
+			.register("https", sslsf)
+			.register("http", new PlainConnectionSocketFactory())
+			.build();
+
+		final BasicHttpClientConnectionManager connectionManager = new BasicHttpClientConnectionManager(
+				socketFactoryRegistry);
+
+		HttpClient client = HttpClients.custom().setConnectionManager(connectionManager).build();
+
+		return builder.requestFactory(() -> new HttpComponentsClientHttpRequestFactory(client)).build();
+	}
+
 }

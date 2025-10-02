@@ -20,60 +20,75 @@ import lombok.NoArgsConstructor;
 @Container(containerName = "flightDetails")
 public class FlightDetail {
 
-    @Id
-    private String id;
+	@Id
+	private String id;
 
-    @PartitionKey
-    private String flightNumber;
+	@PartitionKey
+	private String flightNumber;
 
-    // Flight data
-    private String departureAirport;
-    private String arrivalAirport;
-    private LocalDateTime departureTime;
+	// Flight data
+	private String departureAirport;
 
-    // Embedded airline data (pre-joined)
-    private AirlineInfo airline;
+	private String arrivalAirport;
 
-    // Embedded aircraft data
-    private AircraftInfo aircraft;
+	private LocalDateTime departureTime;
 
-    // Embedded airport data
-    private AirportInfo departureAirportInfo;
-    private AirportInfo arrivalAirportInfo;
+	// Embedded airline data (pre-joined)
+	private AirlineInfo airline;
 
-    @Data
-    @Builder(toBuilder = true)
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Container(containerName = "airlineUpdates")
-    public static class AirlineInfo {
+	// Embedded aircraft data
+	private AircraftInfo aircraft;
 
-        private String airlineCode;
-        private String airlineName;
-        private String country;
-        private String contactPhone;
-    }
+	// Embedded airport data
+	private AirportInfo departureAirportInfo;
 
-    @Data
-    @Builder(toBuilder = true)
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class AircraftInfo {
+	private AirportInfo arrivalAirportInfo;
 
-        private String aircraftType;
-        private int capacity;
-        private int ageYears;
-    }
+	@Data
+	@Builder(toBuilder = true)
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Container(containerName = "airlineUpdates")
+	public static class AirlineInfo {
 
-    @Data
-    @Builder(toBuilder = true)
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class AirportInfo {
+		private String airlineCode;
 
-        private String airportCode;
-        private String airportName;
-        private String city;
-        private String country;
-    }
+		private String airlineName;
+
+		private String country;
+
+		private String contactPhone;
+
+	}
+
+	@Data
+	@Builder(toBuilder = true)
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class AircraftInfo {
+
+		private String aircraftType;
+
+		private int capacity;
+
+		private int ageYears;
+
+	}
+
+	@Data
+	@Builder(toBuilder = true)
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class AirportInfo {
+
+		private String airportCode;
+
+		private String airportName;
+
+		private String city;
+
+		private String country;
+
+	}
+
 }

@@ -20,4 +20,5 @@ This complete solution provides enterprise-grade event handling with:
     Maintainability (clean separation of concerns)
  */
 public class KafkaMain {
+
 }

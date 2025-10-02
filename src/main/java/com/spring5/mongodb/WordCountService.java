@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class WordCountService {
 
-    // @Autowired
-    private SparkSession spark;
+	// @Autowired
+	private SparkSession spark;
 
-    public Map<String, Long> countWords(String filePath) {
-        // Code to load the file, split into words, and count occurrences
-        // TODO return wordCounts(spark.read().textFile(filePath)); // Using spark session
-        return null;
-    }
+	public Map<String, Long> countWords(String filePath) {
+		// Code to load the file, split into words, and count occurrences
+		// TODO return wordCounts(spark.read().textFile(filePath)); // Using spark session
+		return null;
+	}
+
 }

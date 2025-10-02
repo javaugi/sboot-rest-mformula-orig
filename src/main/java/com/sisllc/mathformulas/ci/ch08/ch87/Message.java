@@ -4,19 +4,21 @@ import java.util.Date;
 
 public class Message {
 
-    private String content;
-    private Date date;
+	private String content;
 
-    public Message(String content, Date date) {
-        this.content = content;
-        this.date = date;
-    }
+	private Date date;
 
-    public String getContent() {
-        return content;
-    }
+	public Message(String content, Date date) {
+		this.content = content;
+		this.date = date;
+	}
 
-    public Date getDate() {
-        return date;
-    }
+	public String getContent() {
+		return content;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
 }

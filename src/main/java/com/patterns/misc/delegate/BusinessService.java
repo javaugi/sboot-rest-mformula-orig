@@ -9,10 +9,10 @@ package com.patterns.misc.delegate;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface BusinessService {
 
-    void doProcessing();
+	void doProcessing();
+
 }

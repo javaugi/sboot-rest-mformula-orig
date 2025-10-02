@@ -12,33 +12,34 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class EmployeeImpl extends EmployeeAbstract {
 
-    private static final Logger log = LoggerFactory.getLogger(EmployeeImpl.class);
-    Employee employee;
-    SalaryCalculator visitor;
+	private static final Logger log = LoggerFactory.getLogger(EmployeeImpl.class);
 
-    private EmployeeImpl(String name, double salary) {
-        super.setName(name);
-        super.setSalary(salary);
-    }
+	Employee employee;
 
-    public static Employee makeEmployee() {
-        double sal = 120000;
-        return new EmployeeImpl("Mike the Employee ", sal);
-    }
+	SalaryCalculator visitor;
 
-    @Override
-    public void printSalary() {
-        System.out.println(
-                "Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
-    }
+	private EmployeeImpl(String name, double salary) {
+		super.setName(name);
+		super.setSalary(salary);
+	}
 
-    @Override
-    public void accept(SalaryCalculator visitor) {
-        this.visitor = visitor;
-    }
+	public static Employee makeEmployee() {
+		double sal = 120000;
+		return new EmployeeImpl("Mike the Employee ", sal);
+	}
+
+	@Override
+	public void printSalary() {
+		System.out.println("Salary for " + super.getName() + " is " + visitor.calculateSalary((Employee) this));
+	}
+
+	@Override
+	public void accept(SalaryCalculator visitor) {
+		this.visitor = visitor;
+	}
+
 }

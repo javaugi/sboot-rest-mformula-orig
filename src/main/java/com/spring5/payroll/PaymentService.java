@@ -8,4 +8,5 @@ package com.spring5.payroll;
  * @author javaugi
  */
 public interface PaymentService {
+
 }

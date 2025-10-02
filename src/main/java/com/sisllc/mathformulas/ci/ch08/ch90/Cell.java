@@ -2,32 +2,34 @@ package com.sisllc.mathformulas.ci.ch08.ch90;
 
 public class Cell<K, V> {
 
-    private K key;
-    private V value;
+	private K key;
 
-    public Cell(K k, V v) {
-        key = k;
-        value = v;
-    }
+	private V value;
 
-    public boolean equivalent(Cell<K, V> c) {
-        return equivalent(c.getKey());
-    }
+	public Cell(K k, V v) {
+		key = k;
+		value = v;
+	}
 
-    public boolean equivalent(K k) {
-        return key.equals(k);
-    }
+	public boolean equivalent(Cell<K, V> c) {
+		return equivalent(c.getKey());
+	}
 
-    @Override
-    public String toString() {
-        return "(" + key.toString() + ", " + value.toString() + ")";
-    }
+	public boolean equivalent(K k) {
+		return key.equals(k);
+	}
 
-    public K getKey() {
-        return key;
-    }
+	@Override
+	public String toString() {
+		return "(" + key.toString() + ", " + value.toString() + ")";
+	}
 
-    public V getValue() {
-        return value;
-    }
+	public K getKey() {
+		return key;
+	}
+
+	public V getValue() {
+		return value;
+	}
+
 }

@@ -9,27 +9,28 @@ package com.patterns.misc.mvc;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Student {
 
-    private String rollNo;
-    private String name;
+	private String rollNo;
 
-    public String getRollNo() {
-        return rollNo;
-    }
+	private String name;
 
-    public void setRollNo(String rollNo) {
-        this.rollNo = rollNo;
-    }
+	public String getRollNo() {
+		return rollNo;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setRollNo(String rollNo) {
+		this.rollNo = rollNo;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

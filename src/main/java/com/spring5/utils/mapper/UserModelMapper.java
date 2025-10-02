@@ -13,9 +13,12 @@ import org.modelmapper.ModelMapper;
  */
 public class UserModelMapper {
 
-    ModelMapper modelMapper = new ModelMapper();
+	ModelMapper modelMapper = new ModelMapper();
 
-    User user = new User();
-    UserDTO dto = modelMapper.map(user, UserDTO.class);
-    User entity = modelMapper.map(dto, User.class);
+	User user = new User();
+
+	UserDTO dto = modelMapper.map(user, UserDTO.class);
+
+	User entity = modelMapper.map(dto, User.class);
+
 }

@@ -16,30 +16,27 @@ import java.util.Map;
 @org.springframework.stereotype.Service
 public class AnswerService {
 
-    private final Map<Long, Answer> answers = new HashMap<>();
-    private long nextId = 1;
+	private final Map<Long, Answer> answers = new HashMap<>();
 
-    public Answer save(Answer answer) {
-        Answer newAnswer
-                = new Answer(
-                        nextId++, answer.getAssessmentId(), answer.getQuestionId(), answer.getAnswerText());
-        answers.put(newAnswer.getId(), newAnswer);
-        return newAnswer;
-    }
+	private long nextId = 1;
 
-    public static Answer createAnswer(long assessmentId, long questionId, String value) {
-        return Answer.builder()
-                .assessmentId(assessmentId)
-                .questionId(questionId)
-                .answerText(value)
-                .build();
-    }
+	public Answer save(Answer answer) {
+		Answer newAnswer = new Answer(nextId++, answer.getAssessmentId(), answer.getQuestionId(),
+				answer.getAnswerText());
+		answers.put(newAnswer.getId(), newAnswer);
+		return newAnswer;
+	}
 
-    public Answer findById(Long id) {
-        return answers.get(id);
-    }
+	public static Answer createAnswer(long assessmentId, long questionId, String value) {
+		return Answer.builder().assessmentId(assessmentId).questionId(questionId).answerText(value).build();
+	}
 
-    public List<Answer> findAll() {
-        return new ArrayList<>(answers.values());
-    }
+	public Answer findById(Long id) {
+		return answers.get(id);
+	}
+
+	public List<Answer> findAll() {
+		return new ArrayList<>(answers.values());
+	}
+
 }

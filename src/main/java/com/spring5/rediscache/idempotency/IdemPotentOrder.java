@@ -13,8 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class IdemPotentOrder {
 
-    private Long id;
-    private Long productId;
-    private int quantity;
-    private String status;
+	private Long id;
+
+	private Long productId;
+
+	private int quantity;
+
+	private String status;
+
 }

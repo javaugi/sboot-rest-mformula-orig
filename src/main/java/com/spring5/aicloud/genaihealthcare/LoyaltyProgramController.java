@@ -8,4 +8,5 @@ package com.spring5.aicloud.genaihealthcare;
  * @author javau
  */
 public class LoyaltyProgramController {
+
 }

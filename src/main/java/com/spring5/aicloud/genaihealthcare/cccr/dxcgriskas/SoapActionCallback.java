@@ -9,9 +9,10 @@ package com.spring5.aicloud.genaihealthcare.cccr.dxcgriskas;
  */
 public class SoapActionCallback {
 
-    String url;
+	String url;
 
-    public SoapActionCallback(String url) {
-        this.url = url;
-    }
+	public SoapActionCallback(String url) {
+		this.url = url;
+	}
+
 }

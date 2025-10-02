@@ -12,28 +12,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class PrescriptionEventConsumer {
 
-    @Autowired
-    private PharmacyPatientDataService patientDataService;
+	@Autowired
+	private PharmacyPatientDataService patientDataService;
 
-    @Autowired
-    private PrescriptionEventProducer eventProducer;
+	@Autowired
+	private PrescriptionEventProducer eventProducer;
 
-    @KafkaListener(topics = "prescription-requests")
-    public void handlePrescriptionRequest(PrescriptionEvent event) {
-        try {
-            // Validate patient
-            PatientData patient = patientDataService.validate(event.getPayload().getPatientId());
+	@KafkaListener(topics = "prescription-requests")
+	public void handlePrescriptionRequest(PrescriptionEvent event) {
+		try {
+			// Validate patient
+			PatientData patient = patientDataService.validate(event.getPayload().getPatientId());
 
-            // Publish next event
-            PrescriptionEvent validatedEvent
-                    = event.copy().type("PATIENT_VALIDATED").status("SUCCESS").build();
+			// Publish next event
+			PrescriptionEvent validatedEvent = event.copy().type("PATIENT_VALIDATED").status("SUCCESS").build();
 
-            eventProducer.sendEvent("patient-validated", validatedEvent);
-        } catch (Exception ex) {
-            PrescriptionEvent failedEvent
-                    = event.copy().status("FAILED").errorMessage(ex.getMessage()).build();
+			eventProducer.sendEvent("patient-validated", validatedEvent);
+		}
+		catch (Exception ex) {
+			PrescriptionEvent failedEvent = event.copy().status("FAILED").errorMessage(ex.getMessage()).build();
 
-            eventProducer.sendEvent("prescription-errors", failedEvent);
-        }
-    }
+			eventProducer.sendEvent("prescription-errors", failedEvent);
+		}
+	}
+
 }

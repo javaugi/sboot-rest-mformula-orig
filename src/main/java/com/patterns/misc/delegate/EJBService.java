@@ -9,13 +9,13 @@ package com.patterns.misc.delegate;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class EJBService implements BusinessService {
 
-    @Override
-    public void doProcessing() {
-        System.out.println("Processing task by invoking EJB Service");
-    }
+	@Override
+	public void doProcessing() {
+		System.out.println("Processing task by invoking EJB Service");
+	}
+
 }

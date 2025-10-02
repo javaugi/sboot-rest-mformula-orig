@@ -9,12 +9,12 @@ package com.patterns.behavioral.observer;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class Observer {
 
-    protected Subject subject;
+	protected Subject subject;
 
-    public abstract void update();
+	public abstract void update();
+
 }

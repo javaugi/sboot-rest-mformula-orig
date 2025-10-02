@@ -19,45 +19,44 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 /**
- *
  * @author javaugi
  */
-//@RunWith(MockitoJUnitRunner.class)
+// @RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest
-//@SpringBootTest
+// @SpringBootTest
 public class ProductServiceTest {
 
-    @Mock
-    private ProductRepository productRepo;
+	@Mock
+	private ProductRepository productRepo;
 
-    //When using Mockito Use @InjectMocks to inject Mocked beans to following class
-    @InjectMocks
-    private ProductServiceImpl productService;
+	// When using Mockito Use @InjectMocks to inject Mocked beans to following class
+	@InjectMocks
+	private ProductServiceImpl productService;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	public void setup() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    public void testNothing() {
-    }
+	@Test
+	public void testNothing() {
+	}
 
-    //@Test
-    public void testGetAllProducts() {
-        //given
-        long id = 1;
-        long id2 = 2;
-        Product product = new Product(id, "Soap");
-        Product product2 = new Product(id2, "Mirror");
-        //When
-        given(this.productRepo.findAll())
-                .willReturn(List.of(product, product2));
-        List<Product> productList = productService.findAll();
-        //Then
-        //Make sure to import assertThat From org.assertj.core.api package
-        assertThat(productList).isNotNull();
-        assertThat(productList.size()).isEqualTo(2);
-    }
+	// @Test
+	public void testGetAllProducts() {
+		// given
+		long id = 1;
+		long id2 = 2;
+		Product product = new Product(id, "Soap");
+		Product product2 = new Product(id2, "Mirror");
+		// When
+		given(this.productRepo.findAll()).willReturn(List.of(product, product2));
+		List<Product> productList = productService.findAll();
+		// Then
+		// Make sure to import assertThat From org.assertj.core.api package
+		assertThat(productList).isNotNull();
+		assertThat(productList.size()).isEqualTo(2);
+	}
+
 }

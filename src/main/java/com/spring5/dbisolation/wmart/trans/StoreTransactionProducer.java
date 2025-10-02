@@ -19,71 +19,63 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StoreTransactionProducer {
 
-    private static final String TRANSACTIONS_TOPIC = "store-transactions";
+	private static final String TRANSACTIONS_TOPIC = "store-transactions";
 
-    private final KafkaTemplate<String, StoreTransaction> kafkaTemplate;
-    private final MeterRegistry meterRegistry;
-    private final Counter successCounter;
-    private final Counter errorCounter;
+	private final KafkaTemplate<String, StoreTransaction> kafkaTemplate;
 
-    public StoreTransactionProducer(
-            KafkaTemplate<String, StoreTransaction> kafkaTemplate, MeterRegistry meterRegistry) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.meterRegistry = meterRegistry;
+	private final MeterRegistry meterRegistry;
 
-        // Metrics setup
-        this.successCounter
-                = Counter.builder("kafka.producer.success")
-                        .description("Successful message productions")
-                        .register(meterRegistry);
-        this.errorCounter
-                = Counter.builder("kafka.producer.errors")
-                        .description("Failed message productions")
-                        .register(meterRegistry);
-    }
+	private final Counter successCounter;
 
-    @Async
-    public CompletableFuture<SendResult<String, StoreTransaction>> sendTransaction(
-            StoreTransaction transaction) {
-        String storeId = transaction.getStoreId();
+	private final Counter errorCounter;
 
-        // Use storeId as key to ensure partitioning by store
-        CompletableFuture<SendResult<String, StoreTransaction>> future
-                = kafkaTemplate.send(TRANSACTIONS_TOPIC, storeId, transaction);
+	public StoreTransactionProducer(KafkaTemplate<String, StoreTransaction> kafkaTemplate,
+			MeterRegistry meterRegistry) {
+		this.kafkaTemplate = kafkaTemplate;
+		this.meterRegistry = meterRegistry;
 
-        return future
-                .toCompletableFuture()
-                .thenApply(
-                        result -> {
-                            successCounter.increment();
-                            log.debug(
-                                    "Successfully sent transaction for store: {} to partition: {}",
-                                    storeId,
-                                    result.getRecordMetadata().partition());
-                            return result;
-                        })
-                .exceptionally(
-                        ex -> {
-                            errorCounter.increment();
-                            log.error("Failed to send transaction for store: {}", storeId, ex);
-                            throw new RuntimeException("Failed to send Kafka message", ex);
-                        });
-    }
+		// Metrics setup
+		this.successCounter = Counter.builder("kafka.producer.success")
+			.description("Successful message productions")
+			.register(meterRegistry);
+		this.errorCounter = Counter.builder("kafka.producer.errors")
+			.description("Failed message productions")
+			.register(meterRegistry);
+	}
 
-    // Batch sending for better throughput
-    public void sendTransactionsBatch(List<StoreTransaction> transactions) {
-        List<CompletableFuture<SendResult<String, StoreTransaction>>> futures = new ArrayList<>();
+	@Async
+	public CompletableFuture<SendResult<String, StoreTransaction>> sendTransaction(StoreTransaction transaction) {
+		String storeId = transaction.getStoreId();
 
-        for (StoreTransaction transaction : transactions) {
-            futures.add(sendTransaction(transaction));
-        }
+		// Use storeId as key to ensure partitioning by store
+		CompletableFuture<SendResult<String, StoreTransaction>> future = kafkaTemplate.send(TRANSACTIONS_TOPIC, storeId,
+				transaction);
 
-        // Wait for all sends to complete
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                .exceptionally(
-                        ex -> {
-                            log.error("Batch send partially failed", ex);
-                            return null;
-                        });
-    }
+		return future.toCompletableFuture().thenApply(result -> {
+			successCounter.increment();
+			log.debug("Successfully sent transaction for store: {} to partition: {}", storeId,
+					result.getRecordMetadata().partition());
+			return result;
+		}).exceptionally(ex -> {
+			errorCounter.increment();
+			log.error("Failed to send transaction for store: {}", storeId, ex);
+			throw new RuntimeException("Failed to send Kafka message", ex);
+		});
+	}
+
+	// Batch sending for better throughput
+	public void sendTransactionsBatch(List<StoreTransaction> transactions) {
+		List<CompletableFuture<SendResult<String, StoreTransaction>>> futures = new ArrayList<>();
+
+		for (StoreTransaction transaction : transactions) {
+			futures.add(sendTransaction(transaction));
+		}
+
+		// Wait for all sends to complete
+		CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).exceptionally(ex -> {
+			log.error("Batch send partially failed", ex);
+			return null;
+		});
+	}
+
 }

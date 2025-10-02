@@ -19,21 +19,21 @@ import java.util.regex.Pattern;
  */
 public class PHIConverter extends ClassicConverter {
 
-    private static final PHIPseudonymizer pseudonymizer
-            = new PHIPseudonymizer(System.getenv().getOrDefault("PHI_KEY", "default-dev-key"));
+	private static final PHIPseudonymizer pseudonymizer = new PHIPseudonymizer(
+			System.getenv().getOrDefault("PHI_KEY", "default-dev-key"));
 
-    private static final Pattern PATIENT_ID_PATTERN = Pattern.compile("patientId=([A-Za-z0-9_-]+)");
+	private static final Pattern PATIENT_ID_PATTERN = Pattern.compile("patientId=([A-Za-z0-9_-]+)");
 
-    // No raw PHI ever goes into logs.
-    @Override
-    public String convert(ILoggingEvent event) {
-        String msg = event.getFormattedMessage();
-        // Simple rule: pseudonymize anything after "patientId="
-        // Example: patientId=12345 → patientId=<hashed>
-        Matcher matcher = PATIENT_ID_PATTERN.matcher(msg);
+	// No raw PHI ever goes into logs.
+	@Override
+	public String convert(ILoggingEvent event) {
+		String msg = event.getFormattedMessage();
+		// Simple rule: pseudonymize anything after "patientId="
+		// Example: patientId=12345 → patientId=<hashed>
+		Matcher matcher = PATIENT_ID_PATTERN.matcher(msg);
 
-        // Java 9+ supports lambda here
-        return matcher.replaceAll(
-                matchResult -> "patientId=" + pseudonymizer.pseudonymize(matchResult.group(1)));
-    }
+		// Java 9+ supports lambda here
+		return matcher.replaceAll(matchResult -> "patientId=" + pseudonymizer.pseudonymize(matchResult.group(1)));
+	}
+
 }

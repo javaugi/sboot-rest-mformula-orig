@@ -12,18 +12,16 @@ import com.spring5.empbilpayroll.PayrollData;
  */
 public class MinimumWageValidator extends PayrollChainOfRespValidator {
 
-    @Override
-    public boolean validate(Employee employee, PayrollData data) throws Exception {
-        /*
-    BigDecimal minWage = employee.getRegion().getMinimumWage();
-    if (data.getHourlyRate().compareTo(minWage) < 0) {
-        throw new PayrollValidationException(
-            "Hourly rate (" + data.getHourlyRate() + ") " +
-            "below minimum wage (" + minWage + ") for region " +
-            employee.getRegion()
-        );
-    }
-    // */
-        return validateNext(employee, data);
-    }
+	@Override
+	public boolean validate(Employee employee, PayrollData data) throws Exception {
+		/*
+		 * BigDecimal minWage = employee.getRegion().getMinimumWage(); if
+		 * (data.getHourlyRate().compareTo(minWage) < 0) { throw new
+		 * PayrollValidationException( "Hourly rate (" + data.getHourlyRate() + ") " +
+		 * "below minimum wage (" + minWage + ") for region " + employee.getRegion() ); }
+		 * //
+		 */
+		return validateNext(employee, data);
+	}
+
 }

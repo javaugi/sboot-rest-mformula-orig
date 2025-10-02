@@ -17,27 +17,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
 
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
+	}
 
-    public User createUser(User user) {
-        user.setId(null);
-        user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
-    }
+	public User createUser(User user) {
+		user.setId(null);
+		user.setCreatedAt(LocalDateTime.now());
+		return userRepository.save(user);
+	}
 
-    public List<User> findByStatus(String status) {
-        return userRepository.findByStatus(status);
-    }
+	public List<User> findByStatus(String status) {
+		return userRepository.findByStatus(status);
+	}
 
-    public List<User> findAll() {
-        return IterableToList.iterableToList(userRepository.findAll());
-    }
+	public List<User> findAll() {
+		return IterableToList.iterableToList(userRepository.findAll());
+	}
+
 }

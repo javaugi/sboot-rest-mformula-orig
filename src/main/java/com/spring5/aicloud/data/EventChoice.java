@@ -6,23 +6,24 @@ package com.spring5.aicloud.data;
 
 public class EventChoice {
 
-    private String text;
+	private String text;
 
-    private String finishReason;
+	private String finishReason;
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    public String getFinishReason() {
-        return finishReason;
-    }
+	public String getFinishReason() {
+		return finishReason;
+	}
 
-    public void setFinishReason(String finishReason) {
-        this.finishReason = finishReason;
-    }
+	public void setFinishReason(String finishReason) {
+		this.finishReason = finishReason;
+	}
+
 }

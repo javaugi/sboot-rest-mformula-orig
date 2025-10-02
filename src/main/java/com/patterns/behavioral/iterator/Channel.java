@@ -9,29 +9,30 @@ package com.patterns.behavioral.iterator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Channel {
 
-    private double frequency;
-    private ChannelTypeEnum TYPE;
+	private double frequency;
 
-    public Channel(double freq, ChannelTypeEnum type) {
-        this.frequency = freq;
-        this.TYPE = type;
-    }
+	private ChannelTypeEnum TYPE;
 
-    public double getFrequency() {
-        return frequency;
-    }
+	public Channel(double freq, ChannelTypeEnum type) {
+		this.frequency = freq;
+		this.TYPE = type;
+	}
 
-    public ChannelTypeEnum getTYPE() {
-        return TYPE;
-    }
+	public double getFrequency() {
+		return frequency;
+	}
 
-    @Override
-    public String toString() {
-        return "Frequency=" + this.frequency + ", Type=" + this.TYPE;
-    }
+	public ChannelTypeEnum getTYPE() {
+		return TYPE;
+	}
+
+	@Override
+	public String toString() {
+		return "Frequency=" + this.frequency + ", Type=" + this.TYPE;
+	}
+
 }

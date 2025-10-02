@@ -8,6 +8,7 @@ package com.spring5.aicloud.genaihealthcare.cccr;
  * @author javau
  */
 public enum ReviewOpportunity {
-    PREPAY_CCCR,
-    RETROSPECTIVE_CCCV;
+
+	PREPAY_CCCR, RETROSPECTIVE_CCCV;
+
 }

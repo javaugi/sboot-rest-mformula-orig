@@ -11,8 +11,9 @@ import net.engio.mbassy.listener.Handler;
  */
 public class InventoryReadModel {
 
-    @Handler
-    public void onInventoryUpdate(InventoryUpdatedEvent event) {
-        // Update cached view
-    }
+	@Handler
+	public void onInventoryUpdate(InventoryUpdatedEvent event) {
+		// Update cached view
+	}
+
 }

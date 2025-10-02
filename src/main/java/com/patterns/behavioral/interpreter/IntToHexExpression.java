@@ -9,19 +9,19 @@ package com.patterns.behavioral.interpreter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class IntToHexExpression implements Expression1 {
 
-    private int i;
+	private int i;
 
-    public IntToHexExpression(int c) {
-        this.i = c;
-    }
+	public IntToHexExpression(int c) {
+		this.i = c;
+	}
 
-    @Override
-    public String interpret(InterpreterContext ic) {
-        return ic.getHexadecimalFormat(this.i);
-    }
+	@Override
+	public String interpret(InterpreterContext ic) {
+		return ic.getHexadecimalFormat(this.i);
+	}
+
 }

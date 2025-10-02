@@ -9,12 +9,12 @@ package com.patterns.behavioral.mediator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ChatMediator {
 
-    public void sendMessage(String msg, User user);
+	public void sendMessage(String msg, User user);
 
-    void addUser(User user);
+	void addUser(User user);
+
 }

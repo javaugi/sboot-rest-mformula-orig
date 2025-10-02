@@ -12,54 +12,57 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class ApiResponse<T> {
 
-    private boolean success;
-    private String message;
-    private T data;
+	private boolean success;
 
-    public ApiResponse() {
-    }
+	private String message;
 
-    public ApiResponse(boolean success, String message, T data) {
-        this.success = success;
-        this.message = message;
-        this.data = data;
-    }
+	private T data;
 
-    // Getters and Setters
-    public boolean isSuccess() {
-        return success;
-    }
+	public ApiResponse() {
+	}
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+	public ApiResponse(boolean success, String message, T data) {
+		this.success = success;
+		this.message = message;
+		this.data = data;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	// Getters and Setters
+	public boolean isSuccess() {
+		return success;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
 
-    public T getData() {
-        return data;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setData(T data) {
-        this.data = data;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    // Static helper methods
-    public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true, "Success", data);
-    }
+	public T getData() {
+		return data;
+	}
 
-    public static <T> ApiResponse<T> success(String message, T data) {
-        return new ApiResponse<>(true, message, data);
-    }
+	public void setData(T data) {
+		this.data = data;
+	}
 
-    public static <T> ApiResponse<T> error(String message) {
-        return new ApiResponse<>(false, message, null);
-    }
+	// Static helper methods
+	public static <T> ApiResponse<T> success(T data) {
+		return new ApiResponse<>(true, "Success", data);
+	}
+
+	public static <T> ApiResponse<T> success(String message, T data) {
+		return new ApiResponse<>(true, message, data);
+	}
+
+	public static <T> ApiResponse<T> error(String message) {
+		return new ApiResponse<>(false, message, null);
+	}
+
 }

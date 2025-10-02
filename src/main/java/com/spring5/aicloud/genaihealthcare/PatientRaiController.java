@@ -15,39 +15,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/aiapi/patients")
 class PatientRaiController {
 
-    private final LLMService llmService;
-    private final ResponsibleAIService responsibleAiService;
+	private final LLMService llmService;
 
-    // Use constructor injection for dependencies
-    @Autowired
-    public PatientRaiController(LLMService llmService, ResponsibleAIService responsibleAiService) {
-        this.llmService = llmService;
-        this.responsibleAiService = responsibleAiService;
-    }
+	private final ResponsibleAIService responsibleAiService;
 
-    /**
-     * Endpoint for a patient to submit a query and get a response. This
-     * endpoint orchestrates the entire process: privacy checks, LLM call,
-     * logging, and index updates.
-     */
-    @PostMapping("/inquire")
-    public ResponseEntity<PatientInquiryResponse> handleInquiry(
-            @RequestBody PatientInquiryRequest request) {
-        // 1. Human-centered design: Start with an empathetic human-in-the-loop mindset.
-        // No AI interaction occurs until we've confirmed safety and privacy.
-        responsibleAiService.performPrivacyCheck(request);
+	// Use constructor injection for dependencies
+	@Autowired
+	public PatientRaiController(LLMService llmService, ResponsibleAIService responsibleAiService) {
+		this.llmService = llmService;
+		this.responsibleAiService = responsibleAiService;
+	}
 
-        // 2. Use the LLM to generate a personalized and helpful response.
-        PatientInquiryResponse response = llmService.getPersonalizedResponse(request);
+	/**
+	 * Endpoint for a patient to submit a query and get a response. This endpoint
+	 * orchestrates the entire process: privacy checks, LLM call, logging, and index
+	 * updates.
+	 */
+	@PostMapping("/inquire")
+	public ResponseEntity<PatientInquiryResponse> handleInquiry(@RequestBody PatientInquiryRequest request) {
+		// 1. Human-centered design: Start with an empathetic human-in-the-loop mindset.
+		// No AI interaction occurs until we've confirmed safety and privacy.
+		responsibleAiService.performPrivacyCheck(request);
 
-        // 3. AI Governance & Trust: Log the interaction and update the AI Index.
-        responsibleAiService.logAiInteraction(request, response);
-        responsibleAiService.updateResponsibleAiIndex(response);
+		// 2. Use the LLM to generate a personalized and helpful response.
+		PatientInquiryResponse response = llmService.getPersonalizedResponse(request);
 
-        // 4. Return the generated response.
-        // The front-end would use the 'requiresHumanReview' flag to show
-        // a disclaimer and inform the patient that a doctor will follow up.
-        // The loyalty offer would also be displayed.
-        return ResponseEntity.ok(response);
-    }
+		// 3. AI Governance & Trust: Log the interaction and update the AI Index.
+		responsibleAiService.logAiInteraction(request, response);
+		responsibleAiService.updateResponsibleAiIndex(response);
+
+		// 4. Return the generated response.
+		// The front-end would use the 'requiresHumanReview' flag to show
+		// a disclaimer and inform the patient that a doctor will follow up.
+		// The loyalty offer would also be displayed.
+		return ResponseEntity.ok(response);
+	}
+
 }

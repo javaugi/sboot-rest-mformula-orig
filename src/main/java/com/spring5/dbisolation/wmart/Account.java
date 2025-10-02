@@ -15,10 +15,14 @@ import org.springframework.data.annotation.Version;
 // @Entity
 public class Account {
 
-    @Id
-    private Long id;
-    private BigDecimal balance;
-    @Version
-    private Long version;
-    // getters/setters
+	@Id
+	private Long id;
+
+	private BigDecimal balance;
+
+	@Version
+	private Long version;
+
+	// getters/setters
+
 }

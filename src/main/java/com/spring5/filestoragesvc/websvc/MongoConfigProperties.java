@@ -28,77 +28,80 @@ import org.springframework.context.annotation.Profile;
 @ConfigurationProperties(prefix = "com.spring5")
 public class MongoConfigProperties implements Serializable {
 
-    public static final String MONGO_PROFILE = "mongo";
-    private static final Logger log = LoggerFactory.getLogger(MongoConfigProperties.class);
+	public static final String MONGO_PROFILE = "mongo";
 
-    private static final int DEFAULT_MONGO_PORT = 27017;
+	private static final Logger log = LoggerFactory.getLogger(MongoConfigProperties.class);
 
-    @Bean
-    public FileService getFileService() {
-        log.info("CONFIG - Using MongoFileService for data storage");
-        log.info("CONFIG - Mongo Username: {}", getMongoUsername());
-        for (String serverName : getMongoServerList()) {
-            log.info("CONFIG - Mongo Server: {}", serverName);
-        }
-        log.info("CONFIG - Mongo Port: {}", getMongoServerPort());
-        return new MongoFileService();
-    }
+	private static final int DEFAULT_MONGO_PORT = 27017;
 
-    @NotBlank
-    private String mongoUsername;
+	@Bean
+	public FileService getFileService() {
+		log.info("CONFIG - Using MongoFileService for data storage");
+		log.info("CONFIG - Mongo Username: {}", getMongoUsername());
+		for (String serverName : getMongoServerList()) {
+			log.info("CONFIG - Mongo Server: {}", serverName);
+		}
+		log.info("CONFIG - Mongo Port: {}", getMongoServerPort());
+		return new MongoFileService();
+	}
 
-    @NotBlank
-    private String mongoPassword;
+	@NotBlank
+	private String mongoUsername;
 
-    @NotEmpty
-    private String[] mongoServerList;
+	@NotBlank
+	private String mongoPassword;
 
-    @NotBlank
-    private String mongoRepositoryName;
+	@NotEmpty
+	private String[] mongoServerList;
 
-    private Integer mongoServerPort = null;
+	@NotBlank
+	private String mongoRepositoryName;
 
-    public String getMongoUsername() {
-        return mongoUsername;
-    }
+	private Integer mongoServerPort = null;
 
-    public void setMongoUsername(String mongoUsername) {
-        this.mongoUsername = mongoUsername;
-    }
+	public String getMongoUsername() {
+		return mongoUsername;
+	}
 
-    public String getMongoPassword() {
-        return mongoPassword;
-    }
+	public void setMongoUsername(String mongoUsername) {
+		this.mongoUsername = mongoUsername;
+	}
 
-    public void setMongoPassword(String mongoPassword) {
-        this.mongoPassword = mongoPassword;
-    }
+	public String getMongoPassword() {
+		return mongoPassword;
+	}
 
-    public String[] getMongoServerList() {
-        return mongoServerList;
-    }
+	public void setMongoPassword(String mongoPassword) {
+		this.mongoPassword = mongoPassword;
+	}
 
-    public void setMongoServerList(String[] mongoServerList) {
-        this.mongoServerList = mongoServerList;
-    }
+	public String[] getMongoServerList() {
+		return mongoServerList;
+	}
 
-    public String getMongoRepositoryName() {
-        return mongoRepositoryName;
-    }
+	public void setMongoServerList(String[] mongoServerList) {
+		this.mongoServerList = mongoServerList;
+	}
 
-    public void setMongoRepositoryName(String mongoRepositoryName) {
-        this.mongoRepositoryName = mongoRepositoryName;
-    }
+	public String getMongoRepositoryName() {
+		return mongoRepositoryName;
+	}
 
-    public Integer getMongoServerPort() {
-        if (mongoServerPort != null) {
-            return mongoServerPort;
-        } else {
-            return DEFAULT_MONGO_PORT;
-        }
-    }
+	public void setMongoRepositoryName(String mongoRepositoryName) {
+		this.mongoRepositoryName = mongoRepositoryName;
+	}
 
-    public void setMongoServerPort(int mongoServerPort) {
-        this.mongoServerPort = mongoServerPort;
-    }
+	public Integer getMongoServerPort() {
+		if (mongoServerPort != null) {
+			return mongoServerPort;
+		}
+		else {
+			return DEFAULT_MONGO_PORT;
+		}
+	}
+
+	public void setMongoServerPort(int mongoServerPort) {
+		this.mongoServerPort = mongoServerPort;
+	}
+
 }

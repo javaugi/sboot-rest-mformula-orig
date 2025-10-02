@@ -14,19 +14,18 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ValidPatientValidator implements ConstraintValidator<ValidPatient, Patient> {
 
-    @Override
-    public boolean isValid(Patient patient, ConstraintValidatorContext context) {
-        if (StringUtils.isBlank(patient.getUserEmail())
-                && StringUtils.isBlank(patient.getPhoneNumber())) {
-            context.disableDefaultConstraintViolation();
-            context
-                    .buildConstraintViolationWithTemplate("Must provide either email or phone number or both")
-                    .addPropertyNode("userEmail")
-                    .addPropertyNode("phoneNumber")
-                    .addConstraintViolation();
-            return false;
-        }
+	@Override
+	public boolean isValid(Patient patient, ConstraintValidatorContext context) {
+		if (StringUtils.isBlank(patient.getUserEmail()) && StringUtils.isBlank(patient.getPhoneNumber())) {
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate("Must provide either email or phone number or both")
+				.addPropertyNode("userEmail")
+				.addPropertyNode("phoneNumber")
+				.addConstraintViolation();
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
+
 }

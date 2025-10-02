@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ResilienceDemoController {
 
-    private final ResilientService resilientService;
-    private final Resilience4jExternalService externalService; // To see the raw service calls
+	private final ResilientService resilientService;
 
-    public ResilienceDemoController(
-            ResilientService resilientService, Resilience4jExternalService externalService) {
-        this.resilientService = resilientService;
-        this.externalService = externalService;
-    }
+	private final Resilience4jExternalService externalService; // To see the raw service
+																// calls
 
-    @GetMapping("/resilient-call")
-    public String makeResilientCall() {
-        return resilientService.performResilientOperation();
-    }
+	public ResilienceDemoController(ResilientService resilientService, Resilience4jExternalService externalService) {
+		this.resilientService = resilientService;
+		this.externalService = externalService;
+	}
 
-    @GetMapping("/external-stats")
-    public String getExternalServiceStats() {
-        return "External Service Stats: Successes = "
-                + externalService.getSuccessCount()
-                + ", Failures = "
-                + externalService.getFailureCount();
-    }
+	@GetMapping("/resilient-call")
+	public String makeResilientCall() {
+		return resilientService.performResilientOperation();
+	}
+
+	@GetMapping("/external-stats")
+	public String getExternalServiceStats() {
+		return "External Service Stats: Successes = " + externalService.getSuccessCount() + ", Failures = "
+				+ externalService.getFailureCount();
+	}
+
 }

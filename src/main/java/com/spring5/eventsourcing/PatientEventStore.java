@@ -12,7 +12,8 @@ import java.util.UUID;
  */
 public interface PatientEventStore {
 
-    void saveEvents(UUID patientId, List<Event> events);
+	void saveEvents(UUID patientId, List<Event> events);
 
-    List<Event> getEventsForPatient(UUID patientId);
+	List<Event> getEventsForPatient(UUID patientId);
+
 }

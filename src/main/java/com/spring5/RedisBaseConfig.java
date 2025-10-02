@@ -23,29 +23,28 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 // https://github.com/javaugi/spring-boot-redis-example
 public class RedisBaseConfig {
 
-    @Value("${spring.data.redis.host}")
-    private String redisHost;
+	@Value("${spring.data.redis.host}")
+	private String redisHost;
 
-    @Value("${spring.data.redis.port}")
-    private int redisPort;
+	@Value("${spring.data.redis.port}")
+	private int redisPort;
 
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);
-        return new LettuceConnectionFactory(config);
-    }
+	@Bean
+	public LettuceConnectionFactory redisConnectionFactory() {
+		RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);
+		return new LettuceConnectionFactory(config);
+	}
 
-    @Primary
-    @Bean
-    public RedisCacheManager cacheManager() {
-        RedisCacheConfiguration cacheConfig
-                = RedisCacheConfiguration.defaultCacheConfig()
-                        .entryTtl(Duration.ofMinutes(30))
-                        .disableCachingNullValues()
-                        .serializeValuesWith(
-                                RedisSerializationContext.SerializationPair.fromSerializer(
-                                        new GenericJackson2JsonRedisSerializer()));
+	@Primary
+	@Bean
+	public RedisCacheManager cacheManager() {
+		RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+			.entryTtl(Duration.ofMinutes(30))
+			.disableCachingNullValues()
+			.serializeValuesWith(RedisSerializationContext.SerializationPair
+				.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
-        return RedisCacheManager.builder(redisConnectionFactory()).cacheDefaults(cacheConfig).build();
-    }
+		return RedisCacheManager.builder(redisConnectionFactory()).cacheDefaults(cacheConfig).build();
+	}
+
 }

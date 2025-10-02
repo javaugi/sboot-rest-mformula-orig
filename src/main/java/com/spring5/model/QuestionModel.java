@@ -12,17 +12,18 @@ import org.springframework.hateoas.EntityModel;
  */
 public class QuestionModel extends EntityModel<Question> {
 
-    private final Question question;
+	private final Question question;
 
-    public QuestionModel(Question question) {
-        this.question = question;
-    }
+	public QuestionModel(Question question) {
+		this.question = question;
+	}
 
-    public Long getId() {
-        return question.getId();
-    }
+	public Long getId() {
+		return question.getId();
+	}
 
-    public String getText() {
-        return question.getText();
-    }
+	public String getText() {
+		return question.getText();
+	}
+
 }

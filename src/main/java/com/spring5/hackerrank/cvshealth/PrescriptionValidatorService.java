@@ -12,35 +12,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class PrescriptionValidatorService {
 
-    private final KafkaProducer<String, String> kafkaProducer;
+	private final KafkaProducer<String, String> kafkaProducer;
 
-    public PrescriptionValidatorService(KafkaProducer<String, String> kafkaProducer) {
-        this.kafkaProducer = kafkaProducer;
-    }
+	public PrescriptionValidatorService(KafkaProducer<String, String> kafkaProducer) {
+		this.kafkaProducer = kafkaProducer;
+	}
 
-    public boolean validateAndPublish(Prescription prescription) {
-        int attempts = 0;
-        while (attempts < 3) {
-            try {
-                if (validate(prescription)) {
-                    kafkaProducer.send(
-                            new ProducerRecord<>("prescriptions" + prescription.getId(), "VALIDATED"));
-                    return true;
-                }
-                return false;
-            } catch (TransientException ex) {
-                attempts++;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ignored) {
-                }
-            }
-        }
-        return false;
-    }
+	public boolean validateAndPublish(Prescription prescription) {
+		int attempts = 0;
+		while (attempts < 3) {
+			try {
+				if (validate(prescription)) {
+					kafkaProducer.send(new ProducerRecord<>("prescriptions" + prescription.getId(), "VALIDATED"));
+					return true;
+				}
+				return false;
+			}
+			catch (TransientException ex) {
+				attempts++;
+				try {
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException ignored) {
+				}
+			}
+		}
+		return false;
+	}
 
-    private boolean validate(Prescription prescription) {
-        // Call external service
-        return true; // Simplified
-    }
+	private boolean validate(Prescription prescription) {
+		// Call external service
+		return true; // Simplified
+	}
+
 }

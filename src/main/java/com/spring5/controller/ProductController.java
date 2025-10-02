@@ -13,7 +13,6 @@ import com.spring5.type.DisplayCriteria;
 import com.spring5.utils.pact.ApiResponse;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,213 +39,182 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Controller
 @RequestMapping("api/products")
 @CrossOrigin(origins = "*")
 public class ProductController {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
+	private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
-    static final String[] PROD_NAMES = {
-        "Abundance",
-        "Acclimaze",
-        "Accruex",
-        "Adornica",
-        "Aerosol Cheese",
-        "Aftertizer",
-        "Airborne Pickle",
-        "AirHead",
-        "Alumina",
-        "Apple Cheeks",
-        "Baby Donuts",
-        "Bag of Scones",
-        "Bath and Relax",
-        "Botox Barbie",
-        "Brand Dandy",
-        "Bris-o-matic",
-        "Brush n Flush",
-        "Bum Bait",
-        "Buster Boon",
-        "Callflex",
-        "Data Basket",
-        "Deal Light",
-        "Demo Lotion",
-        "Develaport",
-        "DialUp",
-        "Diamond Sky",
-        "Diet Smokes",
-        "DigiGate"
-    };
-    static final List<String> PROD_LIST = Arrays.asList(PROD_NAMES);
+	static final String[] PROD_NAMES = { "Abundance", "Acclimaze", "Accruex", "Adornica", "Aerosol Cheese",
+			"Aftertizer", "Airborne Pickle", "AirHead", "Alumina", "Apple Cheeks", "Baby Donuts", "Bag of Scones",
+			"Bath and Relax", "Botox Barbie", "Brand Dandy", "Bris-o-matic", "Brush n Flush", "Bum Bait", "Buster Boon",
+			"Callflex", "Data Basket", "Deal Light", "Demo Lotion", "Develaport", "DialUp", "Diamond Sky",
+			"Diet Smokes", "DigiGate" };
+	static final List<String> PROD_LIST = Arrays.asList(PROD_NAMES);
 
-    private static int pageSize = 5;
-    private int totalRecords = 0;
+	private static int pageSize = 5;
 
-    @Autowired
-    private ProductService productService;
+	private int totalRecords = 0;
 
-    List<Product> allProducts;
+	@Autowired
+	private ProductService productService;
 
-    @PostConstruct
-    public void init() {
-        createProducts();
-        Iterable<Product> productIterable = productService.findAll();
-        allProducts = iterableToList(productIterable);
-        totalRecords = allProducts.size();
-        long pages = totalRecords / pageSize;
-        log.info("products total {} pages total {} with page size {}", totalRecords, pages, pageSize);
-    }
+	List<Product> allProducts;
 
-    public static <T> List<T> iterableToList(Iterable<T> iterable) {
-        List<T> list = new ArrayList<>();
-        iterable.forEach(list::add);
-        return list;
-    }
+	@PostConstruct
+	public void init() {
+		createProducts();
+		Iterable<Product> productIterable = productService.findAll();
+		allProducts = iterableToList(productIterable);
+		totalRecords = allProducts.size();
+		long pages = totalRecords / pageSize;
+		log.info("products total {} pages total {} with page size {}", totalRecords, pages, pageSize);
+	}
 
-    @GetMapping
-    public ApiResponse<Collection<Product>> getProducts() {
-        return ApiResponse.success(productService.findAll());
-    }
+	public static <T> List<T> iterableToList(Iterable<T> iterable) {
+		List<T> list = new ArrayList<>();
+		iterable.forEach(list::add);
+		return list;
+	}
 
-    @GetMapping("/{id}")
-    public ApiResponse<Product> getById(@PathVariable Long id) {
-        Optional<Product> opt = productService.getProductById(id);
-        if (opt.isPresent()) {
-            return ApiResponse.error("Product not found");
-        }
-        Product product = opt.get();
-        return ApiResponse.success(product);
-    }
+	@GetMapping
+	public ApiResponse<Collection<Product>> getProducts() {
+		return ApiResponse.success(productService.findAll());
+	}
 
-    @GetMapping("/all")
-    public ResponseEntity<Collection<Product>> getAllProducts() {
-        return ResponseEntity.ok(productService.findAll());
-    }
+	@GetMapping("/{id}")
+	public ApiResponse<Product> getById(@PathVariable Long id) {
+		Optional<Product> opt = productService.getProductById(id);
+		if (opt.isPresent()) {
+			return ApiResponse.error("Product not found");
+		}
+		Product product = opt.get();
+		return ApiResponse.success(product);
+	}
 
-    @GetMapping("/all/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> opt = productService.getProductById(id);
-        if (opt.isPresent()) {
-            return ResponseEntity.accepted().body(null);
-        }
-        Product product = opt.get();
-        return ResponseEntity.ok(product);
-    }
+	@GetMapping("/all")
+	public ResponseEntity<Collection<Product>> getAllProducts() {
+		return ResponseEntity.ok(productService.findAll());
+	}
 
-    // *
-    @GetMapping("/index")
-    public String index(HttpServletRequest request, ModelMap modelMap) {
-        log.info("index page");
-        return "index";
-    }
+	@GetMapping("/all/{id}")
+	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+		Optional<Product> opt = productService.getProductById(id);
+		if (opt.isPresent()) {
+			return ResponseEntity.accepted().body(null);
+		}
+		Product product = opt.get();
+		return ResponseEntity.ok(product);
+	}
 
-    // */
-    @GetMapping("/listProducts")
-    public String listProducts(HttpServletRequest request, ModelMap modelMap) {
-        return doDisplay(request, modelMap);
-    }
+	// *
+	@GetMapping("/index")
+	public String index(HttpServletRequest request, ModelMap modelMap) {
+		log.info("index page");
+		return "index";
+	}
 
-    private String doDisplay(HttpServletRequest request, ModelMap modelMap) {
-        int size = pageSize;
-        String search = "";
+	// */
+	@GetMapping("/listProducts")
+	public String listProducts(HttpServletRequest request, ModelMap modelMap) {
+		return doDisplay(request, modelMap);
+	}
 
-        DisplayCriteria criteria
-                = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
-        if (criteria == null) {
-            criteria = new DisplayCriteria();
-        } else {
-            search = criteria.getSearch();
-            size = criteria.getEntry();
-        }
-        final String searchParam = search;
-        if (size <= 0) {
-            size = pageSize;
-        }
-        criteria.setEntry(size);
-        criteria.setSearch(search);
+	private String doDisplay(HttpServletRequest request, ModelMap modelMap) {
+		int size = pageSize;
+		String search = "";
 
-        List<Product> products = allProducts;
-        if (!search.isEmpty()) {
-            products
-                    = allProducts.stream()
-                            .filter(
-                                    line
-                                    -> line.getName().contains(searchParam)
-                                    || line.getDescription().contains(searchParam))
-                            .collect(Collectors.toList());
-        }
-        log.error("queryString {}", request.getQueryString());
+		DisplayCriteria criteria = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
+		if (criteria == null) {
+			criteria = new DisplayCriteria();
+		}
+		else {
+			search = criteria.getSearch();
+			size = criteria.getEntry();
+		}
+		final String searchParam = search;
+		if (size <= 0) {
+			size = pageSize;
+		}
+		criteria.setEntry(size);
+		criteria.setSearch(search);
 
-        PagedListHolder pagedListHolder = new PagedListHolder(products);
-        int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-        log.info("listProducts of page {} size {} displayCriteria {}", page, size, criteria);
-        pagedListHolder.setPage(page);
-        pagedListHolder.setPageSize(size);
-        modelMap.put("pagedListHolder", pagedListHolder);
-        modelMap.put("entryList", getEntryList());
-        modelMap.put("displayCriteria", criteria);
+		List<Product> products = allProducts;
+		if (!search.isEmpty()) {
+			products = allProducts.stream()
+				.filter(line -> line.getName().contains(searchParam) || line.getDescription().contains(searchParam))
+				.collect(Collectors.toList());
+		}
+		log.error("queryString {}", request.getQueryString());
 
-        return "listProducts";
-    }
+		PagedListHolder pagedListHolder = new PagedListHolder(products);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		log.info("listProducts of page {} size {} displayCriteria {}", page, size, criteria);
+		pagedListHolder.setPage(page);
+		pagedListHolder.setPageSize(size);
+		modelMap.put("pagedListHolder", pagedListHolder);
+		modelMap.put("entryList", getEntryList());
+		modelMap.put("displayCriteria", criteria);
 
-    @PostMapping("/updateEntry")
-    public String updateEntry(
-            @ModelAttribute("displayCriteria") DisplayCriteria criteria,
-            HttpServletRequest request,
-            ModelMap modelMap) {
-        DisplayCriteria criteriaOrig
-                = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
-        if (criteriaOrig != null) {
-            if (criteria.getEntry() <= 0) {
-                criteria.setEntry(criteriaOrig.getEntry());
-            }
-            if (criteria.getSearch() == null || criteria.getSearch().isEmpty()) {
-                criteria.setSearch(criteriaOrig.getSearch());
-            }
-        }
-        request.getSession().setAttribute("displayCriteria", criteria);
-        log.error("updateEntry criteria {}", criteria);
-        return doDisplay(request, modelMap);
-    }
+		return "listProducts";
+	}
 
-    @GetMapping("/pagedProducts")
-    public String getPagedProducts(HttpServletRequest request, ModelMap modelMap) {
-        PagedListHolder pagedListHolder = new PagedListHolder(allProducts);
-        int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-        log.info("pagedProducts of page {}", page);
-        pagedListHolder.setPage(page);
-        pagedListHolder.setPageSize(pageSize);
-        modelMap.put("pagedListHolder", pagedListHolder);
-        return "listProducts";
-    }
+	@PostMapping("/updateEntry")
+	public String updateEntry(@ModelAttribute("displayCriteria") DisplayCriteria criteria, HttpServletRequest request,
+			ModelMap modelMap) {
+		DisplayCriteria criteriaOrig = (DisplayCriteria) request.getSession().getAttribute("displayCriteria");
+		if (criteriaOrig != null) {
+			if (criteria.getEntry() <= 0) {
+				criteria.setEntry(criteriaOrig.getEntry());
+			}
+			if (criteria.getSearch() == null || criteria.getSearch().isEmpty()) {
+				criteria.setSearch(criteriaOrig.getSearch());
+			}
+		}
+		request.getSession().setAttribute("displayCriteria", criteria);
+		log.error("updateEntry criteria {}", criteria);
+		return doDisplay(request, modelMap);
+	}
 
-    private List<Product> createProducts() {
+	@GetMapping("/pagedProducts")
+	public String getPagedProducts(HttpServletRequest request, ModelMap modelMap) {
+		PagedListHolder pagedListHolder = new PagedListHolder(allProducts);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		log.info("pagedProducts of page {}", page);
+		pagedListHolder.setPage(page);
+		pagedListHolder.setPageSize(pageSize);
+		modelMap.put("pagedListHolder", pagedListHolder);
+		return "listProducts";
+	}
 
-        List<Product> returnValue = new ArrayList();
-        Product product = null;
-        Random rand = new Random();
-        for (int i = 0; i < 100; i++) {
-            product = new Product();
-            product.setName(PROD_LIST.get(rand.nextInt(PROD_LIST.size())));
-            product.setPrice(new BigDecimal(rand.nextDouble() * 100));
-            product.setQuantity(rand.nextInt(20));
-            product.setStatus(true);
-            product.setDescription(PROD_LIST.get(rand.nextInt(PROD_LIST.size())));
-            returnValue.add(product);
-        }
+	private List<Product> createProducts() {
 
-        productService.saveAll(returnValue);
-        return returnValue;
-    }
+		List<Product> returnValue = new ArrayList();
+		Product product = null;
+		Random rand = new Random();
+		for (int i = 0; i < 100; i++) {
+			product = new Product();
+			product.setName(PROD_LIST.get(rand.nextInt(PROD_LIST.size())));
+			product.setPrice(rand.nextDouble() * 100);
+			product.setQuantity(rand.nextInt(20));
+			product.setStatus(true);
+			product.setDescription(PROD_LIST.get(rand.nextInt(PROD_LIST.size())));
+			returnValue.add(product);
+		}
 
-    public Map<String, String> getEntryList() {
-        Map<String, String> entryList = new HashMap<String, String>();
-        entryList.put("5", "5");
-        entryList.put("8", "8");
-        entryList.put("10", "10");
-        return entryList;
-    }
+		productService.saveAll(returnValue);
+		return returnValue;
+	}
+
+	public Map<String, String> getEntryList() {
+		Map<String, String> entryList = new HashMap<String, String>();
+		entryList.put("5", "5");
+		entryList.put("8", "8");
+		entryList.put("10", "10");
+		return entryList;
+	}
+
 }

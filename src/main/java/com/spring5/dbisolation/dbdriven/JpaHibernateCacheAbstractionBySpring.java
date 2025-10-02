@@ -36,16 +36,17 @@ public class MyApp {
 @EnableCaching
 public class JpaHibernateCacheAbstractionBySpring {
 
-    @Autowired
-    private JHCache2ndLevelProductRepository productRepository;
+	@Autowired
+	private JHCache2ndLevelProductRepository productRepository;
 
-    @Cacheable(value = "products", key = "#id")
-    public JPAHibernateCache2ndLevelProduct getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
-    }
+	@Cacheable(value = "products", key = "#id")
+	public JPAHibernateCache2ndLevelProduct getProductById(Long id) {
+		return productRepository.findById(id).orElse(null);
+	}
 
-    @CacheEvict(value = "products", key = "#id")
-    public void updateProduct(Long id, JPAHibernateCache2ndLevelProduct product) {
-        productRepository.save(product);
-    }
+	@CacheEvict(value = "products", key = "#id")
+	public void updateProduct(Long id, JPAHibernateCache2ndLevelProduct product) {
+		productRepository.save(product);
+	}
+
 }

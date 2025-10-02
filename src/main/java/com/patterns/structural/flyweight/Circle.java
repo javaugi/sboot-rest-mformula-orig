@@ -9,35 +9,37 @@ package com.patterns.structural.flyweight;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Circle implements Shape {
 
-    private String color;
-    private int x;
-    private int y;
-    private int radius;
+	private String color;
 
-    public Circle(String color) {
-        this.color = color;
-    }
+	private int x;
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	private int y;
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	private int radius;
 
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
+	public Circle(String color) {
+		this.color = color;
+	}
 
-    @Override
-    public void draw() {
-        System.out.println(
-                "Circle: Draw() [Color : " + color + ", x : " + x + ", y :" + y + ", radius :" + radius);
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
+	@Override
+	public void draw() {
+		System.out.println("Circle: Draw() [Color : " + color + ", x : " + x + ", y :" + y + ", radius :" + radius);
+	}
+
 }

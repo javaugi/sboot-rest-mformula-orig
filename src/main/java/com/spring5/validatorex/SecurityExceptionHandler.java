@@ -28,22 +28,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class SecurityExceptionHandler {
 
-    @ExceptionHandler(value = {AccessDeniedException.class})
-    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
-        ErrorResponse errorResponse
-                = new ErrorResponseException(
-                        HttpStatus.FORBIDDEN, new ErrorResponseException(HttpStatus.FORBIDDEN));
-        // ErrorResponse errorResponse = new ErrorResponse("Access Denied", "You don't have permission
-        // to access this resource",  HttpStatus.FORBIDDEN.value());
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-    }
+	@ExceptionHandler(value = { AccessDeniedException.class })
+	public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
+		ErrorResponse errorResponse = new ErrorResponseException(HttpStatus.FORBIDDEN,
+				new ErrorResponseException(HttpStatus.FORBIDDEN));
+		// ErrorResponse errorResponse = new ErrorResponse("Access Denied", "You don't
+		// have permission
+		// to access this resource", HttpStatus.FORBIDDEN.value());
+		return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+	}
 
-    @ExceptionHandler(value = {AuthenticationException.class})
-    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
-        // ErrorResponse errorResponse = new ErrorResponse("Authentication Failed", ex.getMessage(),
-        // HttpStatus.UNAUTHORIZED.value());
-        ErrorResponse errorResponse = new ErrorResponseException(HttpStatus.UNAUTHORIZED);
+	@ExceptionHandler(value = { AuthenticationException.class })
+	public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
+		// ErrorResponse errorResponse = new ErrorResponse("Authentication Failed",
+		// ex.getMessage(),
+		// HttpStatus.UNAUTHORIZED.value());
+		ErrorResponse errorResponse = new ErrorResponseException(HttpStatus.UNAUTHORIZED);
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
+		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+	}
+
 }

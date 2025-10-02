@@ -15,8 +15,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GraphUserInput {
 
-    private String username;
-    private String email;
-    private String password;
-    private GraphUserProfileInput profile;
+	private String username;
+
+	private String email;
+
+	private String password;
+
+	private GraphUserProfileInput profile;
+
 }

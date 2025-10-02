@@ -9,18 +9,18 @@ package com.patterns.misc.nullobject;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class NullCustomer extends AbstractCustomer {
 
-    @Override
-    public String getName() {
-        return "Not Available in Customer Database";
-    }
+	@Override
+	public String getName() {
+		return "Not Available in Customer Database";
+	}
 
-    @Override
-    public boolean isNil() {
-        return true;
-    }
+	@Override
+	public boolean isNil() {
+		return true;
+	}
+
 }

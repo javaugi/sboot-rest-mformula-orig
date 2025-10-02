@@ -15,10 +15,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class MongoRDBProduct {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String name;
-    private double price;
+	private String name;
+
+	private double price;
+
 }

@@ -8,12 +8,8 @@ import com.stripe.model.PaymentMethod;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public record PaymentRequestEvent(
-        String paymentId,
-        String orderId,
-        BigDecimal amount,
-        String currency,
-        PaymentMethod method, // CREDIT_CARD, PAYPAL, etc.
-        Map<String, String> metadata) {
+public record PaymentRequestEvent(String paymentId, String orderId, BigDecimal amount, String currency,
+		PaymentMethod method, // CREDIT_CARD, PAYPAL, etc.
+		Map<String, String> metadata) {
 
 }

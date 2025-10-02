@@ -9,14 +9,14 @@ package com.patterns.misc.nullobject;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class AbstractCustomer {
 
-    protected String name;
+	protected String name;
 
-    public abstract boolean isNil();
+	public abstract boolean isNil();
 
-    public abstract String getName();
+	public abstract String getName();
+
 }

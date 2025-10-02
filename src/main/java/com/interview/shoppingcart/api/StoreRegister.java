@@ -9,10 +9,10 @@ package com.interview.shoppingcart.api;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface StoreRegister {
 
-    public Receipt checkout(ShoppingCart cart);
+	public Receipt checkout(ShoppingCart cart);
+
 }

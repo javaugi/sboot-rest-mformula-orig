@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/analytics")
 public class LoyaltyAnalyticsController {
 
-    private final LoyaltyAnalyticsService service;
+	private final LoyaltyAnalyticsService service;
 
-    public LoyaltyAnalyticsController(LoyaltyAnalyticsService service) {
-        this.service = service;
-    }
+	public LoyaltyAnalyticsController(LoyaltyAnalyticsService service) {
+		this.service = service;
+	}
 
-    @GetMapping("/loyalty-score/{patientId}")
-    public Map<String, Object> getLoyaltyScore(@PathVariable String patientId) {
-        return service.computeLoyaltyScore(patientId);
-    }
+	@GetMapping("/loyalty-score/{patientId}")
+	public Map<String, Object> getLoyaltyScore(@PathVariable String patientId) {
+		return service.computeLoyaltyScore(patientId);
+	}
+
 }

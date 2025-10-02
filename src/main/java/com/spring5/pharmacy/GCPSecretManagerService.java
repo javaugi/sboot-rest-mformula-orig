@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class GCPSecretManagerService {
 
-    public String getGCPSecret() throws IOException {
-        String secret
-                = SecretManagerServiceClient.create()
-                        .accessSecretVersion("projects/cvs-project/secrets/db-password/versions/latest")
-                        .getPayload()
-                        .getData()
-                        .toStringUtf8();
+	public String getGCPSecret() throws IOException {
+		String secret = SecretManagerServiceClient.create()
+			.accessSecretVersion("projects/cvs-project/secrets/db-password/versions/latest")
+			.getPayload()
+			.getData()
+			.toStringUtf8();
 
-        return secret;
-    }
+		return secret;
+	}
+
 }

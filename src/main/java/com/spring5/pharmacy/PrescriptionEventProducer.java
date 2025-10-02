@@ -12,10 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class PrescriptionEventProducer {
 
-    @Autowired
-    private KafkaTemplate<String, PrescriptionEvent> kafkaTemplate;
+	@Autowired
+	private KafkaTemplate<String, PrescriptionEvent> kafkaTemplate;
 
-    public void sendEvent(String topic, PrescriptionEvent event) {
-        kafkaTemplate.send(topic, event);
-    }
+	public void sendEvent(String topic, PrescriptionEvent event) {
+		kafkaTemplate.send(topic, event);
+	}
+
 }

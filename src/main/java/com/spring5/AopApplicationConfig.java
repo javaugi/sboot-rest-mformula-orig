@@ -13,11 +13,12 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class AopApplicationConfig {
 
-    @Bean
-    public ConcurrentOperationExecutor concurrentOperationExecutor() {
-        ConcurrentOperationExecutor executor = new ConcurrentOperationExecutor();
-        executor.setMaxRetries(3);
-        executor.setOrder(100);
-        return executor;
-    }
+	@Bean
+	public ConcurrentOperationExecutor concurrentOperationExecutor() {
+		ConcurrentOperationExecutor executor = new ConcurrentOperationExecutor();
+		executor.setMaxRetries(3);
+		executor.setOrder(100);
+		return executor;
+	}
+
 }

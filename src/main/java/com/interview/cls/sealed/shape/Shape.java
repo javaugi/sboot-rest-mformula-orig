@@ -18,10 +18,11 @@ The rule is:
  */
 public abstract sealed class Shape permits Circle, Rectangle, Triangle, Square {
 
-    public abstract double area();
+	public abstract double area();
 
-    // Common methods or fields for all shapes
-    public String getDescription() {
-        return "This is a shape.";
-    }
+	// Common methods or fields for all shapes
+	public String getDescription() {
+		return "This is a shape.";
+	}
+
 }

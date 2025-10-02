@@ -9,13 +9,13 @@ package com.patterns.behavioral.strategy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class OperationMultiply implements Strategy {
 
-    @Override
-    public int doOperation(int num1, int num2) {
-        return num1 * num2;
-    }
+	@Override
+	public int doOperation(int num1, int num2) {
+		return num1 * num2;
+	}
+
 }

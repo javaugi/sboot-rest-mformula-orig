@@ -30,159 +30,159 @@ Benefits of the Repository Pattern:
  */
 public class RepositoryPatternExample {
 
-    private static final RepositoryPatternExample main = new RepositoryPatternExample();
+	private static final RepositoryPatternExample main = new RepositoryPatternExample();
 
-    public static void main(String[] args) {
-        main.run();
-    }
+	public static void main(String[] args) {
+		main.run();
+	}
 
-    private void run() {
-        // Initialize the repository implementation
-        UserRepository userRepository = new InMemoryUserRepository();
+	private void run() {
+		// Initialize the repository implementation
+		UserRepository userRepository = new InMemoryUserRepository();
 
-        // Initialize the service, injecting the repository
-        UserService userService = new UserService(userRepository);
+		// Initialize the service, injecting the repository
+		UserService userService = new UserService(userRepository);
 
-        // Create some users
-        User user1 = userService.createUser("john.doe", "john.doe@example.com");
-        User user2 = userService.createUser("jane.smith", "jane.smith@example.com");
+		// Create some users
+		User user1 = userService.createUser("john.doe", "john.doe@example.com");
+		User user2 = userService.createUser("jane.smith", "jane.smith@example.com");
 
-        System.out.println("All users:");
-        userService.getAllUsers().forEach(System.out::println);
+		System.out.println("All users:");
+		userService.getAllUsers().forEach(System.out::println);
 
-        Long userIdToFind = user1.getId();
-        Optional<User> foundUser = userService.getUserById(userIdToFind);
-        if (foundUser.isPresent()) {
-            System.out.println("\nFound user with ID " + userIdToFind + ": " + foundUser.get());
-        } else {
-            System.out.println("\nUser with ID " + userIdToFind + " not found.");
-        }
+		Long userIdToFind = user1.getId();
+		Optional<User> foundUser = userService.getUserById(userIdToFind);
+		if (foundUser.isPresent()) {
+			System.out.println("\nFound user with ID " + userIdToFind + ": " + foundUser.get());
+		}
+		else {
+			System.out.println("\nUser with ID " + userIdToFind + " not found.");
+		}
 
-        Long userIdToDelete = user2.getId();
-        userService.deleteUser(userIdToDelete);
-        System.out.println("\nUsers after deleting user with ID " + userIdToDelete + ":");
-        userService.getAllUsers().forEach(System.out::println);
-    }
+		Long userIdToDelete = user2.getId();
+		userService.deleteUser(userIdToDelete);
+		System.out.println("\nUsers after deleting user with ID " + userIdToDelete + ":");
+		userService.getAllUsers().forEach(System.out::println);
+	}
 
-    // 1. Entity Class
-    class User {
+	// 1. Entity Class
+	class User {
 
-        private Long id;
-        private String username;
-        private String email;
+		private Long id;
 
-        public User(Long id, String username, String email) {
-            this.id = id;
-            this.username = username;
-            this.email = email;
-        }
+		private String username;
 
-        public Long getId() {
-            return id;
-        }
+		private String email;
 
-        public void setId(Long id) {
-            this.id = id;
-        }
+		public User(Long id, String username, String email) {
+			this.id = id;
+			this.username = username;
+			this.email = email;
+		}
 
-        public String getUsername() {
-            return username;
-        }
+		public Long getId() {
+			return id;
+		}
 
-        public void setUsername(String username) {
-            this.username = username;
-        }
+		public void setId(Long id) {
+			this.id = id;
+		}
 
-        public String getEmail() {
-            return email;
-        }
+		public String getUsername() {
+			return username;
+		}
 
-        public void setEmail(String email) {
-            this.email = email;
-        }
+		public void setUsername(String username) {
+			this.username = username;
+		}
 
-        @Override
-        public String toString() {
-            return "User{"
-                    + "id="
-                    + id
-                    + ", username='"
-                    + username
-                    + '\''
-                    + ", email='"
-                    + email
-                    + '\''
-                    + '}';
-        }
-    }
+		public String getEmail() {
+			return email;
+		}
 
-    // 2. Repository Interface
-    interface UserRepository {
+		public void setEmail(String email) {
+			this.email = email;
+		}
 
-        Optional<User> findById(Long id);
+		@Override
+		public String toString() {
+			return "User{" + "id=" + id + ", username='" + username + '\'' + ", email='" + email + '\'' + '}';
+		}
 
-        List<User> findAll();
+	}
 
-        User save(User user);
+	// 2. Repository Interface
+	interface UserRepository {
 
-        void deleteById(Long id);
-    }
+		Optional<User> findById(Long id);
 
-    // 3. Repository Implementation (using an in-memory Map for simplicity)
-    class InMemoryUserRepository implements UserRepository {
+		List<User> findAll();
 
-        private final Map<Long, User> users = new HashMap<>();
-        private Long nextId = 1L;
+		User save(User user);
 
-        @Override
-        public Optional<User> findById(Long id) {
-            return Optional.ofNullable(users.get(id));
-        }
+		void deleteById(Long id);
 
-        @Override
-        public List<User> findAll() {
-            return new ArrayList<>(users.values());
-        }
+	}
 
-        @Override
-        public User save(User user) {
-            if (user.getId() == null) {
-                user.setId(nextId++);
-            }
-            users.put(user.getId(), user);
-            return user;
-        }
+	// 3. Repository Implementation (using an in-memory Map for simplicity)
+	class InMemoryUserRepository implements UserRepository {
 
-        @Override
-        public void deleteById(Long id) {
-            users.remove(id);
-        }
-    }
+		private final Map<Long, User> users = new HashMap<>();
 
-    // 4. Service Class (using the Repository)
-    class UserService {
+		private Long nextId = 1L;
 
-        private final UserRepository userRepository;
+		@Override
+		public Optional<User> findById(Long id) {
+			return Optional.ofNullable(users.get(id));
+		}
 
-        public UserService(UserRepository userRepository) {
-            this.userRepository = userRepository;
-        }
+		@Override
+		public List<User> findAll() {
+			return new ArrayList<>(users.values());
+		}
 
-        public Optional<User> getUserById(Long id) {
-            return userRepository.findById(id);
-        }
+		@Override
+		public User save(User user) {
+			if (user.getId() == null) {
+				user.setId(nextId++);
+			}
+			users.put(user.getId(), user);
+			return user;
+		}
 
-        public List<User> getAllUsers() {
-            return userRepository.findAll();
-        }
+		@Override
+		public void deleteById(Long id) {
+			users.remove(id);
+		}
 
-        public User createUser(String username, String email) {
-            User newUser = new User(null, username, email);
-            return userRepository.save(newUser);
-        }
+	}
 
-        public void deleteUser(Long id) {
-            userRepository.deleteById(id);
-        }
-    }
+	// 4. Service Class (using the Repository)
+	class UserService {
+
+		private final UserRepository userRepository;
+
+		public UserService(UserRepository userRepository) {
+			this.userRepository = userRepository;
+		}
+
+		public Optional<User> getUserById(Long id) {
+			return userRepository.findById(id);
+		}
+
+		public List<User> getAllUsers() {
+			return userRepository.findAll();
+		}
+
+		public User createUser(String username, String email) {
+			User newUser = new User(null, username, email);
+			return userRepository.save(newUser);
+		}
+
+		public void deleteUser(Long id) {
+			userRepository.deleteById(id);
+		}
+
+	}
+
 }

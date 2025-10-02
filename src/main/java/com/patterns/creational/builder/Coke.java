@@ -12,20 +12,20 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Coke extends ColdDrink {
 
-    private static final Logger log = LoggerFactory.getLogger(Coke.class);
+	private static final Logger log = LoggerFactory.getLogger(Coke.class);
 
-    @Override
-    public float price() {
-        return 35.0f;
-    }
+	@Override
+	public float price() {
+		return 35.0f;
+	}
 
-    @Override
-    public String name() {
-        return "Pepsi";
-    }
+	@Override
+	public String name() {
+		return "Pepsi";
+	}
+
 }

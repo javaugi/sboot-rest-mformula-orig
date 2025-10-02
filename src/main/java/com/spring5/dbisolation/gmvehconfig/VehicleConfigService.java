@@ -9,7 +9,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public interface VehicleConfigService {
 
-    VehicleConfig getConfiguration(String brand, String model, String year);
+	VehicleConfig getConfiguration(String brand, String model, String year);
 
-    PriceCalculation calculatePrice(String configId, String zipCode);
+	PriceCalculation calculatePrice(String configId, String zipCode);
+
 }

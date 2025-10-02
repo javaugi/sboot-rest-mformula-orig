@@ -11,4 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface MBassadorOrderRepository extends JpaRepository<MBassadorOrder, Long> {
+
 }

@@ -25,50 +25,47 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class OllamaService {
 
-    private final OllamaProperties properties;
-    private final WebClient webClient;
+	private final OllamaProperties properties;
 
-    // Create similar to OpenAiService methods
-    public Mono<EmbeddingResult> createEmbeddings(EmbeddingRequest request) {
-        OllamaRequest ollamaRequest
-                = new OllamaRequest(properties.getEmbeddingModel(), String.join(", ", request.getInput()));
+	private final WebClient webClient;
 
-        return webClient
-                .post()
-                .uri(properties.getApiUrl())
-                .bodyValue(ollamaRequest)
-                .retrieve()
-                .bodyToMono(OllamaEmbeddingResponse.class)
-                .map(
-                        response -> {
-                            EmbeddingResult result = new EmbeddingResult();
-                            result.setModel(properties.getEmbeddingModel());
-                            result.setData(EmbeddingUtils.convertDoublesToEmbeddings(response.getEmbedding()));
-                            return result;
-                        });
-    }
+	// Create similar to OpenAiService methods
+	public Mono<EmbeddingResult> createEmbeddings(EmbeddingRequest request) {
+		OllamaRequest ollamaRequest = new OllamaRequest(properties.getEmbeddingModel(),
+				String.join(", ", request.getInput()));
 
-    public Mono<ChatCompletionResult> createChatCompletion(ChatCompletionRequest request) {
-        OllamaChatRequest ollamaRequest
-                = new OllamaChatRequest(
-                        properties.getModel(),
-                        request.getMessages().stream()
-                                .map(m -> new OllamaMessage(m.getRole(), m.getContent()))
-                                .collect(Collectors.toList()),
-                        properties.getTemperature());
+		return webClient.post()
+			.uri(properties.getApiUrl())
+			.bodyValue(ollamaRequest)
+			.retrieve()
+			.bodyToMono(OllamaEmbeddingResponse.class)
+			.map(response -> {
+				EmbeddingResult result = new EmbeddingResult();
+				result.setModel(properties.getEmbeddingModel());
+				result.setData(EmbeddingUtils.convertDoublesToEmbeddings(response.getEmbedding()));
+				return result;
+			});
+	}
 
-        return webClient
-                .post()
-                .uri(properties.getApiUrl())
-                .bodyValue(ollamaRequest)
-                .retrieve()
-                .bodyToMono(OllamaChatResponse.class)
-                .map(
-                        response -> {
-                            ChatCompletionResult result = new ChatCompletionResult();
-                            result.setModel(properties.getModel());
-                            result.setChoices(EmbeddingUtils.convertToChatChoices(response));
-                            return result;
-                        });
-    }
+	public Mono<ChatCompletionResult> createChatCompletion(ChatCompletionRequest request) {
+		OllamaChatRequest ollamaRequest = new OllamaChatRequest(properties.getModel(),
+				request.getMessages()
+					.stream()
+					.map(m -> new OllamaMessage(m.getRole(), m.getContent()))
+					.collect(Collectors.toList()),
+				properties.getTemperature());
+
+		return webClient.post()
+			.uri(properties.getApiUrl())
+			.bodyValue(ollamaRequest)
+			.retrieve()
+			.bodyToMono(OllamaChatResponse.class)
+			.map(response -> {
+				ChatCompletionResult result = new ChatCompletionResult();
+				result.setModel(properties.getModel());
+				result.setChoices(EmbeddingUtils.convertToChatChoices(response));
+				return result;
+			});
+	}
+
 }

@@ -13,50 +13,52 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class DatabaseHelperFacade {
 
-    private static final Logger log = LoggerFactory.getLogger(DatabaseHelperFacade.class);
+	private static final Logger log = LoggerFactory.getLogger(DatabaseHelperFacade.class);
 
-    public static void generateReport(DBTypes dbType, ReportTypes reportType) {
-        Connection con = null;
-        switch (dbType) {
-            case MYSQL:
-                MySqlHelper mySqlHelper = new MySqlHelper();
-                con = mySqlHelper.getConnection();
-                switch (reportType) {
-                    case HTML:
-                        mySqlHelper.generateHtmlReport(con);
-                        break;
-                    case PDF:
-                        mySqlHelper.generatePdfReport(con);
-                        break;
-                }
-                break;
-            case ORACLE:
-                OracleHelper oracleHelper = new OracleHelper();
-                con = oracleHelper.getConnection();
-                switch (reportType) {
-                    case HTML:
-                        oracleHelper.generateHtmlReport(con);
-                        break;
-                    case PDF:
-                        oracleHelper.generatePdfReport(con);
-                        break;
-                }
-                break;
-        }
-    }
+	public static void generateReport(DBTypes dbType, ReportTypes reportType) {
+		Connection con = null;
+		switch (dbType) {
+			case MYSQL:
+				MySqlHelper mySqlHelper = new MySqlHelper();
+				con = mySqlHelper.getConnection();
+				switch (reportType) {
+					case HTML:
+						mySqlHelper.generateHtmlReport(con);
+						break;
+					case PDF:
+						mySqlHelper.generatePdfReport(con);
+						break;
+				}
+				break;
+			case ORACLE:
+				OracleHelper oracleHelper = new OracleHelper();
+				con = oracleHelper.getConnection();
+				switch (reportType) {
+					case HTML:
+						oracleHelper.generateHtmlReport(con);
+						break;
+					case PDF:
+						oracleHelper.generatePdfReport(con);
+						break;
+				}
+				break;
+		}
+	}
 
-    public static enum DBTypes {
-        MYSQL,
-        ORACLE;
-    }
+	public static enum DBTypes {
 
-    public static enum ReportTypes {
-        HTML,
-        PDF;
-    }
+		MYSQL, ORACLE;
+
+	}
+
+	public static enum ReportTypes {
+
+		HTML, PDF;
+
+	}
+
 }

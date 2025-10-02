@@ -6,12 +6,12 @@ package com.spring5.controller.aiml;
 
 public record OllamaRequest(String model, String prompt) {
 
-    public OllamaRequest(String model) {
-        this("deepseek-llm", "");
-    }
+	public OllamaRequest(String model) {
+		this("deepseek-llm", "");
+	}
 
-    public OllamaRequest(String model, String prompt) {
-        this.model = "deepseek-llm";
-        this.prompt = "Explain quantum computing";
-    }
+	public OllamaRequest(String model, String prompt) {
+		this.model = "deepseek-llm";
+		this.prompt = "Explain quantum computing";
+	}
 }

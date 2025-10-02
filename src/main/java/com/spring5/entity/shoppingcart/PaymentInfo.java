@@ -10,36 +10,40 @@ import jakarta.persistence.Id;
 
 public class PaymentInfo {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Explicit and safe and recommended
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Explicit and safe and
+														// recommended
+	Long id;
 
-    private String cardNumber;
-    private String expiryDate;
-    private String cvv;
+	private String cardNumber;
 
-    // Getters and Setters
-    public String getCardNumber() {
-        return cardNumber;
-    }
+	private String expiryDate;
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
+	private String cvv;
 
-    public String getExpiryDate() {
-        return expiryDate;
-    }
+	// Getters and Setters
+	public String getCardNumber() {
+		return cardNumber;
+	}
 
-    public void setExpiryDate(String expiryDate) {
-        this.expiryDate = expiryDate;
-    }
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
 
-    public String getCvv() {
-        return cvv;
-    }
+	public String getExpiryDate() {
+		return expiryDate;
+	}
 
-    public void setCvv(String cvv) {
-        this.cvv = cvv;
-    }
+	public void setExpiryDate(String expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+	public String getCvv() {
+		return cvv;
+	}
+
+	public void setCvv(String cvv) {
+		this.cvv = cvv;
+	}
+
 }

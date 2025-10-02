@@ -13,20 +13,21 @@ import org.springframework.jdbc.core.RowMapper;
  */
 public class ProductRowMapper implements RowMapper<Product> {
 
-    @Override
-    public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-        // Create a new User object
-        Product product = new Product();
+	@Override
+	public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+		// Create a new User object
+		Product product = new Product();
 
-        // Map columns from the ResultSet to the User object properties
-        product.setId(rs.getLong("id"));
-        product.setName(rs.getString("name"));
-        product.setPrice(rs.getBigDecimal("price"));
-        product.setQuantity(rs.getInt("quantity"));
-        product.setDescription(rs.getString("description"));
-        product.setStatus(rs.getBoolean("status"));
+		// Map columns from the ResultSet to the User object properties
+		product.setId(rs.getLong("id"));
+		product.setName(rs.getString("name"));
+		product.setPrice(rs.getDouble("price"));
+		product.setQuantity(rs.getInt("quantity"));
+		product.setDescription(rs.getString("description"));
+		product.setStatus(rs.getBoolean("status"));
 
-        // Return the mapped User object
-        return product;
-    }
+		// Return the mapped User object
+		return product;
+	}
+
 }

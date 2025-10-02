@@ -6,7 +6,8 @@ package com.interview.cls.sealed.shape;
 
 public final class FilledRectangle extends Rectangle {
 
-    public FilledRectangle(double length, double width) {
-        super(length, width);
-    }
+	public FilledRectangle(double length, double width) {
+		super(length, width);
+	}
+
 }

@@ -9,24 +9,24 @@ package com.patterns.structural.proxy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class RealImage implements Image {
 
-    private String fileName;
+	private String fileName;
 
-    public RealImage(String fileName) {
-        this.fileName = fileName;
-        loadFromDisk(fileName);
-    }
+	public RealImage(String fileName) {
+		this.fileName = fileName;
+		loadFromDisk(fileName);
+	}
 
-    @Override
-    public void display() {
-        System.out.println("Displaying " + fileName);
-    }
+	@Override
+	public void display() {
+		System.out.println("Displaying " + fileName);
+	}
 
-    private void loadFromDisk(String fileName) {
-        System.out.println("Loading " + fileName);
-    }
+	private void loadFromDisk(String fileName) {
+		System.out.println("Loading " + fileName);
+	}
+
 }

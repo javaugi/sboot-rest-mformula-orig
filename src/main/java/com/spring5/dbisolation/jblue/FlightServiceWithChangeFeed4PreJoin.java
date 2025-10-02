@@ -20,42 +20,42 @@ Query tips:
 @Service
 public class FlightServiceWithChangeFeed4PreJoin {
 
-    private final FlightDetailRepository flightDetailRepository;
-    private final AirlineRepository airlineRepository;
-    private final AirportRepository airportRepository;
+	private final FlightDetailRepository flightDetailRepository;
 
-    // Use Cosmos DB change feed to keep denormalized data in sync
-    // @CosmosDbChangeFeedListener(database = "travelDB", container = "flightEvents")
-    public void handleFlightChanges(List<FlightEvent> changes) {
-        for (FlightEvent flight : changes) {
-            updateFlightDetails(flight);
-        }
-    }
+	private final AirlineRepository airlineRepository;
 
-    private void updateFlightDetails(FlightEvent flight) {
-        // Get related data
-        Airline airline = airlineRepository.findByAirlineCode(flight.getAirlineCode()).orElse(null);
-        AirPort departure
-                = airportRepository.findByAirportCode(flight.getDepartureAirport()).orElse(null);
-        AirPort arrival = airportRepository.findByAirportCode(flight.getArrivalAirport()).orElse(null);
+	private final AirportRepository airportRepository;
 
-        // Update denormalized document
-        FlightDetail flightDetail
-                = flightDetailRepository
-                        .findByFlightNumber(flight.getFlightNumber())
-                        .orElse(new FlightDetail());
+	// Use Cosmos DB change feed to keep denormalized data in sync
+	// @CosmosDbChangeFeedListener(database = "travelDB", container = "flightEvents")
+	public void handleFlightChanges(List<FlightEvent> changes) {
+		for (FlightEvent flight : changes) {
+			updateFlightDetails(flight);
+		}
+	}
 
-        flightDetail.setFlightNumber(flight.getFlightNumber());
-        flightDetail.setDepartureAirport(flight.getDepartureAirport());
-        flightDetail.setArrivalAirport(flight.getArrivalAirport());
+	private void updateFlightDetails(FlightEvent flight) {
+		// Get related data
+		Airline airline = airlineRepository.findByAirlineCode(flight.getAirlineCode()).orElse(null);
+		AirPort departure = airportRepository.findByAirportCode(flight.getDepartureAirport()).orElse(null);
+		AirPort arrival = airportRepository.findByAirportCode(flight.getArrivalAirport()).orElse(null);
 
-        if (airline != null) {
-            FlightDetail.AirlineInfo airlineInfo = new FlightDetail.AirlineInfo();
-            airlineInfo.setAirlineCode(airline.getAirlineCode());
-            airlineInfo.setAirlineName(airline.getAirlineName());
-            flightDetail.setAirline(airlineInfo);
-        }
+		// Update denormalized document
+		FlightDetail flightDetail = flightDetailRepository.findByFlightNumber(flight.getFlightNumber())
+			.orElse(new FlightDetail());
 
-        flightDetailRepository.save(flightDetail);
-    }
+		flightDetail.setFlightNumber(flight.getFlightNumber());
+		flightDetail.setDepartureAirport(flight.getDepartureAirport());
+		flightDetail.setArrivalAirport(flight.getArrivalAirport());
+
+		if (airline != null) {
+			FlightDetail.AirlineInfo airlineInfo = new FlightDetail.AirlineInfo();
+			airlineInfo.setAirlineCode(airline.getAirlineCode());
+			airlineInfo.setAirlineName(airline.getAirlineName());
+			flightDetail.setAirline(airlineInfo);
+		}
+
+		flightDetailRepository.save(flightDetail);
+	}
+
 }

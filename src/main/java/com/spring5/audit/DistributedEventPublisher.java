@@ -17,38 +17,33 @@ import org.springframework.stereotype.Component;
 // @RequiredArgsConstructor
 public class DistributedEventPublisher {
 
-    @Autowired
-    private @Qualifier(EventBusConfig.MB_EVENT_BUS)
-    MBassador<Object> eventBus;
+	@Autowired
+	private @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus;
 
-    @Autowired
-    private @Qualifier("stringKafkaTemplate")
-    KafkaTemplate<String, String> kafkaTemplate;
+	@Autowired
+	private @Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    /*
-  public DistributedEventPublisher(MBassador<Object> eventBus, ObjectMapper objectMapper,
-          @Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate) {
-      this.eventBus = eventBus;
-      this.objectMapper = objectMapper;
-      this.kafkaTemplate = kafkaTemplate;
-  }
-  // */
-    @PostConstruct
-    public void setupForwarding() {
-        // Forward all events to Kafka
-        /*
-    eventBus.subscribe((Object event) -> {
-        try {
-            String topic = event.getClass().getSimpleName();
-            String payload = objectMapper.writeValueAsString(event);
-            kafkaTemplate.send(topic, payload);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Event serialization failed", e);
-        }
-    });
-    // */
-    }
+	/*
+	 * public DistributedEventPublisher(MBassador<Object> eventBus, ObjectMapper
+	 * objectMapper,
+	 * 
+	 * @Qualifier("stringKafkaTemplate") KafkaTemplate<String, String> kafkaTemplate) {
+	 * this.eventBus = eventBus; this.objectMapper = objectMapper; this.kafkaTemplate =
+	 * kafkaTemplate; } //
+	 */
+	@PostConstruct
+	public void setupForwarding() {
+		// Forward all events to Kafka
+		/*
+		 * eventBus.subscribe((Object event) -> { try { String topic =
+		 * event.getClass().getSimpleName(); String payload =
+		 * objectMapper.writeValueAsString(event); kafkaTemplate.send(topic, payload); }
+		 * catch (JsonProcessingException e) { throw new
+		 * RuntimeException("Event serialization failed", e); } }); //
+		 */
+	}
+
 }

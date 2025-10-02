@@ -22,6 +22,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class DocumentEvent {
 
-    private Long documentId;
-    private String text;
+	private Long documentId;
+
+	private String text;
+
 }

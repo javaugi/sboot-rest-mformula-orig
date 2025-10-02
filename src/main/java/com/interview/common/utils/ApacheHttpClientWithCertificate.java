@@ -25,105 +25,103 @@ import org.apache.http.util.EntityUtils;
  */
 public class ApacheHttpClientWithCertificate {
 
-    public static void main(String[] args) throws Exception {
-        // Replace with your keystore file path and password
-        String keystorePath = "path/to/your/client.jks";
-        String keystorePassword = "your_keystore_password";
+	public static void main(String[] args) throws Exception {
+		// Replace with your keystore file path and password
+		String keystorePath = "path/to/your/client.jks";
+		String keystorePassword = "your_keystore_password";
 
-        // Replace with the password for your private key (can be the same as keystore password)
-        String keyPassword = "your_key_password";
+		// Replace with the password for your private key (can be the same as keystore
+		// password)
+		String keyPassword = "your_key_password";
 
-        // Replace with the URL of the HTTPS endpoint requiring client certificate authentication
-        String targetUrl = "https://your-secured-endpoint.com";
+		// Replace with the URL of the HTTPS endpoint requiring client certificate
+		// authentication
+		String targetUrl = "https://your-secured-endpoint.com";
 
-        try (CloseableHttpClient httpClient
-                = createHttpClientWithCertificate(keystorePath, keystorePassword, keyPassword)) {
-            HttpGet httpGet = new HttpGet(targetUrl);
+		try (CloseableHttpClient httpClient = createHttpClientWithCertificate(keystorePath, keystorePassword,
+				keyPassword)) {
+			HttpGet httpGet = new HttpGet(targetUrl);
 
-            System.out.println("Executing request: " + httpGet.getMethod() + " " + httpGet.getURI());
+			System.out.println("Executing request: " + httpGet.getMethod() + " " + httpGet.getURI());
 
-            httpClient.execute(
-                    httpGet,
-                    response -> {
-                        int statusCode = response.getStatusLine().getStatusCode();
-                        HttpEntity entity = response.getEntity();
+			httpClient.execute(httpGet, response -> {
+				int statusCode = response.getStatusLine().getStatusCode();
+				HttpEntity entity = response.getEntity();
 
-                        System.out.println("----------------------------------------");
-                        System.out.println("Status Code: " + statusCode);
-                        if (entity != null) {
-                            System.out.println("Response Body:");
-                            System.out.println(EntityUtils.toString(entity));
-                        }
-                        System.out.println("----------------------------------------");
-                        return statusCode;
-                    });
+				System.out.println("----------------------------------------");
+				System.out.println("Status Code: " + statusCode);
+				if (entity != null) {
+					System.out.println("Response Body:");
+					System.out.println(EntityUtils.toString(entity));
+				}
+				System.out.println("----------------------------------------");
+				return statusCode;
+			});
 
-        } catch (Exception e) {
-            System.err.println("Error during HTTPS request: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+		}
+		catch (Exception e) {
+			System.err.println("Error during HTTPS request: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
-    public static CloseableHttpClient createHttpClientWithCertificate(
-            String keystorePath, String keystorePassword, String keyPassword)
-            throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
+	public static CloseableHttpClient createHttpClientWithCertificate(String keystorePath, String keystorePassword,
+			String keyPassword) throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
 
-        SSLContext sslContext;
-        try {
-            KeyStore clientKeystore
-                    = KeyStore.getInstance("JKS"); // Or "PKCS12" depending on your keystore type
-            try (FileInputStream fis = new FileInputStream(new File(keystorePath))) {
-                clientKeystore.load(fis, keystorePassword.toCharArray());
-            }
+		SSLContext sslContext;
+		try {
+			KeyStore clientKeystore = KeyStore.getInstance("JKS"); // Or "PKCS12"
+																	// depending on your
+																	// keystore type
+			try (FileInputStream fis = new FileInputStream(new File(keystorePath))) {
+				clientKeystore.load(fis, keystorePassword.toCharArray());
+			}
 
-            SSLContextBuilder sslContextBuilder
-                    = SSLContextBuilder.create()
-                            .loadKeyMaterial(
-                                    clientKeystore,
-                                    keyPassword
-                                            .toCharArray()) // Optional: Trust all server certificates (for testing only,
-                    // NOT recommended for production)
-                    // .setTrustStrategy(TrustStrategy.ACCEPT_ALL)
-                    // Recommended: Load a truststore with the server's certificate or CA
-                    // .loadTrustMaterial(loadTrustStore("path/to/your/truststore.jks",
-                    // "truststore_password"), null)
-                    ;
-            sslContext = sslContextBuilder.build();
+			SSLContextBuilder sslContextBuilder = SSLContextBuilder.create()
+				.loadKeyMaterial(clientKeystore, keyPassword.toCharArray()) // Optional:
+																			// Trust all
+																			// server
+																			// certificates
+																			// (for
+																			// testing
+																			// only,
+			// NOT recommended for production)
+			// .setTrustStrategy(TrustStrategy.ACCEPT_ALL)
+			// Recommended: Load a truststore with the server's certificate or CA
+			// .loadTrustMaterial(loadTrustStore("path/to/your/truststore.jks",
+			// "truststore_password"), null)
+			;
+			sslContext = sslContextBuilder.build();
 
-        } catch (IOException
-                | KeyManagementException
-                | KeyStoreException
-                | NoSuchAlgorithmException
-                | UnrecoverableKeyException
-                | CertificateException e) {
-            throw new IOException("Failed to load client certificate keystore: " + e.getMessage(), e);
-        }
+		}
+		catch (IOException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException
+				| UnrecoverableKeyException | CertificateException e) {
+			throw new IOException("Failed to load client certificate keystore: " + e.getMessage(), e);
+		}
 
-        // HttpClientConnectionManager connectionManager =
-        // PoolingHttpClientConnectionManagerBuilder.create()
-        /*
-    HttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
-            .setSslContext(sslContext)
-            .setDefaultConnectionConfig(ConnectionConfig.custom()
-                    .setConnectTimeout(java.time.Duration.ofSeconds(10))
-                    .setSocketTimeout(java.time.Duration.ofSeconds(10))
-                    .build())
-            .build();
+		// HttpClientConnectionManager connectionManager =
+		// PoolingHttpClientConnectionManagerBuilder.create()
+		/*
+		 * HttpClientConnectionManager connectionManager =
+		 * PoolingHttpClientConnectionManagerBuilder.create() .setSslContext(sslContext)
+		 * .setDefaultConnectionConfig(ConnectionConfig.custom()
+		 * .setConnectTimeout(java.time.Duration.ofSeconds(10))
+		 * .setSocketTimeout(java.time.Duration.ofSeconds(10)) .build()) .build();
+		 * 
+		 * return HttpClients.custom() .setConnectionManager(connectionManager) .build();
+		 * //
+		 */
+		return null;
+	}
 
-    return HttpClients.custom()
-            .setConnectionManager(connectionManager)
-            .build();
-    // */
-        return null;
-    }
+	// Optional: Method to load a truststore
+	private static KeyStore loadTrustStore(String truststorePath, String truststorePassword)
+			throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
+		KeyStore truststore = KeyStore.getInstance("JKS"); // Or "PKCS12"
+		try (FileInputStream fis = new FileInputStream(new File(truststorePath))) {
+			truststore.load(fis, truststorePassword.toCharArray());
+		}
+		return truststore;
+	}
 
-    // Optional: Method to load a truststore
-    private static KeyStore loadTrustStore(String truststorePath, String truststorePassword)
-            throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
-        KeyStore truststore = KeyStore.getInstance("JKS"); // Or "PKCS12"
-        try (FileInputStream fis = new FileInputStream(new File(truststorePath))) {
-            truststore.load(fis, truststorePassword.toCharArray());
-        }
-        return truststore;
-    }
 }

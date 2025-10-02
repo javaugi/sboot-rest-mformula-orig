@@ -2,34 +2,37 @@ package com.sisllc.mathformulas.ci.ch09;
 
 public class Box {
 
-    public int width;
-    public int height;
-    public int depth;
+	public int width;
 
-    public Box(int w, int h, int d) {
-        width = w;
-        height = h;
-        depth = d;
-    }
+	public int height;
 
-    public boolean canBeUnder(Box b) {
-        if (width > b.width && height > b.height && depth > b.depth) {
-            return true;
-        }
-        return false;
-    }
+	public int depth;
 
-    public boolean canBeAbove(Box b) {
-        if (b == null) {
-            return true;
-        }
-        if (width < b.width && height < b.height && depth < b.depth) {
-            return true;
-        }
-        return false;
-    }
+	public Box(int w, int h, int d) {
+		width = w;
+		height = h;
+		depth = d;
+	}
 
-    public String toString() {
-        return "Box(" + width + "," + height + "," + depth + ")";
-    }
+	public boolean canBeUnder(Box b) {
+		if (width > b.width && height > b.height && depth > b.depth) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean canBeAbove(Box b) {
+		if (b == null) {
+			return true;
+		}
+		if (width < b.width && height < b.height && depth < b.depth) {
+			return true;
+		}
+		return false;
+	}
+
+	public String toString() {
+		return "Box(" + width + "," + height + "," + depth + ")";
+	}
+
 }

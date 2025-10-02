@@ -10,30 +10,32 @@ import java.util.Map;
 
 public class SoccerBall extends Product {
 
-    String color;
-    private Map<String, String[]> variants;
+	String color;
 
-    public String getColor() {
-        return color;
-    }
+	private Map<String, String[]> variants;
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+	public String getColor() {
+		return color;
+	}
 
-    @Override
-    public Map<String, String[]> getVariants() {
-        if (variants == null) {
-            variants = new HashMap<>();
-        }
-        if (color != null) {
-            variants.put("color", java.util.List.of(color).toArray(new String[1]));
-        }
-        return variants;
-    }
+	public void setColor(String color) {
+		this.color = color;
+	}
 
-    @Override
-    public void setVariants(Map<String, String[]> variants) {
-        this.variants = variants;
-    }
+	@Override
+	public Map<String, String[]> getVariants() {
+		if (variants == null) {
+			variants = new HashMap<>();
+		}
+		if (color != null) {
+			variants.put("color", java.util.List.of(color).toArray(new String[1]));
+		}
+		return variants;
+	}
+
+	@Override
+	public void setVariants(Map<String, String[]> variants) {
+		this.variants = variants;
+	}
+
 }

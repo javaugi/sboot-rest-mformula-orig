@@ -12,14 +12,15 @@ import java.util.UUID;
  */
 public class TreatmentAdded extends Event {
 
-    private final String treatment;
+	private final String treatment;
 
-    public TreatmentAdded(UUID patientId, String treatment, Instant timestamp) {
-        super(patientId, timestamp);
-        this.treatment = treatment;
-    }
+	public TreatmentAdded(UUID patientId, String treatment, Instant timestamp) {
+		super(patientId, timestamp);
+		this.treatment = treatment;
+	}
 
-    public String getTreatment() {
-        return treatment;
-    }
+	public String getTreatment() {
+		return treatment;
+	}
+
 }

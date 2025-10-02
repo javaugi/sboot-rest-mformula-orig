@@ -17,21 +17,22 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/mongordb")
 public class MongoRDBProductController {
 
-    @Autowired
-    private MongoRDBRepository productRepo;
+	@Autowired
+	private MongoRDBRepository productRepo;
 
-    @GetMapping("/products")
-    public Flux<MongoRDBProduct> getAllProducts() {
-        return productRepo.findAll();
-    }
+	@GetMapping("/products")
+	public Flux<MongoRDBProduct> getAllProducts() {
+		return productRepo.findAll();
+	}
 
-    @PostMapping("/product")
-    public Mono<MongoRDBProduct> addProduct(@RequestBody MongoRDBProduct product) {
-        return productRepo.save(product);
-    }
+	@PostMapping("/product")
+	public Mono<MongoRDBProduct> addProduct(@RequestBody MongoRDBProduct product) {
+		return productRepo.save(product);
+	}
 
-    @PostMapping
-    public Mono<MongoRDBProduct> create(@RequestBody MongoRDBProduct product) {
-        return productRepo.save(product);
-    }
+	@PostMapping
+	public Mono<MongoRDBProduct> create(@RequestBody MongoRDBProduct product) {
+		return productRepo.save(product);
+	}
+
 }

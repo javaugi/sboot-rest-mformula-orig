@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "payment.stripe")
 public class PaymentStripeConfig {
 
-    @Value("${vault.stripe.api-key}")
-    private String apiKey;
+	@Value("${vault.stripe.api-key}")
+	private String apiKey;
+
 }

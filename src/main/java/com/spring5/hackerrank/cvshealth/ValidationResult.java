@@ -9,86 +9,80 @@ import java.util.Objects;
 
 public class ValidationResult {
 
-    public enum Status {
-        APPROVED,
-        REJECTED,
-        PENDING_REVIEW
-    }
+	public enum Status {
 
-    private Status status;
-    private String orderId;
-    private String patientId;
-    private List<String> validationMessages; // e.g., "Drug interaction detected", "Insurance not covered"
+		APPROVED, REJECTED, PENDING_REVIEW
 
-    // Constructor, getters, setters
-    public ValidationResult() {
-    }
+	}
 
-    public Status getStatus() {
-        return status;
-    }
+	private Status status;
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+	private String orderId;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	private String patientId;
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	private List<String> validationMessages; // e.g., "Drug interaction detected",
+												// "Insurance not covered"
 
-    public String getPatientId() {
-        return patientId;
-    }
+	// Constructor, getters, setters
+	public ValidationResult() {
+	}
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
+	public Status getStatus() {
+		return status;
+	}
 
-    public List<String> getValidationMessages() {
-        return validationMessages;
-    }
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
-    public void setValidationMessages(List<String> validationMessages) {
-        this.validationMessages = validationMessages;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ValidationResult that = (ValidationResult) o;
-        return status == that.status
-                && Objects.equals(orderId, that.orderId)
-                && Objects.equals(patientId, that.patientId)
-                && Objects.equals(validationMessages, that.validationMessages);
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(status, orderId, patientId, validationMessages);
-    }
+	public String getPatientId() {
+		return patientId;
+	}
 
-    @Override
-    public String toString() {
-        return "ValidationResult{"
-                + "status="
-                + status
-                + ", orderId='"
-                + orderId
-                + '\''
-                + ", patientId='"
-                + patientId
-                + '\''
-                + ", validationMessages="
-                + validationMessages
-                + '}';
-    }
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
+
+	public List<String> getValidationMessages() {
+		return validationMessages;
+	}
+
+	public void setValidationMessages(List<String> validationMessages) {
+		this.validationMessages = validationMessages;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ValidationResult that = (ValidationResult) o;
+		return status == that.status && Objects.equals(orderId, that.orderId)
+				&& Objects.equals(patientId, that.patientId)
+				&& Objects.equals(validationMessages, that.validationMessages);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(status, orderId, patientId, validationMessages);
+	}
+
+	@Override
+	public String toString() {
+		return "ValidationResult{" + "status=" + status + ", orderId='" + orderId + '\'' + ", patientId='" + patientId
+				+ '\'' + ", validationMessages=" + validationMessages + '}';
+	}
+
 }

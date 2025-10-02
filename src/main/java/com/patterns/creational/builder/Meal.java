@@ -14,33 +14,34 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Meal {
 
-    private static final Logger log = LoggerFactory.getLogger(Meal.class);
-    private List<Item> items = new ArrayList<Item>();
+	private static final Logger log = LoggerFactory.getLogger(Meal.class);
 
-    public void addItem(Item item) {
-        items.add(item);
-    }
+	private List<Item> items = new ArrayList<Item>();
 
-    public float getCost() {
-        float cost = 0.0f;
+	public void addItem(Item item) {
+		items.add(item);
+	}
 
-        for (Item item : items) {
-            cost += item.price();
-        }
-        return cost;
-    }
+	public float getCost() {
+		float cost = 0.0f;
 
-    public void showItems() {
+		for (Item item : items) {
+			cost += item.price();
+		}
+		return cost;
+	}
 
-        for (Item item : items) {
-            System.out.print("Item : " + item.name());
-            System.out.print(", Packing : " + item.packing().pack());
-            System.out.println(", Price : " + item.price());
-        }
-    }
+	public void showItems() {
+
+		for (Item item : items) {
+			System.out.print("Item : " + item.name());
+			System.out.print(", Packing : " + item.packing().pack());
+			System.out.println(", Price : " + item.price());
+		}
+	}
+
 }

@@ -16,8 +16,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Opt2DebounceCacheConfig {
 
-    @Bean
-    public Cache<Long, Boolean> debounceCache() {
-        return Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).maximumSize(10_000).build();
-    }
+	@Bean
+	public Cache<Long, Boolean> debounceCache() {
+		return Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).maximumSize(10_000).build();
+	}
+
 }

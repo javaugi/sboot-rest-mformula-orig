@@ -2,17 +2,18 @@ package com.sisllc.mathformulas.ci.ch08;
 
 public class SongSelector {
 
-    private Song currentSong;
+	private Song currentSong;
 
-    public SongSelector(Song s) {
-        currentSong = s;
-    }
+	public SongSelector(Song s) {
+		currentSong = s;
+	}
 
-    public void setSong(Song s) {
-        currentSong = s;
-    }
+	public void setSong(Song s) {
+		currentSong = s;
+	}
 
-    public Song getCurrentSong() {
-        return currentSong;
-    }
+	public Song getCurrentSong() {
+		return currentSong;
+	}
+
 }

@@ -18,15 +18,19 @@ import lombok.ToString;
 @Builder
 public class Position {
 
-    private final double latitude;
-    private final double longitude;
-    private final double altitude;
-    private final long timestamp;
+	private final double latitude;
 
-    public Position(double latitude, double longitude, double altitude, long timestamp) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.altitude = altitude;
-        this.timestamp = timestamp;
-    }
+	private final double longitude;
+
+	private final double altitude;
+
+	private final long timestamp;
+
+	public Position(double latitude, double longitude, double altitude, long timestamp) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.altitude = altitude;
+		this.timestamp = timestamp;
+	}
+
 }

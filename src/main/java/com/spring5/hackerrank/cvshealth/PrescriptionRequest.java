@@ -10,95 +10,85 @@ import java.util.Objects;
 // DTO for incoming prescription request
 public class PrescriptionRequest {
 
-    private String orderId;
-    private String patientId;
-    private String prescriberId;
-    private List<MedicationItem> medications;
-    private String insuranceProviderId;
+	private String orderId;
 
-    // Add other relevant fields like patient demographics, allergies, etc.
-    // Constructor, getters, setters (or use Lombok for brevity)
-    public PrescriptionRequest() {
-    }
+	private String patientId;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	private String prescriberId;
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	private List<MedicationItem> medications;
 
-    public String getPatientId() {
-        return patientId;
-    }
+	private String insuranceProviderId;
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
+	// Add other relevant fields like patient demographics, allergies, etc.
+	// Constructor, getters, setters (or use Lombok for brevity)
+	public PrescriptionRequest() {
+	}
 
-    public String getPrescriberId() {
-        return prescriberId;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public void setPrescriberId(String prescriberId) {
-        this.prescriberId = prescriberId;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public List<MedicationItem> getMedications() {
-        return medications;
-    }
+	public String getPatientId() {
+		return patientId;
+	}
 
-    public void setMedications(List<MedicationItem> medications) {
-        this.medications = medications;
-    }
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
 
-    public String getInsuranceProviderId() {
-        return insuranceProviderId;
-    }
+	public String getPrescriberId() {
+		return prescriberId;
+	}
 
-    public void setInsuranceProviderId(String insuranceProviderId) {
-        this.insuranceProviderId = insuranceProviderId;
-    }
+	public void setPrescriberId(String prescriberId) {
+		this.prescriberId = prescriberId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PrescriptionRequest that = (PrescriptionRequest) o;
-        return Objects.equals(orderId, that.orderId)
-                && Objects.equals(patientId, that.patientId)
-                && Objects.equals(prescriberId, that.prescriberId)
-                && Objects.equals(medications, that.medications)
-                && Objects.equals(insuranceProviderId, that.insuranceProviderId);
-    }
+	public List<MedicationItem> getMedications() {
+		return medications;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(orderId, patientId, prescriberId, medications, insuranceProviderId);
-    }
+	public void setMedications(List<MedicationItem> medications) {
+		this.medications = medications;
+	}
 
-    @Override
-    public String toString() {
-        return "PrescriptionRequest{"
-                + "orderId='"
-                + orderId
-                + '\''
-                + ", patientId='"
-                + patientId
-                + '\''
-                + ", prescriberId='"
-                + prescriberId
-                + '\''
-                + ", medications="
-                + medications
-                + ", insuranceProviderId='"
-                + insuranceProviderId
-                + '\''
-                + '}';
-    }
+	public String getInsuranceProviderId() {
+		return insuranceProviderId;
+	}
+
+	public void setInsuranceProviderId(String insuranceProviderId) {
+		this.insuranceProviderId = insuranceProviderId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		PrescriptionRequest that = (PrescriptionRequest) o;
+		return Objects.equals(orderId, that.orderId) && Objects.equals(patientId, that.patientId)
+				&& Objects.equals(prescriberId, that.prescriberId) && Objects.equals(medications, that.medications)
+				&& Objects.equals(insuranceProviderId, that.insuranceProviderId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(orderId, patientId, prescriberId, medications, insuranceProviderId);
+	}
+
+	@Override
+	public String toString() {
+		return "PrescriptionRequest{" + "orderId='" + orderId + '\'' + ", patientId='" + patientId + '\''
+				+ ", prescriberId='" + prescriberId + '\'' + ", medications=" + medications + ", insuranceProviderId='"
+				+ insuranceProviderId + '\'' + '}';
+	}
+
 }

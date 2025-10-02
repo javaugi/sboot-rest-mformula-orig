@@ -11,5 +11,6 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class OllamaChatResponse {
 
-    private OllamaMessage message;
+	private OllamaMessage message;
+
 }

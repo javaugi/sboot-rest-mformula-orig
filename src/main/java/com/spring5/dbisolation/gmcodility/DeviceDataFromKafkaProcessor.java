@@ -16,74 +16,78 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeviceDataFromKafkaProcessor {
 
-    private final KafkaConsumer<String, String> consumer;
-    private final Map<String, Queue<Double>> deviceWindows;
-    private final int windowSize;
-    private final ExecutorService executor;
+	private final KafkaConsumer<String, String> consumer;
 
-    public DeviceDataFromKafkaProcessor(String bootstrapServers, String topic, int windowSize) {
-        Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "device-data-processor");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+	private final Map<String, Queue<Double>> deviceWindows;
 
-        this.consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Collections.singletonList(topic));
-        this.deviceWindows = new ConcurrentHashMap<>();
-        this.windowSize = windowSize;
-        this.executor = Executors.newFixedThreadPool(4);
-    }
+	private final int windowSize;
 
-    public void process() {
-        try {
-            while (true) {
-                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+	private final ExecutorService executor;
 
-                for (ConsumerRecord<String, String> record : records) {
-                    executor.submit(() -> processRecord(record));
-                }
-            }
-        } finally {
-            consumer.close();
-            executor.shutdown();
-        }
-    }
+	public DeviceDataFromKafkaProcessor(String bootstrapServers, String topic, int windowSize) {
+		Properties props = new Properties();
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, "device-data-processor");
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
 
-    private void processRecord(ConsumerRecord<String, String> record) {
-        try {
-            String deviceId = record.key();
-            double value = Double.parseDouble(record.value());
+		this.consumer = new KafkaConsumer<>(props);
+		consumer.subscribe(Collections.singletonList(topic));
+		this.deviceWindows = new ConcurrentHashMap<>();
+		this.windowSize = windowSize;
+		this.executor = Executors.newFixedThreadPool(4);
+	}
 
-            deviceWindows.compute(
-                    deviceId,
-                    (k, queue) -> {
-                        if (queue == null) {
-                            queue = new ArrayDeque<>(windowSize);
-                        }
-                        if (queue.size() == windowSize) {
-                            queue.poll();
-                        }
-                        queue.add(value);
-                        return queue;
-                    });
+	public void process() {
+		try {
+			while (true) {
+				ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
-            double average = calculateAverage(deviceWindows.get(deviceId));
-            System.out.printf("Device %s - Rolling average: %.2f%n", deviceId, average);
+				for (ConsumerRecord<String, String> record : records) {
+					executor.submit(() -> processRecord(record));
+				}
+			}
+		}
+		finally {
+			consumer.close();
+			executor.shutdown();
+		}
+	}
 
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid data format: " + record.value());
-        }
-    }
+	private void processRecord(ConsumerRecord<String, String> record) {
+		try {
+			String deviceId = record.key();
+			double value = Double.parseDouble(record.value());
 
-    private double calculateAverage(Queue<Double> values) {
-        return values.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
-    }
+			deviceWindows.compute(deviceId, (k, queue) -> {
+				if (queue == null) {
+					queue = new ArrayDeque<>(windowSize);
+				}
+				if (queue.size() == windowSize) {
+					queue.poll();
+				}
+				queue.add(value);
+				return queue;
+			});
 
-    public static void main(String[] args) {
-        DeviceDataFromKafkaProcessor processor
-                = new DeviceDataFromKafkaProcessor("kafka-broker:9092", "device-metrics", 10);
-        processor.process();
-    }
+			double average = calculateAverage(deviceWindows.get(deviceId));
+			System.out.printf("Device %s - Rolling average: %.2f%n", deviceId, average);
+
+		}
+		catch (NumberFormatException e) {
+			System.err.println("Invalid data format: " + record.value());
+		}
+	}
+
+	private double calculateAverage(Queue<Double> values) {
+		return values.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+	}
+
+	public static void main(String[] args) {
+		DeviceDataFromKafkaProcessor processor = new DeviceDataFromKafkaProcessor("kafka-broker:9092", "device-metrics",
+				10);
+		processor.process();
+	}
+
 }

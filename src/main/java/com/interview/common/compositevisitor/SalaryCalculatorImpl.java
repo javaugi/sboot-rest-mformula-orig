@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class SalaryCalculatorImpl implements SalaryCalculator {
 
-    private static final Logger log = LoggerFactory.getLogger(SalaryCalculatorImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(SalaryCalculatorImpl.class);
 
-    @Override
-    public double calculateSalary(Employee employee) {
-        return employee.getSalary();
-    }
+	@Override
+	public double calculateSalary(Employee employee) {
+		return employee.getSalary();
+	}
+
 }

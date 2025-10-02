@@ -9,16 +9,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CheckCoverageCircuitBreaker {
-    // Circuit Breaker:
 
-    @CircuitBreaker(name = "insuranceService", fallbackMethod = "checkCoverageFallback")
-    public InsuranceResponse checkCoverage(String medication, String insuranceId) {
-        // REST call implementation
-        return new InsuranceResponse("CircuitBreaker", null);
-    }
+	// Circuit Breaker:
 
-    public InsuranceResponse checkCoverageFallback(
-            String medication, String insuranceId, Exception ex) {
-        return new InsuranceResponse("SERVICE_UNAVAILABLE", null);
-    }
+	@CircuitBreaker(name = "insuranceService", fallbackMethod = "checkCoverageFallback")
+	public InsuranceResponse checkCoverage(String medication, String insuranceId) {
+		// REST call implementation
+		return new InsuranceResponse("CircuitBreaker", null);
+	}
+
+	public InsuranceResponse checkCoverageFallback(String medication, String insuranceId, Exception ex) {
+		return new InsuranceResponse("SERVICE_UNAVAILABLE", null);
+	}
+
 }

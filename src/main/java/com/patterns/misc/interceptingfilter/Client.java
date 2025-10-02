@@ -9,18 +9,18 @@ package com.patterns.misc.interceptingfilter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Client {
 
-    FilterManager filterManager;
+	FilterManager filterManager;
 
-    public void setFilterManager(FilterManager filterManager) {
-        this.filterManager = filterManager;
-    }
+	public void setFilterManager(FilterManager filterManager) {
+		this.filterManager = filterManager;
+	}
 
-    public void sendRequest(String request) {
-        filterManager.filterRequest(request);
-    }
+	public void sendRequest(String request) {
+		filterManager.filterRequest(request);
+	}
+
 }

@@ -23,27 +23,25 @@ import lombok.ToString;
 @AllArgsConstructor
 public class FileStorageEvent extends BaseEvent {
 
-    private String fileId;
-    private String tradeId;
-    private FileOperation operation; // UPLOAD, DELETE, UPDATE
-    private String filePath;
-    private String confirm;
+	private String fileId;
 
-    public FileStorageEvent(
-            String id,
-            Instant timestamp,
-            String sourceSystem,
-            String fileId,
-            String tradeId,
-            FileOperation operation,
-            String filePath,
-            String confirm) {
-        super(id, timestamp, sourceSystem);
+	private String tradeId;
 
-        this.fileId = fileId;
-        this.tradeId = tradeId;
-        this.operation = operation;
-        this.filePath = filePath;
-        this.confirm = confirm;
-    }
+	private FileOperation operation; // UPLOAD, DELETE, UPDATE
+
+	private String filePath;
+
+	private String confirm;
+
+	public FileStorageEvent(String id, Instant timestamp, String sourceSystem, String fileId, String tradeId,
+			FileOperation operation, String filePath, String confirm) {
+		super(id, timestamp, sourceSystem);
+
+		this.fileId = fileId;
+		this.tradeId = tradeId;
+		this.operation = operation;
+		this.filePath = filePath;
+		this.confirm = confirm;
+	}
+
 }

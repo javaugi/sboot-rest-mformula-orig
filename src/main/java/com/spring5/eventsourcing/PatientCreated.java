@@ -9,14 +9,15 @@ import java.util.UUID;
 
 public class PatientCreated extends Event {
 
-    private final String patientName;
+	private final String patientName;
 
-    public PatientCreated(UUID patientId, String patientName, Instant timestamp) {
-        super(patientId, timestamp);
-        this.patientName = patientName;
-    }
+	public PatientCreated(UUID patientId, String patientName, Instant timestamp) {
+		super(patientId, timestamp);
+		this.patientName = patientName;
+	}
 
-    public String getPatientName() {
-        return patientName;
-    }
+	public String getPatientName() {
+		return patientName;
+	}
+
 }

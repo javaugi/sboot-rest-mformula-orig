@@ -12,39 +12,42 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class Shape implements Cloneable {
 
-    private static final Logger log = LoggerFactory.getLogger(Shape.class);
-    private String id;
-    protected String type;
+	private static final Logger log = LoggerFactory.getLogger(Shape.class);
 
-    abstract void draw();
+	private String id;
 
-    public String getType() {
-        return type;
-    }
+	protected String type;
 
-    public String getId() {
-        return id;
-    }
+	abstract void draw();
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public Object clone() {
-        Object clone = null;
+	public String getId() {
+		return id;
+	}
 
-        try {
-            clone = super.clone();
+	public void setId(String id) {
+		this.id = id;
+	}
 
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+	public Object clone() {
+		Object clone = null;
 
-        return clone;
-    }
+		try {
+			clone = super.clone();
+
+		}
+		catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		return clone;
+	}
+
 }

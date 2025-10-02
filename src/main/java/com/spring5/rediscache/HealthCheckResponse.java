@@ -23,7 +23,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class HealthCheckResponse {
 
-    String id;
-    String status;
-    Map<String, Object> value;
+	String id;
+
+	String status;
+
+	Map<String, Object> value;
+
 }

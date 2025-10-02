@@ -8,32 +8,22 @@ import java.time.Instant;
 import org.springframework.stereotype.Service;
 
 /**
- * Demo: you should instead write to secure audit logs (WORM), include
- * requestor, IP, ID tokens, etc.
+ * Demo: you should instead write to secure audit logs (WORM), include requestor, IP, ID
+ * tokens, etc.
  */
 @Service
 public class HcareAuditService {
 
-    public void recordPrompt(
-            String operation,
-            String patientId,
-            String prompt,
-            String response,
-            String modelName,
-            String provenance) {
-        // Redact PII in prompt/response when logging
-        String redactedPrompt = PIIUtils.redactPII(prompt);
-        String redactedResponse = PIIUtils.redactPII(response);
+	public void recordPrompt(String operation, String patientId, String prompt, String response, String modelName,
+			String provenance) {
+		// Redact PII in prompt/response when logging
+		String redactedPrompt = PIIUtils.redactPII(prompt);
+		String redactedResponse = PIIUtils.redactPII(response);
 
-        // In production, write to secure audit store with proper access control & retention policies
-        System.out.printf(
-                "[%s] AUDIT %s patient=%s model=%s prov=%s prompt=%s response=%s%n",
-                Instant.now(),
-                operation,
-                patientId,
-                modelName,
-                provenance,
-                redactedPrompt,
-                redactedResponse);
-    }
+		// In production, write to secure audit store with proper access control &
+		// retention policies
+		System.out.printf("[%s] AUDIT %s patient=%s model=%s prov=%s prompt=%s response=%s%n", Instant.now(), operation,
+				patientId, modelName, provenance, redactedPrompt, redactedResponse);
+	}
+
 }

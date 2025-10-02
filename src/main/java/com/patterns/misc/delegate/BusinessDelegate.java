@@ -9,21 +9,23 @@ package com.patterns.misc.delegate;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class BusinessDelegate {
 
-    private BusinessLookUp lookupService = new BusinessLookUp();
-    private BusinessService businessService;
-    private String serviceType;
+	private BusinessLookUp lookupService = new BusinessLookUp();
 
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
-    }
+	private BusinessService businessService;
 
-    public void doTask() {
-        businessService = lookupService.getBusinessService(serviceType);
-        businessService.doProcessing();
-    }
+	private String serviceType;
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public void doTask() {
+		businessService = lookupService.getBusinessService(serviceType);
+		businessService.doProcessing();
+	}
+
 }

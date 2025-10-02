@@ -13,18 +13,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class PaymentClientImpl implements PaymentClient {
 
-    @Override
-    public CompletableFuture<Boolean> processPayment(String orderId) {
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    // Simulate API call / DB operation
-                    try {
-                        Thread.sleep(500); // Simulate delay
-                        // Here you'd check inventory, update DB, etc.
-                        return true; // or false if failed
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException("processPayment failed", e);
-                    }
-                });
-    }
+	@Override
+	public CompletableFuture<Boolean> processPayment(String orderId) {
+		return CompletableFuture.supplyAsync(() -> {
+			// Simulate API call / DB operation
+			try {
+				Thread.sleep(500); // Simulate delay
+				// Here you'd check inventory, update DB, etc.
+				return true; // or false if failed
+			}
+			catch (InterruptedException e) {
+				throw new RuntimeException("processPayment failed", e);
+			}
+		});
+	}
+
 }

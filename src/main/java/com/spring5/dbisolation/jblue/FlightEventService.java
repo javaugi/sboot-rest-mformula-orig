@@ -11,17 +11,19 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class FlightEventService {
 
-    private final FlightEventRepository flightEventRepository;
-    private final FlightEventProducer flightEventProducer;
+	private final FlightEventRepository flightEventRepository;
 
-    public Mono<FlightEvent> getFlightEvent(String id, String flightNumber) {
-        return Mono.just(FlightEvent.builder().id(id).flightNumber(flightNumber).build());
-    }
+	private final FlightEventProducer flightEventProducer;
 
-    @Async // runs in separate thread → doesn't block request
-    public void processEvent(FlightEvent event) {
-        // Additional transformations, validations, retries can go here
-        event = flightEventRepository.save(event);
-        flightEventProducer.sendEvent(event);
-    }
+	public Mono<FlightEvent> getFlightEvent(String id, String flightNumber) {
+		return Mono.just(FlightEvent.builder().id(id).flightNumber(flightNumber).build());
+	}
+
+	@Async // runs in separate thread → doesn't block request
+	public void processEvent(FlightEvent event) {
+		// Additional transformations, validations, retries can go here
+		event = flightEventRepository.save(event);
+		flightEventProducer.sendEvent(event);
+	}
+
 }

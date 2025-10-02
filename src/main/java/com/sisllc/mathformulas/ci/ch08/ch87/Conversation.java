@@ -4,20 +4,23 @@ import java.util.ArrayList;
 
 public abstract class Conversation {
 
-    protected ArrayList<User> participants = new ArrayList<User>();
-    protected int id;
-    protected ArrayList<Message> messages = new ArrayList<Message>();
+	protected ArrayList<User> participants = new ArrayList<User>();
 
-    public ArrayList<Message> getMessages() {
-        return messages;
-    }
+	protected int id;
 
-    public boolean addMessage(Message m) {
-        messages.add(m);
-        return true;
-    }
+	protected ArrayList<Message> messages = new ArrayList<Message>();
 
-    public int getId() {
-        return id;
-    }
+	public ArrayList<Message> getMessages() {
+		return messages;
+	}
+
+	public boolean addMessage(Message m) {
+		messages.add(m);
+		return true;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 }

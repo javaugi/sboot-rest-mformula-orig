@@ -13,54 +13,45 @@ import reactor.core.publisher.Mono;
 
 public interface MedicalDocumentRepository extends R2dbcRepository<MedicalDocument, String> {
 
-    @Query(
-            """
-        SELECT id, title, text_content, specialty, document_type, publication_date,
-               embeddding
-        FROM medicalDocuments
-        ORDER BY embeddding <=> $1
-        LIMIT 3
-        """)
-    Flux<MedicalDocument> findSimilarDocuments(float[] embedding);
+	@Query("""
+			SELECT id, title, text_content, specialty, document_type, publication_date,
+			       embeddding
+			FROM medicalDocuments
+			ORDER BY embeddding <=> $1
+			LIMIT 3
+			""")
+	Flux<MedicalDocument> findSimilarDocuments(float[] embedding);
 
-    @Query(
-            """
-        SELECT id, title, text_content, specialty, document_type, publication_date,
-               embeddding
-        FROM medicalDocuments
-        ORDER BY embeddding <=> $1
-        LIMIT $2
-        """)
-    Flux<MedicalDocument> findSimilarDocuments(float[] embedding, Integer limit);
+	@Query("""
+			SELECT id, title, text_content, specialty, document_type, publication_date,
+			       embeddding
+			FROM medicalDocuments
+			ORDER BY embeddding <=> $1
+			LIMIT $2
+			""")
+	Flux<MedicalDocument> findSimilarDocuments(float[] embedding, Integer limit);
 
-    @Query(
-            """
-        INSERT INTO medicalDocuments
-        (title, text_content, specialty, document_type, publication_date, embeddding)
-        VALUES ($1, $2, $3, $4, $5, $6)
-        RETURNING id
-        """)
-    Mono<Long> saveDocument(
-            String title,
-            String textContent,
-            String specialty,
-            String documentType,
-            OffsetDateTime publicationDate,
-            float[] embedding);
+	@Query("""
+			INSERT INTO medicalDocuments
+			(title, text_content, specialty, document_type, publication_date, embeddding)
+			VALUES ($1, $2, $3, $4, $5, $6)
+			RETURNING id
+			""")
+	Mono<Long> saveDocument(String title, String textContent, String specialty, String documentType,
+			OffsetDateTime publicationDate, float[] embedding);
 
-    @Query(
-            """
-        SELECT * FROM medical_documents
-        WHERE id = $1
-        FOR UPDATE SKIP LOCKED
-        """)
-    Mono<MedicalDocument> findByIdForUpdate(String id);
+	@Query("""
+			SELECT * FROM medical_documents
+			WHERE id = $1
+			FOR UPDATE SKIP LOCKED
+			""")
+	Mono<MedicalDocument> findByIdForUpdate(String id);
 
-    @Query(
-            """
-        SELECT * FROM medical_documents
-        WHERE id = $1
-        FOR UPDATE NOWAIT
-        """)
-    Mono<MedicalDocument> findByIdForUpdateNoWait(String id);
+	@Query("""
+			SELECT * FROM medical_documents
+			WHERE id = $1
+			FOR UPDATE NOWAIT
+			""")
+	Mono<MedicalDocument> findByIdForUpdateNoWait(String id);
+
 }

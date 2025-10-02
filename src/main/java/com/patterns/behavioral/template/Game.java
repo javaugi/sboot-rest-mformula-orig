@@ -12,29 +12,29 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class Game {
 
-    private static final Logger log = LoggerFactory.getLogger(Game.class);
+	private static final Logger log = LoggerFactory.getLogger(Game.class);
 
-    abstract void initialize();
+	abstract void initialize();
 
-    abstract void startPlay();
+	abstract void startPlay();
 
-    abstract void endPlay();
+	abstract void endPlay();
 
-    // template method
-    public final void play() {
+	// template method
+	public final void play() {
 
-        // initialize the game
-        initialize();
+		// initialize the game
+		initialize();
 
-        // start game
-        startPlay();
+		// start game
+		startPlay();
 
-        // end game
-        endPlay();
-    }
+		// end game
+		endPlay();
+	}
+
 }

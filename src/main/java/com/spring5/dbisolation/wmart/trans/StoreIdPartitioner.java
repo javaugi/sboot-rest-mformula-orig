@@ -19,51 +19,51 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StoreIdPartitioner implements Partitioner {
 
-    private final ConcurrentMap<String, Integer> partitionCache = new ConcurrentHashMap<>();
+	private final ConcurrentMap<String, Integer> partitionCache = new ConcurrentHashMap<>();
 
-    @Override
-    public int partition(
-            String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
+	@Override
+	public int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
 
-        String storeId = extractStoreId(key, value);
+		String storeId = extractStoreId(key, value);
 
-        // Get all partitions for the topic
-        List<PartitionInfo> partitions = cluster.partitionsForTopic(topic);
-        int numPartitions = partitions.size();
+		// Get all partitions for the topic
+		List<PartitionInfo> partitions = cluster.partitionsForTopic(topic);
+		int numPartitions = partitions.size();
 
-        if (numPartitions == 0) {
-            return 0;
-        }
+		if (numPartitions == 0) {
+			return 0;
+		}
 
-        // Consistent hashing for same storeId always goes to same partition
-        int partition = Math.abs(storeId.hashCode()) % numPartitions;
+		// Consistent hashing for same storeId always goes to same partition
+		int partition = Math.abs(storeId.hashCode()) % numPartitions;
 
-        log.debug("Partitioning message for storeId: {} to partition: {}", storeId, partition);
-        return partition;
-    }
+		log.debug("Partitioning message for storeId: {} to partition: {}", storeId, partition);
+		return partition;
+	}
 
-    private String extractStoreId(Object key, Object value) {
-        // Priority 1: Use key if it's the storeId
-        if (key instanceof String) {
-            return (String) key;
-        }
+	private String extractStoreId(Object key, Object value) {
+		// Priority 1: Use key if it's the storeId
+		if (key instanceof String) {
+			return (String) key;
+		}
 
-        // Priority 2: Extract storeId from message value
-        if (value instanceof StoreTransaction) {
-            return ((StoreTransaction) value).getStoreId();
-        }
+		// Priority 2: Extract storeId from message value
+		if (value instanceof StoreTransaction) {
+			return ((StoreTransaction) value).getStoreId();
+		}
 
-        // Fallback: Use hash of entire object
-        return String.valueOf(Objects.hash(key, value));
-    }
+		// Fallback: Use hash of entire object
+		return String.valueOf(Objects.hash(key, value));
+	}
 
-    @Override
-    public void close() {
-        partitionCache.clear();
-    }
+	@Override
+	public void close() {
+		partitionCache.clear();
+	}
 
-    @Override
-    public void configure(Map<String, ?> configs) {
-        // Additional configuration if needed
-    }
+	@Override
+	public void configure(Map<String, ?> configs) {
+		// Additional configuration if needed
+	}
+
 }

@@ -24,23 +24,24 @@ Spring provides several scopes for beans:
 @Component
 public class BeanLifecycleExample implements InitializingBean, DisposableBean {
 
-    @PostConstruct
-    public void init() {
-        System.out.println("PostConstruct method called");
-    }
+	@PostConstruct
+	public void init() {
+		System.out.println("PostConstruct method called");
+	}
 
-    @Override
-    public void afterPropertiesSet() {
-        System.out.println("InitializingBean's afterPropertiesSet called");
-    }
+	@Override
+	public void afterPropertiesSet() {
+		System.out.println("InitializingBean's afterPropertiesSet called");
+	}
 
-    @PreDestroy
-    public void cleanup() {
-        System.out.println("PreDestroy method called");
-    }
+	@PreDestroy
+	public void cleanup() {
+		System.out.println("PreDestroy method called");
+	}
 
-    @Override
-    public void destroy() {
-        System.out.println("DisposableBean's destroy called");
-    }
+	@Override
+	public void destroy() {
+		System.out.println("DisposableBean's destroy called");
+	}
+
 }

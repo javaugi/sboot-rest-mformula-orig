@@ -16,14 +16,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StationDao {
 
-    @Autowired
-    private StationRepository stationRepository;
+	@Autowired
+	private StationRepository stationRepository;
 
-    public List<Station> saveAll(List<Station> records) {
-        return stationRepository.saveAll(records);
-    }
+	public List<Station> saveAll(List<Station> records) {
+		return stationRepository.saveAll(records);
+	}
 
-    public List<Station> findAll() {
-        return stationRepository.findAll();
-    }
+	public List<Station> findAll() {
+		return stationRepository.findAll();
+	}
+
 }

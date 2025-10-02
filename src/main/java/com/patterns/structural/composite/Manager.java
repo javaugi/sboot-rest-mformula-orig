@@ -13,51 +13,52 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Manager implements Employee {
 
-    private String name;
-    private double salary;
+	private String name;
 
-    public Manager(String name, double salary) {
-        this.name = name;
-        this.salary = salary;
-    }
+	private double salary;
 
-    List<Employee> employees = new ArrayList<Employee>();
+	public Manager(String name, double salary) {
+		this.name = name;
+		this.salary = salary;
+	}
 
-    public void add(Employee employee) {
-        employees.add(employee);
-    }
+	List<Employee> employees = new ArrayList<Employee>();
 
-    public Employee getChild(int i) {
-        return employees.get(i);
-    }
+	public void add(Employee employee) {
+		employees.add(employee);
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Employee getChild(int i) {
+		return employees.get(i);
+	}
 
-    public double getSalary() {
-        return salary;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void print() {
-        System.out.println("-------------");
-        System.out.println("Name =" + getName());
-        System.out.println("Salary =" + getSalary());
-        System.out.println("-------------");
+	public double getSalary() {
+		return salary;
+	}
 
-        Iterator<Employee> employeeIterator = employees.iterator();
-        while (employeeIterator.hasNext()) {
-            Employee employee = employeeIterator.next();
-            employee.print();
-        }
-    }
+	public void print() {
+		System.out.println("-------------");
+		System.out.println("Name =" + getName());
+		System.out.println("Salary =" + getSalary());
+		System.out.println("-------------");
 
-    public void remove(Employee employee) {
-        employees.remove(employee);
-    }
+		Iterator<Employee> employeeIterator = employees.iterator();
+		while (employeeIterator.hasNext()) {
+			Employee employee = employeeIterator.next();
+			employee.print();
+		}
+	}
+
+	public void remove(Employee employee) {
+		employees.remove(employee);
+	}
+
 }

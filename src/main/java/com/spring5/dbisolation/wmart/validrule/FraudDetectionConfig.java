@@ -9,14 +9,15 @@ package com.spring5.dbisolation.wmart.validrule;
  */
 public class FraudDetectionConfig {
 
-    public Double getThreshold(String largeTransaction) {
-        switch (largeTransaction) {
-            case "largeTrabsaction":
-                return 10000d;
-            case "mediumTrabsaction":
-                return 5000d;
-            default:
-                return 100d;
-        }
-    }
+	public Double getThreshold(String largeTransaction) {
+		switch (largeTransaction) {
+			case "largeTrabsaction":
+				return 10000d;
+			case "mediumTrabsaction":
+				return 5000d;
+			default:
+				return 100d;
+		}
+	}
+
 }

@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class AbstractFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractFactory.class);
 
-    abstract Shape getShape(String shapeType);
+	abstract Shape getShape(String shapeType);
+
 }

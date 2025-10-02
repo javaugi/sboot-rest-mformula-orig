@@ -4,20 +4,22 @@ import java.util.Queue;
 
 public class Playlist {
 
-    private Song song;
-    private Queue<Song> queue;
+	private Song song;
 
-    public Playlist(Song song, Queue<Song> queue) {
-        super();
-        this.song = song;
-        this.queue = queue;
-    }
+	private Queue<Song> queue;
 
-    public Song getNextSongToPlay() {
-        return queue.peek();
-    }
+	public Playlist(Song song, Queue<Song> queue) {
+		super();
+		this.song = song;
+		this.queue = queue;
+	}
 
-    public void queueUpSong(Song s) {
-        queue.add(s);
-    }
+	public Song getNextSongToPlay() {
+		return queue.peek();
+	}
+
+	public void queueUpSong(Song s) {
+		queue.add(s);
+	}
+
 }

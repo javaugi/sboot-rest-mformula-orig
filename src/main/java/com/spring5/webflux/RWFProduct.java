@@ -20,13 +20,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RWFProduct {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    private String name;
-    private BigDecimal price;
-    private int quantity;
-    private String description;
-    private boolean status;
+	private String name;
+
+	private BigDecimal price;
+
+	private int quantity;
+
+	private String description;
+
+	private boolean status;
+
 }

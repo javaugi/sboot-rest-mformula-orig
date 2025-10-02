@@ -20,27 +20,38 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Order {
 
-    Long id;
+	Long id;
 
-    Long orderId;
+	Long orderId;
 
-    String storeId;
-    BigDecimal amount;
-    OrderStatus orderStatus;
-    String status;
+	String storeId;
 
-    private List<CartItem> items;
-    private CustomerInfo customerInfo;
-    private PaymentInfo paymentInfo;
-    private String subtotal;
-    private String tax;
-    private String shipping;
-    private String total;
-    private String orderDate;
+	BigDecimal amount;
 
-    public Order(String storeId, BigDecimal amount, OrderStatus orderStatus) {
-    }
+	OrderStatus orderStatus;
 
-    public Order(String orderId, String storeId, BigDecimal amount, OrderStatus orderStatus) {
-    }
+	String status;
+
+	private List<CartItem> items;
+
+	private CustomerInfo customerInfo;
+
+	private PaymentInfo paymentInfo;
+
+	private String subtotal;
+
+	private String tax;
+
+	private String shipping;
+
+	private String total;
+
+	private String orderDate;
+
+	public Order(String storeId, BigDecimal amount, OrderStatus orderStatus) {
+	}
+
+	public Order(String orderId, String storeId, BigDecimal amount, OrderStatus orderStatus) {
+	}
+
 }

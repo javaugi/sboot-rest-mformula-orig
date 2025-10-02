@@ -9,10 +9,10 @@ package com.patterns.behavioral.strategy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface PaymentStrategy {
 
-    public void pay(int amount);
+	public void pay(int amount);
+
 }

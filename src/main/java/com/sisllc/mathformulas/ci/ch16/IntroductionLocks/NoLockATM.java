@@ -2,36 +2,39 @@ package com.sisllc.mathformulas.ci.ch16.IntroductionLocks;
 
 public class NoLockATM {
 
-    private int balance = 100;
+	private int balance = 100;
 
-    public NoLockATM() {
-    }
+	public NoLockATM() {
+	}
 
-    public int withdraw(int value) {
-        int temp = balance;
-        try {
-            Thread.sleep(300);
-            temp = temp - value;
-            Thread.sleep(300);
-            balance = temp;
-        } catch (InterruptedException e) {
-        }
-        return temp;
-    }
+	public int withdraw(int value) {
+		int temp = balance;
+		try {
+			Thread.sleep(300);
+			temp = temp - value;
+			Thread.sleep(300);
+			balance = temp;
+		}
+		catch (InterruptedException e) {
+		}
+		return temp;
+	}
 
-    public int deposit(int value) {
-        int temp = balance;
-        try {
-            Thread.sleep(300);
-            temp = temp + value;
-            Thread.sleep(300);
-            balance = temp;
-        } catch (InterruptedException e) {
-        }
-        return temp;
-    }
+	public int deposit(int value) {
+		int temp = balance;
+		try {
+			Thread.sleep(300);
+			temp = temp + value;
+			Thread.sleep(300);
+			balance = temp;
+		}
+		catch (InterruptedException e) {
+		}
+		return temp;
+	}
 
-    public int getBalance() {
-        return balance;
-    }
+	public int getBalance() {
+		return balance;
+	}
+
 }

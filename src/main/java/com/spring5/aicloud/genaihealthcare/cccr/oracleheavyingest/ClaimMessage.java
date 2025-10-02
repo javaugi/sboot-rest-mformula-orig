@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class ClaimMessage {
 
-    Long id;
-    Long claimId;
+	Long id;
+
+	Long claimId;
+
 }

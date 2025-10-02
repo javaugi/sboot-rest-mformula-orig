@@ -23,32 +23,29 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class UserServiceProviderController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    public UserServiceProviderController(UserService userService) {
-        this.userService = userService;
-    }
+	public UserServiceProviderController(UserService userService) {
+		this.userService = userService;
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService
-                .findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<User> getUserById(@PathVariable Long id) {
+		return userService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	}
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-    }
+	@PostMapping
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		User createdUser = userService.createUser(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+	}
 
-    @GetMapping
-    public ResponseEntity<List<User>> getUsersByStatus(
-            @RequestParam(required = false) String status) {
+	@GetMapping
+	public ResponseEntity<List<User>> getUsersByStatus(@RequestParam(required = false) String status) {
 
-        List<User> users = status != null ? userService.findByStatus(status) : userService.findAll();
+		List<User> users = status != null ? userService.findByStatus(status) : userService.findAll();
 
-        return ResponseEntity.ok(users);
-    }
+		return ResponseEntity.ok(users);
+	}
+
 }

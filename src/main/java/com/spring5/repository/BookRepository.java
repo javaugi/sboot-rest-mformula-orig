@@ -17,17 +17,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    List<Book> findByAuthor(@Param("author") String author);
+	List<Book> findByAuthor(@Param("author") String author);
 
-    List<BookTitleProjection> findBy();
+	List<BookTitleProjection> findBy();
 
-    @QueryHints(
-            @QueryHint(name = "org.hibernate.fetchSize", value = "50"))
-    @Query("SELECT b FROM Book b WHERE b.author = :author")
-    List<Book> findByAuthorWithHint(@Param("author") String author);
+	@QueryHints(@QueryHint(name = "org.hibernate.fetchSize", value = "50"))
+	@Query("SELECT b FROM Book b WHERE b.author = :author")
+	List<Book> findByAuthorWithHint(@Param("author") String author);
 
-    // get_books_by_author is defined function
-    @Query(value = "SELECT * FROM get_books_by_author(:author, :page, :size)", nativeQuery = true)
-    List<Book> findBooksByAuthorWithPagination(
-            @Param("author") String author, @Param("page") int page, @Param("size") int size);
+	// get_books_by_author is defined function
+	@Query(value = "SELECT * FROM get_books_by_author(:author, :page, :size)", nativeQuery = true)
+	List<Book> findBooksByAuthorWithPagination(@Param("author") String author, @Param("page") int page,
+			@Param("size") int size);
+
 }

@@ -36,93 +36,95 @@ Requirements:
 @RequestMapping("/api/vehicle-tests")
 public class VehicleTestResultController {
 
-    @Autowired
-    private VehicleTestResultRepository testResultRepository;
+	@Autowired
+	private VehicleTestResultRepository testResultRepository;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<VehicleTestResult> createArtistByResp(
-            @RequestBody VehicleTestResult testResult) {
-        if (testResult.getTestType() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test Type is required");
-        }
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<VehicleTestResult> createArtistByResp(@RequestBody VehicleTestResult testResult) {
+		if (testResult.getTestType() == null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test Type is required");
+		}
 
-        // Check for duplicate artist
-        if (testResult.getTestDate() == null) {
-            System.out.println("createArtistByResp throws ResponseStatusException HttpStatus.CONFLICT ");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test Date Required");
-        }
+		// Check for duplicate artist
+		if (testResult.getTestDate() == null) {
+			System.out.println("createArtistByResp throws ResponseStatusException HttpStatus.CONFLICT ");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test Date Required");
+		}
 
-        return new ResponseEntity<>(testResultRepository.save(testResult), HttpStatus.CREATED);
-    }
+		return new ResponseEntity<>(testResultRepository.save(testResult), HttpStatus.CREATED);
+	}
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<VehicleTestResult>> getTestResults(
-            @RequestParam(required = false) String testType,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam(required = false) Boolean passed) {
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<VehicleTestResult>> getTestResults(@RequestParam(required = false) String testType,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+			@RequestParam(required = false) Boolean passed) {
 
-        try {
-            // Specification<VehicleTestResult> spec = where(null);
-            // Specification<VehicleTestResult> spec = Specification.where(null);
-            Specification<VehicleTestResult> spec
-                    = (root, query, criteriaBuilder) -> null; // Null predicate = no filtering
+		try {
+			// Specification<VehicleTestResult> spec = where(null);
+			// Specification<VehicleTestResult> spec = Specification.where(null);
+			Specification<VehicleTestResult> spec = (root, query, criteriaBuilder) -> null; // Null
+																							// predicate
+																							// =
+																							// no
+																							// filtering
 
-            if (testType != null) {
-                spec = spec.and((root, query, cb) -> cb.equal(root.get("testType"), testType));
-            }
+			if (testType != null) {
+				spec = spec.and((root, query, cb) -> cb.equal(root.get("testType"), testType));
+			}
 
-            if (startDate != null) {
-                spec
-                        = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("testDate"), startDate));
-            }
+			if (startDate != null) {
+				spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("testDate"), startDate));
+			}
 
-            if (endDate != null) {
-                spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("testDate"), endDate));
-            }
+			if (endDate != null) {
+				spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("testDate"), endDate));
+			}
 
-            if (passed != null) {
-                spec = spec.and((root, query, cb) -> cb.equal(root.get("passed"), passed));
-            }
+			if (passed != null) {
+				spec = spec.and((root, query, cb) -> cb.equal(root.get("passed"), passed));
+			}
 
-            List<VehicleTestResult> results = testResultRepository.findAll(spec);
+			List<VehicleTestResult> results = testResultRepository.findAll(spec);
 
-            // *
-            Specification<VehicleTestResult> spec2
-                    = (root, query, criteriaBuilder)
-                    -> criteriaBuilder.and(
-                            criteriaBuilder.equal(root.get("testType"), testType),
-                            criteriaBuilder.equal(root.get("testDate"), startDate)); // */
+			// *
+			Specification<VehicleTestResult> spec2 = (root, query, criteriaBuilder) -> criteriaBuilder.and(
+					criteriaBuilder.equal(root.get("testType"), testType),
+					criteriaBuilder.equal(root.get("testDate"), startDate)); // */
 
-            ResponseEntity.ok(results);
-            ResponseEntity.accepted().body(results);
-            new ResponseEntity<>(results, HttpStatus.OK);
-            return ResponseEntity.status(HttpStatus.OK).body(results);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-        }
-    }
+			ResponseEntity.ok(results);
+			ResponseEntity.accepted().body(results);
+			new ResponseEntity<>(results, HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body(results);
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+		}
+	}
 
-    public Specification<VehicleTestResult> createVehicleSpec(String key, Object value) {
-        return (root, query, criteriaBuilder) -> {
+	public Specification<VehicleTestResult> createVehicleSpec(String key, Object value) {
+		return (root, query, criteriaBuilder) -> {
 
-            // 1. Create a list to hold your dynamic conditions
-            List<Predicate> predicates = new ArrayList<>();
+			// 1. Create a list to hold your dynamic conditions
+			List<Predicate> predicates = new ArrayList<>();
 
-            // 2. Add conditions to the list based on your logic
-            if (value != null) {
-                predicates.add(criteriaBuilder.equal(root.get(key), value));
-            }
+			// 2. Add conditions to the list based on your logic
+			if (value != null) {
+				predicates.add(criteriaBuilder.equal(root.get(key), value));
+			}
 
-            // You can add more conditions here
-            // if (anotherVar != null) {
-            //     predicates.add(criteriaBuilder.like(root.get("someField"), "%" + anotherVar + "%"));
-            // }
-            // 3. Combine the list of predicates with an AND
-            // The toArray method converts the list into the varargs format required by .and()
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
-    }
+			// You can add more conditions here
+			// if (anotherVar != null) {
+			// predicates.add(criteriaBuilder.like(root.get("someField"), "%" + anotherVar
+			// + "%"));
+			// }
+			// 3. Combine the list of predicates with an AND
+			// The toArray method converts the list into the varargs format required by
+			// .and()
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
+	}
+
 }

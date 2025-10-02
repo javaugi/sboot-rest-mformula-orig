@@ -13,18 +13,18 @@ import java.util.Optional;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ContactService {
 
-    void save(Contact contact);
+	void save(Contact contact);
 
-    void saveAll(List<Contact> contacts);
+	void saveAll(List<Contact> contacts);
 
-    Optional<Contact> findById(Long id);
+	Optional<Contact> findById(Long id);
 
-    Iterable<Contact> findAll();
+	Iterable<Contact> findAll();
 
-    Iterable<Contact> findAll(int offset, int limit);
+	Iterable<Contact> findAll(int offset, int limit);
+
 }

@@ -23,77 +23,73 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class DeepSeekService {
 
-    public static final String ML_Q
-            = "what are the output formats from unstructured document processed by AI ML";
+	public static final String ML_Q = "what are the output formats from unstructured document processed by AI ML";
 
-    private static final Logger log = LoggerFactory.getLogger(DeepSeekService.class);
+	private static final Logger log = LoggerFactory.getLogger(DeepSeekService.class);
 
-    @Autowired
-    private @Qualifier(AiConfig.REST_TEMPLATE)
-    RestTemplate restTemplate;
+	@Autowired
+	private @Qualifier(AiConfig.REST_TEMPLATE) RestTemplate restTemplate;
 
-    @Value("classpath:/prompts/system-message.st")
-    private Resource systemResource;
+	@Value("classpath:/prompts/system-message.st")
+	private Resource systemResource;
 
-    @Value("${spring.ai.deepseek.openai.base-url}")
-    private String dsBaseUrl;
+	@Value("${spring.ai.deepseek.openai.base-url}")
+	private String dsBaseUrl;
 
-    @Value("${spring.ai.deepseek.openai.api-key}")
-    private String dsApiKey;
+	@Value("${spring.ai.deepseek.openai.api-key}")
+	private String dsApiKey;
 
-    @Value("${spring.ai.deepseek.openai.chat.options.model}")
-    private String dsModelDefault;
+	@Value("${spring.ai.deepseek.openai.chat.options.model}")
+	private String dsModelDefault;
 
-    public String getChatResponse(String userPrompt) {
-        log.info("getChatResponse userPrompt {}", userPrompt);
-        try {
-            // if (userPrompt == null || userPrompt.isEmpty()) {
-            //    userPrompt = ML_Q;
-            // }
+	public String getChatResponse(String userPrompt) {
+		log.info("getChatResponse userPrompt {}", userPrompt);
+		try {
+			// if (userPrompt == null || userPrompt.isEmpty()) {
+			// userPrompt = ML_Q;
+			// }
 
-            // 1. Prepare Headers
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", dsApiKey); // Replace with your API key
-            headers.setBearerAuth(dsApiKey);
+			// 1. Prepare Headers
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.set("Authorization", dsApiKey); // Replace with your API key
+			headers.setBearerAuth(dsApiKey);
 
-            // 2. Build Request Body
-            DeepSeekRequest request
-                    = new DeepSeekRequest(
-                            dsModelDefault, // Model name
-                            List.of(new DeepSeekRequest.Message("user", userPrompt)), // Messages
-                            0.7, /* Temperature */
-                            512 /* Max tokens */);
-            log.info("getChatResponse done request {}", request);
+			// 2. Build Request Body
+			DeepSeekRequest request = new DeepSeekRequest(dsModelDefault, // Model name
+					List.of(new DeepSeekRequest.Message("user", userPrompt)), // Messages
+					0.7, /* Temperature */
+					512 /* Max tokens */);
+			log.info("getChatResponse done request {}", request);
 
-            // 3. Send HTTP Request
-            HttpEntity<DeepSeekRequest> entity = new HttpEntity<>(request, headers);
-            ResponseEntity<DeepSeekResponse> response
-                    = restTemplate.exchange(dsBaseUrl, HttpMethod.POST, entity, DeepSeekResponse.class);
-            log.info("getChatResponse done response {}", response);
+			// 3. Send HTTP Request
+			HttpEntity<DeepSeekRequest> entity = new HttpEntity<>(request, headers);
+			ResponseEntity<DeepSeekResponse> response = restTemplate.exchange(dsBaseUrl, HttpMethod.POST, entity,
+					DeepSeekResponse.class);
+			log.info("getChatResponse done response {}", response);
 
-            // 4. Extract AI Response
-            return response.getBody().getChoices().get(0).getMessage().getContent();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return "";
-    }
+			// 4. Extract AI Response
+			return response.getBody().getChoices().get(0).getMessage().getContent();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "";
+	}
 
-    public String getAIResponse(String prompt) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", dsApiKey); // If API key is needed
-        headers.setBearerAuth(dsApiKey);
-        headers.setContentType(MediaType.APPLICATION_JSON);
+	public String getAIResponse(String prompt) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", dsApiKey); // If API key is needed
+		headers.setBearerAuth(dsApiKey);
+		headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String requestBody
-                = "{\"model\":\"deepseek-chat\",\"messages\":[{\"role\":\"user\",\"content\":\""
-                + prompt
-                + "\"}]}";
+		String requestBody = "{\"model\":\"deepseek-chat\",\"messages\":[{\"role\":\"user\",\"content\":\"" + prompt
+				+ "\"}]}";
 
-        HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(dsBaseUrl, request, String.class);
+		HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
+		ResponseEntity<String> response = restTemplate.postForEntity(dsBaseUrl, request, String.class);
 
-        return response.getBody();
-    }
+		return response.getBody();
+	}
+
 }

@@ -9,60 +9,65 @@ package com.interview.hrank;
  */
 public class Student {
 
-    private int id;
-    private String name;
-    private String fname;
-    private double cgpa;
-    private String email;
+	private int id;
 
-    public Student(int id, String name, double cgpa) {
-        this.id = id;
-        this.name = name;
-        this.fname = name;
-        this.cgpa = cgpa;
-    }
+	private String name;
 
-    public int getID() {
-        return id;
-    }
+	private String fname;
 
-    public String getName() {
-        return name;
-    }
+	private double cgpa;
 
-    public double getCGPA() {
-        return cgpa;
-    }
+	private String email;
 
-    public int getId() {
-        return id;
-    }
+	public Student(int id, String name, double cgpa) {
+		this.id = id;
+		this.name = name;
+		this.fname = name;
+		this.cgpa = cgpa;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public int getID() {
+		return id;
+	}
 
-    public double getCgpa() {
-        return cgpa;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setCgpa(double cgpa) {
-        this.cgpa = cgpa;
-    }
+	public double getCGPA() {
+		return cgpa;
+	}
 
-    public String getFname() {
-        return fname;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public double getCgpa() {
+		return cgpa;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setCgpa(double cgpa) {
+		this.cgpa = cgpa;
+	}
+
+	public String getFname() {
+		return fname;
+	}
+
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

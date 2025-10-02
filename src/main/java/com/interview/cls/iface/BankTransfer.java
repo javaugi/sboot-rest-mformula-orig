@@ -6,8 +6,9 @@ package com.interview.cls.iface;
 
 public non-sealed class BankTransfer implements PaymentMethod {
 
-    @Override
-    public void processPayment(double amount) {
-        System.out.println("Processing bank transfer: $" + amount);
-    }
+	@Override
+	public void processPayment(double amount) {
+		System.out.println("Processing bank transfer: $" + amount);
+	}
+
 }

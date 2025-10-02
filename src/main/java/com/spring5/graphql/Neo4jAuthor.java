@@ -19,12 +19,13 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 @Node("Neo4jAuthor")
 public class Neo4jAuthor {
 
-    @Id
-    @GeneratedValue
-    Long id;
+	@Id
+	@GeneratedValue
+	Long id;
 
-    String name;
+	String name;
 
-    @Relationship(type = "AUTHORED")
-    List<Neo4jBook> books;
+	@Relationship(type = "AUTHORED")
+	List<Neo4jBook> books;
+
 }

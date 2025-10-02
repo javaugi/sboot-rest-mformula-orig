@@ -18,25 +18,30 @@ import org.springframework.stereotype.Component;
 @Component
 class KafkaHealthIndicator implements HealthIndicator {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private static final Logger logger = LoggerFactory.getLogger(KafkaHealthIndicator.class);
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    @Autowired
-    public KafkaHealthIndicator(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	private static final Logger logger = LoggerFactory.getLogger(KafkaHealthIndicator.class);
 
-    @Override
-    public Health health() {
-        try {
-            // Attempt to send a message to check connectivity.
-            // A real implementation would be more robust, potentially checking consumer lag as well.
-            kafkaTemplate.send("health-check-topic", "ping");
-            return Health.up().withDetail("kafka-status", "Connected").build();
-        } catch (Exception e) {
-            logger.error("Kafka connection is down: {}", e.getMessage());
-            // If the connection fails, the health status is DOWN, signaling a problem to Kubernetes.
-            return Health.down().withDetail("kafka-status", "Disconnected").withException(e).build();
-        }
-    }
+	@Autowired
+	public KafkaHealthIndicator(KafkaTemplate<String, String> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
+
+	@Override
+	public Health health() {
+		try {
+			// Attempt to send a message to check connectivity.
+			// A real implementation would be more robust, potentially checking consumer
+			// lag as well.
+			kafkaTemplate.send("health-check-topic", "ping");
+			return Health.up().withDetail("kafka-status", "Connected").build();
+		}
+		catch (Exception e) {
+			logger.error("Kafka connection is down: {}", e.getMessage());
+			// If the connection fails, the health status is DOWN, signaling a problem to
+			// Kubernetes.
+			return Health.down().withDetail("kafka-status", "Disconnected").withException(e).build();
+		}
+	}
+
 }

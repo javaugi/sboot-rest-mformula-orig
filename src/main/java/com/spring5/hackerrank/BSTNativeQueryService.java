@@ -25,51 +25,52 @@ import org.springframework.stereotype.Service;
 @org.springframework.core.annotation.Order(10)
 public class BSTNativeQueryService implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(BSTNativeQueryService.class);
+	private static final Logger log = LoggerFactory.getLogger(BSTNativeQueryService.class);
 
-    @Autowired
-    private EntityManagerFactory emf;
-    @Autowired
-    private EntityManager entityManager;
-    @Autowired
-    private SessionFactory sessionFactory;
+	@Autowired
+	private EntityManagerFactory emf;
 
-    @PostConstruct
-    public void checkEntities() {
-        try {
-            System.out.println(
-                    "EntityManagerFactory    Managed types: " + emf.getMetamodel().getEntities());
-            System.out.println(
-                    "EntityManager           Managed types: " + entityManager.getMetamodel().getEntities());
-            System.out.println(
-                    "SessionFactory          Managed types: " + sessionFactory.getMetamodel().getEntities());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+	@Autowired
+	private EntityManager entityManager;
 
-    @SuppressWarnings("unchecked")
-    public List<String> doQuery(String qString) {
-        List<String> returnValue = new ArrayList<>();
-        Query query = entityManager.createNativeQuery(qString);
-        List<Object[]> list = (List<Object[]>) query.getResultList();
+	@Autowired
+	private SessionFactory sessionFactory;
 
-        StringBuilder sb;
-        for (Object[] obj : list) {
-            sb = new StringBuilder();
-            for (Object o : obj) {
-                sb.append(String.valueOf(o));
-                sb.append("     ");
-            }
+	@PostConstruct
+	public void checkEntities() {
+		try {
+			System.out.println("EntityManagerFactory    Managed types: " + emf.getMetamodel().getEntities());
+			System.out.println("EntityManager           Managed types: " + entityManager.getMetamodel().getEntities());
+			System.out.println("SessionFactory          Managed types: " + sessionFactory.getMetamodel().getEntities());
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
-            returnValue.add(sb.toString());
-        }
+	@SuppressWarnings("unchecked")
+	public List<String> doQuery(String qString) {
+		List<String> returnValue = new ArrayList<>();
+		Query query = entityManager.createNativeQuery(qString);
+		List<Object[]> list = (List<Object[]>) query.getResultList();
 
-        return returnValue;
-    }
+		StringBuilder sb;
+		for (Object[] obj : list) {
+			sb = new StringBuilder();
+			for (Object o : obj) {
+				sb.append(String.valueOf(o));
+				sb.append("     ");
+			}
 
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("BSTNativeQueryService with args {}", Arrays.toString(args));
-    }
+			returnValue.add(sb.toString());
+		}
+
+		return returnValue;
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		log.info("BSTNativeQueryService with args {}", Arrays.toString(args));
+	}
+
 }

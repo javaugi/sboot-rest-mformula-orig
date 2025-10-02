@@ -11,10 +11,10 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Criteria {
 
-    public List<Person> meetCriteria(List<Person> persons);
+	public List<Person> meetCriteria(List<Person> persons);
+
 }

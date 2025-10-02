@@ -22,51 +22,54 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:3000") // Allow CORS for local React app
 public class TaskController {
 
-    private final TaskRepository taskRepository;
+	private final TaskRepository taskRepository;
 
-    public TaskController(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
+	public TaskController(TaskRepository taskRepository) {
+		this.taskRepository = taskRepository;
+	}
 
-    @GetMapping
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
-    }
+	@GetMapping
+	public List<Task> getAllTasks() {
+		return taskRepository.findAll();
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Optional<Task> task = taskRepository.findById(id);
-        return task.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+		Optional<Task> task = taskRepository.findById(id);
+		return task.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
-    @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskRepository.save(task);
-    }
+	@PostMapping
+	public Task createTask(@RequestBody Task task) {
+		return taskRepository.save(task);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
-        Optional<Task> taskOptional = taskRepository.findById(id);
-        if (taskOptional.isPresent()) {
-            Task existingTask = taskOptional.get();
-            existingTask.setTitle(taskDetails.getTitle());
-            existingTask.setDescription(taskDetails.getDescription());
-            existingTask.setCompleted(taskDetails.isCompleted());
-            existingTask.setDueDate(taskDetails.getDueDate());
-            Task updatedTask = taskRepository.save(existingTask);
-            return ResponseEntity.ok(updatedTask);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
+		Optional<Task> taskOptional = taskRepository.findById(id);
+		if (taskOptional.isPresent()) {
+			Task existingTask = taskOptional.get();
+			existingTask.setTitle(taskDetails.getTitle());
+			existingTask.setDescription(taskDetails.getDescription());
+			existingTask.setCompleted(taskDetails.isCompleted());
+			existingTask.setDueDate(taskDetails.getDueDate());
+			Task updatedTask = taskRepository.save(existingTask);
+			return ResponseEntity.ok(updatedTask);
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        if (taskRepository.existsById(id)) {
-            taskRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+		if (taskRepository.existsById(id)) {
+			taskRepository.deleteById(id);
+			return ResponseEntity.noContent().build();
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 }

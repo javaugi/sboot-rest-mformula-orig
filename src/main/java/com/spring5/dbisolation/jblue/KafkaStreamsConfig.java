@@ -14,17 +14,16 @@ import org.springframework.kafka.annotation.EnableKafkaStreams;
 @EnableKafkaStreams
 public class KafkaStreamsConfig {
 
-    @Bean(name = "defaultKafkaStreamsConfig")
-    public StreamsConfig defaultKafkaStreamsConfig() {
-        Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "flight-events-processor");
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(
-                StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
-                org.apache.kafka.common.serialization.Serdes.String().getClass());
-        props.put(
-                StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
-                org.apache.kafka.common.serialization.Serdes.String().getClass());
-        return new StreamsConfig(props);
-    }
+	@Bean(name = "defaultKafkaStreamsConfig")
+	public StreamsConfig defaultKafkaStreamsConfig() {
+		Properties props = new Properties();
+		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "flight-events-processor");
+		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
+				org.apache.kafka.common.serialization.Serdes.String().getClass());
+		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
+				org.apache.kafka.common.serialization.Serdes.String().getClass());
+		return new StreamsConfig(props);
+	}
+
 }

@@ -18,19 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/docker")
 public class DockerController {
 
-    private static final Logger log = LoggerFactory.getLogger(DockerController.class);
+	private static final Logger log = LoggerFactory.getLogger(DockerController.class);
 
-    @GetMapping
-    public String index(final Model model) {
-        model.addAttribute("title", "Docker + Spring Boot");
-        model.addAttribute("msg", "Welcome to the docker container!");
-        log.info("DockerController index");
-        return "index";
-    }
+	@GetMapping
+	public String index(final Model model) {
+		model.addAttribute("title", "Docker + Spring Boot");
+		model.addAttribute("msg", "Welcome to the docker container!");
+		log.info("DockerController index");
+		return "index";
+	}
 
-    @RequestMapping("/home")
-    public String home() {
-        log.info("DockerController /home");
-        return "Hello Docker World";
-    }
+	@RequestMapping("/home")
+	public String home() {
+		log.info("DockerController /home");
+		return "Hello Docker World";
+	}
+
 }

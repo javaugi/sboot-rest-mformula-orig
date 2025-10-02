@@ -10,46 +10,48 @@ import org.springframework.stereotype.Service;
 @Service
 public class PrescriptionSagaEventSourcingService {
 
-    @Autowired
-    private PrescriptionEventRepository eventRepository;
+	@Autowired
+	private PrescriptionEventRepository eventRepository;
 
-    @Autowired
-    private AdjudicationService adjudicationService;
+	@Autowired
+	private AdjudicationService adjudicationService;
 
-    @Autowired
-    private InsuranceService insuranceService;
+	@Autowired
+	private InsuranceService insuranceService;
 
-    public void handleEvent(PrescriptionEvent event) {
-        // Store event
-        eventRepository.save(event);
+	public void handleEvent(PrescriptionEvent event) {
+		// Store event
+		eventRepository.save(event);
 
-        // Check if all steps completed
-        if (isSagaComplete(event.getCorrelationId())) {
-            completeSaga(event.getCorrelationId());
-        } else if (isSagaFailed(event.getCorrelationId())) {
-            compensateSaga(event.getCorrelationId());
-        }
-    }
+		// Check if all steps completed
+		if (isSagaComplete(event.getCorrelationId())) {
+			completeSaga(event.getCorrelationId());
+		}
+		else if (isSagaFailed(event.getCorrelationId())) {
+			compensateSaga(event.getCorrelationId());
+		}
+	}
 
-    private boolean isSagaComplete(String correlationId) {
-        return true;
-    }
+	private boolean isSagaComplete(String correlationId) {
+		return true;
+	}
 
-    private void completeSaga(String correlationId) {
-    }
+	private void completeSaga(String correlationId) {
+	}
 
-    private boolean isSagaFailed(String correlationId) {
-        return true;
-    }
+	private boolean isSagaFailed(String correlationId) {
+		return true;
+	}
 
-    private void compensateSaga(String correlationId) {
-    }
+	private void compensateSaga(String correlationId) {
+	}
 
-    // SAGA Compensation:
-    public void compensatePrescription(String prescriptionId) {
-        // Reverse any completed steps
-        adjudicationService.cancelAdjudication(prescriptionId);
-        insuranceService.revertCoverageCheck(prescriptionId);
-        // Log compensation
-    }
+	// SAGA Compensation:
+	public void compensatePrescription(String prescriptionId) {
+		// Reverse any completed steps
+		adjudicationService.cancelAdjudication(prescriptionId);
+		insuranceService.revertCoverageCheck(prescriptionId);
+		// Log compensation
+	}
+
 }

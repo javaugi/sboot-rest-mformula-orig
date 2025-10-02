@@ -18,19 +18,20 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(locations = "classpath:application.properties")
 public class TestPostgresConfig {
 
-    @Value("${spring.r2dbc.url}")
-    public String url;
-    @Value("${spring.r2dbc.username}")
-    public String uname;
-    @Value("${spring.r2dbc.password}")
-    public String pwd;
+	@Value("${spring.r2dbc.url}")
+	public String url;
 
-    @Bean
-    @Primary
-    public ConnectionFactory connectionFactory() {
-        log.info("TestPostgresConfig conn url {}", url);
-        return ConnectionFactories.get(
-                String.format("%s?user=%s&password=%s", url, uname, pwd)
-        );
-    }
+	@Value("${spring.r2dbc.username}")
+	public String uname;
+
+	@Value("${spring.r2dbc.password}")
+	public String pwd;
+
+	@Bean
+	@Primary
+	public ConnectionFactory connectionFactory() {
+		log.info("TestPostgresConfig conn url {}", url);
+		return ConnectionFactories.get(String.format("%s?user=%s&password=%s", url, uname, pwd));
+	}
+
 }

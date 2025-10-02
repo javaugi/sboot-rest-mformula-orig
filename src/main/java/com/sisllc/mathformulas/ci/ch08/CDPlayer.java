@@ -2,38 +2,40 @@ package com.sisllc.mathformulas.ci.ch08;
 
 public class CDPlayer {
 
-    private Playlist p;
-    private CD c;
+	private Playlist p;
 
-    public Playlist getPlaylist() {
-        return p;
-    }
+	private CD c;
 
-    public void setPlaylist(Playlist p) {
-        this.p = p;
-    }
+	public Playlist getPlaylist() {
+		return p;
+	}
 
-    public CD getCD() {
-        return c;
-    }
+	public void setPlaylist(Playlist p) {
+		this.p = p;
+	}
 
-    public void setCD(CD c) {
-        this.c = c;
-    }
+	public CD getCD() {
+		return c;
+	}
 
-    public CDPlayer(Playlist p) {
-        this.p = p;
-    }
+	public void setCD(CD c) {
+		this.c = c;
+	}
 
-    public CDPlayer(CD c, Playlist p) {
-        this.p = p;
-        this.c = c;
-    }
+	public CDPlayer(Playlist p) {
+		this.p = p;
+	}
 
-    public CDPlayer(CD c) {
-        this.c = c;
-    }
+	public CDPlayer(CD c, Playlist p) {
+		this.p = p;
+		this.c = c;
+	}
 
-    public void playSong(Song s) {
-    }
+	public CDPlayer(CD c) {
+		this.c = c;
+	}
+
+	public void playSong(Song s) {
+	}
+
 }

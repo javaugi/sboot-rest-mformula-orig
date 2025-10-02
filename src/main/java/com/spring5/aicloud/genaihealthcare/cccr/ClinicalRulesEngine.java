@@ -9,15 +9,16 @@ package com.spring5.aicloud.genaihealthcare.cccr;
  */
 public class ClinicalRulesEngine {
 
-    public ValidationResult validate(Claim claim) {
-        return ValidationResult.builder().build();
-    }
+	public ValidationResult validate(Claim claim) {
+		return ValidationResult.builder().build();
+	}
 
-    public boolean isCrossClaimEligible(Claim claim) {
-        return true;
-    }
+	public boolean isCrossClaimEligible(Claim claim) {
+		return true;
+	}
 
-    public ReviewResult applyRules(Claim claim) {
-        return ReviewResult.builder().build();
-    }
+	public ReviewResult applyRules(Claim claim) {
+		return ReviewResult.builder().build();
+	}
+
 }

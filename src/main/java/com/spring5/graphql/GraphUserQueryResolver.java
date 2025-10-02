@@ -15,19 +15,20 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class GraphUserQueryResolver {
 
-    private final GraphUserService userService;
+	private final GraphUserService userService;
 
-    public GraphUserQueryResolver(GraphUserService userService) {
-        this.userService = userService;
-    }
+	public GraphUserQueryResolver(GraphUserService userService) {
+		this.userService = userService;
+	}
 
-    @QueryMapping
-    public List<GraphUser> allUsers() {
-        return userService.getAllUsers();
-    }
+	@QueryMapping
+	public List<GraphUser> allUsers() {
+		return userService.getAllUsers();
+	}
 
-    @QueryMapping
-    public GraphUser userById(@Param("id") Long id) {
-        return userService.getUserById(id);
-    }
+	@QueryMapping
+	public GraphUser userById(@Param("id") Long id) {
+		return userService.getUserById(id);
+	}
+
 }

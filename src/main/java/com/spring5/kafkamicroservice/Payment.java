@@ -28,26 +28,29 @@ import lombok.ToString;
 @Entity
 public class Payment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    @NotNull(message = "Amount is required")
-    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
-    private BigDecimal amount; // Amount in major currency units (e.g., USD)
+	@NotNull(message = "Amount is required")
+	@DecimalMin(value = "0.01", message = "Amount must be greater than 0")
+	private BigDecimal amount; // Amount in major currency units (e.g., USD)
 
-    @NotBlank(message = "Currency is required")
-    private String currency; // e.g., "usd", "eur"
+	@NotBlank(message = "Currency is required")
+	private String currency; // e.g., "usd", "eur"
 
-    @NotBlank(message = "Payment Method ID is required")
-    private String paymentMethodId; // Obtained from Stripe.js/Elements on the frontend
+	@NotBlank(message = "Payment Method ID is required")
+	private String paymentMethodId; // Obtained from Stripe.js/Elements on the frontend
 
-    @NotBlank(message = "Order ID is required")
-    private String orderId; // Your internal order ID for idempotency and tracking
+	@NotBlank(message = "Order ID is required")
+	private String orderId; // Your internal order ID for idempotency and tracking
 
-    private String customerEmail; // Optional: Customer email for receipt
+	private String customerEmail; // Optional: Customer email for receipt
 
-    private String paymentDetails;
-    private boolean success;
-    private String userId;
+	private String paymentDetails;
+
+	private boolean success;
+
+	private String userId;
+
 }

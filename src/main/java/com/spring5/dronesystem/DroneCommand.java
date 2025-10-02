@@ -8,10 +8,7 @@ package com.spring5.dronesystem;
  * @author javaugi
  */
 public enum DroneCommand {
-    TAKEOFF,
-    LAND,
-    RETURN_TO_BASE,
-    MOVE_TO,
-    ACTIVATE_SENSOR,
-    DEACTIVATE_SENSOR
+
+	TAKEOFF, LAND, RETURN_TO_BASE, MOVE_TO, ACTIVATE_SENSOR, DEACTIVATE_SENSOR
+
 }

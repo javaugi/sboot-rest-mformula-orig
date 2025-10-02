@@ -18,20 +18,22 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@CosmosIndexingPolicy(
-        includePaths = {"/eventId/?", "/processedAt/?"},
-        excludePaths = {"/*"})
+@CosmosIndexingPolicy(includePaths = { "/eventId/?", "/processedAt/?" }, excludePaths = { "/*" })
 @Container(containerName = "events")
 public class EventRecord {
 
-    @Id
-    private String id; // uuid or composite key
+	@Id
+	private String id; // uuid or composite key
 
-    @PartitionKey
-    private String eventId; // source event id for idempotency
-    private String payload;
-    private OffsetDateTime processedAt;
-    // private Instant processedAt;
+	@PartitionKey
+	private String eventId; // source event id for idempotency
 
-    // constructors/getters/setters
+	private String payload;
+
+	private OffsetDateTime processedAt;
+
+	// private Instant processedAt;
+
+	// constructors/getters/setters
+
 }

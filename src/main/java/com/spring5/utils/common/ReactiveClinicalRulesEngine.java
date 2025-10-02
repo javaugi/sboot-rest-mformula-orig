@@ -12,15 +12,16 @@ import reactor.core.publisher.Mono;
  */
 public class ReactiveClinicalRulesEngine {
 
-    public ValidationResult validate(ReactiveClaimEvent claim) {
-        return ValidationResult.builder().build();
-    }
+	public ValidationResult validate(ReactiveClaimEvent claim) {
+		return ValidationResult.builder().build();
+	}
 
-    public boolean isCrossClaimEligible(ReactiveClaimEvent claim) {
-        return true;
-    }
+	public boolean isCrossClaimEligible(ReactiveClaimEvent claim) {
+		return true;
+	}
 
-    public Mono<ReactiveReviewResult> applyClinicalRules(ReactiveClaimEvent claim) {
-        return Mono.just(ReactiveReviewResult.builder().build());
-    }
+	public Mono<ReactiveReviewResult> applyClinicalRules(ReactiveClaimEvent claim) {
+		return Mono.just(ReactiveReviewResult.builder().build());
+	}
+
 }

@@ -5,10 +5,7 @@
 package com.spring5.utils.common;
 
 public enum OrchestrationStatus {
-    INITIATED,
-    IN_PROGRESS,
-    COMPLETED,
-    FAILED,
-    COMPENSATING,
-    COMPENSATED
+
+	INITIATED, IN_PROGRESS, COMPLETED, FAILED, COMPENSATING, COMPENSATED
+
 }

@@ -15,36 +15,37 @@ import org.springframework.kafka.config.TopicBuilder;
  */
 public class ReactiveKafkaConfig {
 
-    @Value("${app.topics.claim-submitted}")
-    private String claimSubmittedTopic;
+	@Value("${app.topics.claim-submitted}")
+	private String claimSubmittedTopic;
 
-    @Value("${app.topics.claim-validated}")
-    private String claimValidatedTopic;
+	@Value("${app.topics.claim-validated}")
+	private String claimValidatedTopic;
 
-    @Value("${app.topics.claim-reviewed}")
-    private String claimReviewedTopic;
+	@Value("${app.topics.claim-reviewed}")
+	private String claimReviewedTopic;
 
-    @Value("${app.topics.claim-processed}")
-    private String claimProcessedTopic;
+	@Value("${app.topics.claim-processed}")
+	private String claimProcessedTopic;
 
-    @Value("${app.topics.dead-letter}")
-    private String deadLetterTopic;
+	@Value("${app.topics.dead-letter}")
+	private String deadLetterTopic;
 
-    @Bean
-    public NewTopic claimSubmittedTopic() {
-        return TopicBuilder.name(claimSubmittedTopic)
-                .partitions(3)
-                .replicas(1)
-                .config(TopicConfig.RETENTION_MS_CONFIG, "604800000") // 7 days
-                .build();
-    }
+	@Bean
+	public NewTopic claimSubmittedTopic() {
+		return TopicBuilder.name(claimSubmittedTopic)
+			.partitions(3)
+			.replicas(1)
+			.config(TopicConfig.RETENTION_MS_CONFIG, "604800000") // 7 days
+			.build();
+	}
 
-    @Bean
-    public NewTopic deadLetterTopic() {
-        return TopicBuilder.name(deadLetterTopic)
-                .partitions(1)
-                .replicas(1)
-                .config(TopicConfig.RETENTION_MS_CONFIG, "2592000000") // 30 days
-                .build();
-    }
+	@Bean
+	public NewTopic deadLetterTopic() {
+		return TopicBuilder.name(deadLetterTopic)
+			.partitions(1)
+			.replicas(1)
+			.config(TopicConfig.RETENTION_MS_CONFIG, "2592000000") // 30 days
+			.build();
+	}
+
 }

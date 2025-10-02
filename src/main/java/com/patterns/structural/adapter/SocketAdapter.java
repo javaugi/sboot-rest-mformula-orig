@@ -9,14 +9,14 @@ package com.patterns.structural.adapter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface SocketAdapter {
 
-    public Volt get120Volt();
+	public Volt get120Volt();
 
-    public Volt get12Volt();
+	public Volt get12Volt();
 
-    public Volt get3Volt();
+	public Volt get3Volt();
+
 }

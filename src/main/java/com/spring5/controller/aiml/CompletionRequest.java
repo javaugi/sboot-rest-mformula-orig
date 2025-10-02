@@ -10,13 +10,22 @@ import lombok.Data;
 @Data
 public class CompletionRequest {
 
-    String prompt;
-    Integer maxTokens;
-    Double temperature;
-    Double frequencyPenalty;
-    Double presencePenalty;
-    Double topP;
-    Integer bestOf;
-    Boolean stream;
-    List<String> stop;
+	String prompt;
+
+	Integer maxTokens;
+
+	Double temperature;
+
+	Double frequencyPenalty;
+
+	Double presencePenalty;
+
+	Double topP;
+
+	Integer bestOf;
+
+	Boolean stream;
+
+	List<String> stop;
+
 }

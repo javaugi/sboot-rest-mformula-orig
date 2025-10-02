@@ -9,11 +9,12 @@ package com.spring5.validatorex;
  */
 public class InventoryException extends RuntimeException {
 
-    public InventoryException(String message) {
-        super(message);
-    }
+	public InventoryException(String message) {
+		super(message);
+	}
 
-    public InventoryException(String message, Exception e) {
-        super(message);
-    }
+	public InventoryException(String message, Exception e) {
+		super(message);
+	}
+
 }

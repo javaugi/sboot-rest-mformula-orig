@@ -16,17 +16,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class RegionFilter extends OncePerRequestFilter {
 
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-        String region = request.getHeader("X-Region");
-        RegionContextHolder.setRegion(region != null ? region : "US");
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws ServletException, IOException {
+		String region = request.getHeader("X-Region");
+		RegionContextHolder.setRegion(region != null ? region : "US");
 
-        try {
-            chain.doFilter(request, response);
-        } finally {
-            RegionContextHolder.clear();
-        }
-    }
+		try {
+			chain.doFilter(request, response);
+		}
+		finally {
+			RegionContextHolder.clear();
+		}
+	}
+
 }

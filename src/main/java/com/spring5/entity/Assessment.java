@@ -30,11 +30,14 @@ import lombok.ToString;
 @Table(name = "ASSESSMENT")
 public class Assessment implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    Long patientId;
-    LocalDate date;
-    String status;
+	Long patientId;
+
+	LocalDate date;
+
+	String status;
+
 }

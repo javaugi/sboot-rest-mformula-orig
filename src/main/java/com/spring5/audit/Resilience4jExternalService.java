@@ -17,53 +17,60 @@ import org.springframework.stereotype.Service;
 @Service
 public class Resilience4jExternalService {
 
-    private static final Logger logger = LoggerFactory.getLogger(Resilience4jExternalService.class);
-    private final Random random = new Random();
-    private int failureCount = 0;
-    private int successCount = 0;
+	private static final Logger logger = LoggerFactory.getLogger(Resilience4jExternalService.class);
 
-    public String callExternalSystem() {
-        logger.info("Calling external system...");
+	private final Random random = new Random();
 
-        // Simulate random failures
-        if (random.nextBoolean()) {
-            failureCount++;
-            logger.error("External system call failed!");
-            throw new RuntimeException("External system is down!");
-        } else {
-            successCount++;
-            logger.info("External system call successful.");
-            return "Success from external system!";
-        }
-    }
+	private int failureCount = 0;
 
-    // Simulate a slow external system call (for Timeout or Bulkhead examples if needed)
-    public CompletableFuture<String> callExternalSystemAsync() {
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    logger.info("Calling external system asynchronously...");
-                    try {
-                        TimeUnit.SECONDS.sleep(random.nextInt(5)); // Simulate random delay up to 5 seconds
-                        if (random.nextBoolean()) {
-                            logger.error("Async external system call failed!");
-                            throw new RuntimeException("Async external system is down!");
-                        } else {
-                            logger.info("Async external system call successful.");
-                            return "Async success from external system!";
-                        }
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        logger.error("Async call interrupted", e);
-                        throw new RuntimeException("Async call interrupted", e);
-                    }
-                });
-    }
+	private int successCount = 0;
 
-    public int getFailureCount() {
-        return failureCount;
-    }
+	public String callExternalSystem() {
+		logger.info("Calling external system...");
 
-    public int getSuccessCount() {
-        return successCount;
-    }
+		// Simulate random failures
+		if (random.nextBoolean()) {
+			failureCount++;
+			logger.error("External system call failed!");
+			throw new RuntimeException("External system is down!");
+		}
+		else {
+			successCount++;
+			logger.info("External system call successful.");
+			return "Success from external system!";
+		}
+	}
+
+	// Simulate a slow external system call (for Timeout or Bulkhead examples if needed)
+	public CompletableFuture<String> callExternalSystemAsync() {
+		return CompletableFuture.supplyAsync(() -> {
+			logger.info("Calling external system asynchronously...");
+			try {
+				TimeUnit.SECONDS.sleep(random.nextInt(5)); // Simulate random delay up to
+															// 5 seconds
+				if (random.nextBoolean()) {
+					logger.error("Async external system call failed!");
+					throw new RuntimeException("Async external system is down!");
+				}
+				else {
+					logger.info("Async external system call successful.");
+					return "Async success from external system!";
+				}
+			}
+			catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				logger.error("Async call interrupted", e);
+				throw new RuntimeException("Async call interrupted", e);
+			}
+		});
+	}
+
+	public int getFailureCount() {
+		return failureCount;
+	}
+
+	public int getSuccessCount() {
+		return successCount;
+	}
+
 }

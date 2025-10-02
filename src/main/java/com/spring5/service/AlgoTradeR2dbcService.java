@@ -19,64 +19,68 @@ import reactor.core.publisher.Mono;
 // @Service
 public class AlgoTradeR2dbcService {
 
-    private final AlgoTradeR2dbcRepository algoTradeRepository;
+	private final AlgoTradeR2dbcRepository algoTradeRepository;
 
-    public AlgoTradeR2dbcService(AlgoTradeR2dbcRepository algoAlgoTradeRepository) {
-        this.algoTradeRepository = algoAlgoTradeRepository;
-    }
+	public AlgoTradeR2dbcService(AlgoTradeR2dbcRepository algoAlgoTradeRepository) {
+		this.algoTradeRepository = algoAlgoTradeRepository;
+	}
 
-    public Mono<AlgoTrade> findById(Long id) {
-        return algoTradeRepository.findById(id).defaultIfEmpty(AlgoTrade.builder().build());
-    }
+	public Mono<AlgoTrade> findById(Long id) {
+		return algoTradeRepository.findById(id).defaultIfEmpty(AlgoTrade.builder().build());
+	}
 
-    public Flux<AlgoTrade> findAll() {
-        return algoTradeRepository.findAll();
-    }
+	public Flux<AlgoTrade> findAll() {
+		return algoTradeRepository.findAll();
+	}
 
-    public Flux<AlgoTrade> findAll(Sort sort) {
-        return algoTradeRepository.findAll(sort);
-    }
+	public Flux<AlgoTrade> findAll(Sort sort) {
+		return algoTradeRepository.findAll(sort);
+	}
 
-    @Transactional
-    public Mono<AlgoTrade> save(AlgoTrade trade) {
-        return algoTradeRepository.save(trade);
-    }
+	@Transactional
+	public Mono<AlgoTrade> save(AlgoTrade trade) {
+		return algoTradeRepository.save(trade);
+	}
 
-    @Transactional
-    public Flux<AlgoTrade> saveAll(List<AlgoTrade> trades) {
-        return algoTradeRepository.saveAll(trades);
-    }
+	@Transactional
+	public Flux<AlgoTrade> saveAll(List<AlgoTrade> trades) {
+		return algoTradeRepository.saveAll(trades);
+	}
 
-    @Transactional
-    public Mono<AlgoTrade> update(AlgoTrade trade) {
-        return algoTradeRepository.save(trade);
-    }
+	@Transactional
+	public Mono<AlgoTrade> update(AlgoTrade trade) {
+		return algoTradeRepository.save(trade);
+	}
 
-    public Flux<AlgoTrade> getByUserEmail(String userEmail) {
-        try {
-            return algoTradeRepository.findByUserEmail(userEmail);
-        } catch (Exception ex) {
-            return Flux.just(AlgoTrade.builder().build());
-        }
-    }
+	public Flux<AlgoTrade> getByUserEmail(String userEmail) {
+		try {
+			return algoTradeRepository.findByUserEmail(userEmail);
+		}
+		catch (Exception ex) {
+			return Flux.just(AlgoTrade.builder().build());
+		}
+	}
 
-    public Mono<Boolean> addMoney(Long userAccountId, BigDecimal amount) {
-        try {
-            algoTradeRepository.addMoney(userAccountId, amount);
-        } catch (Exception ex) {
-            return Mono.just(Boolean.FALSE);
-        }
+	public Mono<Boolean> addMoney(Long userAccountId, BigDecimal amount) {
+		try {
+			algoTradeRepository.addMoney(userAccountId, amount);
+		}
+		catch (Exception ex) {
+			return Mono.just(Boolean.FALSE);
+		}
 
-        return Mono.just(Boolean.TRUE);
-    }
+		return Mono.just(Boolean.TRUE);
+	}
 
-    public Mono<Boolean> deleteById(Long id) {
-        try {
-            algoTradeRepository.deleteById(id);
-        } catch (Exception ex) {
-            return Mono.just(Boolean.FALSE);
-        }
+	public Mono<Boolean> deleteById(Long id) {
+		try {
+			algoTradeRepository.deleteById(id);
+		}
+		catch (Exception ex) {
+			return Mono.just(Boolean.FALSE);
+		}
 
-        return Mono.just(Boolean.TRUE);
-    }
+		return Mono.just(Boolean.TRUE);
+	}
+
 }

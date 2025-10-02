@@ -11,24 +11,24 @@ import com.interview.shoppingcart.api.Item;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class DiscountItem extends ItemImpl {
 
-    private double discount;
+	private double discount;
 
-    public DiscountItem(String name, double price, double discount) {
-        super(name, price);
-        super.setCategory(Item.Category.Discount);
-        this.discount = discount;
-    }
+	public DiscountItem(String name, double price, double discount) {
+		super(name, price);
+		super.setCategory(Item.Category.Discount);
+		this.discount = discount;
+	}
 
-    public double getDiscount() {
-        return discount;
-    }
+	public double getDiscount() {
+		return discount;
+	}
 
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
+
 }

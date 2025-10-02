@@ -29,10 +29,12 @@ import lombok.ToString;
 @Table(name = "GRAPH_USER")
 public class GraphUser implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String username;
-    private String userEmail;
+	private String username;
+
+	private String userEmail;
+
 }

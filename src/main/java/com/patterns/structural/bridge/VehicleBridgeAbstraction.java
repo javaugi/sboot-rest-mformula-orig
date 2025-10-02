@@ -9,19 +9,21 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class VehicleBridgeAbstraction {
-    // abstraction in bridge pattern
 
-    protected Workshop workShop1;
-    protected Workshop workShop2;
+	// abstraction in bridge pattern
 
-    protected VehicleBridgeAbstraction(Workshop workShop1, Workshop workShop2) {
-        this.workShop1 = workShop1;
-        this.workShop2 = workShop2;
-    }
+	protected Workshop workShop1;
 
-    public abstract void manufacture();
+	protected Workshop workShop2;
+
+	protected VehicleBridgeAbstraction(Workshop workShop1, Workshop workShop2) {
+		this.workShop1 = workShop1;
+		this.workShop2 = workShop2;
+	}
+
+	public abstract void manufacture();
+
 }

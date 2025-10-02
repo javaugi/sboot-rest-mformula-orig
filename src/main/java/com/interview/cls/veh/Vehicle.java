@@ -8,15 +8,16 @@ package com.interview.cls.veh;
 // Complex sealed hierarchy
 public abstract sealed class Vehicle permits Car, Truck, Motorcycle {
 
-    private final String manufacturer;
+	private final String manufacturer;
 
-    public Vehicle(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
+	public Vehicle(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
 
-    public String getManufacturer() {
-        return manufacturer;
-    }
+	public String getManufacturer() {
+		return manufacturer;
+	}
 
-    public abstract void startEngine();
+	public abstract void startEngine();
+
 }

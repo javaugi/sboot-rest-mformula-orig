@@ -24,42 +24,39 @@ Query tips:
 @Service
 public class FlightServiceClientSideCompo {
 
-    private final FlightEventRepository flightRepository;
-    private final AirlineRepository airlineRepository;
+	private final FlightEventRepository flightRepository;
 
-    public FlightDetails getFlightWithAirlineDetails(String flightNumber) {
-        // 1. Get flight data
-        FlightEvent flight
-                = flightRepository
-                        .findByFlightNumber(flightNumber)
-                        .orElseThrow(() -> new RuntimeException("Flight not found"));
+	private final AirlineRepository airlineRepository;
 
-        // 2. Get airline data separately
-        Airline airline
-                = airlineRepository
-                        .findByAirlineCode(flight.getAirlineCode())
-                        .orElseThrow(() -> new RuntimeException("Airline not found"));
+	public FlightDetails getFlightWithAirlineDetails(String flightNumber) {
+		// 1. Get flight data
+		FlightEvent flight = flightRepository.findByFlightNumber(flightNumber)
+			.orElseThrow(() -> new RuntimeException("Flight not found"));
 
-        // 3. Compose results on client side
-        return new FlightDetails(flight, airline);
-    }
+		// 2. Get airline data separately
+		Airline airline = airlineRepository.findByAirlineCode(flight.getAirlineCode())
+			.orElseThrow(() -> new RuntimeException("Airline not found"));
 
-    public List<FlightDetails> getFlightsWithAirlines(String departureAirport) {
-        // 1. Get all flights for airport
-        List<FlightEvent> flights = flightRepository.findByDepartureAirport(departureAirport);
+		// 3. Compose results on client side
+		return new FlightDetails(flight, airline);
+	}
 
-        // 2. Get unique airline codes
-        Set<String> airlineCodes
-                = flights.stream().map(FlightEvent::getAirlineCode).collect(Collectors.toSet());
+	public List<FlightDetails> getFlightsWithAirlines(String departureAirport) {
+		// 1. Get all flights for airport
+		List<FlightEvent> flights = flightRepository.findByDepartureAirport(departureAirport);
 
-        // 3. Batch get all airlines
-        Map<String, Airline> airlinesMap
-                = airlineRepository.findByAirlineCodeIn(airlineCodes).stream()
-                        .collect(Collectors.toMap(Airline::getAirlineCode, Function.identity()));
+		// 2. Get unique airline codes
+		Set<String> airlineCodes = flights.stream().map(FlightEvent::getAirlineCode).collect(Collectors.toSet());
 
-        // 4. Compose results
-        return flights.stream()
-                .map(flight -> new FlightDetails(flight, airlinesMap.get(flight.getAirlineCode())))
-                .collect(Collectors.toList());
-    }
+		// 3. Batch get all airlines
+		Map<String, Airline> airlinesMap = airlineRepository.findByAirlineCodeIn(airlineCodes)
+			.stream()
+			.collect(Collectors.toMap(Airline::getAirlineCode, Function.identity()));
+
+		// 4. Compose results
+		return flights.stream()
+			.map(flight -> new FlightDetails(flight, airlinesMap.get(flight.getAirlineCode())))
+			.collect(Collectors.toList());
+	}
+
 }

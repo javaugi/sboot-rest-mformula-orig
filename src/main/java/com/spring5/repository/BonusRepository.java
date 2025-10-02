@@ -12,16 +12,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BonusRepository extends JpaRepository<BonusMultiplier, Long> {
 
-    // This method declaration is all you need!
-    // Spring Data JPA automatically generates the query:
-    // "SELECT b FROM BonusMultiplier b WHERE b.score = ?1"
-    Optional<BonusMultiplier> findByScore(String score);
+	// This method declaration is all you need!
+	// Spring Data JPA automatically generates the query:
+	// "SELECT b FROM BonusMultiplier b WHERE b.score = ?1"
+	Optional<BonusMultiplier> findByScore(String score);
 
-    // Other useful methods you get for free by extending JpaRepository:
-    // - save(S entity)
-    // - findById(ID id)
-    // - findAll()
-    // - deleteById(ID id)
-    // - count()
-    // ...and many more.
+	// Other useful methods you get for free by extending JpaRepository:
+	// - save(S entity)
+	// - findById(ID id)
+	// - findAll()
+	// - deleteById(ID id)
+	// - count()
+	// ...and many more.
+
 }

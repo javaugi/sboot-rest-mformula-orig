@@ -9,21 +9,22 @@ package com.patterns.behavioral.interpreter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class OrExpression implements Expression {
 
-    private Expression expr1 = null;
-    private Expression expr2 = null;
+	private Expression expr1 = null;
 
-    public OrExpression(Expression expr1, Expression expr2) {
-        this.expr1 = expr1;
-        this.expr2 = expr2;
-    }
+	private Expression expr2 = null;
 
-    @Override
-    public boolean interpret(String context) {
-        return expr1.interpret(context) || expr2.interpret(context);
-    }
+	public OrExpression(Expression expr1, Expression expr2) {
+		this.expr1 = expr1;
+		this.expr2 = expr2;
+	}
+
+	@Override
+	public boolean interpret(String context) {
+		return expr1.interpret(context) || expr2.interpret(context);
+	}
+
 }

@@ -14,12 +14,14 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class BatchRiskRequest {
 
-    @NotEmpty
-    private List<String> memberIds;
+	@NotEmpty
+	private List<String> memberIds;
 
-    @NotBlank
-    private String modelType;
+	@NotBlank
+	private String modelType;
 
-    private String batchId;
-    private List<RiskCalculationRequest> requests;
+	private String batchId;
+
+	private List<RiskCalculationRequest> requests;
+
 }

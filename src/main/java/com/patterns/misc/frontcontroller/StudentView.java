@@ -9,12 +9,12 @@ package com.patterns.misc.frontcontroller;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class StudentView {
 
-    public void show() {
-        System.out.println("Displaying Student Page");
-    }
+	public void show() {
+		System.out.println("Displaying Student Page");
+	}
+
 }

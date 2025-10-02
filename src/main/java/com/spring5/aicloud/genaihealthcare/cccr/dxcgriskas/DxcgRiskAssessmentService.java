@@ -35,191 +35,181 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DxcgRiskAssessmentService {
 
-    private final PatientRepository patientRepository;
-    private final RiskScoreRepository riskScoreRepository;
-    private final DxcgApiClient dxcgApiClient;
+	private final PatientRepository patientRepository;
 
-    // DxCG model factors (simplified - real implementation would use actual DxCG algorithms)
-    private static final Map<String, Double> HCC_WEIGHTS
-            = Map.of(
-                    "HCC1", 0.543, "HCC2", 0.321, "HCC6", 0.234, "HCC8", 0.456, "HCC10", 0.289, "HCC17",
-                    0.387, "HCC18", 0.412);
+	private final RiskScoreRepository riskScoreRepository;
 
-    /*
-  public DxcgRiskAssessmentService(PatientRepository patientRepository,
-      RiskScoreRepository riskScoreRepository,
-      DxcgApiClient dxcgApiClient) {
-      this.patientRepository = patientRepository;
-      this.riskScoreRepository = riskScoreRepository;
-      this.dxcgApiClient = dxcgApiClient;
-  }
-  // */
-    public PopulationRiskAnalysis analyzePopulationRisk(String planType, Integer year) {
-        return PopulationRiskAnalysis.builder().build();
-    }
+	private final DxcgApiClient dxcgApiClient;
 
-    public List<RiskScore> getRiskScoresByMember(String memberId, String modelType) {
-        return Collections.EMPTY_LIST;
-    }
+	// DxCG model factors (simplified - real implementation would use actual DxCG
+	// algorithms)
+	private static final Map<String, Double> HCC_WEIGHTS = Map.of("HCC1", 0.543, "HCC2", 0.321, "HCC6", 0.234, "HCC8",
+			0.456, "HCC10", 0.289, "HCC17", 0.387, "HCC18", 0.412);
 
-    /**
-     * Calculate risk score for a single patient using DxCG methodology
-     */
-    public RiskScore calculateRiskScore(String id, String modelType) {
-        Patient patient
-                = patientRepository
-                        .findById(Long.valueOf(id))
-                        .orElse(Patient.builder().id(Long.valueOf(id)).build());
+	/*
+	 * public DxcgRiskAssessmentService(PatientRepository patientRepository,
+	 * RiskScoreRepository riskScoreRepository, DxcgApiClient dxcgApiClient) {
+	 * this.patientRepository = patientRepository; this.riskScoreRepository =
+	 * riskScoreRepository; this.dxcgApiClient = dxcgApiClient; } //
+	 */
+	public PopulationRiskAnalysis analyzePopulationRisk(String planType, Integer year) {
+		return PopulationRiskAnalysis.builder().build();
+	}
 
-        // Extract HCCs from patient claims
-        Set<String> hccCodes = extractHccCodes(patient);
+	public List<RiskScore> getRiskScoresByMember(String memberId, String modelType) {
+		return Collections.EMPTY_LIST;
+	}
 
-        // Calculate base risk score
-        Double baseScore = calculateBaseRiskScore(hccCodes, modelType);
+	/**
+	 * Calculate risk score for a single patient using DxCG methodology
+	 */
+	public RiskScore calculateRiskScore(String id, String modelType) {
+		Patient patient = patientRepository.findById(Long.valueOf(id))
+			.orElse(Patient.builder().id(Long.valueOf(id)).build());
 
-        // Apply demographic factors
-        Double demographicFactor = calculateDemographicFactor(patient);
+		// Extract HCCs from patient claims
+		Set<String> hccCodes = extractHccCodes(patient);
 
-        // Apply interaction factors
-        Double interactionFactor = calculateInteractionFactor(hccCodes);
+		// Calculate base risk score
+		Double baseScore = calculateBaseRiskScore(hccCodes, modelType);
 
-        Double finalRiskScore = baseScore * demographicFactor * interactionFactor;
-        Double predictedCost = calculatePredictedCost(finalRiskScore, modelType);
+		// Apply demographic factors
+		Double demographicFactor = calculateDemographicFactor(patient);
 
-        RiskScore riskScore
-                = RiskScore.builder()
-                        .patient(patient)
-                        .calculationDate(LocalDate.now())
-                        .modelType(modelType)
-                        .riskScore(finalRiskScore)
-                        .predictedCost(predictedCost)
-                        .hierarchicalConditionCategories(mapHccToDescriptions(hccCodes))
-                        .build();
+		// Apply interaction factors
+		Double interactionFactor = calculateInteractionFactor(hccCodes);
 
-        return riskScoreRepository.save(riskScore);
-    }
+		Double finalRiskScore = baseScore * demographicFactor * interactionFactor;
+		Double predictedCost = calculatePredictedCost(finalRiskScore, modelType);
 
-    private Map<String, String> mapHccToDescriptions(Set<String> codes) {
-        return new HashMap<>();
-    }
+		RiskScore riskScore = RiskScore.builder()
+			.patient(patient)
+			.calculationDate(LocalDate.now())
+			.modelType(modelType)
+			.riskScore(finalRiskScore)
+			.predictedCost(predictedCost)
+			.hierarchicalConditionCategories(mapHccToDescriptions(hccCodes))
+			.build();
 
-    /**
-     * Batch risk assessment for multiple members
-     */
-    @Async
-    public CompletableFuture<List<RiskScore>> calculateBatchRiskScores(
-            List<String> memberIds, String modelType) {
+		return riskScoreRepository.save(riskScore);
+	}
 
-        List<RiskScore> results
-                = memberIds.parallelStream()
-                        .map(
-                                memberId -> {
-                                    try {
-                                        return calculateRiskScore(memberId, modelType);
-                                    } catch (Exception e) {
-                                        log.error(
-                                                "Failed to calculate risk for member {}: {}", memberId, e.getMessage());
-                                        return null;
-                                    }
-                                })
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+	private Map<String, String> mapHccToDescriptions(Set<String> codes) {
+		return new HashMap<>();
+	}
 
-        return CompletableFuture.completedFuture(results);
-    }
+	/**
+	 * Batch risk assessment for multiple members
+	 */
+	@Async
+	public CompletableFuture<List<RiskScore>> calculateBatchRiskScores(List<String> memberIds, String modelType) {
 
-    /**
-     * Extract HCC codes from patient claims using DxCG grouper logic
-     */
-    private Set<String> extractHccCodes(Patient patient) {
-        return patient.getClaims().stream()
-                .map(Claim::getDiagnosisCode)
-                .filter(Objects::nonNull)
-                .map(this::mapIcd10ToHcc)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-    }
+		List<RiskScore> results = memberIds.parallelStream().map(memberId -> {
+			try {
+				return calculateRiskScore(memberId, modelType);
+			}
+			catch (Exception e) {
+				log.error("Failed to calculate risk for member {}: {}", memberId, e.getMessage());
+				return null;
+			}
+		}).filter(Objects::nonNull).collect(Collectors.toList());
 
-    /**
-     * Map ICD-10 codes to HCC categories (simplified mapping)
-     */
-    private String mapIcd10ToHcc(String icd10Code) {
-        // Simplified mapping - real implementation would use DxCG grouper
-        Map<String, String> icd10ToHcc
-                = Map.of(
-                        "I25", "HCC1", // Atherosclerotic heart disease
-                        "E11", "HCC2", // Diabetes mellitus
-                        "I50", "HCC6", // Heart failure
-                        "J44", "HCC8", // COPD
-                        "N18", "HCC10", // Chronic kidney disease
-                        "F32", "HCC17", // Major depression
-                        "G30", "HCC18" // Alzheimer's disease
-                );
+		return CompletableFuture.completedFuture(results);
+	}
 
-        String rootCode = icd10Code.substring(0, 3);
-        return icd10ToHcc.get(rootCode);
-    }
+	/**
+	 * Extract HCC codes from patient claims using DxCG grouper logic
+	 */
+	private Set<String> extractHccCodes(Patient patient) {
+		return patient.getClaims()
+			.stream()
+			.map(Claim::getDiagnosisCode)
+			.filter(Objects::nonNull)
+			.map(this::mapIcd10ToHcc)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toSet());
+	}
 
-    private Double calculateBaseRiskScore(Set<String> hccCodes, String modelType) {
-        return hccCodes.stream().mapToDouble(hcc -> HCC_WEIGHTS.getOrDefault(hcc, 0.0)).sum();
-    }
+	/**
+	 * Map ICD-10 codes to HCC categories (simplified mapping)
+	 */
+	private String mapIcd10ToHcc(String icd10Code) {
+		// Simplified mapping - real implementation would use DxCG grouper
+		Map<String, String> icd10ToHcc = Map.of("I25", "HCC1", // Atherosclerotic heart
+																// disease
+				"E11", "HCC2", // Diabetes mellitus
+				"I50", "HCC6", // Heart failure
+				"J44", "HCC8", // COPD
+				"N18", "HCC10", // Chronic kidney disease
+				"F32", "HCC17", // Major depression
+				"G30", "HCC18" // Alzheimer's disease
+		);
 
-    private Double calculateDemographicFactor(Patient patient) {
-        int age = Period.between(patient.getDateOfBirth(), LocalDate.now()).getYears();
-        double ageFactor = calculateAgeFactor(age);
-        double genderFactor = "M".equals(patient.getGender()) ? 1.1 : 1.0;
+		String rootCode = icd10Code.substring(0, 3);
+		return icd10ToHcc.get(rootCode);
+	}
 
-        return ageFactor * genderFactor;
-    }
+	private Double calculateBaseRiskScore(Set<String> hccCodes, String modelType) {
+		return hccCodes.stream().mapToDouble(hcc -> HCC_WEIGHTS.getOrDefault(hcc, 0.0)).sum();
+	}
 
-    private Double calculateAgeFactor(int age) {
-        if (age < 35) {
-            return 0.8;
-        }
-        if (age < 45) {
-            return 0.9;
-        }
-        if (age < 55) {
-            return 1.0;
-        }
-        if (age < 65) {
-            return 1.2;
-        }
-        if (age < 75) {
-            return 1.5;
-        }
-        return 1.8; // 75+
-    }
+	private Double calculateDemographicFactor(Patient patient) {
+		int age = Period.between(patient.getDateOfBirth(), LocalDate.now()).getYears();
+		double ageFactor = calculateAgeFactor(age);
+		double genderFactor = "M".equals(patient.getGender()) ? 1.1 : 1.0;
 
-    private Double calculateInteractionFactor(Set<String> hccCodes) {
-        // Calculate interactions between conditions
-        double interaction = 1.0;
+		return ageFactor * genderFactor;
+	}
 
-        if (hccCodes.contains("HCC1") && hccCodes.contains("HCC2")) {
-            interaction *= 1.15; // Heart disease + diabetes interaction
-        }
-        if (hccCodes.contains("HCC6") && hccCodes.contains("HCC8")) {
-            interaction *= 1.20; // Heart failure + COPD interaction
-        }
+	private Double calculateAgeFactor(int age) {
+		if (age < 35) {
+			return 0.8;
+		}
+		if (age < 45) {
+			return 0.9;
+		}
+		if (age < 55) {
+			return 1.0;
+		}
+		if (age < 65) {
+			return 1.2;
+		}
+		if (age < 75) {
+			return 1.5;
+		}
+		return 1.8; // 75+
+	}
 
-        return interaction;
-    }
+	private Double calculateInteractionFactor(Set<String> hccCodes) {
+		// Calculate interactions between conditions
+		double interaction = 1.0;
 
-    private Double calculatePredictedCost(Double riskScore, String modelType) {
-        double baseCost;
-        switch (modelType) {
-            case "MEDICARE":
-                baseCost = 12000.0; // Average Medicare cost
-                break;
-            case "COMMERCIAL":
-                baseCost = 8000.0; // Average commercial cost
-                break;
-            case "ACA":
-                baseCost = 10000.0; // Average ACA cost
-                break;
-            default:
-                baseCost = 10000.0;
-        }
-        return riskScore * baseCost;
-    }
+		if (hccCodes.contains("HCC1") && hccCodes.contains("HCC2")) {
+			interaction *= 1.15; // Heart disease + diabetes interaction
+		}
+		if (hccCodes.contains("HCC6") && hccCodes.contains("HCC8")) {
+			interaction *= 1.20; // Heart failure + COPD interaction
+		}
+
+		return interaction;
+	}
+
+	private Double calculatePredictedCost(Double riskScore, String modelType) {
+		double baseCost;
+		switch (modelType) {
+			case "MEDICARE":
+				baseCost = 12000.0; // Average Medicare cost
+				break;
+			case "COMMERCIAL":
+				baseCost = 8000.0; // Average commercial cost
+				break;
+			case "ACA":
+				baseCost = 10000.0; // Average ACA cost
+				break;
+			default:
+				baseCost = 10000.0;
+		}
+		return riskScore * baseCost;
+	}
+
 }

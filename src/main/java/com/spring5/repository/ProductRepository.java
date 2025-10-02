@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p  WHERE p.name= (:name)")
-    List<Product> findByName(@Param("name") String name);
+	@Query("SELECT p FROM Product p  WHERE p.name= (:name)")
+	List<Product> findByName(@Param("name") String name);
+
 }

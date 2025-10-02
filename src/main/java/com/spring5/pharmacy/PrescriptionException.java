@@ -11,26 +11,27 @@ import org.springframework.http.HttpStatus;
  */
 public class PrescriptionException extends RuntimeException {
 
-    private HttpStatus status;
+	private HttpStatus status;
 
-    public PrescriptionException() {
-        super();
-    }
+	public PrescriptionException() {
+		super();
+	}
 
-    public PrescriptionException(String message) {
-        super(message);
-    }
+	public PrescriptionException(String message) {
+		super(message);
+	}
 
-    public PrescriptionException(String message, HttpStatus status) {
-        super(message);
-        this.status = status;
-    }
+	public PrescriptionException(String message, HttpStatus status) {
+		super(message);
+		this.status = status;
+	}
 
-    public HttpStatus getStatus() {
-        return status;
-    }
+	public HttpStatus getStatus() {
+		return status;
+	}
 
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
+	public void setStatus(HttpStatus status) {
+		this.status = status;
+	}
+
 }

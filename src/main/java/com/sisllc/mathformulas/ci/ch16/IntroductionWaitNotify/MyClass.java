@@ -2,21 +2,24 @@ package com.sisllc.mathformulas.ci.ch16.IntroductionWaitNotify;
 
 public class MyClass extends Thread {
 
-    private String name;
-    private MyObject myObj;
+	private String name;
 
-    public MyClass(MyObject obj, String n) {
-        name = n;
-        myObj = obj;
-    }
+	private MyObject myObj;
 
-    public void run() {
-        try {
-            myObj.wait(1000);
-            myObj.foo(name);
-            myObj.notify();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+	public MyClass(MyObject obj, String n) {
+		name = n;
+		myObj = obj;
+	}
+
+	public void run() {
+		try {
+			myObj.wait(1000);
+			myObj.foo(name);
+			myObj.notify();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

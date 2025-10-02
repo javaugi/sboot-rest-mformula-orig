@@ -17,4 +17,5 @@ Delivered as a scalable REST API integrated into high-consumer-count application
 Delivered a robust REST API platform integrated with Kafka messaging, built for millions of API calls daily, maintaining consumer trust through semantic versioning and zero-breaking changes.
  */
 public class AzureAdEtc {
+
 }

@@ -27,16 +27,18 @@ import lombok.ToString;
 @Entity
 public class Person implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String firstName;
-    private String lastName;
+	private String firstName;
 
-    // Getters and setters
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+	private String lastName;
+
+	// Getters and setters
+	public Person(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 }

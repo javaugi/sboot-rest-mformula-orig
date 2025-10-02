@@ -23,13 +23,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class MedicalFileMetadata {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
+	private String name;
 
-    @OneToOne
-    @JoinColumn(name = "medicalFile_id")
-    private MedicalFile medicalFile;
+	@OneToOne
+	@JoinColumn(name = "medicalFile_id")
+	private MedicalFile medicalFile;
+
 }

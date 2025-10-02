@@ -19,36 +19,34 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class EventBusConfig {
 
-    public static final String MB_EVENT_BUS = "mBassadorEventBus";
-    public static final String MB_EVENT_BUS_HIGH_PERF = "mBassadorEventBusHighPerf";
+	public static final String MB_EVENT_BUS = "mBassadorEventBus";
 
-    @Bean
-    public GlobalErrorHandler pubErrorHandler() {
-        return new GlobalErrorHandler();
-    }
+	public static final String MB_EVENT_BUS_HIGH_PERF = "mBassadorEventBusHighPerf";
 
-    @Primary
-    @Bean(name = MB_EVENT_BUS)
-    public MBassador<Object> eventBus() {
-        return new MBassador<>(
-                new BusConfiguration()
-                        .setProperty(IBusConfiguration.Properties.BusId, "perf")
-                        .addFeature(Feature.AsynchronousMessageDispatch.Default())
-                        .addFeature(Feature.AsynchronousHandlerInvocation.Default())
-                        .addFeature(Feature.SyncPubSub.Default())
-                        .setProperty(IBusConfiguration.Properties.BusId, "main-bus"));
-    }
+	@Bean
+	public GlobalErrorHandler pubErrorHandler() {
+		return new GlobalErrorHandler();
+	}
 
-    @Bean(name = MB_EVENT_BUS_HIGH_PERF)
-    public MBassador<Object> highPerfBus() {
-        MBassador<Object> highPerfBus
-                = new MBassador<>(
-                        new BusConfiguration()
-                                .setProperty(IBusConfiguration.Properties.BusId, "high-perf")
-                                .addFeature(Feature.AsynchronousMessageDispatch.Default())
-                                .addFeature(Feature.SyncPubSub.Default())
-                                .addFeature(Feature.AsynchronousHandlerInvocation.Default()));
+	@Primary
+	@Bean(name = MB_EVENT_BUS)
+	public MBassador<Object> eventBus() {
+		return new MBassador<>(new BusConfiguration().setProperty(IBusConfiguration.Properties.BusId, "perf")
+			.addFeature(Feature.AsynchronousMessageDispatch.Default())
+			.addFeature(Feature.AsynchronousHandlerInvocation.Default())
+			.addFeature(Feature.SyncPubSub.Default())
+			.setProperty(IBusConfiguration.Properties.BusId, "main-bus"));
+	}
 
-        return highPerfBus;
-    }
+	@Bean(name = MB_EVENT_BUS_HIGH_PERF)
+	public MBassador<Object> highPerfBus() {
+		MBassador<Object> highPerfBus = new MBassador<>(
+				new BusConfiguration().setProperty(IBusConfiguration.Properties.BusId, "high-perf")
+					.addFeature(Feature.AsynchronousMessageDispatch.Default())
+					.addFeature(Feature.SyncPubSub.Default())
+					.addFeature(Feature.AsynchronousHandlerInvocation.Default()));
+
+		return highPerfBus;
+	}
+
 }

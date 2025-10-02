@@ -11,21 +11,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaEventDrivenPresProcessor {
 
-    public final PrescriptionOrderService pharmacyService;
+	public final PrescriptionOrderService pharmacyService;
 
-    public KafkaEventDrivenPresProcessor(PrescriptionOrderService pharmacyService) {
-        this.pharmacyService = pharmacyService;
-    }
+	public KafkaEventDrivenPresProcessor(PrescriptionOrderService pharmacyService) {
+		this.pharmacyService = pharmacyService;
+	}
 
-    @KafkaListener(topics = "new-prescriptions", groupId = "pharmacy-group")
-    public void processPrescription(ConsumerRecord<String, PrescriptionData> record) {
-        if (isDuplicate(record.key())) {
-            return; // Idempotency check
-        }
-        pharmacyService.processOrder(record.value());
-    }
+	@KafkaListener(topics = "new-prescriptions", groupId = "pharmacy-group")
+	public void processPrescription(ConsumerRecord<String, PrescriptionData> record) {
+		if (isDuplicate(record.key())) {
+			return; // Idempotency check
+		}
+		pharmacyService.processOrder(record.value());
+	}
 
-    private boolean isDuplicate(String key) {
-        return true;
-    }
+	private boolean isDuplicate(String key) {
+		return true;
+	}
+
 }

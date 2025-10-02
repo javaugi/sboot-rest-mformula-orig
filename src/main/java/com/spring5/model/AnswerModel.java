@@ -12,25 +12,26 @@ import org.springframework.hateoas.EntityModel;
  */
 public class AnswerModel extends EntityModel<Answer> {
 
-    private final Answer answer;
+	private final Answer answer;
 
-    public AnswerModel(Answer answer) {
-        this.answer = answer;
-    }
+	public AnswerModel(Answer answer) {
+		this.answer = answer;
+	}
 
-    public Long getId() {
-        return answer.getId();
-    }
+	public Long getId() {
+		return answer.getId();
+	}
 
-    public Long getAssessmentId() {
-        return answer.getAssessmentId();
-    }
+	public Long getAssessmentId() {
+		return answer.getAssessmentId();
+	}
 
-    public Long getQuestionId() {
-        return answer.getQuestionId();
-    }
+	public Long getQuestionId() {
+		return answer.getQuestionId();
+	}
 
-    public String getAnswerText() {
-        return answer.getAnswerText();
-    }
+	public String getAnswerText() {
+		return answer.getAnswerText();
+	}
+
 }

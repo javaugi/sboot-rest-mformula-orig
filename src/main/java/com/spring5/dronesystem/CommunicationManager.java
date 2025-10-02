@@ -12,98 +12,104 @@ import java.util.concurrent.*;
 
 public class CommunicationManager {
 
-    private final SecureSerialChannel secureChannel;
-    private final ExecutorService executor;
-    private ServerSocket serverSocket;
-    private volatile boolean running = true;
+	private final SecureSerialChannel secureChannel;
 
-    public CommunicationManager(String secret) throws GeneralSecurityException {
-        this.secureChannel = new SecureSerialChannel(secret);
-        this.executor = Executors.newCachedThreadPool();
-    }
+	private final ExecutorService executor;
 
-    public void startServer(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
-        executor.submit(
-                () -> {
-                    while (running) {
-                        try {
-                            Socket clientSocket = serverSocket.accept();
-                            handleClient(clientSocket);
-                        } catch (IOException e) {
-                            if (running) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-    }
+	private ServerSocket serverSocket;
 
-    private void handleClient(Socket clientSocket) {
-        executor.submit(
-                () -> {
-                    try (InputStream is = clientSocket.getInputStream(); OutputStream os = clientSocket.getOutputStream()) {
+	private volatile boolean running = true;
 
-                        byte[] lengthBytes = new byte[4];
-                        is.read(lengthBytes);
-                        int length = ByteBuffer.wrap(lengthBytes).getInt();
+	public CommunicationManager(String secret) throws GeneralSecurityException {
+		this.secureChannel = new SecureSerialChannel(secret);
+		this.executor = Executors.newCachedThreadPool();
+	}
 
-                        byte[] encryptedData = new byte[length];
-                        is.read(encryptedData);
+	public void startServer(int port) throws IOException {
+		serverSocket = new ServerSocket(port);
+		executor.submit(() -> {
+			while (running) {
+				try {
+					Socket clientSocket = serverSocket.accept();
+					handleClient(clientSocket);
+				}
+				catch (IOException e) {
+					if (running) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	}
 
-                        SensorData data = secureChannel.decrypt(encryptedData);
-                        // Process received data
-                        System.out.println("handleClient data=" + data);
+	private void handleClient(Socket clientSocket) {
+		executor.submit(() -> {
+			try (InputStream is = clientSocket.getInputStream(); OutputStream os = clientSocket.getOutputStream()) {
 
-                        // Send acknowledgment
-                        byte[] ack = "ACK".getBytes();
-                        os.write(ack);
-                        os.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            clientSocket.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
+				byte[] lengthBytes = new byte[4];
+				is.read(lengthBytes);
+				int length = ByteBuffer.wrap(lengthBytes).getInt();
 
-    public void sendData(String host, int port, SensorData data)
-            throws IOException, GeneralSecurityException {
-        try (Socket socket = new Socket(host, port); OutputStream os = socket.getOutputStream()) {
+				byte[] encryptedData = new byte[length];
+				is.read(encryptedData);
 
-            byte[] encrypted = secureChannel.encrypt(data);
-            byte[] lengthBytes = ByteBuffer.allocate(4).putInt(encrypted.length).array();
+				SensorData data = secureChannel.decrypt(encryptedData);
+				// Process received data
+				System.out.println("handleClient data=" + data);
 
-            os.write(lengthBytes);
-            os.write(encrypted);
-            os.flush();
+				// Send acknowledgment
+				byte[] ack = "ACK".getBytes();
+				os.write(ack);
+				os.flush();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				try {
+					clientSocket.close();
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-            // Read acknowledgment
-            byte[] ack = new byte[3];
-            socket.getInputStream().read(ack);
-            if (!new String(ack).equals("ACK")) {
-                throw new IOException("Did not receive proper acknowledgment");
-            }
-        }
-    }
+	public void sendData(String host, int port, SensorData data) throws IOException, GeneralSecurityException {
+		try (Socket socket = new Socket(host, port); OutputStream os = socket.getOutputStream()) {
 
-    public void shutdown() {
-        running = false;
-        executor.shutdown();
-        try {
-            if (serverSocket != null) {
-                serverSocket.close();
-            }
-            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
-                executor.shutdownNow();
-            }
-        } catch (IOException | InterruptedException e) {
-            executor.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
-    }
+			byte[] encrypted = secureChannel.encrypt(data);
+			byte[] lengthBytes = ByteBuffer.allocate(4).putInt(encrypted.length).array();
+
+			os.write(lengthBytes);
+			os.write(encrypted);
+			os.flush();
+
+			// Read acknowledgment
+			byte[] ack = new byte[3];
+			socket.getInputStream().read(ack);
+			if (!new String(ack).equals("ACK")) {
+				throw new IOException("Did not receive proper acknowledgment");
+			}
+		}
+	}
+
+	public void shutdown() {
+		running = false;
+		executor.shutdown();
+		try {
+			if (serverSocket != null) {
+				serverSocket.close();
+			}
+			if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+				executor.shutdownNow();
+			}
+		}
+		catch (IOException | InterruptedException e) {
+			executor.shutdownNow();
+			Thread.currentThread().interrupt();
+		}
+	}
+
 }

@@ -12,20 +12,20 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class VlcPlayer implements AdvancedMediaPlayer {
 
-    private static final Logger log = LoggerFactory.getLogger(VlcPlayer.class);
+	private static final Logger log = LoggerFactory.getLogger(VlcPlayer.class);
 
-    @Override
-    public void playVlc(String fileName) {
-        System.out.println("Playing vlc file. Name: " + fileName);
-    }
+	@Override
+	public void playVlc(String fileName) {
+		System.out.println("Playing vlc file. Name: " + fileName);
+	}
 
-    @Override
-    public void playMp4(String fileName) {
-        // do nothing
-    }
+	@Override
+	public void playMp4(String fileName) {
+		// do nothing
+	}
+
 }

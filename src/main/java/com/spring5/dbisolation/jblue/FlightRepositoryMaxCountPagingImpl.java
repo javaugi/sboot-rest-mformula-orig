@@ -20,93 +20,87 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class FlightRepositoryMaxCountPagingImpl implements FlightRepositoryCustomAdvancedPaging {
 
-    private final CosmosTemplate cosmosTemplate;
+	private final CosmosTemplate cosmosTemplate;
 
-    @Override
-    public List<FlightEvent> findLargeDatasetWithPagination(
-            String query, int maxItemCount, String continuationToken) {
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setMaxBufferedItemCount(maxItemCount); // Control RU spikes
+	@Override
+	public List<FlightEvent> findLargeDatasetWithPagination(String query, int maxItemCount, String continuationToken) {
+		CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+		options.setMaxBufferedItemCount(maxItemCount); // Control RU spikes
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(query);
+		SqlQuerySpec querySpec = new SqlQuerySpec(query);
 
-        List<FlightEvent> results = new ArrayList<>();
-        String currentContinuationToken = continuationToken;
+		List<FlightEvent> results = new ArrayList<>();
+		String currentContinuationToken = continuationToken;
 
-        do {
-            // Execute query with pagination
-            /*
-      CosmosPagedIterable<FlightEvent> pagedIterable = cosmosTemplate.runQuery(
-          querySpec, FlightEvent.class, FlightEvent.class);
+		do {
+			// Execute query with pagination
+			/*
+			 * CosmosPagedIterable<FlightEvent> pagedIterable = cosmosTemplate.runQuery(
+			 * querySpec, FlightEvent.class, FlightEvent.class);
+			 * 
+			 * // Process current page
+			 * pagedIterable.iterableByPage(currentContinuationToken).forEach(page -> {
+			 * results.addAll(page.getResults()); currentContinuationToken =
+			 * page.getContinuationToken(); }); //
+			 */
 
-      // Process current page
-      pagedIterable.iterableByPage(currentContinuationToken).forEach(page -> {
-          results.addAll(page.getResults());
-          currentContinuationToken = page.getContinuationToken();
-      });
-      // */
+		}
+		while (currentContinuationToken != null && results.size() < 1000); // Safety limit
 
-        } while (currentContinuationToken != null && results.size() < 1000); // Safety limit
+		return results;
+	}
 
-        return results;
-    }
+	@Override
+	public void processLargeDatasetInParallel(String query, int batchSize, int parallelism) {
+		ExecutorService executor = Executors.newFixedThreadPool(parallelism);
+		List<Future<?>> futures = new ArrayList<>();
 
-    @Override
-    public void processLargeDatasetInParallel(String query, int batchSize, int parallelism) {
-        ExecutorService executor = Executors.newFixedThreadPool(parallelism);
-        List<Future<?>> futures = new ArrayList<>();
+		// First, get total count to divide work
+		long totalCount = getApproximateCount(query);
+		long itemsPerThread = totalCount / parallelism;
 
-        // First, get total count to divide work
-        long totalCount = getApproximateCount(query);
-        long itemsPerThread = totalCount / parallelism;
+		for (int i = 0; i < parallelism; i++) {
+			final int threadIndex = i;
+			futures.add(executor.submit(() -> {
+				processBatch(query, threadIndex * itemsPerThread, batchSize);
+			}));
+		}
 
-        for (int i = 0; i < parallelism; i++) {
-            final int threadIndex = i;
-            futures.add(
-                    executor.submit(
-                            () -> {
-                                processBatch(query, threadIndex * itemsPerThread, batchSize);
-                            }));
-        }
+		// Wait for completion
+		futures.forEach(future -> {
+			try {
+				future.get();
+			}
+			catch (Exception e) {
+				// Handle exception
+			}
+		});
 
-        // Wait for completion
-        futures.forEach(
-                future -> {
-                    try {
-                        future.get();
-                    } catch (Exception e) {
-                        // Handle exception
-                    }
-                });
+		executor.shutdown();
+	}
 
-        executor.shutdown();
-    }
+	private void processBatch(String baseQuery, long offset, int batchSize) {
+		String query = baseQuery + " OFFSET " + offset + " LIMIT " + batchSize;
+		CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+		options.setMaxBufferedItemCount(100); // Small batches to avoid RU spikes
 
-    private void processBatch(String baseQuery, long offset, int batchSize) {
-        String query = baseQuery + " OFFSET " + offset + " LIMIT " + batchSize;
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setMaxBufferedItemCount(100); // Small batches to avoid RU spikes
+		SqlQuerySpec querySpec = new SqlQuerySpec(query);
+		Pageable pageable = Pageable.ofSize(100); // new Pageable();
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Pageable pageable = Pageable.ofSize(100); // new Pageable();
+		cosmosTemplate.runQuery(querySpec, FlightEvent.class, FlightEvent.class).forEach(this::processFlight);
+	}
 
-        cosmosTemplate
-                .runQuery(querySpec, FlightEvent.class, FlightEvent.class)
-                .forEach(this::processFlight);
-    }
+	private long getApproximateCount(String query) {
+		/*
+		 * String countQuery = "SELECT VALUE COUNT(1) FROM (" + query + ")"; return
+		 * cosmosTemplate.runQuery(new SqlQuerySpec(countQuery), Long.class, Long.class)
+		 * .stream() .findFirst() .orElse(0L); //
+		 */
+		return 0L;
+	}
 
-    private long getApproximateCount(String query) {
-        /*
-    String countQuery = "SELECT VALUE COUNT(1) FROM (" + query + ")";
-    return cosmosTemplate.runQuery(new SqlQuerySpec(countQuery), Long.class, Long.class)
-        .stream()
-        .findFirst()
-        .orElse(0L);
-    // */
-        return 0L;
-    }
+	private void processFlight(FlightEvent flight) {
+		// Process individual flight
+	}
 
-    private void processFlight(FlightEvent flight) {
-        // Process individual flight
-    }
 }

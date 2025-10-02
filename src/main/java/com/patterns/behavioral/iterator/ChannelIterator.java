@@ -9,12 +9,12 @@ package com.patterns.behavioral.iterator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ChannelIterator {
 
-    public boolean hasNext();
+	public boolean hasNext();
 
-    public Channel next();
+	public Channel next();
+
 }

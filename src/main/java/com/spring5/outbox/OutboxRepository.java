@@ -10,5 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface OutboxRepository extends JpaRepository<Outbox, Long> {
 
-    List<Outbox> findByProcessed(@Param("processed") Boolean processed);
+	List<Outbox> findByProcessed(@Param("processed") Boolean processed);
+
 }

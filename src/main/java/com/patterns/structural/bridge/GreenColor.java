@@ -9,12 +9,12 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class GreenColor implements ColorBridge {
 
-    public void applyColor() {
-        System.out.println("green.");
-    }
+	public void applyColor() {
+		System.out.println("green.");
+	}
+
 }

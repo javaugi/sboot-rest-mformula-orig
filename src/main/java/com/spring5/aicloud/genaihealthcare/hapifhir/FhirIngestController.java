@@ -17,39 +17,43 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FhirIngestController {
 
-    private final FhirContext fhirContext = FhirContext.forR4();
-    private final KafkaTemplate<String, String> kafka;
-    private final FhirValidationService fhirValidationService;
+	private final FhirContext fhirContext = FhirContext.forR4();
 
-    @PostMapping(consumes = "application/fhir+json")
-    public ResponseEntity<String> ingestFhir(@RequestBody String fhirJson) {
-        // Basic parsing to ensure valid FHIR resource
-        boolean isValid = fhirValidation(fhirJson);
+	private final KafkaTemplate<String, String> kafka;
 
-        IParser parser = fhirContext.newJsonParser();
-        IBaseResource res = parser.parseResource(fhirJson);
+	private final FhirValidationService fhirValidationService;
 
-        // Minimal validation: resource type allowed?
-        String resourceType = res.fhirType(); // .getResourceType().name();
+	@PostMapping(consumes = "application/fhir+json")
+	public ResponseEntity<String> ingestFhir(@RequestBody String fhirJson) {
+		// Basic parsing to ensure valid FHIR resource
+		boolean isValid = fhirValidation(fhirJson);
 
-        // Forward raw FHIR to Kafka (in prod, add schema, provenance, redaction)
-        kafka.send("raw-fhir-events", resourceType, fhirJson);
+		IParser parser = fhirContext.newJsonParser();
+		IBaseResource res = parser.parseResource(fhirJson);
 
-        return ResponseEntity.accepted().body("accepted:" + resourceType);
-    }
+		// Minimal validation: resource type allowed?
+		String resourceType = res.fhirType(); // .getResourceType().name();
 
-    private boolean fhirValidation(String fhirJson) {
-        IParser parser = fhirContext.newJsonParser();
-        IBaseResource res = parser.parseResource(fhirJson);
+		// Forward raw FHIR to Kafka (in prod, add schema, provenance, redaction)
+		kafka.send("raw-fhir-events", resourceType, fhirJson);
 
-        try {
-            // Minimal validation: resource type allowed?
-            String resourceType = res.fhirType(); // .getResourceType().name();
-            boolean isValid = fhirValidationService.validate();
-        } catch (Exception ex) {
+		return ResponseEntity.accepted().body("accepted:" + resourceType);
+	}
 
-        }
+	private boolean fhirValidation(String fhirJson) {
+		IParser parser = fhirContext.newJsonParser();
+		IBaseResource res = parser.parseResource(fhirJson);
 
-        return true;
-    }
+		try {
+			// Minimal validation: resource type allowed?
+			String resourceType = res.fhirType(); // .getResourceType().name();
+			boolean isValid = fhirValidationService.validate();
+		}
+		catch (Exception ex) {
+
+		}
+
+		return true;
+	}
+
 }

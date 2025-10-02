@@ -9,22 +9,22 @@ package com.patterns.behavioral.state;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Context {
 
-    private State state;
+	private State state;
 
-    public Context() {
-        state = null;
-    }
+	public Context() {
+		state = null;
+	}
 
-    public void setState(State state) {
-        this.state = state;
-    }
+	public void setState(State state) {
+		this.state = state;
+	}
 
-    public State getState() {
-        return state;
-    }
+	public State getState() {
+		return state;
+	}
+
 }

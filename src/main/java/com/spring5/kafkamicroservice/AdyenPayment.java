@@ -14,12 +14,16 @@ import lombok.Data;
 @Entity
 public class AdyenPayment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String paymentId;
-    private AdyenPaymentStatus status;
-    private String pspReference;
-    private String idempotencyKey;
+	private String paymentId;
+
+	private AdyenPaymentStatus status;
+
+	private String pspReference;
+
+	private String idempotencyKey;
+
 }

@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Profile;
 @Profile(ProfileProdConfig.PROD_PROFILE)
 public class ProfileProdConfig implements Serializable {
 
-    private static final long serialVersionUID = 321357244048L;
-    public static final String PROD_PROFILE = "prod";
+	private static final long serialVersionUID = 321357244048L;
+
+	public static final String PROD_PROFILE = "prod";
+
 }

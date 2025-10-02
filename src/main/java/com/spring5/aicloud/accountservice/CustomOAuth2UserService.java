@@ -16,24 +16,23 @@ import org.springframework.stereotype.Service;
 // */
 // @Service
 public class CustomOAuth2UserService {
-    /*
-  }
-          extends DefaultOAuth2UserService {
 
-      @Autowired
-      private JwtTokenProvider tokenProvider;
+	/*
+	 * } extends DefaultOAuth2UserService {
+	 * 
+	 * @Autowired private JwtTokenProvider tokenProvider;
+	 * 
+	 * @Override public OAuth2User loadUser(OAuth2UserRequest userRequest) throws
+	 * OAuth2AuthenticationException { OAuth2User oAuth2User =
+	 * super.loadUser(userRequest);
+	 * 
+	 * String provider = userRequest.getClientRegistration().getRegistrationId();
+	 * Map<String, Object> attributes = oAuth2User.getAttributes();
+	 * 
+	 * // Process attributes based on provider UserPrincipal userPrincipal =
+	 * UserPrincipal.create(provider, attributes);
+	 * 
+	 * return userPrincipal; }
+	 */
 
-      @Override
-      public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-          OAuth2User oAuth2User = super.loadUser(userRequest);
-
-          String provider = userRequest.getClientRegistration().getRegistrationId();
-          Map<String, Object> attributes = oAuth2User.getAttributes();
-
-          // Process attributes based on provider
-          UserPrincipal userPrincipal = UserPrincipal.create(provider, attributes);
-
-          return userPrincipal;
-      }
-     */
 }

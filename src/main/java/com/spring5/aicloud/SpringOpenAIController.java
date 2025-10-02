@@ -14,15 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/springai")
 public class SpringOpenAIController {
 
-    private final SpringOpenAIService springOpenAIService;
+	private final SpringOpenAIService springOpenAIService;
 
-    public SpringOpenAIController(SpringOpenAIService springOpenAIService) {
-        this.springOpenAIService = springOpenAIService;
-    }
+	public SpringOpenAIController(SpringOpenAIService springOpenAIService) {
+		this.springOpenAIService = springOpenAIService;
+	}
 
-    // http://localhost:8080/openaichat?prompt=What is for dinner today
-    @GetMapping
-    public ResponseEntity<String> sendMessage(@RequestParam String prompt) {
-        return ResponseEntity.ok(springOpenAIService.ask(prompt));
-    }
+	// http://localhost:8080/openaichat?prompt=What is for dinner today
+	@GetMapping
+	public ResponseEntity<String> sendMessage(@RequestParam String prompt) {
+		return ResponseEntity.ok(springOpenAIService.ask(prompt));
+	}
+
 }

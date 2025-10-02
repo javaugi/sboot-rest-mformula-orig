@@ -12,23 +12,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class OutboxProcessor {
 
-    @Autowired
-    private OutboxRepository outboxRepository;
-    @Autowired
-    private OutboxEventPublisher eventPublisher;
+	@Autowired
+	private OutboxRepository outboxRepository;
 
-    @Scheduled(fixedRate = 5000) // Run every 5 seconds
-    public void processOutboxEvents() {
-        List<Outbox> events = outboxRepository.findByProcessed(false);
+	@Autowired
+	private OutboxEventPublisher eventPublisher;
 
-        for (Outbox event : events) {
-            try {
-                eventPublisher.publish(event);
-                event.setProcessed(true);
-                outboxRepository.save(event);
-            } catch (Exception e) {
-                // Log the error and retry later
-            }
-        }
-    }
+	@Scheduled(fixedRate = 5000) // Run every 5 seconds
+	public void processOutboxEvents() {
+		List<Outbox> events = outboxRepository.findByProcessed(false);
+
+		for (Outbox event : events) {
+			try {
+				eventPublisher.publish(event);
+				event.setProcessed(true);
+				outboxRepository.save(event);
+			}
+			catch (Exception e) {
+				// Log the error and retry later
+			}
+		}
+	}
+
 }

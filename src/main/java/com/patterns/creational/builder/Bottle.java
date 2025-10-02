@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Bottle implements Packing {
 
-    private static final Logger log = LoggerFactory.getLogger(Bottle.class);
+	private static final Logger log = LoggerFactory.getLogger(Bottle.class);
 
-    @Override
-    public String pack() {
-        return "Bottle";
-    }
+	@Override
+	public String pack() {
+		return "Bottle";
+	}
+
 }

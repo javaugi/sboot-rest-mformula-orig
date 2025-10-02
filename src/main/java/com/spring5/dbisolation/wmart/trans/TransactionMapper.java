@@ -9,7 +9,8 @@ package com.spring5.dbisolation.wmart.trans;
  */
 public class TransactionMapper {
 
-    public TransactionDto toDto(Transaction tran) {
-        return TransactionDto.builder().build();
-    }
+	public TransactionDto toDto(Transaction tran) {
+		return TransactionDto.builder().build();
+	}
+
 }

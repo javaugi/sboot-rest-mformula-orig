@@ -26,17 +26,18 @@ import lombok.ToString;
 @Entity
 public class PrescriptionData {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private Long patientId;
+	private Long patientId;
 
-    @OneToOne
-    @JoinColumn(name = "prescription_id")
-    private PrescriptionEvent prescriptionEvent;
+	@OneToOne
+	@JoinColumn(name = "prescription_id")
+	private PrescriptionEvent prescriptionEvent;
 
-    @OneToOne
-    @JoinColumn(name = "prescription2_id")
-    private PrescriptionEvent2 prescriptionEvent2;
+	@OneToOne
+	@JoinColumn(name = "prescription2_id")
+	private PrescriptionEvent2 prescriptionEvent2;
+
 }

@@ -12,32 +12,35 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class MediaAdapter implements MediaPlayer {
 
-    private static final Logger log = LoggerFactory.getLogger(MediaAdapter.class);
-    AdvancedMediaPlayer advancedMusicPlayer;
+	private static final Logger log = LoggerFactory.getLogger(MediaAdapter.class);
 
-    public MediaAdapter(String audioType) {
+	AdvancedMediaPlayer advancedMusicPlayer;
 
-        if (audioType.equalsIgnoreCase("vlc")) {
-            advancedMusicPlayer = new VlcPlayer();
+	public MediaAdapter(String audioType) {
 
-        } else if (audioType.equalsIgnoreCase("mp4")) {
-            advancedMusicPlayer = new Mp4Player();
-        }
-    }
+		if (audioType.equalsIgnoreCase("vlc")) {
+			advancedMusicPlayer = new VlcPlayer();
 
-    @Override
-    public void play(String audioType, String fileName) {
-        assert advancedMusicPlayer != null;
+		}
+		else if (audioType.equalsIgnoreCase("mp4")) {
+			advancedMusicPlayer = new Mp4Player();
+		}
+	}
 
-        if (audioType.equalsIgnoreCase("vlc")) {
-            advancedMusicPlayer.playVlc(fileName);
-        } else if (audioType.equalsIgnoreCase("mp4")) {
-            advancedMusicPlayer.playMp4(fileName);
-        }
-    }
+	@Override
+	public void play(String audioType, String fileName) {
+		assert advancedMusicPlayer != null;
+
+		if (audioType.equalsIgnoreCase("vlc")) {
+			advancedMusicPlayer.playVlc(fileName);
+		}
+		else if (audioType.equalsIgnoreCase("mp4")) {
+			advancedMusicPlayer.playMp4(fileName);
+		}
+	}
+
 }

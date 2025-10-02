@@ -5,63 +5,65 @@ package com.sisllc.mathformulas.ci.ch08;
  */
 abstract class Employee {
 
-    private Call currentCall = null;
-    protected Rank rank;
+	private Call currentCall = null;
 
-    public Employee() {
-    }
+	protected Rank rank;
 
-    /* Start the conversation */
-    public void receiveCall(Call call) {
-        currentCall = call;
-    }
+	public Employee() {
+	}
 
-    /* the issue is resolved, finish the call */
-    public void callCompleted() {
-        if (currentCall != null) {
-            /* Disconnect the call. */
-            currentCall.disconnect();
+	/* Start the conversation */
+	public void receiveCall(Call call) {
+		currentCall = call;
+	}
 
-            /* Free the employee */
-            currentCall = null;
-        }
+	/* the issue is resolved, finish the call */
+	public void callCompleted() {
+		if (currentCall != null) {
+			/* Disconnect the call. */
+			currentCall.disconnect();
 
-        /* Check if there is a call waiting in queue */
-        assignNewCall();
-    }
+			/* Free the employee */
+			currentCall = null;
+		}
 
-    /*
-   * The issue has not been resolved. Escalate the call, and assign a new call
-   * to the employee.
-     */
-    public void escalateAndReassign() {
-        if (currentCall != null) {
-            /* escalate call */
-            currentCall.incrementRank();
-            CallHandler.getInstance().dispatchCall(currentCall);
+		/* Check if there is a call waiting in queue */
+		assignNewCall();
+	}
 
-            /* free the employee */
-            currentCall = null;
-        }
+	/*
+	 * The issue has not been resolved. Escalate the call, and assign a new call to the
+	 * employee.
+	 */
+	public void escalateAndReassign() {
+		if (currentCall != null) {
+			/* escalate call */
+			currentCall.incrementRank();
+			CallHandler.getInstance().dispatchCall(currentCall);
 
-        /* assign a new call */
-        assignNewCall();
-    }
+			/* free the employee */
+			currentCall = null;
+		}
 
-    /* Assign a new call to an employee, if the employee is free. */
-    public boolean assignNewCall() {
-        if (!isFree()) {
-            return false;
-        }
-        return CallHandler.getInstance().assignCall(this);
-    }
+		/* assign a new call */
+		assignNewCall();
+	}
 
-    /* Returns whether or not the employee is free. */
-    public boolean isFree() {
-        return currentCall == null;
-    }
+	/* Assign a new call to an employee, if the employee is free. */
+	public boolean assignNewCall() {
+		if (!isFree()) {
+			return false;
+		}
+		return CallHandler.getInstance().assignCall(this);
+	}
 
-    public Rank getRank() {
-        return rank;
-    }
+	/* Returns whether or not the employee is free. */
+	public boolean isFree() {
+		return currentCall == null;
+	}
+
+	public Rank getRank() {
+		return rank;
+	}
+
 }

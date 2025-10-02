@@ -13,20 +13,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 // @AllArgsConstructor
 public class TopUsers implements Comparable<TopUsers> {
-    // For priority queue
 
-    String userId;
-    Long count;
+	// For priority queue
 
-    public TopUsers(String userId, Long count) {
-        this.userId = userId;
-        this.count = count;
-    }
+	String userId;
 
-    @Override
-    public int compareTo(TopUsers other) {
-        return Long.compare(this.count, other.count);
-    }
-    // Min-heap by count
-    // equals and hashCode needed for proper set behavior if needed
+	Long count;
+
+	public TopUsers(String userId, Long count) {
+		this.userId = userId;
+		this.count = count;
+	}
+
+	@Override
+	public int compareTo(TopUsers other) {
+		return Long.compare(this.count, other.count);
+	}
+	// Min-heap by count
+	// equals and hashCode needed for proper set behavior if needed
+
 }

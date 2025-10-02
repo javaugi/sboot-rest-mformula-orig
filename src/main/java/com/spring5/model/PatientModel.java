@@ -13,25 +13,26 @@ import org.springframework.hateoas.RepresentationModel;
  */
 public class PatientModel extends RepresentationModel<PatientModel> {
 
-    private final Patient patient;
+	private final Patient patient;
 
-    public PatientModel(Patient patient) {
-        this.patient = patient;
-    }
+	public PatientModel(Patient patient) {
+		this.patient = patient;
+	}
 
-    public Long getId() {
-        return patient.getId();
-    }
+	public Long getId() {
+		return patient.getId();
+	}
 
-    public String getLastName() {
-        return patient.getLastName();
-    }
+	public String getLastName() {
+		return patient.getLastName();
+	}
 
-    public String getFirstName() {
-        return patient.getFirstName();
-    }
+	public String getFirstName() {
+		return patient.getFirstName();
+	}
 
-    public LocalDate getDateOfBirth() {
-        return patient.getDateOfBirth();
-    }
+	public LocalDate getDateOfBirth() {
+		return patient.getDateOfBirth();
+	}
+
 }

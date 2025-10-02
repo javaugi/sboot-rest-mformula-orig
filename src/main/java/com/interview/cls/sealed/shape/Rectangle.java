@@ -5,19 +5,20 @@
 package com.interview.cls.sealed.shape;
 
 // Permitted subclass declared as sealed
-public sealed class Rectangle extends Shape
-        permits ColoredRectangle, TransparentRectangle, FilledRectangle {
+public sealed class Rectangle extends Shape permits ColoredRectangle, TransparentRectangle, FilledRectangle {
 
-    private final double width;
-    private final double height;
+	private final double width;
 
-    public Rectangle(double width, double height) {
-        this.width = width;
-        this.height = height;
-    }
+	private final double height;
 
-    @Override
-    public double area() {
-        return width * height;
-    }
+	public Rectangle(double width, double height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	@Override
+	public double area() {
+		return width * height;
+	}
+
 }

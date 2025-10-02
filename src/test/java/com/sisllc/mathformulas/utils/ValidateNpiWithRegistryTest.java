@@ -16,28 +16,28 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author bill
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ValidateNpiWithRegistryTest extends ProjectTest {
 
-    private static final Logger log = LoggerFactory.getLogger(ValidateNpiWithRegistryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(ValidateNpiWithRegistryTest.class);
 
-    @Test
-    public void validNPI() {
-        boolean isValidNPI = true;
-        if (npiRegistryEnabled) {
-            isValidNPI = OpenCsvNpiValidation.validateNPIWithRegistry(validNpiValue);
-        }
-        Assert.assertTrue("npiRegistryEnabled=" + npiRegistryEnabled, isValidNPI);
-    }
+	@Test
+	public void validNPI() {
+		boolean isValidNPI = true;
+		if (npiRegistryEnabled) {
+			isValidNPI = OpenCsvNpiValidation.validateNPIWithRegistry(validNpiValue);
+		}
+		Assert.assertTrue("npiRegistryEnabled=" + npiRegistryEnabled, isValidNPI);
+	}
 
-    @Test
-    public void invalidNPI() {
-        boolean isValidNPI = false;
-        if (npiRegistryEnabled) {
-            isValidNPI = OpenCsvNpiValidation.validateNPIWithRegistry(invalidNpiValue);
-        }
-        Assert.assertTrue("npiRegistryEnabled=" + npiRegistryEnabled, !isValidNPI);
-    }
+	@Test
+	public void invalidNPI() {
+		boolean isValidNPI = false;
+		if (npiRegistryEnabled) {
+			isValidNPI = OpenCsvNpiValidation.validateNPIWithRegistry(invalidNpiValue);
+		}
+		Assert.assertTrue("npiRegistryEnabled=" + npiRegistryEnabled, !isValidNPI);
+	}
+
 }

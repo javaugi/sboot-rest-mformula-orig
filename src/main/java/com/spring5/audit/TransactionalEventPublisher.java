@@ -16,24 +16,25 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 public class TransactionalEventPublisher {
 
-    private final MBassador<Object> eventBus;
-    private final ThreadLocal<Queue<Object>> eventQueue = ThreadLocal.withInitial(LinkedList::new);
+	private final MBassador<Object> eventBus;
 
-    public TransactionalEventPublisher(
-            @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
-        this.eventBus = eventBus;
-    }
+	private final ThreadLocal<Queue<Object>> eventQueue = ThreadLocal.withInitial(LinkedList::new);
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handleTransactionCompletion(TransactionCompletedEvent event) {
-        Queue<Object> events = eventQueue.get();
-        while (!events.isEmpty()) {
-            eventBus.publish(events.poll());
-        }
-        eventQueue.remove();
-    }
+	public TransactionalEventPublisher(@Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
+		this.eventBus = eventBus;
+	}
 
-    public void publishAfterCommit(Object event) {
-        eventQueue.get().add(event);
-    }
+	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+	public void handleTransactionCompletion(TransactionCompletedEvent event) {
+		Queue<Object> events = eventQueue.get();
+		while (!events.isEmpty()) {
+			eventBus.publish(events.poll());
+		}
+		eventQueue.remove();
+	}
+
+	public void publishAfterCommit(Object event) {
+		eventQueue.get().add(event);
+	}
+
 }

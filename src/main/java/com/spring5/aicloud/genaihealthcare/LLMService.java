@@ -5,10 +5,11 @@
 package com.spring5.aicloud.genaihealthcare;
 
 /**
- * A mock service interface for interacting with a Generative AI model. In a
- * real application, this would integrate with a model API like Google's Gemini.
+ * A mock service interface for interacting with a Generative AI model. In a real
+ * application, this would integrate with a model API like Google's Gemini.
  */
 interface LLMService {
 
-    PatientInquiryResponse getPersonalizedResponse(PatientInquiryRequest request);
+	PatientInquiryResponse getPersonalizedResponse(PatientInquiryRequest request);
+
 }

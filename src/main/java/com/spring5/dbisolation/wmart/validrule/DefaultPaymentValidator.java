@@ -12,62 +12,61 @@ import lombok.Data;
 
 public class DefaultPaymentValidator implements PaymentValidator {
 
-    private final List<ValidationRule> rules;
+	private final List<ValidationRule> rules;
 
-    public DefaultPaymentValidator(List<ValidationRule> rules) {
-        this.rules = rules;
-    }
+	public DefaultPaymentValidator(List<ValidationRule> rules) {
+		this.rules = rules;
+	}
 
-    @Override
-    public boolean validatePayment(Payment payment) {
-        // A simple implementation for the main method
-        return getFailedRules(payment).isEmpty();
-    }
+	@Override
+	public boolean validatePayment(Payment payment) {
+		// A simple implementation for the main method
+		return getFailedRules(payment).isEmpty();
+	}
 
-    @Override
-    public List<ValidationRule> getFailedRules(Payment payment) {
-        return rules.stream().filter(rule -> !rule.validate(payment)).collect(Collectors.toList());
-    }
+	@Override
+	public List<ValidationRule> getFailedRules(Payment payment) {
+		return rules.stream().filter(rule -> !rule.validate(payment)).collect(Collectors.toList());
+	}
 
-    // @Override
-    public List<ValidationRule> getFailedRulesInParalell(Payment payment) {
-        return rules.parallelStream() // Use parallelStream()
-                .filter(rule -> !rule.validate(payment))
-                .collect(Collectors.toList());
-    }
+	// @Override
+	public List<ValidationRule> getFailedRulesInParalell(Payment payment) {
+		return rules.parallelStream() // Use parallelStream()
+			.filter(rule -> !rule.validate(payment))
+			.collect(Collectors.toList());
+	}
 
-    // @Override
-    public List<ValidationRule> getFailedRulesInComleteable(Payment payment) {
-        List<CompletableFuture<ValidationResult>> futures
-                = rules.stream()
-                        .map(
-                                rule
-                                -> CompletableFuture.supplyAsync(
-                                        () -> new ValidationResult(rule, rule.validate(payment))))
-                        .collect(Collectors.toList());
+	// @Override
+	public List<ValidationRule> getFailedRulesInComleteable(Payment payment) {
+		List<CompletableFuture<ValidationResult>> futures = rules.stream()
+			.map(rule -> CompletableFuture.supplyAsync(() -> new ValidationResult(rule, rule.validate(payment))))
+			.collect(Collectors.toList());
 
-        // Wait for all futures to complete and collect the results
-        return futures.stream()
-                .map(CompletableFuture::join)
-                .filter(result -> !result.isValid())
-                .map(ValidationResult::getRule)
-                .collect(Collectors.toList());
-    }
+		// Wait for all futures to complete and collect the results
+		return futures.stream()
+			.map(CompletableFuture::join)
+			.filter(result -> !result.isValid())
+			.map(ValidationResult::getRule)
+			.collect(Collectors.toList());
+	}
 
-    @Data
-    private static class ValidationResult {
+	@Data
+	private static class ValidationResult {
 
-        private final ValidationRule rule;
-        private final boolean isValid;
+		private final ValidationRule rule;
 
-        // Constructor, getters
-        public ValidationResult(ValidationRule rule, boolean isValid) {
-            this.rule = rule;
-            this.isValid = isValid;
-        }
+		private final boolean isValid;
 
-        public boolean isValid() {
-            return true;
-        }
-    }
+		// Constructor, getters
+		public ValidationResult(ValidationRule rule, boolean isValid) {
+			this.rule = rule;
+			this.isValid = isValid;
+		}
+
+		public boolean isValid() {
+			return true;
+		}
+
+	}
+
 }

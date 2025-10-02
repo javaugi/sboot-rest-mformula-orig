@@ -15,17 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class Level4RepeatableRead {
 
-    private final AuditOrderRepository orderRepository;
+	private final AuditOrderRepository orderRepository;
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void processOrder(Long orderId) {
-        // First read
-        AuditOrder order = orderRepository.findById(orderId).orElseThrow();
+	@Transactional(isolation = Isolation.REPEATABLE_READ)
+	public void processOrder(Long orderId) {
+		// First read
+		AuditOrder order = orderRepository.findById(orderId).orElseThrow();
 
-        // Some business logic...
-        // Second read - guaranteed to see the same data as first read
-        AuditOrder sameOrder = orderRepository.findById(orderId).orElseThrow();
+		// Some business logic...
+		// Second read - guaranteed to see the same data as first read
+		AuditOrder sameOrder = orderRepository.findById(orderId).orElseThrow();
 
-        // But new rows may have been inserted by other transactions (phantom reads)
-    }
+		// But new rows may have been inserted by other transactions (phantom reads)
+	}
+
 }

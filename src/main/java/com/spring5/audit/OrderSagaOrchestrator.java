@@ -16,45 +16,42 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderSagaOrchestrator {
 
-    private final @Qualifier(EventBusConfig.MB_EVENT_BUS)
-    MBassador<Object> eventBus;
-    private final InventoryClient inventoryClient;
-    private final PaymentClient paymentClient;
+	private final @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus;
 
-    @Handler
-    public void onOrderReceived(OrderReceivedEvent event) {
-        try {
-            inventoryClient
-                    .reserveItems(event.getOrderId(), event.getItems())
-                    .thenAccept(result -> eventBus.publish(new InventoryReservedEvent(event.getOrderId())))
-                    .exceptionally(
-                            ex -> {
-                                eventBus.publish(
-                                        new OrderFailedEvent(event.getOrderId(), "Inventory reservation failed"));
-                                return null;
-                            });
-        } catch (Exception e) {
-            eventBus.publish(new OrderFailedEvent(event.getOrderId(), e.getMessage()));
-        }
-    }
+	private final InventoryClient inventoryClient;
 
-    @Handler
-    public void onInventoryReserved(InventoryReservedEvent event) {
-        paymentClient
-                .processPayment(event.getOrderId())
-                .thenAccept(result -> eventBus.publish(new PaymentProcessedEvent(event.getOrderId())))
-                .exceptionally(
-                        ex -> {
-                            // Compensate inventory reservation
-                            inventoryClient.cancelReservation(event.getOrderId());
-                            eventBus.publish(
-                                    new OrderFailedEvent(event.getOrderId(), "Payment processing failed"));
-                            return null;
-                        });
-    }
+	private final PaymentClient paymentClient;
 
-    @Handler
-    public void onPaymentProcessed(PaymentProcessedEvent event) {
-        eventBus.publish(new OrderCompletedEvent(event.getOrderId()));
-    }
+	@Handler
+	public void onOrderReceived(OrderReceivedEvent event) {
+		try {
+			inventoryClient.reserveItems(event.getOrderId(), event.getItems())
+				.thenAccept(result -> eventBus.publish(new InventoryReservedEvent(event.getOrderId())))
+				.exceptionally(ex -> {
+					eventBus.publish(new OrderFailedEvent(event.getOrderId(), "Inventory reservation failed"));
+					return null;
+				});
+		}
+		catch (Exception e) {
+			eventBus.publish(new OrderFailedEvent(event.getOrderId(), e.getMessage()));
+		}
+	}
+
+	@Handler
+	public void onInventoryReserved(InventoryReservedEvent event) {
+		paymentClient.processPayment(event.getOrderId())
+			.thenAccept(result -> eventBus.publish(new PaymentProcessedEvent(event.getOrderId())))
+			.exceptionally(ex -> {
+				// Compensate inventory reservation
+				inventoryClient.cancelReservation(event.getOrderId());
+				eventBus.publish(new OrderFailedEvent(event.getOrderId(), "Payment processing failed"));
+				return null;
+			});
+	}
+
+	@Handler
+	public void onPaymentProcessed(PaymentProcessedEvent event) {
+		eventBus.publish(new OrderCompletedEvent(event.getOrderId()));
+	}
+
 }

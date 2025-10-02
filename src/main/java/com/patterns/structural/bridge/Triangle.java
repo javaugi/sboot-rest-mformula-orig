@@ -9,18 +9,18 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Triangle extends Shape1 {
 
-    public Triangle(ColorBridge c) {
-        super(c);
-    }
+	public Triangle(ColorBridge c) {
+		super(c);
+	}
 
-    @Override
-    public void applyColor() {
-        System.out.print("Triangle filled with color ");
-        color.applyColor();
-    }
+	@Override
+	public void applyColor() {
+		System.out.print("Triangle filled with color ");
+		color.applyColor();
+	}
+
 }

@@ -9,23 +9,23 @@ package com.patterns.behavioral.interpreter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class TerminalExpression implements Expression {
 
-    private String data;
+	private String data;
 
-    public TerminalExpression(String data) {
-        this.data = data;
-    }
+	public TerminalExpression(String data) {
+		this.data = data;
+	}
 
-    @Override
-    public boolean interpret(String context) {
+	@Override
+	public boolean interpret(String context) {
 
-        if (context.contains(data)) {
-            return true;
-        }
-        return false;
-    }
+		if (context.contains(data)) {
+			return true;
+		}
+		return false;
+	}
+
 }

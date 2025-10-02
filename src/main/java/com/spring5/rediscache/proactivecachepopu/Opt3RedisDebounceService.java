@@ -13,11 +13,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Opt3RedisDebounceService {
 
-    private final StringRedisTemplate redis;
+	private final StringRedisTemplate redis;
 
-    public boolean shouldUpdate(Long productId, Duration debounceWindow) {
-        String key = "debounce:product:" + productId;
-        Boolean set = redis.opsForValue().setIfAbsent(key, "1", debounceWindow);
-        return Boolean.TRUE.equals(set); // only true if key did not exist
-    }
+	public boolean shouldUpdate(Long productId, Duration debounceWindow) {
+		String key = "debounce:product:" + productId;
+		Boolean set = redis.opsForValue().setIfAbsent(key, "1", debounceWindow);
+		return Boolean.TRUE.equals(set); // only true if key did not exist
+	}
+
 }

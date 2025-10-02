@@ -2,25 +2,28 @@ package com.sisllc.mathformulas.ci.ch17.Question17_14;
 
 public class Result {
 
-    public int invalid = Integer.MAX_VALUE;
-    public String parsed = "";
+	public int invalid = Integer.MAX_VALUE;
 
-    public Result(int inv, String p) {
-        invalid = inv;
-        parsed = p;
-    }
+	public String parsed = "";
 
-    public Result clone() {
-        return new Result(this.invalid, this.parsed);
-    }
+	public Result(int inv, String p) {
+		invalid = inv;
+		parsed = p;
+	}
 
-    public static Result min(Result r1, Result r2) {
-        if (r1 == null) {
-            return r2;
-        } else if (r2 == null) {
-            return r1;
-        }
+	public Result clone() {
+		return new Result(this.invalid, this.parsed);
+	}
 
-        return r2.invalid < r1.invalid ? r2 : r1;
-    }
+	public static Result min(Result r1, Result r2) {
+		if (r1 == null) {
+			return r2;
+		}
+		else if (r2 == null) {
+			return r1;
+		}
+
+		return r2.invalid < r1.invalid ? r2 : r1;
+	}
+
 }

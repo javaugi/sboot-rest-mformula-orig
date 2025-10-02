@@ -34,61 +34,66 @@ import org.slf4j.LoggerFactory;
  */
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ColorSchemeOOD {
 
-    private static final Logger log = LoggerFactory.getLogger(ColorSchemeOOD.class);
+	private static final Logger log = LoggerFactory.getLogger(ColorSchemeOOD.class);
 
-    public static void main(String[] argw) {
-        ColorSchemeOOD color = new ColorSchemeOOD();
-        color.runExampe();
-    }
+	public static void main(String[] argw) {
+		ColorSchemeOOD color = new ColorSchemeOOD();
+		color.runExampe();
+	}
 
-    public void runExampe() {
-        // This is how you make a red tomato color object with a constructor:
-        Color tomato = new RGBColor(255, 99, 71);
+	public void runExampe() {
+		// This is how you make a red tomato color object with a constructor:
+		Color tomato = new RGBColor(255, 99, 71);
 
-        // Now, we make an instance of Palette once and ask it to return a color to us every time we
-        // need it:
-        Palette palette = new Palette();
-        Color c1 = palette.take(255, 99, 71);
-        Color c2 = palette.take(255, 99, 71);
-    }
+		// Now, we make an instance of Palette once and ask it to return a color to us
+		// every time we
+		// need it:
+		Palette palette = new Palette();
+		Color c1 = palette.take(255, 99, 71);
+		Color c2 = palette.take(255, 99, 71);
+	}
 
-    public class Palette {
+	public class Palette {
 
-        private final Map<Integer, Color> colors = new HashMap<>();
+		private final Map<Integer, Color> colors = new HashMap<>();
 
-        Color take(int red, int green, int blue) {
-            final int hex = red << 16 + green << 8 + blue;
-            // return colors.computerIfAbsent(hex, h - > new Color(h));
-            return null;
-        }
-    }
+		Color take(int red, int green, int blue) {
+			final int hex = red << 16 + green << 8 + blue;
+			// return colors.computerIfAbsent(hex, h - > new Color(h));
+			return null;
+		}
 
-    interface Color {
-    }
+	}
 
-    // They Have Names
-    class HexColor implements Color {
+	interface Color {
 
-        private final int hex;
+	}
 
-        HexColor(int h) {
+	// They Have Names
+	class HexColor implements Color {
 
-            this.hex = h;
-        }
-    }
+		private final int hex;
 
-    class RGBColor implements Color {
+		HexColor(int h) {
 
-        private final Color origin;
+			this.hex = h;
+		}
 
-        RGBColor(int red, int green, int blue) {
+	}
 
-            this.origin = new HexColor(red << 16 + green << 8 + blue);
-        }
-    }
+	class RGBColor implements Color {
+
+		private final Color origin;
+
+		RGBColor(int red, int green, int blue) {
+
+			this.origin = new HexColor(red << 16 + green << 8 + blue);
+		}
+
+	}
+
 }

@@ -9,18 +9,18 @@ package com.patterns.misc.delegate;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Client {
 
-    BusinessDelegate businessService;
+	BusinessDelegate businessService;
 
-    public Client(BusinessDelegate businessService) {
-        this.businessService = businessService;
-    }
+	public Client(BusinessDelegate businessService) {
+		this.businessService = businessService;
+	}
 
-    public void doTask() {
-        businessService.doTask();
-    }
+	public void doTask() {
+		businessService.doTask();
+	}
+
 }

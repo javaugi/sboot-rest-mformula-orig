@@ -9,12 +9,12 @@ package com.patterns.misc.servicelocator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Service {
 
-    public String getName();
+	public String getName();
 
-    public void execute();
+	public void execute();
+
 }

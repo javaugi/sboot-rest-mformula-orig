@@ -9,10 +9,10 @@ package com.patterns.behavioral.command;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface OrderCommand {
 
-    void execute();
+	void execute();
+
 }

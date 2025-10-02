@@ -18,10 +18,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StoreTransaction {
 
-    private String transactionId;
-    private String storeId;
-    private BigDecimal amount;
-    private TransactionType type;
-    private LocalDateTime timestamp;
-    private Map<String, String> metadata;
+	private String transactionId;
+
+	private String storeId;
+
+	private BigDecimal amount;
+
+	private TransactionType type;
+
+	private LocalDateTime timestamp;
+
+	private Map<String, String> metadata;
+
 }

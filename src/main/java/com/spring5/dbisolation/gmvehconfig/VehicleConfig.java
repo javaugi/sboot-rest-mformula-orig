@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 public class VehicleConfig {
 
-    Long id;
-    BigDecimal basePrice;
+	Long id;
+
+	BigDecimal basePrice;
+
 }

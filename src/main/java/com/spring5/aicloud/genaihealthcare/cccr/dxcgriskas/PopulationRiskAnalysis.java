@@ -10,11 +10,18 @@ import java.util.Map;
 @lombok.Builder(toBuilder = true)
 public class PopulationRiskAnalysis {
 
-    private String planType;
-    private int year;
-    private int totalMembers;
-    private double averageRiskScore;
-    private double totalPredictedCost;
-    private Map<String, Double> hccPrevalence;
-    private RiskDistribution riskDistribution;
+	private String planType;
+
+	private int year;
+
+	private int totalMembers;
+
+	private double averageRiskScore;
+
+	private double totalPredictedCost;
+
+	private Map<String, Double> hccPrevalence;
+
+	private RiskDistribution riskDistribution;
+
 }

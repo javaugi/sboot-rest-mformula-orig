@@ -12,18 +12,19 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class FactoryProducer {
 
-    private static final Logger log = LoggerFactory.getLogger(FactoryProducer.class);
+	private static final Logger log = LoggerFactory.getLogger(FactoryProducer.class);
 
-    public static AbstractFactory getFactory(boolean rounded) {
-        if (rounded) {
-            return new RoundedShapeFactory();
-        } else {
-            return new ShapeFactory();
-        }
-    }
+	public static AbstractFactory getFactory(boolean rounded) {
+		if (rounded) {
+			return new RoundedShapeFactory();
+		}
+		else {
+			return new ShapeFactory();
+		}
+	}
+
 }

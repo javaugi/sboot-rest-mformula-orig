@@ -13,28 +13,30 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @Configuration
 public class JacksonConfig {
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
+	@Bean
+	public ObjectMapper objectMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
 
-        // Example: Disable writing dates as timestamps
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		// Example: Disable writing dates as timestamps
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        // Example: Enable pretty printing
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+		// Example: Enable pretty printing
+		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        // Register custom modules if needed
-        // objectMapper.registerModule(new MyCustomModule());
-        return objectMapper;
-    }
+		// Register custom modules if needed
+		// objectMapper.registerModule(new MyCustomModule());
+		return objectMapper;
+	}
 
-    // @Bean
-    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = builder.build();
+	// @Bean
+	public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
+		ObjectMapper objectMapper = builder.build();
 
-        // Customize ObjectMapper here if needed
-        // Example: Disable writing dates as timestamps
-        // objectMapper.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
-    }
+		// Customize ObjectMapper here if needed
+		// Example: Disable writing dates as timestamps
+		// objectMapper.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+		// false);
+		return objectMapper;
+	}
+
 }

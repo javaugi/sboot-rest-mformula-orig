@@ -46,54 +46,52 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 // @EntityListeners(PatientEntityListener.class) // Listener to handle encryption
 public class Patient implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    Long version;
+	Long version;
 
-    private String memberId;
+	private String memberId;
 
-    private String name;
+	private String name;
 
-    @Convert(converter = EncryptedStringConverter.class) // JPA Attribute Converter
-    private String ssn; // Social Security Number - PII/PHI
+	@Convert(converter = EncryptedStringConverter.class) // JPA Attribute Converter
+	private String ssn; // Social Security Number - PII/PHI
 
-    @NotBlank(message = "First name is required")
-    @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
-    private String firstName;
+	@NotBlank(message = "First name is required")
+	@Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
+	private String firstName;
 
-    @NotBlank(message = "Last name is required")
-    @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
-    private String lastName;
+	@NotBlank(message = "Last name is required")
+	@Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
+	private String lastName;
 
-    @Past(message = "Date of birth must be in the past")
-    @NotNull(message = "Date of birth is required")
-    private LocalDate dateOfBirth;
+	@Past(message = "Date of birth must be in the past")
+	@NotNull(message = "Date of birth is required")
+	private LocalDate dateOfBirth;
 
-    @Pattern(regexp = "^(MALE|FEMALE|OTHER)$", message = "Gender must be MALE, FEMALE, or OTHER")
-    private String gender;
+	@Pattern(regexp = "^(MALE|FEMALE|OTHER)$", message = "Gender must be MALE, FEMALE, or OTHER")
+	private String gender;
 
-    private String address;
+	private String address;
 
-    @Email(message = "Email should be valid")
-    private String userEmail;
+	@Email(message = "Email should be valid")
+	private String userEmail;
 
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number must be valid")
-    private String phoneNumber;
+	@Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number must be valid")
+	private String phoneNumber;
 
-    // @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    @OneToMany(
-            mappedBy = "patient",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            targetEntity = Appointment.class)
-    private List<Appointment> appointments;
+	// @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+			targetEntity = Appointment.class)
+	private List<Appointment> appointments;
 
-    private Claim claim;
+	private Claim claim;
 
-    private String planType; // Medicare, Commercial, ACA
+	private String planType; // Medicare, Commercial, ACA
 
-    @OneToMany(mappedBy = "patient")
-    private List<Claim> claims;
+	@OneToMany(mappedBy = "patient")
+	private List<Claim> claims;
+
 }

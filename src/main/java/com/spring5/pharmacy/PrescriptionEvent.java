@@ -17,133 +17,140 @@ import java.util.Objects;
 @Entity
 public class PrescriptionEvent {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private final String eventId;
-    private final String correlationId;
-    private final String type;
+	private final String eventId;
 
-    @OneToOne
-    private final PrescriptionData payload;
+	private final String correlationId;
 
-    private final String status;
-    private final String errorMessage;
+	private final String type;
 
-    // Private constructor used by builder
-    private PrescriptionEvent(Builder builder) {
-        this.eventId = builder.eventId;
-        this.correlationId = builder.correlationId;
-        this.type = builder.type;
-        this.payload = builder.payload;
-        this.status = builder.status;
-        this.errorMessage = builder.errorMessage;
-    }
+	@OneToOne
+	private final PrescriptionData payload;
 
-    // Copy method to create a new builder with existing values
-    public Builder copy() {
-        return new Builder()
-                .eventId(this.eventId)
-                .correlationId(this.correlationId)
-                .type(this.type)
-                .payload(this.payload)
-                .status(this.status)
-                .errorMessage(this.errorMessage);
-    }
+	private final String status;
 
-    // Builder class
-    public static class Builder {
+	private final String errorMessage;
 
-        private String eventId;
-        private String correlationId;
-        private String type;
-        private PrescriptionData payload;
-        private String status;
-        private String errorMessage;
+	// Private constructor used by builder
+	private PrescriptionEvent(Builder builder) {
+		this.eventId = builder.eventId;
+		this.correlationId = builder.correlationId;
+		this.type = builder.type;
+		this.payload = builder.payload;
+		this.status = builder.status;
+		this.errorMessage = builder.errorMessage;
+	}
 
-        public Builder eventId(String eventId) {
-            this.eventId = eventId;
-            return this;
-        }
+	// Copy method to create a new builder with existing values
+	public Builder copy() {
+		return new Builder().eventId(this.eventId)
+			.correlationId(this.correlationId)
+			.type(this.type)
+			.payload(this.payload)
+			.status(this.status)
+			.errorMessage(this.errorMessage);
+	}
 
-        public Builder correlationId(String correlationId) {
-            this.correlationId = correlationId;
-            return this;
-        }
+	// Builder class
+	public static class Builder {
 
-        public Builder type(String type) {
-            this.type = type;
-            return this;
-        }
+		private String eventId;
 
-        public Builder payload(PrescriptionData payload) {
-            this.payload = payload;
-            return this;
-        }
+		private String correlationId;
 
-        public Builder status(String status) {
-            this.status = status;
-            return this;
-        }
+		private String type;
 
-        public Builder errorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
-            return this;
-        }
+		private PrescriptionData payload;
 
-        public PrescriptionEvent build() {
-            // Validate required fields
-            Objects.requireNonNull(eventId, "eventId cannot be null");
-            Objects.requireNonNull(correlationId, "correlationId cannot be null");
-            Objects.requireNonNull(type, "type cannot be null");
+		private String status;
 
-            return new PrescriptionEvent(this);
-        }
-    }
+		private String errorMessage;
 
-    // Getters
-    public long getId() {
-        return id;
-    }
+		public Builder eventId(String eventId) {
+			this.eventId = eventId;
+			return this;
+		}
 
-    public String getEventId() {
-        return eventId;
-    }
+		public Builder correlationId(String correlationId) {
+			this.correlationId = correlationId;
+			return this;
+		}
 
-    public String getCorrelationId() {
-        return correlationId;
-    }
+		public Builder type(String type) {
+			this.type = type;
+			return this;
+		}
 
-    public String getType() {
-        return type;
-    }
+		public Builder payload(PrescriptionData payload) {
+			this.payload = payload;
+			return this;
+		}
 
-    public PrescriptionData getPayload() {
-        return payload;
-    }
+		public Builder status(String status) {
+			this.status = status;
+			return this;
+		}
 
-    public String getStatus() {
-        return status;
-    }
+		public Builder errorMessage(String errorMessage) {
+			this.errorMessage = errorMessage;
+			return this;
+		}
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+		public PrescriptionEvent build() {
+			// Validate required fields
+			Objects.requireNonNull(eventId, "eventId cannot be null");
+			Objects.requireNonNull(correlationId, "correlationId cannot be null");
+			Objects.requireNonNull(type, "type cannot be null");
 
-    // Example usage
-    public static void main(String[] args) {
-        PrescriptionEvent original
-                = new PrescriptionEvent.Builder()
-                        .eventId("event-123")
-                        .correlationId("corr-456")
-                        .type("PRESCRIPTION_CREATED")
-                        .status("PENDING")
-                        .build();
+			return new PrescriptionEvent(this);
+		}
 
-        PrescriptionEvent updated = original.copy().type("PATIENT_VALIDATED").status("SUCCESS").build();
+	}
 
-        System.out.println("Original: " + original.getType()); // PRESCRIPTION_CREATED
-        System.out.println("Updated: " + updated.getType()); // PATIENT_VALIDATED
-    }
+	// Getters
+	public long getId() {
+		return id;
+	}
+
+	public String getEventId() {
+		return eventId;
+	}
+
+	public String getCorrelationId() {
+		return correlationId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public PrescriptionData getPayload() {
+		return payload;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	// Example usage
+	public static void main(String[] args) {
+		PrescriptionEvent original = new PrescriptionEvent.Builder().eventId("event-123")
+			.correlationId("corr-456")
+			.type("PRESCRIPTION_CREATED")
+			.status("PENDING")
+			.build();
+
+		PrescriptionEvent updated = original.copy().type("PATIENT_VALIDATED").status("SUCCESS").build();
+
+		System.out.println("Original: " + original.getType()); // PRESCRIPTION_CREATED
+		System.out.println("Updated: " + updated.getType()); // PATIENT_VALIDATED
+	}
+
 }

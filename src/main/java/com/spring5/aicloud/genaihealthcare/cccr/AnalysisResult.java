@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AnalysisResult {
 
-    ClinicalData clinicalData;
-    FinancialData financialData;
+	ClinicalData clinicalData;
+
+	FinancialData financialData;
+
 }

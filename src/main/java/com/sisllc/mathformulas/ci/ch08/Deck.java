@@ -5,63 +5,65 @@ import java.util.ArrayList;
 
 public class Deck<T extends Card> {
 
-    private ArrayList<T> cards;
-    private int dealtIndex = 0; // marks first undealt card
+	private ArrayList<T> cards;
 
-    public Deck() {
-    }
+	private int dealtIndex = 0; // marks first undealt card
 
-    public void setDeckOfCards(ArrayList<T> deckOfCards) {
-        cards = deckOfCards;
-    }
+	public Deck() {
+	}
 
-    public void shuffle() {
-        for (int i = 0; i < cards.size(); i++) {
-            int j = AssortedMethods.randomIntInRange(i, cards.size() - i - 1);
-            T card1 = cards.get(i);
-            T card2 = cards.get(j);
-            cards.set(i, card2);
-            cards.set(j, card1);
-        }
-    }
+	public void setDeckOfCards(ArrayList<T> deckOfCards) {
+		cards = deckOfCards;
+	}
 
-    public int remainingCards() {
-        return cards.size() - dealtIndex;
-    }
+	public void shuffle() {
+		for (int i = 0; i < cards.size(); i++) {
+			int j = AssortedMethods.randomIntInRange(i, cards.size() - i - 1);
+			T card1 = cards.get(i);
+			T card2 = cards.get(j);
+			cards.set(i, card2);
+			cards.set(j, card1);
+		}
+	}
 
-    public T[] dealHand(int number) {
-        if (remainingCards() < number) {
-            return null;
-        }
+	public int remainingCards() {
+		return cards.size() - dealtIndex;
+	}
 
-        T[] hand = (T[]) new Card[number];
-        int count = 0;
-        while (count < number) {
-            T card = dealCard();
-            if (card != null) {
-                hand[count] = card;
-                count++;
-            }
-        }
+	public T[] dealHand(int number) {
+		if (remainingCards() < number) {
+			return null;
+		}
 
-        return hand;
-    }
+		T[] hand = (T[]) new Card[number];
+		int count = 0;
+		while (count < number) {
+			T card = dealCard();
+			if (card != null) {
+				hand[count] = card;
+				count++;
+			}
+		}
 
-    public T dealCard() {
-        if (remainingCards() == 0) {
-            return null;
-        }
+		return hand;
+	}
 
-        T card = cards.get(dealtIndex);
-        card.markUnavailable();
-        dealtIndex++;
+	public T dealCard() {
+		if (remainingCards() == 0) {
+			return null;
+		}
 
-        return card;
-    }
+		T card = cards.get(dealtIndex);
+		card.markUnavailable();
+		dealtIndex++;
 
-    public void print() {
-        for (Card card : cards) {
-            card.print();
-        }
-    }
+		return card;
+	}
+
+	public void print() {
+		for (Card card : cards) {
+			card.print();
+		}
+	}
+
 }

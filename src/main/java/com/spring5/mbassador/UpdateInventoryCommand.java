@@ -9,31 +9,34 @@ package com.spring5.mbassador;
  */
 public class UpdateInventoryCommand {
 
-    private String productId;
-    private int quant;
-    private int newQuantity;
+	private String productId;
 
-    public String getProductId() {
-        return productId;
-    }
+	private int quant;
 
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
+	private int newQuantity;
 
-    public int getQuant() {
-        return quant;
-    }
+	public String getProductId() {
+		return productId;
+	}
 
-    public void setQuant(int quant) {
-        this.quant = quant;
-    }
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 
-    public int getNewQuantity() {
-        return newQuantity;
-    }
+	public int getQuant() {
+		return quant;
+	}
 
-    public void setNewQuantity(int newQuantity) {
-        this.newQuantity = newQuantity;
-    }
+	public void setQuant(int quant) {
+		this.quant = quant;
+	}
+
+	public int getNewQuantity() {
+		return newQuantity;
+	}
+
+	public void setNewQuantity(int newQuantity) {
+		this.newQuantity = newQuantity;
+	}
+
 }

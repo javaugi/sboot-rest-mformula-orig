@@ -11,13 +11,22 @@ import lombok.Data;
 @Builder
 public class AdyenPaymentRequests {
 
-    private boolean synchronous;
-    private String paymentId;
-    private String apiKey;
-    private String merchantAccount;
-    private String environment;
-    private String endpoint;
-    private String returnUrl;
-    private AdyenPaymentAmount amount;
-    private String paymentMethod;
+	private boolean synchronous;
+
+	private String paymentId;
+
+	private String apiKey;
+
+	private String merchantAccount;
+
+	private String environment;
+
+	private String endpoint;
+
+	private String returnUrl;
+
+	private AdyenPaymentAmount amount;
+
+	private String paymentMethod;
+
 }

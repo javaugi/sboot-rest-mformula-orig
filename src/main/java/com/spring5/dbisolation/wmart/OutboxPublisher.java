@@ -17,21 +17,23 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OutboxPublisher {
 
-    private final OutboxRepository repo;
-    private final KafkaTemplate<String, String> kafka;
+	private final OutboxRepository repo;
 
-    @Scheduled(fixedDelayString = "${outbox.poll-ms:1000}")
-    public void publish() {
-        List<Outbox> rows = repo.findUnpublished(PageRequest.of(0, 50));
-        rows.forEach(
-                r -> {
-                    try {
-                        kafka.send(r.getTopic(), r.getKey(), r.getPayload()).get(5, TimeUnit.SECONDS);
-                        r.setPublishedAt(Instant.now());
-                        repo.save(r);
-                    } catch (Exception ex) {
-                        // log and leave for retry
-                    }
-                });
-    }
+	private final KafkaTemplate<String, String> kafka;
+
+	@Scheduled(fixedDelayString = "${outbox.poll-ms:1000}")
+	public void publish() {
+		List<Outbox> rows = repo.findUnpublished(PageRequest.of(0, 50));
+		rows.forEach(r -> {
+			try {
+				kafka.send(r.getTopic(), r.getKey(), r.getPayload()).get(5, TimeUnit.SECONDS);
+				r.setPublishedAt(Instant.now());
+				repo.save(r);
+			}
+			catch (Exception ex) {
+				// log and leave for retry
+			}
+		});
+	}
+
 }

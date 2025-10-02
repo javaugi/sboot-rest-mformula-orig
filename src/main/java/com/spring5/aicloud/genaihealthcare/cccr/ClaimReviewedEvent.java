@@ -15,7 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClaimReviewedEvent {
 
-    ClaimProcessingService claimProcessingService;
-    Claim claim;
-    ReviewResult result;
+	ClaimProcessingService claimProcessingService;
+
+	Claim claim;
+
+	ReviewResult result;
+
 }

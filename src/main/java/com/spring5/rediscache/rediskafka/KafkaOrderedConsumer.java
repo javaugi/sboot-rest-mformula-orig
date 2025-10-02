@@ -14,35 +14,36 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaOrderedConsumer {
 
-    private static final String SEQUENCE_PREFIX = "kafka:sequence:";
-    private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_LONG)
-    RedisTemplate<String, Long> redisTemplate;
+	private static final String SEQUENCE_PREFIX = "kafka:sequence:";
 
-    @KafkaListener(topics = "ordered-events")
-    public void processOrderedEvent(KafkaOrderedEvent event) {
-        String sequenceKey = SEQUENCE_PREFIX + event.getEntityId();
+	private final @Qualifier(RedisWithKafkaConfig.REDIS_TPL_LONG) RedisTemplate<String, Long> redisTemplate;
 
-        // Get last processed sequence number from Redis
-        Long lastSequence = redisTemplate.opsForValue().get(sequenceKey);
-        lastSequence = lastSequence == null ? 0L : lastSequence;
+	@KafkaListener(topics = "ordered-events")
+	public void processOrderedEvent(KafkaOrderedEvent event) {
+		String sequenceKey = SEQUENCE_PREFIX + event.getEntityId();
 
-        // Check if this event is in order
-        if (event.getSequenceNumber() == lastSequence + 1) {
-            // Process the event
-            processEvent(event);
+		// Get last processed sequence number from Redis
+		Long lastSequence = redisTemplate.opsForValue().get(sequenceKey);
+		lastSequence = lastSequence == null ? 0L : lastSequence;
 
-            // Update the sequence number in Redis
-            redisTemplate.opsForValue().set(sequenceKey, event.getSequenceNumber());
-        } else if (event.getSequenceNumber() > lastSequence + 1) {
-            // Store in Redis for later processing (out-of-order)
-            redisTemplate
-                    .opsForList()
-                    .rightPush("kafka:out-of-order:" + event.getEntityId(), event.getSequenceNumber());
-        }
-        // Else (duplicate or old event) - ignore
-    }
+		// Check if this event is in order
+		if (event.getSequenceNumber() == lastSequence + 1) {
+			// Process the event
+			processEvent(event);
 
-    private void processEvent(KafkaOrderedEvent event) {
-        // Your business logic here
-    }
+			// Update the sequence number in Redis
+			redisTemplate.opsForValue().set(sequenceKey, event.getSequenceNumber());
+		}
+		else if (event.getSequenceNumber() > lastSequence + 1) {
+			// Store in Redis for later processing (out-of-order)
+			redisTemplate.opsForList()
+				.rightPush("kafka:out-of-order:" + event.getEntityId(), event.getSequenceNumber());
+		}
+		// Else (duplicate or old event) - ignore
+	}
+
+	private void processEvent(KafkaOrderedEvent event) {
+		// Your business logic here
+	}
+
 }

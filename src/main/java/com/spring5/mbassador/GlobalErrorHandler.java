@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class GlobalErrorHandler {
 
-    @Handler
-    public void handleErrors(Throwable error) {
-        System.err.println("Error in event handling: " + error.getMessage());
-    }
+	@Handler
+	public void handleErrors(Throwable error) {
+		System.err.println("Error in event handling: " + error.getMessage());
+	}
+
 }
 /*
-8. Advanced Configuration (Optional)
-
+ * 8. Advanced Configuration (Optional)
+ * 
  */

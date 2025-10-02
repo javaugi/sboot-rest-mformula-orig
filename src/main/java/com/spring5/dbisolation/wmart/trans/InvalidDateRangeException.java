@@ -6,7 +6,8 @@ package com.spring5.dbisolation.wmart.trans;
 
 public class InvalidDateRangeException extends RuntimeException {
 
-    public InvalidDateRangeException(String message) {
-        super(message);
-    }
+	public InvalidDateRangeException(String message) {
+		super(message);
+	}
+
 }

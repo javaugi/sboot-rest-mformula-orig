@@ -29,22 +29,25 @@ Global Configuration - You can also set the default isolation level in your appl
 @RequiredArgsConstructor
 public class ProgrammaticTransMan {
 
-    private final PlatformTransactionManager transactionManager;
-    private final ProductRepository productRepository;
+	private final PlatformTransactionManager transactionManager;
 
-    // private final JpaTransactionManager transactionManager;
-    public void updateProductWithCustomIsolation(Product product) {
-        TransactionDefinition definition = new DefaultTransactionDefinition();
-        ((DefaultTransactionDefinition) definition).setIsolationLevel(Isolation.SERIALIZABLE.value());
+	private final ProductRepository productRepository;
 
-        TransactionStatus status = transactionManager.getTransaction(definition);
+	// private final JpaTransactionManager transactionManager;
+	public void updateProductWithCustomIsolation(Product product) {
+		TransactionDefinition definition = new DefaultTransactionDefinition();
+		((DefaultTransactionDefinition) definition).setIsolationLevel(Isolation.SERIALIZABLE.value());
 
-        try {
-            productRepository.save(product);
-            transactionManager.commit(status);
-        } catch (Exception e) {
-            transactionManager.rollback(status);
-            throw e;
-        }
-    }
+		TransactionStatus status = transactionManager.getTransaction(definition);
+
+		try {
+			productRepository.save(product);
+			transactionManager.commit(status);
+		}
+		catch (Exception e) {
+			transactionManager.rollback(status);
+			throw e;
+		}
+	}
+
 }

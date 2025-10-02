@@ -13,18 +13,19 @@ import java.util.Arrays;
  */
 public class AllowedValuesValidator implements ConstraintValidator<AllowedValues, String> {
 
-    private String[] allowedValues;
+	private String[] allowedValues;
 
-    @Override
-    public void initialize(AllowedValues constraintAnnotation) {
-        this.allowedValues = constraintAnnotation.value();
-    }
+	@Override
+	public void initialize(AllowedValues constraintAnnotation) {
+		this.allowedValues = constraintAnnotation.value();
+	}
 
-    @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return true; // Let @NotNull handle null checks
-        }
-        return Arrays.asList(allowedValues).contains(value);
-    }
+	@Override
+	public boolean isValid(String value, ConstraintValidatorContext context) {
+		if (value == null) {
+			return true; // Let @NotNull handle null checks
+		}
+		return Arrays.asList(allowedValues).contains(value);
+	}
+
 }

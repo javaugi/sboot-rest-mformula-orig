@@ -19,26 +19,32 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ReactiveClaimEvent {
 
-    String id;
-    String patientId;
-    String providerId;
-    ClaimType claimType;
-    BigDecimal amount;
-    LocalDateTime serviceDate;
-    ClaimStatus status;
-    String failureReason;
+	String id;
 
-    public enum ClaimType {
-        PHYSICIAN,
-        HOSPITAL,
-        OUTPATIENT
-    }
+	String patientId;
 
-    public enum ClaimStatus {
-        SUBMITTED,
-        VALIDATED,
-        APPROVED,
-        REJECTED,
-        PROCESSED
-    }
+	String providerId;
+
+	ClaimType claimType;
+
+	BigDecimal amount;
+
+	LocalDateTime serviceDate;
+
+	ClaimStatus status;
+
+	String failureReason;
+
+	public enum ClaimType {
+
+		PHYSICIAN, HOSPITAL, OUTPATIENT
+
+	}
+
+	public enum ClaimStatus {
+
+		SUBMITTED, VALIDATED, APPROVED, REJECTED, PROCESSED
+
+	}
+
 }

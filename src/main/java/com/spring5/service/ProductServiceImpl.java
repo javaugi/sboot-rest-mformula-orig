@@ -10,7 +10,6 @@ package com.spring5.service;
 import com.spring5.dto.ProductDTO;
 import com.spring5.entity.Product;
 import com.spring5.repository.ProductRepository;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,163 +21,174 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private long nextId = 1;
-    private final Map<Long, Product> products = new HashMap<>();
+	private long nextId = 1;
 
-    private final ProductRepository productRepository;
+	private final Map<Long, Product> products = new HashMap<>();
 
-    // private final CacheManager cacheManager;
-    public void init() {
-        initializeProducts();
-    }
+	private final ProductRepository productRepository;
 
-    private void initializeProducts() {
-        // Coffee Mugs
-        Map<String, String[]> mugVariants = new HashMap<>();
-        mugVariants.put("sizes", new String[]{"8oz", "12oz", "16oz"});
-        mugVariants.put("colors", new String[]{"Red", "Green", "White", "Black"});
+	// private final CacheManager cacheManager;
+	public void init() {
+		initializeProducts();
+	}
 
-        Random rand = new Random();
-        Product coffeeMugs
-                = new Product(
-                        rand.nextLong(100000),
-                        "Coffee Mugs",
-                        "mugs",
-                        "High-quality ceramic coffee mugs",
-                        12.99,
-                        mugVariants);
+	private void initializeProducts() {
+		// Coffee Mugs
+		Map<String, String[]> mugVariants = new HashMap<>();
+		mugVariants.put("sizes", new String[] { "8oz", "12oz", "16oz" });
+		mugVariants.put("colors", new String[] { "Red", "Green", "White", "Black" });
 
-        // T-Shirts
-        Map<String, String[]> shirtVariants = new HashMap<>();
-        shirtVariants.put("types", new String[]{"Men", "Women", "Boys", "Girls"});
-        shirtVariants.put("sizes", new String[]{"S", "M", "L"});
-        shirtVariants.put("colors", new String[]{"Pink", "Orange", "Blue"});
+		Random rand = new Random();
+		Product coffeeMugs = new Product(rand.nextLong(100000), "Coffee Mugs", "mugs",
+				"High-quality ceramic coffee mugs", 12.99, mugVariants);
 
-        Product tShirts
-                = new Product(
-                        rand.nextLong(100000),
-                        "T-Shirts",
-                        "clothing",
-                        "Comfortable cotton t-shirts",
-                        19.99,
-                        shirtVariants);
+		// T-Shirts
+		Map<String, String[]> shirtVariants = new HashMap<>();
+		shirtVariants.put("types", new String[] { "Men", "Women", "Boys", "Girls" });
+		shirtVariants.put("sizes", new String[] { "S", "M", "L" });
+		shirtVariants.put("colors", new String[] { "Pink", "Orange", "Blue" });
 
-        // Soccer Balls
-        Map<String, String[]> ballVariants = new HashMap<>();
-        ballVariants.put("colors", new String[]{"Green", "Orange", "Purple"});
+		Product tShirts = new Product(rand.nextLong(100000), "T-Shirts", "clothing", "Comfortable cotton t-shirts",
+				19.99, shirtVariants);
 
-        Product soccerBalls
-                = new Product(
-                        rand.nextLong(100000),
-                        "Soccer Balls",
-                        "sports",
-                        "Professional quality soccer balls",
-                        24.99,
-                        ballVariants);
+		// Soccer Balls
+		Map<String, String[]> ballVariants = new HashMap<>();
+		ballVariants.put("colors", new String[] { "Green", "Orange", "Purple" });
 
-        products.put(coffeeMugs.getId(), coffeeMugs);
-        products.put(tShirts.getId(), tShirts);
-        products.put(soccerBalls.getId(), soccerBalls);
-    }
+		Product soccerBalls = new Product(rand.nextLong(100000), "Soccer Balls", "sports",
+				"Professional quality soccer balls", 24.99, ballVariants);
 
-    private ProductDTO convertToDTO(Product product) {
-        ProductDTO dto = new ProductDTO();
-        BeanUtils.copyProperties(product, dto);
-        return dto;
-    }
+		products.put(coffeeMugs.getId(), coffeeMugs);
+		products.put(tShirts.getId(), tShirts);
+		products.put(soccerBalls.getId(), soccerBalls);
+	}
 
-    private Product convertToEntity(ProductDTO dto) {
-        Product product = new Product();
-        BeanUtils.copyProperties(dto, product);
-        return product;
-    }
+	private ProductDTO convertToDTO(Product product) {
+		ProductDTO dto = new ProductDTO();
+		BeanUtils.copyProperties(product, dto);
+		return dto;
+	}
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
+	private Product convertToEntity(ProductDTO dto) {
+		Product product = new Product();
+		BeanUtils.copyProperties(dto, product);
+		return product;
+	}
 
-    @Cacheable(value = "products", key = "#page + '-' + #size")
-    public Page<ProductDTO> getAllProducts(int page, int size) {
-        return productRepository.findAll(PageRequest.of(page, size)).map(this::convertToDTO);
-    }
+	@Override
+	public List<Product> getAllUnfilteredProduct() {
+		return productRepository.findAll();
+	}
 
-    @Cacheable(value = "product", key = "#id")
-    public Optional<ProductDTO> getProductDtoById(Long id) {
-        return productRepository.findById(id).map(this::convertToDTO);
-    }
+	@Override
+	public Page<Product> findAll(Pageable pageable) {
+		return productRepository.findAll(pageable);
+	}
 
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
-    }
+	@Override
+	public List<Product> getAllNonRecalledProduct() {
+		return productRepository.findAll();
+	}
 
-    public boolean productExists(Long id) {
-        return products.containsKey(id) || productRepository.findById(id).isPresent();
-    }
+	@Override
+	public Product updateProduct(Long id, Product update) {
+		Optional<Product> opt = this.productRepository.findById(id);
 
-    @CacheEvict(
-            value = {"products", "product"},
-            allEntries = true)
-    public ProductDTO createProduct(ProductDTO productDTO) {
-        Product product = convertToEntity(productDTO);
-        product = productRepository.save(product);
-        return convertToDTO(product);
-    }
+		if (opt.isPresent()) {
+			Product prod = opt.get();
+			prod.setQuantity(update.getQuantity());
+			prod.setName(update.getName());
+			this.productRepository.save(prod);
 
-    @Override
-    public Product save(Product product) {
-        return productRepository.save(product);
-    }
+			return prod;
+		}
+		else {
+			return Product.builder().build();
+		}
+	}
 
-    @Override
-    public List<Product> saveAll(List<Product> products) {
-        return productRepository.saveAll(products);
-    }
+	public List<Product> getAllProducts() {
+		return productRepository.findAll();
+	}
 
-    @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
+	@Cacheable(value = "products", key = "#page + '-' + #size")
+	public Page<ProductDTO> getAllProducts(int page, int size) {
+		return productRepository.findAll(PageRequest.of(page, size)).map(this::convertToDTO);
+	}
 
-    @Override
-    public List<Product> findByName(String name) {
-        return productRepository.findByName(name);
-    }
+	@Cacheable(value = "product", key = "#id")
+	public Optional<ProductDTO> getProductDtoById(Long id) {
+		return productRepository.findById(id).map(this::convertToDTO);
+	}
 
-    // private final Map<Long, Product> products = new HashMap<>();
-    public Product saveProduct(Product product) {
-        Product newProduct
-                = new Product(
-                        nextId++,
-                        product.getName(),
-                        product.getPrice(),
-                        product.getQuantity(),
-                        product.getDescription(),
-                        product.isStatus());
-        products.put(newProduct.getId(), newProduct);
-        return newProduct;
-    }
+	@Override
+	public Optional<Product> findById(Long id) {
+		return productRepository.findById(id);
+	}
 
-    public static Product createProduct(
-            String name, BigDecimal price, int quantity, String description, boolean status) {
-        return Product.builder()
-                .name(name)
-                .price(price)
-                .quantity(quantity)
-                .description(description)
-                .status(status)
-                .build();
-    }
+	@Override
+	public Optional<Product> getProductById(Long id) {
+		return productRepository.findById(id);
+	}
+
+	@Override
+	public boolean productExists(Long id) {
+		return products.containsKey(id) || productRepository.findById(id).isPresent();
+	}
+
+	@CacheEvict(value = { "products", "product" }, allEntries = true)
+	public ProductDTO createProduct(ProductDTO productDTO) {
+		Product product = convertToEntity(productDTO);
+		product = productRepository.save(product);
+		return convertToDTO(product);
+	}
+
+	@Override
+	public Product save(Product product) {
+		return productRepository.save(product);
+	}
+
+	@Override
+	public List<Product> saveAll(List<Product> products) {
+		return productRepository.saveAll(products);
+	}
+
+	@Override
+	public List<Product> findAll() {
+		return productRepository.findAll();
+	}
+
+	@Override
+	public List<Product> findByName(String name) {
+		return productRepository.findByName(name);
+	}
+
+	// private final Map<Long, Product> products = new HashMap<>();
+	public Product saveProduct(Product product) {
+		return this.productRepository.save(product);
+	}
+
+	public static Product createProduct(String name, Double price, int quantity, String description, boolean status) {
+		return Product.builder()
+			.name(name)
+			.price(price)
+			.quantity(quantity)
+			.description(description)
+			.status(status)
+			.build();
+	}
+
 }

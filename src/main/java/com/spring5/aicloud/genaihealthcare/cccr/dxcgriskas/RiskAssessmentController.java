@@ -23,52 +23,49 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class RiskAssessmentController {
 
-    private final DxcgRiskAssessmentService riskService;
+	private final DxcgRiskAssessmentService riskService;
 
-    public RiskAssessmentController(DxcgRiskAssessmentService riskService) {
-        this.riskService = riskService;
-    }
+	public RiskAssessmentController(DxcgRiskAssessmentService riskService) {
+		this.riskService = riskService;
+	}
 
-    @PostMapping("/calculate")
-    public ResponseEntity<RiskScore> calculateRiskScore(
-            @RequestBody @Valid RiskCalculationRequest request) {
+	@PostMapping("/calculate")
+	public ResponseEntity<RiskScore> calculateRiskScore(@RequestBody @Valid RiskCalculationRequest request) {
 
-        RiskScore riskScore
-                = riskService.calculateRiskScore(request.getMemberId(), request.getModelType());
+		RiskScore riskScore = riskService.calculateRiskScore(request.getMemberId(), request.getModelType());
 
-        return ResponseEntity.ok(riskScore);
-    }
+		return ResponseEntity.ok(riskScore);
+	}
 
-    @PostMapping("/calculate-batch")
-    public ResponseEntity<BatchRiskResponse> calculateBatchRiskScores(
-            @RequestBody @Valid BatchRiskRequest request) {
+	@PostMapping("/calculate-batch")
+	public ResponseEntity<BatchRiskResponse> calculateBatchRiskScores(@RequestBody @Valid BatchRiskRequest request) {
 
-        CompletableFuture<List<RiskScore>> future
-                = riskService.calculateBatchRiskScores(request.getMemberIds(), request.getModelType());
+		CompletableFuture<List<RiskScore>> future = riskService.calculateBatchRiskScores(request.getMemberIds(),
+				request.getModelType());
 
-        BatchRiskResponse response
-                = BatchRiskResponse.builder()
-                        .batchId(UUID.randomUUID().toString())
-                        .status("PROCESSING")
-                        .message("Risk assessment started for " + request.getMemberIds().size() + " members")
-                        .build();
+		BatchRiskResponse response = BatchRiskResponse.builder()
+			.batchId(UUID.randomUUID().toString())
+			.status("PROCESSING")
+			.message("Risk assessment started for " + request.getMemberIds().size() + " members")
+			.build();
 
-        return ResponseEntity.accepted().body(response);
-    }
+		return ResponseEntity.accepted().body(response);
+	}
 
-    @GetMapping("/members/{memberId}/scores")
-    public ResponseEntity<List<RiskScore>> getMemberRiskScores(
-            @PathVariable String memberId, @RequestParam(required = false) String modelType) {
+	@GetMapping("/members/{memberId}/scores")
+	public ResponseEntity<List<RiskScore>> getMemberRiskScores(@PathVariable String memberId,
+			@RequestParam(required = false) String modelType) {
 
-        List<RiskScore> scores = riskService.getRiskScoresByMember(memberId, modelType);
-        return ResponseEntity.ok(scores);
-    }
+		List<RiskScore> scores = riskService.getRiskScoresByMember(memberId, modelType);
+		return ResponseEntity.ok(scores);
+	}
 
-    @GetMapping("/population-analysis")
-    public ResponseEntity<PopulationRiskAnalysis> analyzePopulationRisk(
-            @RequestParam String planType, @RequestParam(required = false) Integer year) {
+	@GetMapping("/population-analysis")
+	public ResponseEntity<PopulationRiskAnalysis> analyzePopulationRisk(@RequestParam String planType,
+			@RequestParam(required = false) Integer year) {
 
-        PopulationRiskAnalysis analysis = riskService.analyzePopulationRisk(planType, year);
-        return ResponseEntity.ok(analysis);
-    }
+		PopulationRiskAnalysis analysis = riskService.analyzePopulationRisk(planType, year);
+		return ResponseEntity.ok(analysis);
+	}
+
 }

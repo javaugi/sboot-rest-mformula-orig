@@ -17,41 +17,48 @@ import org.springframework.hateoas.RepresentationModel;
  * @author javaugi
  */
 /*
-Representation models
-The ResourceSupport/Resource/Resources/PagedResources group of classes never really felt appropriately named. After all,
-    these types do not actually manifest resources but rather representation models that can be enriched with hypermedia
-    information and affordances. Here’s how new names map to the old ones:
-
-    ResourceSupport is now RepresentationModel
-    Resource is now EntityModel
-    Resources is now CollectionModel
-    PagedResources is now PagedModel
+ * Representation models The ResourceSupport/Resource/Resources/PagedResources group of
+ * classes never really felt appropriately named. After all, these types do not actually
+ * manifest resources but rather representation models that can be enriched with
+ * hypermedia information and affordances. Here’s how new names map to the old ones:
+ * 
+ * ResourceSupport is now RepresentationModel Resource is now EntityModel Resources is now
+ * CollectionModel PagedResources is now PagedModel
  */
 @Getter
 @Setter
 @ToString
 public class PatientResource extends RepresentationModel {
 
-    private Long patientId;
-    private String name;
-    private String firstName;
-    private String lastName;
-    private LocalDate dateOfBirth;
-    private String gender;
-    private String address;
-    private String phoneNumber;
-    private List<Appointment> appointments;
+	private Long patientId;
 
-    // Constructor, getters, and setters
-    public PatientResource(Patient patient) {
-        this.patientId = patient.getId();
-        this.name = patient.getName();
-        this.firstName = patient.getFirstName();
-        this.lastName = patient.getLastName();
-        this.dateOfBirth = patient.getDateOfBirth();
-        this.gender = patient.getGender();
-        this.address = patient.getAddress();
-        this.phoneNumber = patient.getPhoneNumber();
-        this.appointments = patient.getAppointments();
-    }
+	private String name;
+
+	private String firstName;
+
+	private String lastName;
+
+	private LocalDate dateOfBirth;
+
+	private String gender;
+
+	private String address;
+
+	private String phoneNumber;
+
+	private List<Appointment> appointments;
+
+	// Constructor, getters, and setters
+	public PatientResource(Patient patient) {
+		this.patientId = patient.getId();
+		this.name = patient.getName();
+		this.firstName = patient.getFirstName();
+		this.lastName = patient.getLastName();
+		this.dateOfBirth = patient.getDateOfBirth();
+		this.gender = patient.getGender();
+		this.address = patient.getAddress();
+		this.phoneNumber = patient.getPhoneNumber();
+		this.appointments = patient.getAppointments();
+	}
+
 }

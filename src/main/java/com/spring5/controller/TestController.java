@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 
-    @GetMapping
-    public String testLogging() {
-        String patientId = "12345";
-        log.info("Processing patientId={}", patientId); // Will be pseudonymized in logs
-        return "OK";
-    }
+	@GetMapping
+	public String testLogging() {
+		String patientId = "12345";
+		log.info("Processing patientId={}", patientId); // Will be pseudonymized in logs
+		return "OK";
+	}
+
 }

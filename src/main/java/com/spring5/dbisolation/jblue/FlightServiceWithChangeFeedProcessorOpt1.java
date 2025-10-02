@@ -20,47 +20,44 @@ import org.springframework.stereotype.Component;
 @Component
 public class FlightServiceWithChangeFeedProcessorOpt1 {
 
-    private final CosmosAsyncClient cosmosAsyncClient;
-    private volatile boolean changeFeedRunning = false;
+	private final CosmosAsyncClient cosmosAsyncClient;
 
-    @EventListener(ContextRefreshedEvent.class)
-    public void startChangeFeedProcessor() {
-        if (!changeFeedRunning) {
-            changeFeedRunning = true;
-            startProcessingChangeFeed();
-        }
-    }
+	private volatile boolean changeFeedRunning = false;
 
-    private void startProcessingChangeFeed() {
-        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
-        CosmosAsyncContainer container = database.getContainer("flightEvents");
+	@EventListener(ContextRefreshedEvent.class)
+	public void startChangeFeedProcessor() {
+		if (!changeFeedRunning) {
+			changeFeedRunning = true;
+			startProcessingChangeFeed();
+		}
+	}
 
-        CosmosChangeFeedRequestOptions options
-                = CosmosChangeFeedRequestOptions
-                        // .createForProcessingFromBeginning(CosmosChangeFeedStartFrom.BEGINNING);
-                        .createForProcessingFromBeginning(FeedRange.forFullRange());
+	private void startProcessingChangeFeed() {
+		CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
+		CosmosAsyncContainer container = database.getContainer("flightEvents");
 
-        CosmosPagedFlux<FeedResponse> changeFeedFlux
-                = container.queryChangeFeed(options, FeedResponse.class);
+		CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+			// .createForProcessingFromBeginning(CosmosChangeFeedStartFrom.BEGINNING);
+			.createForProcessingFromBeginning(FeedRange.forFullRange());
 
-        changeFeedFlux.subscribe(
-                feedResponse -> {
-                    // for (FlightEvent event : feedResponse.getResults()) {
-                    //    processFlightEvent(event);
-                    // }
-                },
-                error -> {
-                    System.err.println("Change feed error: " + error.getMessage());
-                    changeFeedRunning = false;
-                },
-                () -> {
-                    System.out.println("Change feed completed");
-                    changeFeedRunning = false;
-                });
-    }
+		CosmosPagedFlux<FeedResponse> changeFeedFlux = container.queryChangeFeed(options, FeedResponse.class);
 
-    private void processFlightEvent(FlightEvent event) {
-        System.out.println("Processing flight event: " + event.getFlightNumber());
-        // Your processing logic here
-    }
+		changeFeedFlux.subscribe(feedResponse -> {
+			// for (FlightEvent event : feedResponse.getResults()) {
+			// processFlightEvent(event);
+			// }
+		}, error -> {
+			System.err.println("Change feed error: " + error.getMessage());
+			changeFeedRunning = false;
+		}, () -> {
+			System.out.println("Change feed completed");
+			changeFeedRunning = false;
+		});
+	}
+
+	private void processFlightEvent(FlightEvent event) {
+		System.out.println("Processing flight event: " + event.getFlightNumber());
+		// Your processing logic here
+	}
+
 }

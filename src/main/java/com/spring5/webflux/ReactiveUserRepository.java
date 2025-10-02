@@ -14,5 +14,6 @@ import reactor.core.publisher.Flux;
 @Transactional
 public interface ReactiveUserRepository extends ReactiveCrudRepository<RWFUser, Long> {
 
-    Flux<RWFUser> findByRole(@Param("role") String role);
+	Flux<RWFUser> findByRole(@Param("role") String role);
+
 }

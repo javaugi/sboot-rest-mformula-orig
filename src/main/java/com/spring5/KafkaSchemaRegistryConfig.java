@@ -11,24 +11,21 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KafkaSchemaRegistryConfig {
 
-    /* TODO
-  @Bean
-  public RecordMessageConverter avroMessageConverter() {
-      return new AvroSchemaMessageConverter();
-  }
+	/*
+	 * TODO
+	 * 
+	 * @Bean public RecordMessageConverter avroMessageConverter() { return new
+	 * AvroSchemaMessageConverter(); }
+	 * 
+	 * @Bean public SchemaRegistryClient schemaRegistryClient(
+	 * 
+	 * @Value("${spring.kafka.properties.schema.registry.url}") String endpoint) { return
+	 * new CachedSchemaRegistryClient(endpoint, 100); }
+	 * 
+	 * @Bean public RecordMessageConverter avroMessageConverter(SchemaRegistryClient
+	 * schemaRegistryClient) { AvroSchemaRegistryClientMessageConverter converter = new
+	 * AvroSchemaRegistryClientMessageConverter(schemaRegistryClient);
+	 * converter.setTypeMapper(new DefaultKafkaHeaderMapper()); return converter; } //
+	 */
 
-  @Bean
-  public SchemaRegistryClient schemaRegistryClient(
-      @Value("${spring.kafka.properties.schema.registry.url}") String endpoint) {
-      return new CachedSchemaRegistryClient(endpoint, 100);
-  }
-
-  @Bean
-  public RecordMessageConverter avroMessageConverter(SchemaRegistryClient schemaRegistryClient) {
-      AvroSchemaRegistryClientMessageConverter converter =
-          new AvroSchemaRegistryClientMessageConverter(schemaRegistryClient);
-      converter.setTypeMapper(new DefaultKafkaHeaderMapper());
-      return converter;
-  }
-  // */
 }

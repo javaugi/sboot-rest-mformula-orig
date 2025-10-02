@@ -14,25 +14,26 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class KafkaBatchConcurrentConsumerService {
-    // Batch listener implementation
 
-    @KafkaListener(
-            topics = "${kafka.topic.batch}",
-            containerFactory = "batchKafkaListenerContainerFactory")
-    public void consumeBatch(List<ConsumerRecord<String, String>> records, Acknowledgment ack) {
-        log.info("Received batch of {} messages", records.size());
+	// Batch listener implementation
 
-        for (ConsumerRecord<String, String> record : records) {
-            try {
-                processMessage(record.value());
-            } catch (Exception e) {
-                log.error("Error processing message in batch: {}", record.value(), e);
-            }
-        }
+	@KafkaListener(topics = "${kafka.topic.batch}", containerFactory = "batchKafkaListenerContainerFactory")
+	public void consumeBatch(List<ConsumerRecord<String, String>> records, Acknowledgment ack) {
+		log.info("Received batch of {} messages", records.size());
 
-        ack.acknowledge(); // Acknowledge the entire batch
-    }
+		for (ConsumerRecord<String, String> record : records) {
+			try {
+				processMessage(record.value());
+			}
+			catch (Exception e) {
+				log.error("Error processing message in batch: {}", record.value(), e);
+			}
+		}
 
-    private void processMessage(String message) {
-    }
+		ack.acknowledge(); // Acknowledge the entire batch
+	}
+
+	private void processMessage(String message) {
+	}
+
 }

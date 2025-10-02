@@ -12,10 +12,16 @@ import lombok.Data;
 @Builder
 public class AdyenPaymentAmount {
 
-    private String currency;
-    private long value;
-    private String returnUrl;
-    private BigDecimal amount;
-    private String paymentMethod;
-    private String reference;
+	private String currency;
+
+	private long value;
+
+	private String returnUrl;
+
+	private BigDecimal amount;
+
+	private String paymentMethod;
+
+	private String reference;
+
 }

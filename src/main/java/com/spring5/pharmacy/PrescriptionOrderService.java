@@ -12,9 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(isolation = Isolation.SERIALIZABLE)
 public class PrescriptionOrderService {
 
-    public void processOrder(PrescriptionData order) {
-        // Deduct inventory
-        // Process payment
-        // Log audit trail
-    }
+	public void processOrder(PrescriptionData order) {
+		// Deduct inventory
+		// Process payment
+		// Log audit trail
+	}
+
 }

@@ -30,59 +30,60 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/json/patients")
 public class PatientJsonApiController {
 
-    @Autowired
-    private PatientRepository patientRepository;
+	@Autowired
+	private PatientRepository patientRepository;
 
-    @Autowired
-    private PatientJsonSchemaValidator jsonValidator;
+	@Autowired
+	private PatientJsonSchemaValidator jsonValidator;
 
-    @PostConstruct
-    public void init() {
-    }
+	@PostConstruct
+	public void init() {
+	}
 
-    @PostMapping("/validate")
-    public ResponseEntity<?> validatePatientJson(@RequestBody String patientJson) {
-        try {
-            jsonValidator.validatePatientPayload(patientJson);
-            return ResponseEntity.ok().body("JSON is valid");
-        } catch (ValidationException e) {
-            return ResponseEntity.badRequest().body(e.getLocalizedMessage());
-        }
-    }
+	@PostMapping("/validate")
+	public ResponseEntity<?> validatePatientJson(@RequestBody String patientJson) {
+		try {
+			jsonValidator.validatePatientPayload(patientJson);
+			return ResponseEntity.ok().body("JSON is valid");
+		}
+		catch (ValidationException e) {
+			return ResponseEntity.badRequest().body(e.getLocalizedMessage());
+		}
+	}
 
-    @PostMapping
-    public ResponseEntity<?> createPatient(
-            @Valid @RequestBody Patient patient, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(createErrorResponse(result));
-        }
+	@PostMapping
+	public ResponseEntity<?> createPatient(@Valid @RequestBody Patient patient, BindingResult result) {
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(createErrorResponse(result));
+		}
 
-        Patient savedPatient = patientRepository.save(patient);
-        return ResponseEntity.ok(savedPatient);
-    }
+		Patient savedPatient = patientRepository.save(patient);
+		return ResponseEntity.ok(savedPatient);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updatePatient(
-            @PathVariable Long id, @Valid @RequestBody Patient patient, BindingResult result) {
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updatePatient(@PathVariable Long id, @Valid @RequestBody Patient patient,
+			BindingResult result) {
 
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(createErrorResponse(result));
-        }
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(createErrorResponse(result));
+		}
 
-        if (!patientRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+		if (!patientRepository.existsById(id)) {
+			return ResponseEntity.notFound().build();
+		}
 
-        patient.setId(id);
-        Patient updatedPatient = patientRepository.save(patient);
-        return ResponseEntity.ok(updatedPatient);
-    }
+		patient.setId(id);
+		Patient updatedPatient = patientRepository.save(patient);
+		return ResponseEntity.ok(updatedPatient);
+	}
 
-    private Map<String, String> createErrorResponse(BindingResult result) {
-        Map<String, String> errors = new HashMap<>();
-        for (FieldError error : result.getFieldErrors()) {
-            errors.put(error.getField(), error.getDefaultMessage());
-        }
-        return errors;
-    }
+	private Map<String, String> createErrorResponse(BindingResult result) {
+		Map<String, String> errors = new HashMap<>();
+		for (FieldError error : result.getFieldErrors()) {
+			errors.put(error.getField(), error.getDefaultMessage());
+		}
+		return errors;
+	}
+
 }

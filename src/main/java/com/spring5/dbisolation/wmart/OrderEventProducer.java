@@ -14,16 +14,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderEventProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public OrderEventProducer(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	public OrderEventProducer(KafkaTemplate<String, String> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
 
-    public CompletableFuture<SendResult<String, String>> publishOrderEvent(
-            String storeId, String messageId, String payload) {
-        ProducerRecord<String, String> record = new ProducerRecord<>("order-events", storeId, payload);
-        record.headers().add("messageId", messageId.getBytes(StandardCharsets.UTF_8));
-        return kafkaTemplate.send(record); // .completable();
-    }
+	public CompletableFuture<SendResult<String, String>> publishOrderEvent(String storeId, String messageId,
+			String payload) {
+		ProducerRecord<String, String> record = new ProducerRecord<>("order-events", storeId, payload);
+		record.headers().add("messageId", messageId.getBytes(StandardCharsets.UTF_8));
+		return kafkaTemplate.send(record); // .completable();
+	}
+
 }

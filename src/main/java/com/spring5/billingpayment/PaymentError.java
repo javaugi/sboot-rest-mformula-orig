@@ -11,8 +11,12 @@ import lombok.Data;
 @Builder
 public class PaymentError {
 
-    private String code; // Stripe error code (e.g., "card_declined")
-    private String message; // More detailed error message
-    private String declineCode; // Card-specific decline code (e.g., "do_not_honor")
-    private String param; // Parameter that caused the error
+	private String code; // Stripe error code (e.g., "card_declined")
+
+	private String message; // More detailed error message
+
+	private String declineCode; // Card-specific decline code (e.g., "do_not_honor")
+
+	private String param; // Parameter that caused the error
+
 }

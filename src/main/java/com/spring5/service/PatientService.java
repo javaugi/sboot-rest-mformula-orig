@@ -18,44 +18,46 @@ import org.springframework.stereotype.Service;
 @Service
 public class PatientService {
 
-    private final PatientRepository patientRepository;
-    private final PatientMapper mapper;
+	private final PatientRepository patientRepository;
 
-    public PatientDto getPatient(Long id) {
-        return mapper.toDto(patientRepository.findById(id).orElseThrow());
-    }
+	private final PatientMapper mapper;
 
-    public void savePatient(PatientDto dto) {
-        Patient entity = mapper.toEntity(dto);
-        patientRepository.save(entity);
-    }
+	public PatientDto getPatient(Long id) {
+		return mapper.toDto(patientRepository.findById(id).orElseThrow());
+	}
 
-    public Patient save(Patient patient) {
-        return patientRepository.save(patient);
-    }
+	public void savePatient(PatientDto dto) {
+		Patient entity = mapper.toEntity(dto);
+		patientRepository.save(entity);
+	}
 
-    public Patient findById(Long id) {
-        return patientRepository.findById(id).orElse(null);
-    }
+	public Patient save(Patient patient) {
+		return patientRepository.save(patient);
+	}
 
-    public List<Patient> findAll() {
-        return patientRepository.findAll();
-    }
+	public Patient findById(Long id) {
+		return patientRepository.findById(id).orElse(null);
+	}
 
-    public Patient update(Long id, Patient updatedPatient) {
-        Patient patient = patientRepository.findById(id).orElse(null);
-        if (patient == null) {
-            return null;
-        }
+	public List<Patient> findAll() {
+		return patientRepository.findAll();
+	}
 
-        BeanUtils.copyProperties(updatedPatient, patient, "id");
-        return patientRepository.save(patient);
-    }
+	public Patient update(Long id, Patient updatedPatient) {
+		Patient patient = patientRepository.findById(id).orElse(null);
+		if (patient == null) {
+			return null;
+		}
 
-    public List<Assessment> findAssessmentsByPatientId(
-            Long patientId, AssessmentService assessmentService) {
-        return assessmentService.findAll().stream()
-                .filter(assessment -> assessment.getPatientId().equals(patientId))
-                .collect(Collectors.toList());
-    }
+		BeanUtils.copyProperties(updatedPatient, patient, "id");
+		return patientRepository.save(patient);
+	}
+
+	public List<Assessment> findAssessmentsByPatientId(Long patientId, AssessmentService assessmentService) {
+		return assessmentService.findAll()
+			.stream()
+			.filter(assessment -> assessment.getPatientId().equals(patientId))
+			.collect(Collectors.toList());
+	}
+
 }

@@ -24,57 +24,48 @@ import lombok.ToString;
 @AllArgsConstructor
 public class TradeEvent extends BaseEvent {
 
-    private String tradeId;
-    private String instrumentId;
-    private BigDecimal quantity;
-    private BigDecimal price;
-    private String currency;
-    private TradeDirection direction;
+	private String tradeId;
 
-    public TradeEvent(String sourceSystem, String instrumentId) {
-        super(java.util.UUID.randomUUID().toString(), Instant.now(), sourceSystem);
-        this.instrumentId = instrumentId;
-    }
+	private String instrumentId;
 
-    public TradeEvent(String id, Instant timestamp, String sourceSystem, String tradeId) {
-        super(id, timestamp, sourceSystem);
-        this.tradeId = tradeId;
-    }
+	private BigDecimal quantity;
 
-    public TradeEvent(
-            String id,
-            Instant timestamp,
-            String sourceSystem,
-            String tradeId,
-            String instrumentId,
-            BigDecimal quantity,
-            BigDecimal price,
-            String currency,
-            TradeDirection direction) {
-        super(id, timestamp, sourceSystem);
-        this.tradeId = tradeId;
-        this.instrumentId = instrumentId;
-        this.quantity = quantity;
-        this.price = price;
-        this.currency = currency;
-        this.direction = direction;
-    }
+	private BigDecimal price;
 
-    public TradeEvent(
-            String eventId,
-            Instant timestamp,
-            String tradeId,
-            String instrumentId,
-            BigDecimal quantity,
-            BigDecimal price,
-            String currency,
-            TradeDirection direction) {
-        super(eventId, timestamp, null);
-        this.tradeId = tradeId;
-        this.instrumentId = instrumentId;
-        this.quantity = quantity;
-        this.price = price;
-        this.currency = currency;
-        this.direction = direction;
-    }
+	private String currency;
+
+	private TradeDirection direction;
+
+	public TradeEvent(String sourceSystem, String instrumentId) {
+		super(java.util.UUID.randomUUID().toString(), Instant.now(), sourceSystem);
+		this.instrumentId = instrumentId;
+	}
+
+	public TradeEvent(String id, Instant timestamp, String sourceSystem, String tradeId) {
+		super(id, timestamp, sourceSystem);
+		this.tradeId = tradeId;
+	}
+
+	public TradeEvent(String id, Instant timestamp, String sourceSystem, String tradeId, String instrumentId,
+			BigDecimal quantity, BigDecimal price, String currency, TradeDirection direction) {
+		super(id, timestamp, sourceSystem);
+		this.tradeId = tradeId;
+		this.instrumentId = instrumentId;
+		this.quantity = quantity;
+		this.price = price;
+		this.currency = currency;
+		this.direction = direction;
+	}
+
+	public TradeEvent(String eventId, Instant timestamp, String tradeId, String instrumentId, BigDecimal quantity,
+			BigDecimal price, String currency, TradeDirection direction) {
+		super(eventId, timestamp, null);
+		this.tradeId = tradeId;
+		this.instrumentId = instrumentId;
+		this.quantity = quantity;
+		this.price = price;
+		this.currency = currency;
+		this.direction = direction;
+	}
+
 }

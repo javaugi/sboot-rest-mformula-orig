@@ -12,5 +12,6 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class OllamaEmbeddingResponse {
 
-    private List<Double> embedding;
+	private List<Double> embedding;
+
 }

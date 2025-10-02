@@ -15,22 +15,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class DynamicCacheResolver implements CacheResolver {
 
-    private final CacheManager cacheManager;
+	private final CacheManager cacheManager;
 
-    public DynamicCacheResolver(CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
-    }
+	public DynamicCacheResolver(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
+	}
 
-    @Override
-    public Collection<? extends Cache> resolveCaches(CacheOperationInvocationContext<?> context) {
-        String regionName = CacheRegionContextHolder.getRegion();
-        if (regionName != null) {
-            Cache cache = cacheManager.getCache(regionName);
-            if (cache != null) {
-                return Collections.singletonList(cache);
-            }
-        }
-        // Fallback to default or other logic if no region is set
-        return Collections.singletonList(cacheManager.getCache("defaultCache"));
-    }
+	@Override
+	public Collection<? extends Cache> resolveCaches(CacheOperationInvocationContext<?> context) {
+		String regionName = CacheRegionContextHolder.getRegion();
+		if (regionName != null) {
+			Cache cache = cacheManager.getCache(regionName);
+			if (cache != null) {
+				return Collections.singletonList(cache);
+			}
+		}
+		// Fallback to default or other logic if no region is set
+		return Collections.singletonList(cacheManager.getCache("defaultCache"));
+	}
+
 }

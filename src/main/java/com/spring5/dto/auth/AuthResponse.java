@@ -16,8 +16,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthResponse {
 
-    String accessToken;
-    String refreshToken;
-    String tokenType;
-    UserDtoMapper user;
+	String accessToken;
+
+	String refreshToken;
+
+	String tokenType;
+
+	UserDtoMapper user;
+
 }

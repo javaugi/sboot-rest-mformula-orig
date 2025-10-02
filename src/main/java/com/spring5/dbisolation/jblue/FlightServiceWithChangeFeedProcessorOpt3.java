@@ -21,40 +21,38 @@ import org.springframework.stereotype.Service;
 @EnableScheduling
 public class FlightServiceWithChangeFeedProcessorOpt3 {
 
-    private final CosmosAsyncClient cosmosAsyncClient;
-    private final AtomicReference<String> continuationToken = new AtomicReference<>();
+	private final CosmosAsyncClient cosmosAsyncClient;
 
-    @Scheduled(fixedDelay = 5000) // Poll every 5 seconds
-    public void pollChangeFeed() {
-        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
-        CosmosAsyncContainer container = database.getContainer("flightEvents");
+	private final AtomicReference<String> continuationToken = new AtomicReference<>();
 
-        CosmosChangeFeedRequestOptions options;
+	@Scheduled(fixedDelay = 5000) // Poll every 5 seconds
+	public void pollChangeFeed() {
+		CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase("travelDB");
+		CosmosAsyncContainer container = database.getContainer("flightEvents");
 
-        if (continuationToken.get() != null) {
-            options
-                    = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
-                            continuationToken.get());
-        } else {
-            options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(FeedRange.forFullRange());
-        }
+		CosmosChangeFeedRequestOptions options;
 
-        container
-                .queryChangeFeed(options, FlightEvent.class)
-                .byPage()
-                .take(1) // Process one page at a time
-                .subscribe(
-                        response -> {
-                            processEvents(response.getResults());
-                            continuationToken.set(response.getContinuationToken());
-                        },
-                        error -> System.err.println("Error: " + error.getMessage()));
-    }
+		if (continuationToken.get() != null) {
+			options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken.get());
+		}
+		else {
+			options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(FeedRange.forFullRange());
+		}
 
-    private void processEvents(List<FlightEvent> events) {
-        for (FlightEvent event : events) {
-            System.out.println("Processed: " + event.getFlightNumber());
-            // Your processing logic
-        }
-    }
+		container.queryChangeFeed(options, FlightEvent.class)
+			.byPage()
+			.take(1) // Process one page at a time
+			.subscribe(response -> {
+				processEvents(response.getResults());
+				continuationToken.set(response.getContinuationToken());
+			}, error -> System.err.println("Error: " + error.getMessage()));
+	}
+
+	private void processEvents(List<FlightEvent> events) {
+		for (FlightEvent event : events) {
+			System.out.println("Processed: " + event.getFlightNumber());
+			// Your processing logic
+		}
+	}
+
 }

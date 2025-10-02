@@ -8,22 +8,24 @@ import java.util.List;
 
 public class OrderReceivedEvent {
 
-    private String orderId;
-    private List<AuditOrder> items;
+	private String orderId;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	private List<AuditOrder> items;
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public List<AuditOrder> getItems() {
-        return items;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setItems(List<AuditOrder> items) {
-        this.items = items;
-    }
+	public List<AuditOrder> getItems() {
+		return items;
+	}
+
+	public void setItems(List<AuditOrder> items) {
+		this.items = items;
+	}
+
 }

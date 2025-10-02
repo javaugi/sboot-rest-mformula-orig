@@ -14,72 +14,73 @@ import java.util.List;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ShoppingCartImpl implements ShoppingCart {
 
-    private List<Item> items;
-    private List<Item> coupons;
+	private List<Item> items;
 
-    public ShoppingCartImpl() {
-        items = new ArrayList();
-        coupons = new ArrayList();
-    }
+	private List<Item> coupons;
 
-    @Override
-    public void addItem(Item item) {
-        switch (item.getCategory()) {
-            case Bagged:
-                items.add(item);
-                break;
-            case Weight:
-                items.add(item);
-                break;
-            case Discount:
-                coupons.add(item);
-                break;
-            case BuyGetFree:
-                coupons.add(item);
-                break;
-        }
-    }
+	public ShoppingCartImpl() {
+		items = new ArrayList();
+		coupons = new ArrayList();
+	}
 
-    @Override
-    public void removeItem(Item item) {
-        switch (item.getCategory()) {
-            case Bagged:
-                items.remove(item);
-                break;
-            case Weight:
-                items.remove(item);
-                break;
-            case Discount:
-                coupons.remove(item);
-                break;
-            case BuyGetFree:
-                coupons.remove(item);
-                break;
-        }
-    }
+	@Override
+	public void addItem(Item item) {
+		switch (item.getCategory()) {
+			case Bagged:
+				items.add(item);
+				break;
+			case Weight:
+				items.add(item);
+				break;
+			case Discount:
+				coupons.add(item);
+				break;
+			case BuyGetFree:
+				coupons.add(item);
+				break;
+		}
+	}
 
-    @Override
-    public List<Item> getItems() {
-        return items;
-    }
+	@Override
+	public void removeItem(Item item) {
+		switch (item.getCategory()) {
+			case Bagged:
+				items.remove(item);
+				break;
+			case Weight:
+				items.remove(item);
+				break;
+			case Discount:
+				coupons.remove(item);
+				break;
+			case BuyGetFree:
+				coupons.remove(item);
+				break;
+		}
+	}
 
-    @Override
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
+	@Override
+	public List<Item> getItems() {
+		return items;
+	}
 
-    @Override
-    public List<Item> getCoupons() {
-        return coupons;
-    }
+	@Override
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
 
-    @Override
-    public void setCoupons(List<Item> coupons) {
-        this.coupons = coupons;
-    }
+	@Override
+	public List<Item> getCoupons() {
+		return coupons;
+	}
+
+	@Override
+	public void setCoupons(List<Item> coupons) {
+		this.coupons = coupons;
+	}
+
 }

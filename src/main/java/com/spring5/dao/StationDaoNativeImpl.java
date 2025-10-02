@@ -14,9 +14,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class StationDaoNativeImpl extends StationDao {
 
-    @Override
-    public List<Station> saveAll(List<Station> records) {
-        records = super.saveAll(records);
-        return records;
-    }
+	@Override
+	public List<Station> saveAll(List<Station> records) {
+		records = super.saveAll(records);
+		return records;
+	}
+
 }

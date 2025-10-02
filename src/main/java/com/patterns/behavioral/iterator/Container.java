@@ -9,10 +9,10 @@ package com.patterns.behavioral.iterator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Container {
 
-    public Iterator getIterator();
+	public Iterator getIterator();
+
 }

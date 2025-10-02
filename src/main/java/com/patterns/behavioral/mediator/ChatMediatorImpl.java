@@ -12,29 +12,29 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ChatMediatorImpl implements ChatMediator {
 
-    private List<User> users;
+	private List<User> users;
 
-    public ChatMediatorImpl() {
-        this.users = new ArrayList<>();
-    }
+	public ChatMediatorImpl() {
+		this.users = new ArrayList<>();
+	}
 
-    @Override
-    public void addUser(User user) {
-        this.users.add(user);
-    }
+	@Override
+	public void addUser(User user) {
+		this.users.add(user);
+	}
 
-    @Override
-    public void sendMessage(String msg, User user) {
-        for (User u : this.users) {
-            // message should not be received by the user sending it
-            if (u != user) {
-                u.receive(msg);
-            }
-        }
-    }
+	@Override
+	public void sendMessage(String msg, User user) {
+		for (User u : this.users) {
+			// message should not be received by the user sending it
+			if (u != user) {
+				u.receive(msg);
+			}
+		}
+	}
+
 }

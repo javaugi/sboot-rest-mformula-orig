@@ -14,34 +14,36 @@ import org.apache.kafka.common.serialization.Serializer;
 
 public class FlightEventSerde implements Serde<FlightEvent> {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
-    /*
-  3. How It Fits In
-      Now Kafka Streams knows how to:
-          Serialize List<FlightEvent> into JSON for the state store or topic.
-          Deserialize List<FlightEvent> back into objects when reading.
-     */
-    @Override
-    public Serializer<FlightEvent> serializer() {
-        return (topic, data) -> {
-            try {
-                return objectMapper.writeValueAsBytes(data);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Serialization failed", e);
-            }
-        };
-    }
+	/*
+	 * 3. How It Fits In Now Kafka Streams knows how to: Serialize List<FlightEvent> into
+	 * JSON for the state store or topic. Deserialize List<FlightEvent> back into objects
+	 * when reading.
+	 */
+	@Override
+	public Serializer<FlightEvent> serializer() {
+		return (topic, data) -> {
+			try {
+				return objectMapper.writeValueAsBytes(data);
+			}
+			catch (JsonProcessingException e) {
+				throw new RuntimeException("Serialization failed", e);
+			}
+		};
+	}
 
-    @Override
-    public Deserializer<FlightEvent> deserializer() {
-        return (topic, data) -> {
-            try {
-                return objectMapper.readValue(data, new TypeReference<FlightEvent>() {
-                });
-            } catch (IOException e) {
-                throw new RuntimeException("Deserialization failed", e);
-            }
-        };
-    }
+	@Override
+	public Deserializer<FlightEvent> deserializer() {
+		return (topic, data) -> {
+			try {
+				return objectMapper.readValue(data, new TypeReference<FlightEvent>() {
+				});
+			}
+			catch (IOException e) {
+				throw new RuntimeException("Deserialization failed", e);
+			}
+		};
+	}
+
 }

@@ -23,42 +23,43 @@ import org.springframework.core.io.Resource;
 @Configuration
 public class AiDeepSeekConfig implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(AiDeepSeekConfig.class);
+	private static final Logger log = LoggerFactory.getLogger(AiDeepSeekConfig.class);
 
-    @Value("classpath:/prompts/system-message.st")
-    private Resource systemResource;
+	@Value("classpath:/prompts/system-message.st")
+	private Resource systemResource;
 
-    @Value("${spring.ai.deepseek.openai.base-url}")
-    private String baseUrl;
+	@Value("${spring.ai.deepseek.openai.base-url}")
+	private String baseUrl;
 
-    @Value("${spring.ai.deepseek.openai.api-key}")
-    private String apiKey;
+	@Value("${spring.ai.deepseek.openai.api-key}")
+	private String apiKey;
 
-    @Value("${spring.ai.deepseek.openai.chat.options.model}")
-    private String apiModel;
+	@Value("${spring.ai.deepseek.openai.chat.options.model}")
+	private String apiModel;
 
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("AiDeepSeekConfig with baseUrl {} args {} ", baseUrl, Arrays.toString(args));
-        hide(systemResource, apiKey, apiModel);
-    }
+	@Override
+	public void run(String... args) throws Exception {
+		log.info("AiDeepSeekConfig with baseUrl {} args {} ", baseUrl, Arrays.toString(args));
+		hide(systemResource, apiKey, apiModel);
+	}
 
-    private void hide(Resource resource, String... args) {
-        // doNothing
-    }
+	private void hide(Resource resource, String... args) {
+		// doNothing
+	}
 
-    @Primary
-    @Bean(name = "deekseekOpenAiApi")
-    public OpenAiApi chatCompletionApi() {
-        return OpenAiApi.builder().baseUrl(baseUrl).apiKey(apiKey).build();
-    }
+	@Primary
+	@Bean(name = "deekseekOpenAiApi")
+	public OpenAiApi chatCompletionApi() {
+		return OpenAiApi.builder().baseUrl(baseUrl).apiKey(apiKey).build();
+	}
 
-    @Primary
-    @Bean(name = "deekseekOpenAiChatModel")
-    public OpenAiChatModel openAiClient(@Qualifier("deekseekOpenAiApi") OpenAiApi openAiApi) {
-        return OpenAiChatModel.builder()
-                .openAiApi(openAiApi)
-                .defaultOptions(OpenAiChatOptions.builder().model(apiModel).build())
-                .build();
-    }
+	@Primary
+	@Bean(name = "deekseekOpenAiChatModel")
+	public OpenAiChatModel openAiClient(@Qualifier("deekseekOpenAiApi") OpenAiApi openAiApi) {
+		return OpenAiChatModel.builder()
+			.openAiApi(openAiApi)
+			.defaultOptions(OpenAiChatOptions.builder().model(apiModel).build())
+			.build();
+	}
+
 }

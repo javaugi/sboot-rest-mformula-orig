@@ -16,37 +16,37 @@ import org.springframework.beans.factory.annotation.Value;
 // @EnableCosmosRepositories(basePackages = "com.example.repository")
 public class CosmosDbConfig extends AbstractCosmosConfiguration {
 
-    @Value("${cosmos.uri}")
-    private String uri;
+	@Value("${cosmos.uri}")
+	private String uri;
 
-    @Value("${cosmos.key}")
-    private String key;
+	@Value("${cosmos.key}")
+	private String key;
 
-    @Value("${cosmos.database}")
-    private String database;
+	@Value("${cosmos.database}")
+	private String database;
 
-    @Override
-    public CosmosAsyncClient cosmosAsyncClient(CosmosClientBuilder cosmosClientBuilder) {
-        return cosmosClientBuilder
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .contentResponseOnWriteEnabled(true)
-                .buildAsyncClient();
-    }
+	@Override
+	public CosmosAsyncClient cosmosAsyncClient(CosmosClientBuilder cosmosClientBuilder) {
+		return cosmosClientBuilder.consistencyLevel(ConsistencyLevel.SESSION)
+			.contentResponseOnWriteEnabled(true)
+			.buildAsyncClient();
+	}
 
-    @Override
-    // @Bean
-    public CosmosFactory cosmosFactory(CosmosAsyncClient asynClient) {
-        return new CosmosFactory(asynClient, database);
-    }
+	@Override
+	// @Bean
+	public CosmosFactory cosmosFactory(CosmosAsyncClient asynClient) {
+		return new CosmosFactory(asynClient, database);
+	}
 
-    @Override
-    // @Bean
-    public CosmosConfig cosmosConfig() {
-        return CosmosConfig.builder().enableQueryMetrics(true).build();
-    }
+	@Override
+	// @Bean
+	public CosmosConfig cosmosConfig() {
+		return CosmosConfig.builder().enableQueryMetrics(true).build();
+	}
 
-    @Override
-    public String getDatabaseName() {
-        return database;
-    }
+	@Override
+	public String getDatabaseName() {
+		return database;
+	}
+
 }

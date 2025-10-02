@@ -26,15 +26,19 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Table(indexes = @Index(name = "idx_vin", columnList = "vin"))
 public class Vehicle {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String vin;
-    private String make;
-    private String model;
-    private Long targetVersionId;
+	private String vin;
 
-    @LastModifiedDate
-    private LocalDateTime lastComminucation;
+	private String make;
+
+	private String model;
+
+	private Long targetVersionId;
+
+	@LastModifiedDate
+	private LocalDateTime lastComminucation;
+
 }

@@ -11,63 +11,64 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClinicalValidationService {
 
-    private static final double PREPAY_SAVINGS_PERCENTAGE = 0.6;
-    private static final double RETROSPECTIVE_SAVINGS_PERCENTAGE = 0.4;
+	private static final double PREPAY_SAVINGS_PERCENTAGE = 0.6;
 
-    public ValidationResult validateClaim(Claim claim) {
-        ValidationResult result = ValidationResult.builder().build();
+	private static final double RETROSPECTIVE_SAVINGS_PERCENTAGE = 0.4;
 
-        // Check for cross-claim opportunities
-        if (isPhysicianClaimBeforeHospital(claim)) {
-            result.addOpportunity(ReviewOpportunity.PREPAY_CCCR);
-            result.setEstimatedSavings(calculatePrepaySavings(claim));
-        } else {
-            result.addOpportunity(ReviewOpportunity.RETROSPECTIVE_CCCV);
-            result.setEstimatedSavings(calculateRetrospectiveSavings(claim));
-        }
+	public ValidationResult validateClaim(Claim claim) {
+		ValidationResult result = ValidationResult.builder().build();
 
-        // Clinical criteria validation
-        validateClinicalCriteria(claim, result);
+		// Check for cross-claim opportunities
+		if (isPhysicianClaimBeforeHospital(claim)) {
+			result.addOpportunity(ReviewOpportunity.PREPAY_CCCR);
+			result.setEstimatedSavings(calculatePrepaySavings(claim));
+		}
+		else {
+			result.addOpportunity(ReviewOpportunity.RETROSPECTIVE_CCCV);
+			result.setEstimatedSavings(calculateRetrospectiveSavings(claim));
+		}
 
-        return result;
-    }
+		// Clinical criteria validation
+		validateClinicalCriteria(claim, result);
 
-    private boolean isPhysicianClaimBeforeHospital(Claim claim) {
-        // Business logic: 60% of physician claims come first
-        return claim.getClaimType() == ClaimType.PHYSICIAN
-                && claim
-                        .getSubmitTime()
-                        .isBefore(getHospitalClaimSubmitTime(claim.getPatientId(), claim.getServiceDate()));
-    }
+		return result;
+	}
 
-    private LocalDateTime getHospitalClaimSubmitTime(String patientId, LocalDateTime ServiceDate) {
-        return LocalDateTime.now();
-    }
+	private boolean isPhysicianClaimBeforeHospital(Claim claim) {
+		// Business logic: 60% of physician claims come first
+		return claim.getClaimType() == ClaimType.PHYSICIAN && claim.getSubmitTime()
+			.isBefore(getHospitalClaimSubmitTime(claim.getPatientId(), claim.getServiceDate()));
+	}
 
-    private double calculatePrepaySavings(Claim claim) {
-        return claim.getBilledAmount() * PREPAY_SAVINGS_PERCENTAGE;
-    }
+	private LocalDateTime getHospitalClaimSubmitTime(String patientId, LocalDateTime ServiceDate) {
+		return LocalDateTime.now();
+	}
 
-    private double calculateRetrospectiveSavings(Claim claim) {
-        return claim.getBilledAmount() * RETROSPECTIVE_SAVINGS_PERCENTAGE;
-    }
+	private double calculatePrepaySavings(Claim claim) {
+		return claim.getBilledAmount() * PREPAY_SAVINGS_PERCENTAGE;
+	}
 
-    private void validateClinicalCriteria(Claim claim, ValidationResult result) {
-        // Complex clinical validation logic
-        if (!isMedicallyNecessary(claim)) {
-            result.addIssue(ValidationIssue.MEDICAL_NECESSITY);
-        }
+	private double calculateRetrospectiveSavings(Claim claim) {
+		return claim.getBilledAmount() * RETROSPECTIVE_SAVINGS_PERCENTAGE;
+	}
 
-        if (isDuplicateProcedure(claim)) {
-            result.addIssue(ValidationIssue.DUPLICATE_PROCEDURE);
-        }
-    }
+	private void validateClinicalCriteria(Claim claim, ValidationResult result) {
+		// Complex clinical validation logic
+		if (!isMedicallyNecessary(claim)) {
+			result.addIssue(ValidationIssue.MEDICAL_NECESSITY);
+		}
 
-    private boolean isMedicallyNecessary(Claim claim) {
-        return false;
-    }
+		if (isDuplicateProcedure(claim)) {
+			result.addIssue(ValidationIssue.DUPLICATE_PROCEDURE);
+		}
+	}
 
-    private boolean isDuplicateProcedure(Claim claim) {
-        return false;
-    }
+	private boolean isMedicallyNecessary(Claim claim) {
+		return false;
+	}
+
+	private boolean isDuplicateProcedure(Claim claim) {
+		return false;
+	}
+
 }

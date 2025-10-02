@@ -2,15 +2,17 @@ package com.sisllc.mathformulas.ci.ch16.IntroductionSynchronizedBlocks;
 
 public class MyClass extends Thread {
 
-    private String name;
-    private MyObject myObj;
+	private String name;
 
-    public MyClass(MyObject obj, String n) {
-        name = n;
-        myObj = obj;
-    }
+	private MyObject myObj;
 
-    public void run() {
-        myObj.foo(name);
-    }
+	public MyClass(MyObject obj, String n) {
+		name = n;
+		myObj = obj;
+	}
+
+	public void run() {
+		myObj.foo(name);
+	}
+
 }

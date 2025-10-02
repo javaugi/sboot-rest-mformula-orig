@@ -10,14 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuditHandler {
 
-    @Handler(priority = 10) // Higher priority executes first
-    public void auditOrder(OrderCreatedEvent event) {
-        System.out.printf("[Audit] Order created: %s%n", event.getOrderId());
-    }
+	@Handler(priority = 10) // Higher priority executes first
+	public void auditOrder(OrderCreatedEvent event) {
+		System.out.printf("[Audit] Order created: %s%n", event.getOrderId());
+	}
 
-    @Handler
-    // @Filter("event.success == false")
-    public void auditFailedPayment(PaymentProcessedEvent event) {
-        System.err.printf("[Audit] Payment failed for order %s%n", event.getOrderId());
-    }
+	@Handler
+	// @Filter("event.success == false")
+	public void auditFailedPayment(PaymentProcessedEvent event) {
+		System.err.printf("[Audit] Payment failed for order %s%n", event.getOrderId());
+	}
+
 }

@@ -17,60 +17,63 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceImp extends UserServiceAbstractImp {
 
-    private final UserDao userDao;
-    private final UserRepository repo;
-    private final PasswordEncoder encoder;
+	private final UserDao userDao;
 
-    @Transactional
-    public User register(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repo.save(user);
-    }
+	private final UserRepository repo;
 
-    @Override
-    public boolean validateUserExists(Long id) {
-        return repo.findById(id).isPresent();
-    }
+	private final PasswordEncoder encoder;
 
-    @Transactional
-    @Override
-    public void save(User user) {
-        userDao.save(user);
-    }
+	@Transactional
+	public User register(User user) {
+		user.setPassword(encoder.encode(user.getPassword()));
+		return repo.save(user);
+	}
 
-    @Transactional
-    @Override
-    public void saveAll(List<User> users) {
-        userDao.saveAll(users);
-    }
+	@Override
+	public boolean validateUserExists(Long id) {
+		return repo.findById(id).isPresent();
+	}
 
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<User> findById(Long id) {
-        return userDao.findById(id);
-    }
+	@Transactional
+	@Override
+	public void save(User user) {
+		userDao.save(user);
+	}
 
-    @Transactional(readOnly = true)
-    @Override
-    public Iterable<User> findAll() {
-        return userDao.findAll();
-    }
+	@Transactional
+	@Override
+	public void saveAll(List<User> users) {
+		userDao.saveAll(users);
+	}
 
-    @Transactional(readOnly = true)
-    @Override
-    public Iterable<User> findAll(int offset, int limit) {
-        return userDao.findAll(offset, limit);
-    }
+	@Transactional(readOnly = true)
+	@Override
+	public Optional<User> findById(Long id) {
+		return userDao.findById(id);
+	}
 
-    @Transactional(readOnly = true)
-    @Override
-    public Iterable<User> findAll(Sort sort) {
-        return userDao.findAll();
-    }
+	@Transactional(readOnly = true)
+	@Override
+	public Iterable<User> findAll() {
+		return userDao.findAll();
+	}
 
-    @Transactional(readOnly = true)
-    @Override
-    public Page<User> findAll(Pageable pageable) {
-        return userDao.findAll(pageable);
-    }
+	@Transactional(readOnly = true)
+	@Override
+	public Iterable<User> findAll(int offset, int limit) {
+		return userDao.findAll(offset, limit);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Iterable<User> findAll(Sort sort) {
+		return userDao.findAll();
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Page<User> findAll(Pageable pageable) {
+		return userDao.findAll(pageable);
+	}
+
 }

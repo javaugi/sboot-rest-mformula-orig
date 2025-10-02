@@ -12,115 +12,124 @@ import java.util.function.*;
 
 public class SensorFusionSystem {
 
-    private final Map<String, SensorProcessor> sensorProcessors = new ConcurrentHashMap<>();
-    private final PriorityBlockingQueue<FusionEvent> eventQueue
-            = new PriorityBlockingQueue<>(100, Comparator.comparing(FusionEvent::getPriority));
+	private final Map<String, SensorProcessor> sensorProcessors = new ConcurrentHashMap<>();
 
-    private final ExecutorService fusionExecutor = Executors.newWorkStealingPool();
-    private volatile boolean shutdown = false;
+	private final PriorityBlockingQueue<FusionEvent> eventQueue = new PriorityBlockingQueue<>(100,
+			Comparator.comparing(FusionEvent::getPriority));
 
-    public static class FusionEvent {
+	private final ExecutorService fusionExecutor = Executors.newWorkStealingPool();
 
-        private final String sensorId;
-        private final double[] values;
-        private final Instant timestamp;
-        private final int priority; // Military priority level (0-9)
+	private volatile boolean shutdown = false;
 
-        public FusionEvent(String sensorId, double[] values, Instant timestamp, int priority) {
-            this.sensorId = sensorId;
-            this.values = values;
-            this.timestamp = timestamp;
-            this.priority = priority;
-        }
+	public static class FusionEvent {
 
-        // Getters omitted
-        public String getSensorId() {
-            return sensorId;
-        }
+		private final String sensorId;
 
-        public double[] getValues() {
-            return values;
-        }
+		private final double[] values;
 
-        public Instant getTimestamp() {
-            return timestamp;
-        }
+		private final Instant timestamp;
 
-        public int getPriority() {
-            return priority;
-        }
-    }
+		private final int priority; // Military priority level (0-9)
 
-    public void registerSensor(
-            String sensorId, Function<double[], Double> processingAlgorithm, int normalPriority) {
-        sensorProcessors.put(
-                sensorId, new SensorProcessor(sensorId, processingAlgorithm, normalPriority));
-    }
+		public FusionEvent(String sensorId, double[] values, Instant timestamp, int priority) {
+			this.sensorId = sensorId;
+			this.values = values;
+			this.timestamp = timestamp;
+			this.priority = priority;
+		}
 
-    public void startFusionEngine() {
-        fusionExecutor.submit(
-                () -> {
-                    while (!shutdown) {
-                        try {
-                            FusionEvent event = eventQueue.poll(100, TimeUnit.MILLISECONDS);
-                            if (event != null) {
-                                processEvent(event);
-                            }
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                });
-    }
+		// Getters omitted
+		public String getSensorId() {
+			return sensorId;
+		}
 
-    public void submitSensorData(String sensorId, double[] rawData) {
-        SensorProcessor processor = sensorProcessors.get(sensorId);
-        if (processor != null) {
-            eventQueue.offer(new FusionEvent(sensorId, rawData, Instant.now(), processor.normalPriority));
-        }
-    }
+		public double[] getValues() {
+			return values;
+		}
 
-    private void processEvent(FusionEvent event) {
-        SensorProcessor processor = sensorProcessors.get(event.sensorId);
-        if (processor != null) {
-            try {
-                double result = processor.processingAlgorithm.apply(event.values);
+		public Instant getTimestamp() {
+			return timestamp;
+		}
 
-                // Military decision threshold check
-                if (result > processor.getThreshold()) {
-                    triggerDefenseProtocol(event.sensorId, result);
-                }
-            } catch (Exception e) {
-                // Secure error handling
-            }
-        }
-    }
+		public int getPriority() {
+			return priority;
+		}
 
-    private void triggerDefenseProtocol(String sensorId, double value) {
-        // Implementation would interface with actual defense systems
-        System.out.println("ALERT: Sensor " + sensorId + " detected critical value: " + value);
-    }
+	}
 
-    private static class SensorProcessor {
+	public void registerSensor(String sensorId, Function<double[], Double> processingAlgorithm, int normalPriority) {
+		sensorProcessors.put(sensorId, new SensorProcessor(sensorId, processingAlgorithm, normalPriority));
+	}
 
-        private final String sensorId;
-        private final Function<double[], Double> processingAlgorithm;
-        private final int normalPriority;
-        private final AtomicReference<Double> threshold = new AtomicReference<>(1.0);
+	public void startFusionEngine() {
+		fusionExecutor.submit(() -> {
+			while (!shutdown) {
+				try {
+					FusionEvent event = eventQueue.poll(100, TimeUnit.MILLISECONDS);
+					if (event != null) {
+						processEvent(event);
+					}
+				}
+				catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
+		});
+	}
 
-        public SensorProcessor(
-                String sensorId, Function<double[], Double> processingAlgorithm, int normalPriority) {
-            this.sensorId = sensorId;
-            this.processingAlgorithm = processingAlgorithm;
-            this.normalPriority = normalPriority;
-        }
+	public void submitSensorData(String sensorId, double[] rawData) {
+		SensorProcessor processor = sensorProcessors.get(sensorId);
+		if (processor != null) {
+			eventQueue.offer(new FusionEvent(sensorId, rawData, Instant.now(), processor.normalPriority));
+		}
+	}
 
-        public double getThreshold() {
-            return threshold.get();
-        }
+	private void processEvent(FusionEvent event) {
+		SensorProcessor processor = sensorProcessors.get(event.sensorId);
+		if (processor != null) {
+			try {
+				double result = processor.processingAlgorithm.apply(event.values);
 
-        public void setThreshold(double newThreshold) {
-            threshold.set(newThreshold);
-        }
-    }
+				// Military decision threshold check
+				if (result > processor.getThreshold()) {
+					triggerDefenseProtocol(event.sensorId, result);
+				}
+			}
+			catch (Exception e) {
+				// Secure error handling
+			}
+		}
+	}
+
+	private void triggerDefenseProtocol(String sensorId, double value) {
+		// Implementation would interface with actual defense systems
+		System.out.println("ALERT: Sensor " + sensorId + " detected critical value: " + value);
+	}
+
+	private static class SensorProcessor {
+
+		private final String sensorId;
+
+		private final Function<double[], Double> processingAlgorithm;
+
+		private final int normalPriority;
+
+		private final AtomicReference<Double> threshold = new AtomicReference<>(1.0);
+
+		public SensorProcessor(String sensorId, Function<double[], Double> processingAlgorithm, int normalPriority) {
+			this.sensorId = sensorId;
+			this.processingAlgorithm = processingAlgorithm;
+			this.normalPriority = normalPriority;
+		}
+
+		public double getThreshold() {
+			return threshold.get();
+		}
+
+		public void setThreshold(double newThreshold) {
+			threshold.set(newThreshold);
+		}
+
+	}
+
 }

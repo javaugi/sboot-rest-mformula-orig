@@ -12,7 +12,8 @@ import java.util.List;
  */
 public interface PaymentValidator {
 
-    boolean validatePayment(Payment payment);
+	boolean validatePayment(Payment payment);
 
-    List<ValidationRule> getFailedRules(Payment payment);
+	List<ValidationRule> getFailedRules(Payment payment);
+
 }

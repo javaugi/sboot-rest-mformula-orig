@@ -21,84 +21,92 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class FhirConsumer {
 
-    private final PatientEventRepository repo;
-    private final KafkaTemplate<String, String> kafka;
-    private final FhirValidationService fhirValidationService;
-    private final PseudonymService pseudonymService;
+	private final PatientEventRepository repo;
 
-    private final FhirContext fhirContext = FhirContext.forR4();
+	private final KafkaTemplate<String, String> kafka;
 
-    @KafkaListener(topics = "raw-fhir-events", groupId = "fhir-normalizer")
-    public void onMessage(String fhirJson) {
-        IParser parser = fhirContext.newJsonParser();
-        IBaseResource res = parser.parseResource(fhirJson);
-        String type = res.fhirType(); // .getResourceType().name();
+	private final FhirValidationService fhirValidationService;
 
-        boolean isValid = fhirValidation(fhirJson);
-        if (!isValid) {
-            log.warn("fhirValidation failed");
-        }
+	private final PseudonymService pseudonymService;
 
-        PatientEvent e = new PatientEvent();
-        if (res instanceof Claim) {
-            Claim c = (Claim) res;
-            // Example: map claim->patientId using insured party or patient reference
-            e.patientId = extractPatientIdFromClaim(c);
-            e.eventType = "CLAIM";
-            e.payload = fhirJson;
-            e.eventTime = Instant.now();
-        } else if (res instanceof Encounter) {
-            Encounter en = (Encounter) res;
-            e.patientId = extractPatientIdFromEncounter(en);
-            e.eventType = "ENCOUNTER";
-            e.payload = fhirJson;
-            e.eventTime = Instant.now();
-        } else {
-            e.patientId = "unknown";
-            e.eventType = type;
-            e.payload = fhirJson;
-            e.eventTime = Instant.now();
-        }
-        // Persist normalized event for analytics
-        repo.save(e);
+	private final FhirContext fhirContext = FhirContext.forR4();
 
-        // Scoring microservice or scoring-results to dashboards, billing automation, clinician UI
-        kafka.send("patient-events ", type, fhirJson);
-    }
+	@KafkaListener(topics = "raw-fhir-events", groupId = "fhir-normalizer")
+	public void onMessage(String fhirJson) {
+		IParser parser = fhirContext.newJsonParser();
+		IBaseResource res = parser.parseResource(fhirJson);
+		String type = res.fhirType(); // .getResourceType().name();
 
-    private boolean fhirValidation(String fhirJson) {
-        IParser parser = fhirContext.newJsonParser();
-        IBaseResource res = parser.parseResource(fhirJson);
+		boolean isValid = fhirValidation(fhirJson);
+		if (!isValid) {
+			log.warn("fhirValidation failed");
+		}
 
-        try {
-            // Minimal validation: resource type allowed?
-            String resourceType = res.fhirType(); // .getResourceType().name();
-            boolean isValid = fhirValidationService.validate();
-        } catch (Exception ex) {
+		PatientEvent e = new PatientEvent();
+		if (res instanceof Claim) {
+			Claim c = (Claim) res;
+			// Example: map claim->patientId using insured party or patient reference
+			e.patientId = extractPatientIdFromClaim(c);
+			e.eventType = "CLAIM";
+			e.payload = fhirJson;
+			e.eventTime = Instant.now();
+		}
+		else if (res instanceof Encounter) {
+			Encounter en = (Encounter) res;
+			e.patientId = extractPatientIdFromEncounter(en);
+			e.eventType = "ENCOUNTER";
+			e.payload = fhirJson;
+			e.eventTime = Instant.now();
+		}
+		else {
+			e.patientId = "unknown";
+			e.eventType = type;
+			e.payload = fhirJson;
+			e.eventTime = Instant.now();
+		}
+		// Persist normalized event for analytics
+		repo.save(e);
 
-        }
+		// Scoring microservice or scoring-results to dashboards, billing automation,
+		// clinician UI
+		kafka.send("patient-events ", type, fhirJson);
+	}
 
-        return true;
-    }
+	private boolean fhirValidation(String fhirJson) {
+		IParser parser = fhirContext.newJsonParser();
+		IBaseResource res = parser.parseResource(fhirJson);
 
-    private String extractPatientIdFromClaim(Claim c) {
-        if (c.hasPatient() && c.getPatient().hasReference()) {
-            return pseudonymize(c.getPatient().getReference());
-        }
-        // fallback: insured party or provider; production: canonical normalization
-        return "unknown";
-    }
+		try {
+			// Minimal validation: resource type allowed?
+			String resourceType = res.fhirType(); // .getResourceType().name();
+			boolean isValid = fhirValidationService.validate();
+		}
+		catch (Exception ex) {
 
-    private String extractPatientIdFromEncounter(Encounter en) {
-        if (en.hasSubject() && en.getSubject().hasReference()) {
-            return pseudonymize(en.getSubject().getReference());
-        }
-        return "unknown";
-    }
+		}
 
-    private String pseudonymize(String patientId) {
-        String externalSafeId = pseudonymService.getPseudonym(patientId);
-        return externalSafeId;
-        // externalModelClient.sendData(externalSafeId, otherData);
-    }
+		return true;
+	}
+
+	private String extractPatientIdFromClaim(Claim c) {
+		if (c.hasPatient() && c.getPatient().hasReference()) {
+			return pseudonymize(c.getPatient().getReference());
+		}
+		// fallback: insured party or provider; production: canonical normalization
+		return "unknown";
+	}
+
+	private String extractPatientIdFromEncounter(Encounter en) {
+		if (en.hasSubject() && en.getSubject().hasReference()) {
+			return pseudonymize(en.getSubject().getReference());
+		}
+		return "unknown";
+	}
+
+	private String pseudonymize(String patientId) {
+		String externalSafeId = pseudonymService.getPseudonym(patientId);
+		return externalSafeId;
+		// externalModelClient.sendData(externalSafeId, otherData);
+	}
+
 }

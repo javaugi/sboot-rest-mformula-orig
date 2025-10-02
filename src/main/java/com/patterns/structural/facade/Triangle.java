@@ -9,13 +9,13 @@ package com.patterns.structural.facade;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Triangle implements Shape {
 
-    @Override
-    public void draw() {
-        System.out.println("Drawing Triangle ");
-    }
+	@Override
+	public void draw() {
+		System.out.println("Drawing Triangle ");
+	}
+
 }

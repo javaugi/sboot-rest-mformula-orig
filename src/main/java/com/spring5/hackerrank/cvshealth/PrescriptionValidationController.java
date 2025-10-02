@@ -14,29 +14,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/prescriptions/validate")
 public class PrescriptionValidationController {
 
-    private final ValidationService validationService;
+	private final ValidationService validationService;
 
-    @Autowired
-    public PrescriptionValidationController(ValidationService validationService) {
-        this.validationService = validationService;
-    }
+	@Autowired
+	public PrescriptionValidationController(ValidationService validationService) {
+		this.validationService = validationService;
+	}
 
-    @PostMapping
-    public ResponseEntity<ValidationResult> validatePrescription(
-            @RequestBody PrescriptionRequest request) {
-        if (request.getOrderId() == null || request.getOrderId().isEmpty()) {
-            // Basic validation for missing required fields
-            ValidationResult errorResult = new ValidationResult();
-            errorResult.setStatus(ValidationResult.Status.REJECTED);
-            errorResult.setValidationMessages(List.of("Order ID is required."));
-            return ResponseEntity.badRequest().body(errorResult);
-        }
+	@PostMapping
+	public ResponseEntity<ValidationResult> validatePrescription(@RequestBody PrescriptionRequest request) {
+		if (request.getOrderId() == null || request.getOrderId().isEmpty()) {
+			// Basic validation for missing required fields
+			ValidationResult errorResult = new ValidationResult();
+			errorResult.setStatus(ValidationResult.Status.REJECTED);
+			errorResult.setValidationMessages(List.of("Order ID is required."));
+			return ResponseEntity.badRequest().body(errorResult);
+		}
 
-        ValidationResult result = validationService.validatePrescription(request);
-        HttpStatus httpStatus
-                = (result.getStatus() == ValidationResult.Status.REJECTED)
-                ? HttpStatus.BAD_REQUEST
-                : HttpStatus.OK;
-        return new ResponseEntity<>(result, httpStatus);
-    }
+		ValidationResult result = validationService.validatePrescription(request);
+		HttpStatus httpStatus = (result.getStatus() == ValidationResult.Status.REJECTED) ? HttpStatus.BAD_REQUEST
+				: HttpStatus.OK;
+		return new ResponseEntity<>(result, httpStatus);
+	}
+
 }

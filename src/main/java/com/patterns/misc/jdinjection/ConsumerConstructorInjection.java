@@ -9,20 +9,20 @@ package com.patterns.misc.jdinjection;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ConsumerConstructorInjection implements Consumer {
 
-    private MessageService service;
+	private MessageService service;
 
-    public ConsumerConstructorInjection(MessageService svc) {
-        this.service = svc;
-    }
+	public ConsumerConstructorInjection(MessageService svc) {
+		this.service = svc;
+	}
 
-    @Override
-    public void processMessages(String msg, String rec) {
-        // do some msg validation, manipulation logic etc
-        this.service.sendMessage(msg, rec);
-    }
+	@Override
+	public void processMessages(String msg, String rec) {
+		// do some msg validation, manipulation logic etc
+		this.service.sendMessage(msg, rec);
+	}
+
 }

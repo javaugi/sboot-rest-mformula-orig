@@ -16,32 +16,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class InventoryReservationService {
 
-    @Autowired
-    private InventoryRepository inventoryRepository;
+	@Autowired
+	private InventoryRepository inventoryRepository;
 
-    private final Map<String, AtomicInteger> inventory = new ConcurrentHashMap<>();
-    private final Object lock = new Object();
+	private final Map<String, AtomicInteger> inventory = new ConcurrentHashMap<>();
 
-    public boolean reserveItem(String itemId, int quantity) {
-        synchronized (lock) {
-            AtomicInteger current = inventory.computeIfAbsent(itemId, k -> new AtomicInteger(100));
-            if (current.get() >= quantity) {
-                current.addAndGet(-quantity);
-                return true;
-            }
-            return false;
-        }
-    }
+	private final Object lock = new Object();
 
-    @Transactional
-    public boolean reserveItemWithDB(String itemId, int quantity) {
-        Inventory item = inventoryRepository.findById(Long.valueOf(itemId)).orElseThrow();
+	public boolean reserveItem(String itemId, int quantity) {
+		synchronized (lock) {
+			AtomicInteger current = inventory.computeIfAbsent(itemId, k -> new AtomicInteger(100));
+			if (current.get() >= quantity) {
+				current.addAndGet(-quantity);
+				return true;
+			}
+			return false;
+		}
+	}
 
-        if (item.getAvailableQuantity() >= quantity) {
-            item.setAvailableQuantity(item.getAvailableQuantity() - quantity);
-            inventoryRepository.save(item);
-            return true;
-        }
-        return false;
-    }
+	@Transactional
+	public boolean reserveItemWithDB(String itemId, int quantity) {
+		Inventory item = inventoryRepository.findById(Long.valueOf(itemId)).orElseThrow();
+
+		if (item.getAvailableQuantity() >= quantity) {
+			item.setAvailableQuantity(item.getAvailableQuantity() - quantity);
+			inventoryRepository.save(item);
+			return true;
+		}
+		return false;
+	}
+
 }

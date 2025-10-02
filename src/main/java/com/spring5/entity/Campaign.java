@@ -23,16 +23,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Entity
 public class Campaign {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
-    private String targetVersion;
+	private String name;
 
-    @Version
-    private Long version;
+	private String targetVersion;
 
-    @LastModifiedDate
-    private LocalDateTime lastModified;
+	@Version
+	private Long version;
+
+	@LastModifiedDate
+	private LocalDateTime lastModified;
+
 }

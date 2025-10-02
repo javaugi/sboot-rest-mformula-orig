@@ -2,23 +2,26 @@ package com.sisllc.mathformulas.ci.ch14.Question14_1;
 
 public class Question {
 
-    private Question() {
-        System.out.println("Q");
-    }
+	private Question() {
+		System.out.println("Q");
+	}
 
-    static class A {
+	static class A {
 
-        private A() {
-        }
-    }
+		private A() {
+		}
 
-    static class B extends A {
+	}
 
-        public B() {
-        }
-    }
+	static class B extends A {
 
-    public static void main(String[] args) {
-        new B();
-    }
+		public B() {
+		}
+
+	}
+
+	public static void main(String[] args) {
+		new B();
+	}
+
 }

@@ -14,31 +14,28 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    // To query deleted records
 
-    @Query("SELECT c FROM Customer c WHERE c.deleted = true")
-    List<Customer> findAllDeleted();
+	// To query deleted records
 
-    Optional<Customer> findByEmail(@Param("email") String email);
+	@Query("SELECT c FROM Customer c WHERE c.deleted = true")
+	List<Customer> findAllDeleted();
+
+	Optional<Customer> findByEmail(@Param("email") String email);
+
 }
 
 /*
-// For temporal soft delete with history
-CREATE TABLE customers_history AS TABLE customers WITH NO DATA;
-
-CREATE OR REPLACE FUNCTION archive_deleted_customer() RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.deleted = true AND OLD.deleted = false THEN
-        INSERT INTO customers_history SELECT * FROM customers WHERE id = OLD.id;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER customer_archive_trigger
-AFTER UPDATE OF deleted ON customers
-FOR EACH ROW EXECUTE FUNCTION archive_deleted_customer();
-
-These examples cover a wide range of topics that would be relevant for a Backend Spring Boot Developer with Database
-Experience interview, demonstrating both theoretical knowledge and practical implementation skills.
+ * // For temporal soft delete with history CREATE TABLE customers_history AS TABLE
+ * customers WITH NO DATA;
+ * 
+ * CREATE OR REPLACE FUNCTION archive_deleted_customer() RETURNS TRIGGER AS $$ BEGIN IF
+ * NEW.deleted = true AND OLD.deleted = false THEN INSERT INTO customers_history SELECT *
+ * FROM customers WHERE id = OLD.id; END IF; RETURN NEW; END; $$ LANGUAGE plpgsql;
+ * 
+ * CREATE TRIGGER customer_archive_trigger AFTER UPDATE OF deleted ON customers FOR EACH
+ * ROW EXECUTE FUNCTION archive_deleted_customer();
+ * 
+ * These examples cover a wide range of topics that would be relevant for a Backend Spring
+ * Boot Developer with Database Experience interview, demonstrating both theoretical
+ * knowledge and practical implementation skills.
  */

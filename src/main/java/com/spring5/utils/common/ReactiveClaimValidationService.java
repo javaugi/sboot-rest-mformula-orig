@@ -14,81 +14,77 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class ReactiveClaimValidationService {
 
-    private final ReactiveKafkaProducer kafkaProducer;
-    private final ReactiveClaimEventRepository claimRepository;
+	private final ReactiveKafkaProducer kafkaProducer;
 
-    public ReactiveClaimValidationService(
-            ReactiveKafkaProducer kafkaProducer, ReactiveClaimEventRepository claimRepository) {
-        this.kafkaProducer = kafkaProducer;
-        this.claimRepository = claimRepository;
-    }
+	private final ReactiveClaimEventRepository claimRepository;
 
-    @KafkaListener(topics = "${app.topics.claim-submitted}")
-    public void processClaimSubmitted(ReactiveClaimEvent event) {
-        log.info("Processing submitted claim: {}", event.getId());
+	public ReactiveClaimValidationService(ReactiveKafkaProducer kafkaProducer,
+			ReactiveClaimEventRepository claimRepository) {
+		this.kafkaProducer = kafkaProducer;
+		this.claimRepository = claimRepository;
+	}
 
-        validateClaim(event)
-                .flatMap(
-                        isValid -> {
-                            if (isValid) {
-                                ReactiveClaimEvent validatedEvent = new ReactiveClaimEvent();
-                                BeanUtils.copyProperties(event, validatedEvent);
-                                validatedEvent.setStatus(ReactiveClaimEvent.ClaimStatus.VALIDATED);
-                                validatedEvent.setFailureReason(null);
+	@KafkaListener(topics = "${app.topics.claim-submitted}")
+	public void processClaimSubmitted(ReactiveClaimEvent event) {
+		log.info("Processing submitted claim: {}", event.getId());
 
-                                return kafkaProducer.sendClaimValidated(validatedEvent);
-                            } else {
-                                return kafkaProducer.sendToDeadLetterTopic(event.getId(), "Validation failed");
-                            }
-                        })
-                .onErrorResume(
-                        error -> {
-                            log.error("Error processing claim {}: {}", event.getId(), error.getMessage());
-                            return kafkaProducer.sendToDeadLetterTopic(
-                                    event.getId(), "Processing error: " + error.getMessage());
-                        })
-                .subscribe();
-    }
+		validateClaim(event).flatMap(isValid -> {
+			if (isValid) {
+				ReactiveClaimEvent validatedEvent = new ReactiveClaimEvent();
+				BeanUtils.copyProperties(event, validatedEvent);
+				validatedEvent.setStatus(ReactiveClaimEvent.ClaimStatus.VALIDATED);
+				validatedEvent.setFailureReason(null);
 
-    private Mono<Boolean> validateClaim(ReactiveClaimEvent event) {
-        return Mono.fromCallable(() -> claimRepository.existsById(event.getId()))
-                .flatMap(
-                        optionalClaim -> {
-                            if (optionalClaim.isPresent()) {
-                                // Claim already exists
-                                return Mono.just(false);
-                            } else {
-                                // Claim doesn't exist, validate clinical data
-                                return validateClinicalData(event);
-                            }
-                        });
-    }
+				return kafkaProducer.sendClaimValidated(validatedEvent);
+			}
+			else {
+				return kafkaProducer.sendToDeadLetterTopic(event.getId(), "Validation failed");
+			}
+		}).onErrorResume(error -> {
+			log.error("Error processing claim {}: {}", event.getId(), error.getMessage());
+			return kafkaProducer.sendToDeadLetterTopic(event.getId(), "Processing error: " + error.getMessage());
+		}).subscribe();
+	}
 
-    private Mono<Boolean> validateClaimOpt2(ReactiveClaimEvent event) {
-        return Mono.just(claimRepository.existsById(event.getId()))
-                .flatMap(
-                        optionalClaim
-                        -> optionalClaim
-                                .map(claim -> Mono.just(false)) // If present, return false
-                                .orElseGet(() -> validateClinicalData(event)) // If empty, validate
-                );
-    }
+	private Mono<Boolean> validateClaim(ReactiveClaimEvent event) {
+		return Mono.fromCallable(() -> claimRepository.existsById(event.getId())).flatMap(optionalClaim -> {
+			if (optionalClaim.isPresent()) {
+				// Claim already exists
+				return Mono.just(false);
+			}
+			else {
+				// Claim doesn't exist, validate clinical data
+				return validateClinicalData(event);
+			}
+		});
+	}
 
-    private Mono<Boolean> validateClaimOpt3(ReactiveClaimEvent event) {
-        return Mono.justOrEmpty(claimRepository.existsById(event.getId()))
-                .hasElement() // Convert to Mono<Boolean> indicating presence
-                .flatMap(
-                        exists -> {
-                            if (exists) {
-                                return Mono.just(false);
-                            } else {
-                                return validateClinicalData(event);
-                            }
-                        });
-    }
+	private Mono<Boolean> validateClaimOpt2(ReactiveClaimEvent event) {
+		return Mono.just(claimRepository.existsById(event.getId()))
+			.flatMap(optionalClaim -> optionalClaim.map(claim -> Mono.just(false)) // If
+																					// present,
+																					// return
+																					// false
+				.orElseGet(() -> validateClinicalData(event)) // If empty, validate
+			);
+	}
 
-    private Mono<Boolean> validateClinicalData(ReactiveClaimEvent event) {
-        // Complex validation logic using reactive database calls
-        return Mono.just(true); // Simplified
-    }
+	private Mono<Boolean> validateClaimOpt3(ReactiveClaimEvent event) {
+		return Mono.justOrEmpty(claimRepository.existsById(event.getId()))
+			.hasElement() // Convert to Mono<Boolean> indicating presence
+			.flatMap(exists -> {
+				if (exists) {
+					return Mono.just(false);
+				}
+				else {
+					return validateClinicalData(event);
+				}
+			});
+	}
+
+	private Mono<Boolean> validateClinicalData(ReactiveClaimEvent event) {
+		// Complex validation logic using reactive database calls
+		return Mono.just(true); // Simplified
+	}
+
 }

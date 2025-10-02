@@ -10,19 +10,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducerService {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public KafkaProducerService(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	public KafkaProducerService(KafkaTemplate<String, String> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
 
-    // Method to send to default topic
-    public void sendToDefaultTopic(String message) {
-        kafkaTemplate.send("my-default-topic", message);
-    }
+	// Method to send to default topic
+	public void sendToDefaultTopic(String message) {
+		kafkaTemplate.send("my-default-topic", message);
+	}
 
-    // Method to send to outbox topic (with key for compaction)
-    public void sendToOutboxTopic(String key, String message) {
-        kafkaTemplate.send("my-outbox-topic", key, message);
-    }
+	// Method to send to outbox topic (with key for compaction)
+	public void sendToOutboxTopic(String key, String message) {
+		kafkaTemplate.send("my-outbox-topic", key, message);
+	}
+
 }

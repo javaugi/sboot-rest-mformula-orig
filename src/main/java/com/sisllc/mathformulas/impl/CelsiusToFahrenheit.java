@@ -7,12 +7,13 @@ package com.sisllc.mathformulas.impl;
  */
 public class CelsiusToFahrenheit {
 
-    public static void main(String[] args) {
-        // Water boils at this temperature
-        double temp = 100;
-        System.out.println("Celsius: " + temp);
+	public static void main(String[] args) {
+		// Water boils at this temperature
+		double temp = 100;
+		System.out.println("Celsius: " + temp);
 
-        temp = temp * 9 / 5 + 32;
-        System.out.println("Fahrenheit: " + temp);
-    }
+		temp = temp * 9 / 5 + 32;
+		System.out.println("Fahrenheit: " + temp);
+	}
+
 }

@@ -14,38 +14,38 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ShoppingCart {
 
-    private static final Logger log = LoggerFactory.getLogger(ShoppingCart.class);
+	private static final Logger log = LoggerFactory.getLogger(ShoppingCart.class);
 
-    // List of items
-    List<Item> items;
+	// List of items
+	List<Item> items;
 
-    public ShoppingCart() {
-        this.items = new ArrayList<Item>();
-    }
+	public ShoppingCart() {
+		this.items = new ArrayList<Item>();
+	}
 
-    public void addItem(Item item) {
-        this.items.add(item);
-    }
+	public void addItem(Item item) {
+		this.items.add(item);
+	}
 
-    public void removeItem(Item item) {
-        this.items.remove(item);
-    }
+	public void removeItem(Item item) {
+		this.items.remove(item);
+	}
 
-    public int calculateTotal() {
-        int sum = 0;
-        for (Item item : items) {
-            sum += item.getPrice();
-        }
-        return sum;
-    }
+	public int calculateTotal() {
+		int sum = 0;
+		for (Item item : items) {
+			sum += item.getPrice();
+		}
+		return sum;
+	}
 
-    public void pay(PaymentStrategy paymentMethod) {
-        int amount = calculateTotal();
-        paymentMethod.pay(amount);
-    }
+	public void pay(PaymentStrategy paymentMethod) {
+		int amount = calculateTotal();
+		paymentMethod.pay(amount);
+	}
+
 }

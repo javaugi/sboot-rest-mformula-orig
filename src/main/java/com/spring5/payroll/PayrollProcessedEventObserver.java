@@ -20,6 +20,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PayrollProcessedEventObserver {
 
-    private long employeeId;
-    private BigDecimal netPay;
+	private long employeeId;
+
+	private BigDecimal netPay;
+
 }

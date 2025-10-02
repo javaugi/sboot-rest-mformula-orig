@@ -13,20 +13,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class JHCacheDefault1stLevelProductService {
 
-    @Autowired
-    private EntityManager entityManager;
+	@Autowired
+	private EntityManager entityManager;
 
-    @Transactional
-    public void demonstrateFirstLevelCache() {
-        // First query - hits the database
-        Product product1 = entityManager.find(Product.class, 1L);
-        System.out.println("First query: " + product1.getName());
+	@Transactional
+	public void demonstrateFirstLevelCache() {
+		// First query - hits the database
+		Product product1 = entityManager.find(Product.class, 1L);
+		System.out.println("First query: " + product1.getName());
 
-        // Second query - returns from first-level cache
-        Product product2 = entityManager.find(Product.class, 1L);
-        System.out.println("Second query: " + product2.getName());
+		// Second query - returns from first-level cache
+		Product product2 = entityManager.find(Product.class, 1L);
+		System.out.println("Second query: " + product2.getName());
 
-        // Both product1 and product2 are the same instance
-        System.out.println("Same instance? " + (product1 == product2)); // true
-    }
+		// Both product1 and product2 are the same instance
+		System.out.println("Same instance? " + (product1 == product2)); // true
+	}
+
 }

@@ -29,32 +29,31 @@ Spring provides declarative and programmatic transaction management. Key isolati
 @Service
 public class TransManIsolationLevelOrderService {
 
-    @Autowired
-    private AuditOrderRepository orderRepository;
+	@Autowired
+	private AuditOrderRepository orderRepository;
 
-    @Autowired
-    private PaymentRepository paymentRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
 
-    @Transactional(
-            isolation = Isolation.REPEATABLE_READ,
-            propagation = Propagation.REQUIRED,
-            rollbackFor = {PaymentException.class, InsufficientStockException.class})
-    public AuditOrder processOrder(OrderRequest request) {
-        AuditOrder order = createOrder(request);
-        processPayment(order);
-        updateInventory(order);
-        return order;
-    }
+	@Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
+			rollbackFor = { PaymentException.class, InsufficientStockException.class })
+	public AuditOrder processOrder(OrderRequest request) {
+		AuditOrder order = createOrder(request);
+		processPayment(order);
+		updateInventory(order);
+		return order;
+	}
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void processPayment(AuditOrder order) {
-        // payment processing logic
-    }
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void processPayment(AuditOrder order) {
+		// payment processing logic
+	}
 
-    private AuditOrder createOrder(OrderRequest request) {
-        return AuditOrder.builder().build();
-    }
+	private AuditOrder createOrder(OrderRequest request) {
+		return AuditOrder.builder().build();
+	}
 
-    private void updateInventory(AuditOrder order) {
-    }
+	private void updateInventory(AuditOrder order) {
+	}
+
 }

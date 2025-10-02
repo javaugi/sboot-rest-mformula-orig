@@ -12,7 +12,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface InventoryClient {
 
-    CompletableFuture<Boolean> reserveItems(String orderId, List<AuditOrder> items);
+	CompletableFuture<Boolean> reserveItems(String orderId, List<AuditOrder> items);
 
-    void cancelReservation(String orderId);
+	void cancelReservation(String orderId);
+
 }

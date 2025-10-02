@@ -12,26 +12,27 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class FilterChain {
 
-    private List<Filter> filters = new ArrayList<Filter>();
-    private TargetHandler target;
+	private List<Filter> filters = new ArrayList<Filter>();
 
-    public void addFilter(Filter filter) {
-        filters.add(filter);
-    }
+	private TargetHandler target;
 
-    public void execute(String request) {
-        for (Filter filter : filters) {
-            filter.execute(request);
-        }
-        target.execute(request);
-    }
+	public void addFilter(Filter filter) {
+		filters.add(filter);
+	}
 
-    public void setTarget(TargetHandler target) {
-        this.target = target;
-    }
+	public void execute(String request) {
+		for (Filter filter : filters) {
+			filter.execute(request);
+		}
+		target.execute(request);
+	}
+
+	public void setTarget(TargetHandler target) {
+		this.target = target;
+	}
+
 }

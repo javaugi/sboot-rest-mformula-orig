@@ -21,58 +21,51 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 // @WebFluxTest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@Import({WebClientAutoConfiguration.class, TestPostgresConfig.class})
+@Import({ WebClientAutoConfiguration.class, TestPostgresConfig.class })
 @ActiveProfiles("test")
 public class HealthCheckTest {
 
-    @Autowired
-    private WebTestClient webTestClient;
+	@Autowired
+	private WebTestClient webTestClient;
 
-    // @Test
-    void contextLoads() {
-        assertThat(true).isTrue();
-    }
+	// @Test
+	void contextLoads() {
+		assertThat(true).isTrue();
+	}
 
-    // @Test
-    void shouldReturnHealthStatusUp() {
-        // Test the Spring Boot Actuator health endpoint
-        webTestClient
-                .get()
-                .uri("/actuator/health")
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody()
-                .jsonPath("$.status")
-                .isEqualTo("UP");
-    }
+	// @Test
+	void shouldReturnHealthStatusUp() {
+		// Test the Spring Boot Actuator health endpoint
+		webTestClient.get()
+			.uri("/actuator/health")
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody()
+			.jsonPath("$.status")
+			.isEqualTo("UP");
+	}
+
 }
 
 /*
-Common Actuator Endpoints
-    Endpoint                Description
-    /actuator/health        Shows health info
-    /actuator/info          Shows info from application.properties
-    /actuator/metrics       Metrics like JVM, CPU, DB, HTTP reqs
-    /actuator/env           Shows environment variables and props
-    /actuator/beans         Shows all Spring beans
-    /actuator/loggers       Change log levels at runtime
-    /actuator/prometheus    App health details and system gauge from Prometheus
-
-Summary
-    @SpringBootApplication + Actuator exposes useful diagnostics /actuator/health gives system health (DB, disk, custom indicators)
-    Extend with custom health indicators
-    Integrates with Prometheus, Grafana, Azure Monitor, etc.
+ * Common Actuator Endpoints Endpoint Description /actuator/health Shows health info
+ * /actuator/info Shows info from application.properties /actuator/metrics Metrics like
+ * JVM, CPU, DB, HTTP reqs /actuator/env Shows environment variables and props
+ * /actuator/beans Shows all Spring beans /actuator/loggers Change log levels at runtime
+ * /actuator/prometheus App health details and system gauge from Prometheus
+ * 
+ * Summary
+ * 
+ * @SpringBootApplication + Actuator exposes useful diagnostics /actuator/health gives
+ * system health (DB, disk, custom indicators) Extend with custom health indicators
+ * Integrates with Prometheus, Grafana, Azure Monitor, etc.
  */
- /*
-org.springdoc/springdoc-openapi-starter-webmvc-ui
-# default: /v3/api-docs
-springdoc.api-docs.path=/api-docs
-springdoc.api-docs.swagger-ui.path=/swagger-ui.html
-
-This gives you:
-    /v3/api-docs            → JSON OpenAPI JSON    spec
-    /swagger-ui.html        → Swagger UI
-    /swagger-ui/index.html  → alternative Swagger UI path
-    /v3/api-docs.yaml       -> Bonus: You can also generate a YAML spec
+/*
+ * org.springdoc/springdoc-openapi-starter-webmvc-ui # default: /v3/api-docs
+ * springdoc.api-docs.path=/api-docs springdoc.api-docs.swagger-ui.path=/swagger-ui.html
+ * 
+ * This gives you: /v3/api-docs → JSON OpenAPI JSON spec /swagger-ui.html → Swagger UI
+ * /swagger-ui/index.html → alternative Swagger UI path /v3/api-docs.yaml -> Bonus: You
+ * can also generate a YAML spec
  */

@@ -10,14 +10,16 @@ import org.apache.kafka.common.serialization.Deserializer;
 
 public class ClickEventDeserializer implements Deserializer<ClickEvent> {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override
-    public ClickEvent deserialize(String topic, byte[] data) {
-        try {
-            return objectMapper.readValue(data, ClickEvent.class);
-        } catch (IOException e) {
-            throw new RuntimeException("Error deserializing ClickEvent", e);
-        }
-    }
+	@Override
+	public ClickEvent deserialize(String topic, byte[] data) {
+		try {
+			return objectMapper.readValue(data, ClickEvent.class);
+		}
+		catch (IOException e) {
+			throw new RuntimeException("Error deserializing ClickEvent", e);
+		}
+	}
+
 }

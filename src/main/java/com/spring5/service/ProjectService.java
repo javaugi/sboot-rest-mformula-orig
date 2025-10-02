@@ -14,25 +14,26 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
+	private final ProjectRepository projectRepository;
 
-    public List<ProjectDTO> findAll() {
-        return this.projectRepository.findAllProjects();
-    }
+	public List<ProjectDTO> findAll() {
+		return this.projectRepository.findAllProjects();
+	}
 
-    public ProjectDTO findById(Long id) {
-        return ProjectDTO.builder().id(id).build();
-    }
+	public ProjectDTO findById(Long id) {
+		return ProjectDTO.builder().id(id).build();
+	}
 
-    public ProjectDTO save(ProjectDTO dto) {
-        return dto;
-    }
+	public ProjectDTO save(ProjectDTO dto) {
+		return dto;
+	}
 
-    public ProjectDTO update(Long id, ProjectDTO dto) {
-        return dto;
-    }
+	public ProjectDTO update(Long id, ProjectDTO dto) {
+		return dto;
+	}
 
-    public void deleteById(Long id) {
-        this.projectRepository.deleteById(id);
-    }
+	public void deleteById(Long id) {
+		this.projectRepository.deleteById(id);
+	}
+
 }

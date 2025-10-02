@@ -14,45 +14,48 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ClaimProcessingService {
 
-    private final ClaimRepository claimRepository;
-    private final ClinicalRulesEngine rulesEngine;
-    private final ApplicationEventPublisher eventPublisher;
+	private final ClaimRepository claimRepository;
 
-    public ProcessResult processClaim(Claim claim) {
-        // Validate clinical data
-        ValidationResult validation = rulesEngine.validate(claim);
+	private final ClinicalRulesEngine rulesEngine;
 
-        if (!validation.isValid()) {
-            return ProcessResult.builder().failed("Clinical validation failed").build();
-        }
+	private final ApplicationEventPublisher eventPublisher;
 
-        // Check for cross-claim opportunities
-        boolean isCrossClaim = rulesEngine.isCrossClaimEligible(claim);
+	public ProcessResult processClaim(Claim claim) {
+		// Validate clinical data
+		ValidationResult validation = rulesEngine.validate(claim);
 
-        if (isCrossClaim) {
-            applyCCCRRules(claim);
-        }
+		if (!validation.isValid()) {
+			return ProcessResult.builder().failed("Clinical validation failed").build();
+		}
 
-        claimRepository.save(claim);
-        return ProcessResult.builder().claim(claim).build();
-    }
+		// Check for cross-claim opportunities
+		boolean isCrossClaim = rulesEngine.isCrossClaimEligible(claim);
 
-    public ReviewResult reviewClaim(Claim claim) {
-        // 1. Complex processing logic
-        ReviewResult result = rulesEngine.applyRules(claim);
+		if (isCrossClaim) {
+			applyCCCRRules(claim);
+		}
 
-        // 2. Save the core result to DB
-        claimRepository.save(claim);
+		claimRepository.save(claim);
+		return ProcessResult.builder().claim(claim).build();
+	}
 
-        // 3. Fire an async event for non-critical side-effects (auditing)
-        eventPublisher.publishEvent(new ClaimReviewedEvent(this, claim, result));
+	public ReviewResult reviewClaim(Claim claim) {
+		// 1. Complex processing logic
+		ReviewResult result = rulesEngine.applyRules(claim);
 
-        return result; // Return quickly to the caller
-    }
+		// 2. Save the core result to DB
+		claimRepository.save(claim);
 
-    private void applyCCCRRules(Claim claim) {
-        // Complex business logic for cross-claim review
-        claim.setReviewType(ReviewType.CCCR);
-        claim.setProcessingStage(ProcessingStage.PREPAY);
-    }
+		// 3. Fire an async event for non-critical side-effects (auditing)
+		eventPublisher.publishEvent(new ClaimReviewedEvent(this, claim, result));
+
+		return result; // Return quickly to the caller
+	}
+
+	private void applyCCCRRules(Claim claim) {
+		// Complex business logic for cross-claim review
+		claim.setReviewType(ReviewType.CCCR);
+		claim.setProcessingStage(ProcessingStage.PREPAY);
+	}
+
 }

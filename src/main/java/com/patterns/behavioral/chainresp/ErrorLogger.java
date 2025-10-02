@@ -9,17 +9,17 @@ package com.patterns.behavioral.chainresp;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ErrorLogger extends AbstractLogger {
 
-    public ErrorLogger(int level) {
-        this.level = level;
-    }
+	public ErrorLogger(int level) {
+		this.level = level;
+	}
 
-    @Override
-    protected void write(String message) {
-        System.out.println("Error Console::Logger: " + message);
-    }
+	@Override
+	protected void write(String message) {
+		System.out.println("Error Console::Logger: " + message);
+	}
+
 }

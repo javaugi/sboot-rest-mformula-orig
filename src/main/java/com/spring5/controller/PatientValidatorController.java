@@ -27,42 +27,42 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/valid/patients")
 public class PatientValidatorController {
 
-    @Autowired
-    private PatientRepository patientRepository;
+	@Autowired
+	private PatientRepository patientRepository;
 
-    @PostMapping
-    public ResponseEntity<?> createPatient(
-            @Valid @RequestBody Patient patient, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(createErrorResponse(result));
-        }
+	@PostMapping
+	public ResponseEntity<?> createPatient(@Valid @RequestBody Patient patient, BindingResult result) {
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(createErrorResponse(result));
+		}
 
-        Patient savedPatient = patientRepository.save(patient);
-        return ResponseEntity.ok(savedPatient);
-    }
+		Patient savedPatient = patientRepository.save(patient);
+		return ResponseEntity.ok(savedPatient);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updatePatient(
-            @PathVariable Long id, @Valid @RequestBody Patient patient, BindingResult result) {
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updatePatient(@PathVariable Long id, @Valid @RequestBody Patient patient,
+			BindingResult result) {
 
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(createErrorResponse(result));
-        }
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(createErrorResponse(result));
+		}
 
-        if (!patientRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+		if (!patientRepository.existsById(id)) {
+			return ResponseEntity.notFound().build();
+		}
 
-        patient.setId(id);
-        Patient updatedPatient = patientRepository.save(patient);
-        return ResponseEntity.ok(updatedPatient);
-    }
+		patient.setId(id);
+		Patient updatedPatient = patientRepository.save(patient);
+		return ResponseEntity.ok(updatedPatient);
+	}
 
-    private Map<String, String> createErrorResponse(BindingResult result) {
-        Map<String, String> errors = new HashMap<>();
-        for (FieldError error : result.getFieldErrors()) {
-            errors.put(error.getField(), error.getDefaultMessage());
-        }
-        return errors;
-    }
+	private Map<String, String> createErrorResponse(BindingResult result) {
+		Map<String, String> errors = new HashMap<>();
+		for (FieldError error : result.getFieldErrors()) {
+			errors.put(error.getField(), error.getDefaultMessage());
+		}
+		return errors;
+	}
+
 }

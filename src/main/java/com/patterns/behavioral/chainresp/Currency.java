@@ -9,18 +9,18 @@ package com.patterns.behavioral.chainresp;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Currency {
 
-    private int amount;
+	private int amount;
 
-    public Currency(int amt) {
-        this.amount = amt;
-    }
+	public Currency(int amt) {
+		this.amount = amt;
+	}
 
-    public int getAmount() {
-        return this.amount;
-    }
+	public int getAmount() {
+		return this.amount;
+	}
+
 }

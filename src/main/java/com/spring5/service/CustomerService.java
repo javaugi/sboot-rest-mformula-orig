@@ -13,14 +13,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 
-    public Optional<Customer> findByEmail(String email) {
-        return this.customerRepository.findByEmail(email);
-    }
+	public Optional<Customer> findByEmail(String email) {
+		return this.customerRepository.findByEmail(email);
+	}
 
-    public Customer registerCustomer(String name, String email) {
-        return customerRepository.save(Customer.builder().name(name).email(email).build());
-    }
+	public Customer registerCustomer(String name, String email) {
+		return customerRepository.save(Customer.builder().name(name).email(email).build());
+	}
+
 }

@@ -6,8 +6,9 @@ package com.spring5.dbisolation.wmart.validrule;
 
 public class LargeTransactionRule implements FraudRule {
 
-    @Override
-    public boolean isSuspicious(Transaction transaction, FraudDetectionConfig config) {
-        return transaction.getAmount() > config.getThreshold("largeTransaction");
-    }
+	@Override
+	public boolean isSuspicious(Transaction transaction, FraudDetectionConfig config) {
+		return transaction.getAmount() > config.getThreshold("largeTransaction");
+	}
+
 }

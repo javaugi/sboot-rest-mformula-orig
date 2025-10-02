@@ -11,8 +11,8 @@ import java.util.List;
  */
 public interface FlightRepositoryCustomAdvancedPaging {
 
-    List<FlightEvent> findLargeDatasetWithPagination(
-            String query, int maxItemCount, String continuationToken);
+	List<FlightEvent> findLargeDatasetWithPagination(String query, int maxItemCount, String continuationToken);
 
-    void processLargeDatasetInParallel(String query, int batchSize, int parallelism);
+	void processLargeDatasetInParallel(String query, int batchSize, int parallelism);
+
 }

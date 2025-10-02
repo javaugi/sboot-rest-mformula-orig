@@ -8,5 +8,6 @@ package com.interview.cls.recd;
 // Sealed class with record subclasses
 public sealed interface Expression permits Constant, Plus, Minus, Multiply {
 
-    double evaluate();
+	double evaluate();
+
 }

@@ -13,34 +13,31 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class KafkaConcurrentConsumerService {
-    // Basic concurrent listener
 
-    @KafkaListener(
-            topics = "${kafka.topic.consumer}",
-            containerFactory = "kafkaListenerContainerFactory")
-    public void consume(ConsumerRecord<String, String> record, Acknowledgment ack) {
-        try {
-            log.info(
-                    "Received message on thread {}: key={}, value={}, partition={}, offset={}",
-                    Thread.currentThread().getName(),
-                    record.key(),
-                    record.value(),
-                    record.partition(),
-                    record.offset());
+	// Basic concurrent listener
 
-            // Process your message here
-            processMessage(record.value());
+	@KafkaListener(topics = "${kafka.topic.consumer}", containerFactory = "kafkaListenerContainerFactory")
+	public void consume(ConsumerRecord<String, String> record, Acknowledgment ack) {
+		try {
+			log.info("Received message on thread {}: key={}, value={}, partition={}, offset={}",
+					Thread.currentThread().getName(), record.key(), record.value(), record.partition(),
+					record.offset());
 
-            // Manually acknowledge the message
-            ack.acknowledge();
-        } catch (Exception e) {
-            log.error("Error processing message: {}", record.value(), e);
-            // Handle error (e.g., send to DLQ)
-        }
-    }
+			// Process your message here
+			processMessage(record.value());
 
-    private void processMessage(String message) {
-        // Your business logic here
-        log.info("Processing message: {}", message);
-    }
+			// Manually acknowledge the message
+			ack.acknowledge();
+		}
+		catch (Exception e) {
+			log.error("Error processing message: {}", record.value(), e);
+			// Handle error (e.g., send to DLQ)
+		}
+	}
+
+	private void processMessage(String message) {
+		// Your business logic here
+		log.info("Processing message: {}", message);
+	}
+
 }

@@ -17,22 +17,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class JsonSchemaValidatorFactory {
 
-    private static final String JSON_SCHEMAS_DIR = "/jsonschemas/";
+	private static final String JSON_SCHEMAS_DIR = "/jsonschemas/";
 
-    private Schema schema;
+	private Schema schema;
 
-    public boolean validateJsonPaylaod(String schema, String payload) {
-        try {
-            InputStream schemaStream = getClass().getResourceAsStream(JSON_SCHEMAS_DIR + schema);
-            JSONObject rawSchemaJSONObject = new JSONObject(new JSONTokener(schemaStream));
-            this.schema = SchemaLoader.load(rawSchemaJSONObject);
+	public boolean validateJsonPaylaod(String schema, String payload) {
+		try {
+			InputStream schemaStream = getClass().getResourceAsStream(JSON_SCHEMAS_DIR + schema);
+			JSONObject rawSchemaJSONObject = new JSONObject(new JSONTokener(schemaStream));
+			this.schema = SchemaLoader.load(rawSchemaJSONObject);
 
-            this.schema.validate(new JSONObject(payload));
-            return true;
-        } catch (JSONException ex) {
-            log.error("Error validateJsonPaylaod schema {} payload {}", schema, payload, ex);
-        }
+			this.schema.validate(new JSONObject(payload));
+			return true;
+		}
+		catch (JSONException ex) {
+			log.error("Error validateJsonPaylaod schema {} payload {}", schema, payload, ex);
+		}
 
-        return false;
-    }
+		return false;
+	}
+
 }

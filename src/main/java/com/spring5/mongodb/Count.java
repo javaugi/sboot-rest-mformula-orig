@@ -19,6 +19,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Count {
 
-    private String word;
-    private long count;
+	private String word;
+
+	private long count;
+
 }

@@ -10,17 +10,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaConsumerService {
 
-    // Listener for default topic
-    @KafkaListener(topics = "my-default-topic", groupId = "my-group")
-    public void consumeDefaultTopic(String message) {
-        System.out.println("Received message from default topic: " + message);
-        // Process the message
-    }
+	// Listener for default topic
+	@KafkaListener(topics = "my-default-topic", groupId = "my-group")
+	public void consumeDefaultTopic(String message) {
+		System.out.println("Received message from default topic: " + message);
+		// Process the message
+	}
 
-    // Listener for outbox topic
-    @KafkaListener(topics = "my-outbox-topic", groupId = "my-group")
-    public void consumeOutboxTopic(String message) {
-        System.out.println("Received message from outbox topic: " + message);
-        // Process the outbox message
-    }
+	// Listener for outbox topic
+	@KafkaListener(topics = "my-outbox-topic", groupId = "my-group")
+	public void consumeOutboxTopic(String message) {
+		System.out.println("Received message from outbox topic: " + message);
+		// Process the outbox message
+	}
+
 }

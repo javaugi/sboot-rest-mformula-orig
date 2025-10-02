@@ -9,29 +9,30 @@ package com.patterns.behavioral.visitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Book implements ItemElement {
 
-    private int price;
-    private String isbnNumber;
+	private int price;
 
-    public Book(int cost, String isbn) {
-        this.price = cost;
-        this.isbnNumber = isbn;
-    }
+	private String isbnNumber;
 
-    public int getPrice() {
-        return price;
-    }
+	public Book(int cost, String isbn) {
+		this.price = cost;
+		this.isbnNumber = isbn;
+	}
 
-    public String getIsbnNumber() {
-        return isbnNumber;
-    }
+	public int getPrice() {
+		return price;
+	}
 
-    @Override
-    public int accept(ShoppingCartVisitor visitor) {
-        return visitor.visit(this);
-    }
+	public String getIsbnNumber() {
+		return isbnNumber;
+	}
+
+	@Override
+	public int accept(ShoppingCartVisitor visitor) {
+		return visitor.visit(this);
+	}
+
 }

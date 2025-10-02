@@ -9,10 +9,11 @@ package com.spring5.validatorex;
  */
 public class PayrollValidationException extends Exception {
 
-    public PayrollValidationException() {
-    }
+	public PayrollValidationException() {
+	}
 
-    public PayrollValidationException(String message) {
-        super(message);
-    }
+	public PayrollValidationException(String message) {
+		super(message);
+	}
+
 }

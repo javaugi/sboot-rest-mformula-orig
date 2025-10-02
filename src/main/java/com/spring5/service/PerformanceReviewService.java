@@ -10,22 +10,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class PerformanceReviewService {
 
-    public double calculateBonus(String score) throws InvalidReviewScoreException {
-        switch (score) {
-            case "Super Exceeds" -> {
-                return 1.50;
-            }
-            case "Exceeds" -> {
-                return 1.20;
-            }
-            case "Meets" -> {
-                return 1.00;
-            }
-            case "Needs Improvement" -> {
-                return 0.50;
-            }
-            default ->
-                throw new InvalidReviewScoreException("Invalid performance score: " + score);
-        }
-    }
+	public double calculateBonus(String score) throws InvalidReviewScoreException {
+		switch (score) {
+			case "Super Exceeds" -> {
+				return 1.50;
+			}
+			case "Exceeds" -> {
+				return 1.20;
+			}
+			case "Meets" -> {
+				return 1.00;
+			}
+			case "Needs Improvement" -> {
+				return 0.50;
+			}
+			default -> throw new InvalidReviewScoreException("Invalid performance score: " + score);
+		}
+	}
+
 }

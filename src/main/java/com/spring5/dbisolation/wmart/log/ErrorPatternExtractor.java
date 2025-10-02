@@ -9,5 +9,6 @@ package com.spring5.dbisolation.wmart.log;
  */
 public interface ErrorPatternExtractor {
 
-    String extractPattern(String logMessage);
+	String extractPattern(String logMessage);
+
 }

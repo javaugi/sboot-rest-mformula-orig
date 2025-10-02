@@ -17,49 +17,51 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 @Node
 public class Neo4jPerson implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-    private String name;
+	private String name;
 
-    private Neo4jPerson() {
-        // Empty constructor required as of Neo4j API 2.0.5
-    }
+	private Neo4jPerson() {
+		// Empty constructor required as of Neo4j API 2.0.5
+	}
 
-    public Neo4jPerson(String name) {
-        this.name = name;
-    }
+	public Neo4jPerson(String name) {
+		this.name = name;
+	}
 
-    /**
-     * Neo4j doesn't REALLY have bi-directional relationships. It just means
-     * when querying to ignore the direction of the relationship.
-     * https://dzone.com/articles/modelling-data-neo4j
-     */
-    @Relationship(type = "TEAMMATE")
-    public Set<Neo4jPerson> teammates;
+	/**
+	 * Neo4j doesn't REALLY have bi-directional relationships. It just means when querying
+	 * to ignore the direction of the relationship.
+	 * https://dzone.com/articles/modelling-data-neo4j
+	 */
+	@Relationship(type = "TEAMMATE")
+	public Set<Neo4jPerson> teammates;
 
-    public void worksWith(Neo4jPerson person) {
-        if (teammates == null) {
-            teammates = new HashSet<>();
-        }
-        teammates.add(person);
-    }
+	public void worksWith(Neo4jPerson person) {
+		if (teammates == null) {
+			teammates = new HashSet<>();
+		}
+		teammates.add(person);
+	}
 
-    @Override
-    public String toString() {
-        return this.name
-                + "'s teammates => "
-                + Optional.ofNullable(this.teammates).orElse(Collections.emptySet()).stream()
-                        .map(Neo4jPerson::getName)
-                        .collect(Collectors.toList());
-    }
+	@Override
+	public String toString() {
+		return this.name + "'s teammates => "
+				+ Optional.ofNullable(this.teammates)
+					.orElse(Collections.emptySet())
+					.stream()
+					.map(Neo4jPerson::getName)
+					.collect(Collectors.toList());
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

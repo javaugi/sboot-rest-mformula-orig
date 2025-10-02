@@ -25,15 +25,17 @@ import lombok.ToString;
 @Entity
 public class FileProcessedRecord {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    String eventId;
-    Instant timestamp;
+	String eventId;
 
-    public FileProcessedRecord(String eventId, Instant timestamp) {
-        this.eventId = eventId;
-        this.timestamp = timestamp;
-    }
+	Instant timestamp;
+
+	public FileProcessedRecord(String eventId, Instant timestamp) {
+		this.eventId = eventId;
+		this.timestamp = timestamp;
+	}
+
 }

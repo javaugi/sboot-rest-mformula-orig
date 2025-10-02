@@ -15,18 +15,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuditService {
 
-    @Autowired
-    private ElasticsearchClient elasticsearchClient;
+	@Autowired
+	private ElasticsearchClient elasticsearchClient;
 
-    public void persistAuditEvent(AuditEvent event) {
-        try {
-            IndexResponse response
-                    = elasticsearchClient.index(
-                            IndexRequest.of(i -> i.index("audit-logs").id(event.getEventId()).document(event)));
-            System.out.println("Indexed with version: " + response.version());
-        } catch (IOException | ElasticsearchException e) {
-            // Log or handle exception securely
-            e.printStackTrace();
-        }
-    }
+	public void persistAuditEvent(AuditEvent event) {
+		try {
+			IndexResponse response = elasticsearchClient
+				.index(IndexRequest.of(i -> i.index("audit-logs").id(event.getEventId()).document(event)));
+			System.out.println("Indexed with version: " + response.version());
+		}
+		catch (IOException | ElasticsearchException e) {
+			// Log or handle exception securely
+			e.printStackTrace();
+		}
+	}
+
 }

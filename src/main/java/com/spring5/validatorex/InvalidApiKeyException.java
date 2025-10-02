@@ -6,7 +6,8 @@ package com.spring5.validatorex;
 
 public class InvalidApiKeyException extends Exception {
 
-    public InvalidApiKeyException(String message) {
-        super(message);
-    }
+	public InvalidApiKeyException(String message) {
+		super(message);
+	}
+
 }

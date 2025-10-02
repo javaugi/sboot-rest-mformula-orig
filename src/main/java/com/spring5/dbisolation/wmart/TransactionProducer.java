@@ -11,13 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public TransactionProducer(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	public TransactionProducer(KafkaTemplate<String, String> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
 
-    public void sendTransaction(String transactionId, String payload) {
-        kafkaTemplate.send("international-transactions-topic", transactionId, payload);
-    }
+	public void sendTransaction(String transactionId, String payload) {
+		kafkaTemplate.send("international-transactions-topic", transactionId, payload);
+	}
+
 }

@@ -20,16 +20,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DirtiesContext
 public class DockerHelloWorldConfigurationTests {
 
-    @LocalServerPort
-    private int port;
+	@LocalServerPort
+	private int port;
 
-    // @Autowired
-    private TestRestTemplate restTemplate = new TestRestTemplate();
+	// @Autowired
+	private TestRestTemplate restTemplate = new TestRestTemplate();
 
-    // @Test
-    public void testGreeting() throws Exception {
-        ResponseEntity<String> entity
-                = restTemplate.getForEntity("http://localhost:" + this.port + "/docker", String.class);
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-    }
+	// @Test
+	public void testGreeting() throws Exception {
+		ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:" + this.port + "/docker",
+				String.class);
+		assertEquals(HttpStatus.OK, entity.getStatusCode());
+	}
+
 }

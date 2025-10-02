@@ -21,39 +21,38 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventBusHealthIndicator implements HealthIndicator {
 
-    public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(MyApplication.class, args);
-        MBassador<Object> eventBus = context.getBean(EventBusConfig.MB_EVENT_BUS, MBassador.class);
-        EventBusHealthIndicator main = new EventBusHealthIndicator(eventBus);
-        log.info("Health {}", main.health());
-    }
+	public static void main(String[] args) {
+		ConfigurableApplicationContext context = SpringApplication.run(MyApplication.class, args);
+		MBassador<Object> eventBus = context.getBean(EventBusConfig.MB_EVENT_BUS, MBassador.class);
+		EventBusHealthIndicator main = new EventBusHealthIndicator(eventBus);
+		log.info("Health {}", main.health());
+	}
 
-    private final MBassador<Object> eventBus;
+	private final MBassador<Object> eventBus;
 
-    public EventBusHealthIndicator(
-            @Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
-        this.eventBus = eventBus;
-    }
+	public EventBusHealthIndicator(@Qualifier(EventBusConfig.MB_EVENT_BUS) MBassador<Object> eventBus) {
+		this.eventBus = eventBus;
+	}
 
-    @Override
-    public Health health() {
-        try {
-            // Simple ping test
-            eventBus.publish(new PingEvent());
-            return Health.up().build();
-        } catch (Exception e) {
-            return Health.down()
-                    .withException(e)
-                    .withDetail("message", "Event bus not functioning")
-                    .build();
-        }
-    }
+	@Override
+	public Health health() {
+		try {
+			// Simple ping test
+			eventBus.publish(new PingEvent());
+			return Health.up().build();
+		}
+		catch (Exception e) {
+			return Health.down().withException(e).withDetail("message", "Event bus not functioning").build();
+		}
+	}
 
-    public static class PingEvent {
-    }
+	public static class PingEvent {
 
-    @EventListener
-    public void onPing(PingEvent event) {
-        log.info("PingEvent received at " + LocalDateTime.now());
-    }
+	}
+
+	@EventListener
+	public void onPing(PingEvent event) {
+		log.info("PingEvent received at " + LocalDateTime.now());
+	}
+
 }

@@ -16,18 +16,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateOrderRequest {
 
-    Long id;
+	Long id;
 
-    String orderId;
+	String orderId;
 
-    String storeId;
-    BigDecimal amount;
-    OrderStatus orderStatus;
+	String storeId;
 
-    public CreateOrderRequest(String orderId, String storeId, BigDecimal amount) {
-    }
+	BigDecimal amount;
 
-    public CreateOrderRequest(
-            String orderId, String storeId, BigDecimal amount, OrderStatus orderStatus) {
-    }
+	OrderStatus orderStatus;
+
+	public CreateOrderRequest(String orderId, String storeId, BigDecimal amount) {
+	}
+
+	public CreateOrderRequest(String orderId, String storeId, BigDecimal amount, OrderStatus orderStatus) {
+	}
+
 }

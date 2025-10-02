@@ -11,14 +11,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class VehConfigInventoryService {
 
-    @Cacheable(value = "inventory", key = "#dealerId + '-' + #vehicleId")
-    public InventoryItem getInventoryItem(String dealerId, String vehicleId) {
-        // DB call
-        return null;
-    }
+	@Cacheable(value = "inventory", key = "#dealerId + '-' + #vehicleId")
+	public InventoryItem getInventoryItem(String dealerId, String vehicleId) {
+		// DB call
+		return null;
+	}
 
-    @CacheEvict(value = "inventory", key = "#item.dealerId + '-' + #item.vehicleId")
-    public void updateInventory(InventoryItem item) {
-        // Update logic
-    }
+	@CacheEvict(value = "inventory", key = "#item.dealerId + '-' + #item.vehicleId")
+	public void updateInventory(InventoryItem item) {
+		// Update logic
+	}
+
 }

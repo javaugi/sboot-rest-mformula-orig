@@ -17,34 +17,33 @@ import reactor.core.publisher.Flux;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReactiveDbCleanerByClient {
 
-    @Autowired
-    private DatabaseClient databaseClient;
+	@Autowired
+	private DatabaseClient databaseClient;
 
-    private List<String> tableNames;
+	private List<String> tableNames;
 
-    @BeforeAll
-    public void init() {
-        // Fetch all non-system tables in public schema
-        tableNames = databaseClient.sql("""
-            SELECT tablename
-            FROM pg_tables
-            WHERE schemaname = 'public'
-        """)
-                .map(row -> row.get("tablename", String.class))
-                .all()
-                .collectList()
-                .block();
-    }
+	@BeforeAll
+	public void init() {
+		// Fetch all non-system tables in public schema
+		tableNames = databaseClient.sql("""
+				    SELECT tablename
+				    FROM pg_tables
+				    WHERE schemaname = 'public'
+				""").map(row -> row.get("tablename", String.class)).all().collectList().block();
+	}
 
-    @AfterEach
-    public void cleanDatabase() {
-        if (tableNames == null || tableNames.isEmpty()) {
-            return;
-        }
+	@AfterEach
+	public void cleanDatabase() {
+		if (tableNames == null || tableNames.isEmpty()) {
+			return;
+		}
 
-        Flux.fromIterable(tableNames)
-                .flatMap(table -> databaseClient.sql("TRUNCATE TABLE " + table + " RESTART IDENTITY CASCADE").fetch().rowsUpdated())
-                .then()
-                .block();
-    }
+		Flux.fromIterable(tableNames)
+			.flatMap(table -> databaseClient.sql("TRUNCATE TABLE " + table + " RESTART IDENTITY CASCADE")
+				.fetch()
+				.rowsUpdated())
+			.then()
+			.block();
+	}
+
 }

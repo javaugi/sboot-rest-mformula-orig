@@ -15,12 +15,11 @@ import reactor.core.publisher.Mono;
 @Component
 public class ReactiveWebSocketHandler implements WebSocketHandler {
 
-    @Override
-    public Mono<Void> handle(WebSocketSession session) {
-        Flux<String> outputMessages = Flux.just("Hello", "World", "!");
-        Flux<WebSocketMessage> messageFlux = outputMessages.map(session::textMessage);
-        return session
-                .send(messageFlux)
-                .then(session.receive().map(WebSocketMessage::getPayloadAsText).log().then());
-    }
+	@Override
+	public Mono<Void> handle(WebSocketSession session) {
+		Flux<String> outputMessages = Flux.just("Hello", "World", "!");
+		Flux<WebSocketMessage> messageFlux = outputMessages.map(session::textMessage);
+		return session.send(messageFlux).then(session.receive().map(WebSocketMessage::getPayloadAsText).log().then());
+	}
+
 }

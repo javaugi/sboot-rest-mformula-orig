@@ -9,19 +9,19 @@ package com.patterns.behavioral.interpreter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class IntToBinaryExpression implements Expression1 {
 
-    private int i;
+	private int i;
 
-    public IntToBinaryExpression(int c) {
-        this.i = c;
-    }
+	public IntToBinaryExpression(int c) {
+		this.i = c;
+	}
 
-    @Override
-    public String interpret(InterpreterContext ic) {
-        return ic.getBinaryFormat(this.i);
-    }
+	@Override
+	public String interpret(InterpreterContext ic) {
+		return ic.getBinaryFormat(this.i);
+	}
+
 }

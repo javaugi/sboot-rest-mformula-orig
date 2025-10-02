@@ -11,25 +11,25 @@ import java.util.List;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Receipt {
 
-    /**
-     * @return Currency formatted total ($X,XXX.XX) of all items
-     */
-    List<Item> getItems();
+	/**
+	 * @return Currency formatted total ($X,XXX.XX) of all items
+	 */
+	List<Item> getItems();
 
-    double getTotal();
+	double getTotal();
 
-    double getTotalDiscount();
+	double getTotalDiscount();
 
-    void setItems(List<Item> items);
+	void setItems(List<Item> items);
 
-    void addItem(Item item);
+	void addItem(Item item);
 
-    void removeItem(Item item);
+	void removeItem(Item item);
 
-    void applyCoupons(List<Item> items);
+	void applyCoupons(List<Item> items);
+
 }

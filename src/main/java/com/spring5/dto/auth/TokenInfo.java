@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TokenInfo {
 
-    String role;
-    String userType;
+	String role;
+
+	String userType;
+
 }

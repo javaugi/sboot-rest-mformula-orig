@@ -22,45 +22,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SparkApiController {
 
-    @Autowired
-    WordCount wordCount;
+	@Autowired
+	WordCount wordCount;
 
-    @Autowired
-    MongoDB mongo;
+	@Autowired
+	MongoDB mongo;
 
-    @Autowired
-    Mysql mysql;
+	@Autowired
+	Mysql mysql;
 
-    @Autowired
-    private MySparkService sparkService;
+	@Autowired
+	private MySparkService sparkService;
 
-    @PostMapping("/process")
-    public String processData(@RequestBody DataRequest request) {
-        sparkService.processData(request.getInputPath(), request.getOutputPath());
-        return "Data processing completed.";
-    }
+	@PostMapping("/process")
+	public String processData(@RequestBody DataRequest request) {
+		sparkService.processData(request.getInputPath(), request.getOutputPath());
+		return "Data processing completed.";
+	}
 
-    @RequestMapping("wordcount")
-    public ResponseEntity<List<Count>> words() {
-        return new ResponseEntity<>(wordCount.count(), HttpStatus.OK);
-    }
+	@RequestMapping("wordcount")
+	public ResponseEntity<List<Count>> words() {
+		return new ResponseEntity<>(wordCount.count(), HttpStatus.OK);
+	}
 
-    @RequestMapping(value = "mongodb", method = RequestMethod.POST)
-    public ResponseEntity<Long> MongoDB(
-            @RequestParam(value = "Database") String Database,
-            @RequestParam(value = "Collection") String Collection) {
+	@RequestMapping(value = "mongodb", method = RequestMethod.POST)
+	public ResponseEntity<Long> MongoDB(@RequestParam(value = "Database") String Database,
+			@RequestParam(value = "Collection") String Collection) {
 
-        long responsce = mongo.count(Database, Collection);
-        return new ResponseEntity<Long>(responsce, HttpStatus.OK);
-    }
+		long responsce = mongo.count(Database, Collection);
+		return new ResponseEntity<Long>(responsce, HttpStatus.OK);
+	}
 
-    @RequestMapping(value = "mysql", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> MYSQl(
-            @RequestParam(value = "JDBC_URI") String JDBC_URI,
-            @RequestParam(value = "JDBC_username") String JDBC_username,
-            @RequestParam(value = "JDBC_password") String JDBC_password) {
-        List<String> responsce = mysql.getTableNames(JDBC_URI, JDBC_username, JDBC_password);
+	@RequestMapping(value = "mysql", method = RequestMethod.POST)
+	public ResponseEntity<List<String>> MYSQl(@RequestParam(value = "JDBC_URI") String JDBC_URI,
+			@RequestParam(value = "JDBC_username") String JDBC_username,
+			@RequestParam(value = "JDBC_password") String JDBC_password) {
+		List<String> responsce = mysql.getTableNames(JDBC_URI, JDBC_username, JDBC_password);
 
-        return new ResponseEntity<List<String>>(responsce, HttpStatus.OK);
-    }
+		return new ResponseEntity<List<String>>(responsce, HttpStatus.OK);
+	}
+
 }

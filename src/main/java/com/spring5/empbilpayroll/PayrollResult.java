@@ -24,12 +24,16 @@ import lombok.ToString;
 @Entity
 public class PayrollResult {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private double baseSalary;
-    private double overtimePay;
-    private double tax;
-    private double netSalary;
+	private double baseSalary;
+
+	private double overtimePay;
+
+	private double tax;
+
+	private double netSalary;
+
 }

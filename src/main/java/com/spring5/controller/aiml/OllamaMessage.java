@@ -13,6 +13,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class OllamaMessage {
 
-    private String role;
-    private String content;
+	private String role;
+
+	private String content;
+
 }

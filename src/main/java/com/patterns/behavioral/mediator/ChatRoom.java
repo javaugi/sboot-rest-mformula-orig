@@ -11,12 +11,12 @@ import java.util.Date;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ChatRoom {
 
-    public static void showMessage(ChatRoomUser user, String message) {
-        System.out.println(new Date().toString() + " [" + user.getName() + "] : " + message);
-    }
+	public static void showMessage(ChatRoomUser user, String message) {
+		System.out.println(new Date().toString() + " [" + user.getName() + "] : " + message);
+	}
+
 }

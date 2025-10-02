@@ -12,8 +12,12 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class KafkaOrderedEvent {
 
-    private String entityId;
-    private long sequenceNumber;
-    private String eventType;
-    private Map<String, Object> payload;
+	private String entityId;
+
+	private long sequenceNumber;
+
+	private String eventType;
+
+	private Map<String, Object> payload;
+
 }

@@ -12,92 +12,95 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class EmployeeAbstract implements Employee {
 
-    private String name;
-    private int hoursWorked;
-    private double hourlyRtae;
+	private String name;
 
-    private double salary;
-    private double insurance;
+	private int hoursWorked;
 
-    List<Employee> employeeList = new ArrayList();
+	private double hourlyRtae;
 
-    @Override
-    public void add(Employee employee) {
-        employeeList.add(employee);
-    }
+	private double salary;
 
-    @Override
-    public void remove(Employee employee) {
-        employeeList.remove(employee);
-    }
+	private double insurance;
 
-    @Override
-    public Employee getChild(int i) {
-        return employeeList.get(i);
-    }
+	List<Employee> employeeList = new ArrayList();
 
-    @Override
-    public String getName() {
-        return name;
-    }
+	@Override
+	public void add(Employee employee) {
+		employeeList.add(employee);
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public void remove(Employee employee) {
+		employeeList.remove(employee);
+	}
 
-    public int getHoursWorked() {
-        return hoursWorked;
-    }
+	@Override
+	public Employee getChild(int i) {
+		return employeeList.get(i);
+	}
 
-    public void setHoursWorked(int hoursWorked) {
-        this.hoursWorked = hoursWorked;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    public double getHourlyRtae() {
-        return hourlyRtae;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setHourlyRtae(double hourlyRtae) {
-        this.hourlyRtae = hourlyRtae;
-    }
+	public int getHoursWorked() {
+		return hoursWorked;
+	}
 
-    @Override
-    public double getSalary() {
-        return salary;
-    }
+	public void setHoursWorked(int hoursWorked) {
+		this.hoursWorked = hoursWorked;
+	}
 
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
+	public double getHourlyRtae() {
+		return hourlyRtae;
+	}
 
-    public double getInsurance() {
-        return insurance;
-    }
+	public void setHourlyRtae(double hourlyRtae) {
+		this.hourlyRtae = hourlyRtae;
+	}
 
-    public void setInsurance(double insurance) {
-        this.insurance = insurance;
-    }
+	@Override
+	public double getSalary() {
+		return salary;
+	}
 
-    public List<Employee> getEmployeeList() {
-        return employeeList;
-    }
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
 
-    public void setEmployeeList(List<Employee> employeeList) {
-        this.employeeList = employeeList;
-    }
+	public double getInsurance() {
+		return insurance;
+	}
 
-    @Override
-    public void printSalary() {
-        for (Employee emp : employeeList) {
-            emp.printSalary();
-        }
-    }
+	public void setInsurance(double insurance) {
+		this.insurance = insurance;
+	}
 
-    @Override
-    public abstract void accept(SalaryCalculator visitor);
+	public List<Employee> getEmployeeList() {
+		return employeeList;
+	}
+
+	public void setEmployeeList(List<Employee> employeeList) {
+		this.employeeList = employeeList;
+	}
+
+	@Override
+	public void printSalary() {
+		for (Employee emp : employeeList) {
+			emp.printSalary();
+		}
+	}
+
+	@Override
+	public abstract void accept(SalaryCalculator visitor);
+
 }

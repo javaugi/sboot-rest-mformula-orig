@@ -24,11 +24,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "ANSWER")
 public class Answer implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    Long assessmentId;
-    Long questionId;
-    String answerText;
+	Long assessmentId;
+
+	Long questionId;
+
+	String answerText;
+
 }

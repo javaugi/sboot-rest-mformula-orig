@@ -11,21 +11,20 @@ import java.io.InputStream;
 
 /**
  * @author bill
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface FileService {
 
-    public boolean storeFile(
-            String guid, String fileName, String contentType, InputStream inputStream);
+	public boolean storeFile(String guid, String fileName, String contentType, InputStream inputStream);
 
-    public boolean deleteFile(String guid);
+	public boolean deleteFile(String guid);
 
-    public InputStream getFile(String guid);
+	public InputStream getFile(String guid);
 
-    public String getContentType(String guid);
+	public String getContentType(String guid);
 
-    public String getFilename(String guid);
+	public String getFilename(String guid);
 
-    public boolean fileExists(String guid);
+	public boolean fileExists(String guid);
+
 }

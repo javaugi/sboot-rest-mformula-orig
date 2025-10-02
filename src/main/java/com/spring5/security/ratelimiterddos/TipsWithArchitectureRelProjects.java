@@ -27,4 +27,5 @@ Discuss Architecture:
     Good luck with your interview! Remember to relate your past experiences to the OTA context wherever possible.
  */
 public class TipsWithArchitectureRelProjects {
+
 }

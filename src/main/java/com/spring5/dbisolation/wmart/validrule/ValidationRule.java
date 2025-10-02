@@ -10,10 +10,12 @@ import com.spring5.kafkamicroservice.Payment;
  * @author javau
  */
 public interface ValidationRule {
-    // Returns true if the payment passes the rule, false otherwise
 
-    boolean validate(Payment payment);
+	// Returns true if the payment passes the rule, false otherwise
 
-    // Returns the name or a unique ID of the rule
-    String getRuleName();
+	boolean validate(Payment payment);
+
+	// Returns the name or a unique ID of the rule
+	String getRuleName();
+
 }

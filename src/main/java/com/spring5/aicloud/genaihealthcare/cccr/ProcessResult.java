@@ -11,6 +11,8 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class ProcessResult {
 
-    String failed;
-    Claim claim;
+	String failed;
+
+	Claim claim;
+
 }

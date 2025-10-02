@@ -6,7 +6,8 @@ package com.interview.cls.sealed.shape;
 
 public final class TransparentRectangle extends Rectangle {
 
-    public TransparentRectangle(double length, double width) {
-        super(length, width);
-    }
+	public TransparentRectangle(double length, double width) {
+		super(length, width);
+	}
+
 }

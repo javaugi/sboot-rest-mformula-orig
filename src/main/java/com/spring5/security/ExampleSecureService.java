@@ -16,29 +16,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExampleSecureService {
 
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminOnlyMethod() {
-        return "Only accessible by users with ADMIN role";
-    }
+	@PreAuthorize("hasRole('ADMIN')")
+	public String adminOnlyMethod() {
+		return "Only accessible by users with ADMIN role";
+	}
 
-    @Secured("ROLE_USER")
-    public String userSecuredMethod() {
-        return "Only accessible by users with USER role (via @Secured)";
-    }
+	@Secured("ROLE_USER")
+	public String userSecuredMethod() {
+		return "Only accessible by users with USER role (via @Secured)";
+	}
 
-    @RolesAllowed("ROLE_MANAGER")
-    public String managerOnlyMethod() {
-        return "Only accessible by users with MANAGER role (via @RolesAllowed)";
-    }
+	@RolesAllowed("ROLE_MANAGER")
+	public String managerOnlyMethod() {
+		return "Only accessible by users with MANAGER role (via @RolesAllowed)";
+	}
 
-    @PreAuthorize("#username == authentication.name")
-    public String accessIfOwner(String username) {
-        return "Only the user themself can access this method";
-    }
+	@PreAuthorize("#username == authentication.name")
+	public String accessIfOwner(String username) {
+		return "Only the user themself can access this method";
+	}
 
-    @PreAuthorize("hasRole('MODERATOR')")
-    @PostAuthorize("returnObject != null")
-    public String modCheckAndReturn() {
-        return "This will also be checked after execution";
-    }
+	@PreAuthorize("hasRole('MODERATOR')")
+	@PostAuthorize("returnObject != null")
+	public String modCheckAndReturn() {
+		return "This will also be checked after execution";
+	}
+
 }

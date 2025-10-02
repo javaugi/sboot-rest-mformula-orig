@@ -9,49 +9,53 @@ package com.patterns.behavioral.memento;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class FileWriterUtilMementoOriginator {
 
-    private String fileName;
-    private StringBuilder content;
+	private String fileName;
 
-    public FileWriterUtilMementoOriginator(String file) {
-        this.fileName = file;
-        this.content = new StringBuilder();
-    }
+	private StringBuilder content;
 
-    @Override
-    public String toString() {
-        return this.content.toString();
-    }
+	public FileWriterUtilMementoOriginator(String file) {
+		this.fileName = file;
+		this.content = new StringBuilder();
+	}
 
-    public void write(String str) {
-        content.append(str);
-    }
+	@Override
+	public String toString() {
+		return this.content.toString();
+	}
 
-    public Memento save() {
-        return new Memento(this.fileName, this.content);
-    }
+	public void write(String str) {
+		content.append(str);
+	}
 
-    public void undoToLastSave(Object obj) {
-        Memento memento = (Memento) obj;
-        this.fileName = memento.fileName;
-        this.content = memento.content;
-    }
+	public Memento save() {
+		return new Memento(this.fileName, this.content);
+	}
 
-    // Notice the Memento inner class and implementation of save and undo methods.
-    private class Memento {
+	public void undoToLastSave(Object obj) {
+		Memento memento = (Memento) obj;
+		this.fileName = memento.fileName;
+		this.content = memento.content;
+	}
 
-        private String fileName;
-        private StringBuilder content;
+	// Notice the Memento inner class and implementation of save and undo methods.
+	private class Memento {
 
-        public Memento(String file, StringBuilder content) {
-            this.fileName = file;
-            // notice the deep copy so that Memento and FileWriterUtil content variables don't refer to
-            // same object
-            this.content = new StringBuilder(content);
-        }
-    }
+		private String fileName;
+
+		private StringBuilder content;
+
+		public Memento(String file, StringBuilder content) {
+			this.fileName = file;
+			// notice the deep copy so that Memento and FileWriterUtil content variables
+			// don't refer to
+			// same object
+			this.content = new StringBuilder(content);
+		}
+
+	}
+
 }

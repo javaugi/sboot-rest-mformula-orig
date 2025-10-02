@@ -17,36 +17,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlightServiceUsingProjection {
 
-    private final FlightEventRepository flightRepository;
+	private final FlightEventRepository flightRepository;
 
-    // Example 1: Get flight list for display (only needed fields)
-    public List<FlightDisplay> getDepartureBoard(String airportCode) {
-        List<FlightProjection> projections
-                = flightRepository.findByDepartureAirportProjection(airportCode);
+	// Example 1: Get flight list for display (only needed fields)
+	public List<FlightDisplay> getDepartureBoard(String airportCode) {
+		List<FlightProjection> projections = flightRepository.findByDepartureAirportProjection(airportCode);
 
-        return projections.stream()
-                .map(
-                        proj
-                        -> new FlightDisplay(
-                                proj.getFlightNumber(),
-                                proj.getAirlineCode(),
-                                proj.getDepartureTime(),
-                                proj.getArrivalAirport()))
-                .collect(Collectors.toList());
-    }
+		return projections.stream()
+			.map(proj -> new FlightDisplay(proj.getFlightNumber(), proj.getAirlineCode(), proj.getDepartureTime(),
+					proj.getArrivalAirport()))
+			.collect(Collectors.toList());
+	}
 
-    // Example 2: Get airline statistics
-    public Map<String, Integer> getAirlineStatistics(String departureAirport) {
-        List<AirlineFlightCount> counts = flightRepository.countFlightsByAirline(departureAirport);
+	// Example 2: Get airline statistics
+	public Map<String, Integer> getAirlineStatistics(String departureAirport) {
+		List<AirlineFlightCount> counts = flightRepository.countFlightsByAirline(departureAirport);
 
-        return counts.stream()
-                .collect(
-                        Collectors.toMap(
-                                AirlineFlightCount::getAirlineCode, AirlineFlightCount::getFlightCount));
-    }
+		return counts.stream()
+			.collect(Collectors.toMap(AirlineFlightCount::getAirlineCode, AirlineFlightCount::getFlightCount));
+	}
 
-    // Example 3: Using Spring Data's built-in projection
-    public List<FlightEssentialInfo> getEssentialFlightInfo(String airlineCode) {
-        return flightRepository.findByAirlineCode(airlineCode);
-    }
+	// Example 3: Using Spring Data's built-in projection
+	public List<FlightEssentialInfo> getEssentialFlightInfo(String airlineCode) {
+		return flightRepository.findByAirlineCode(airlineCode);
+	}
+
 }

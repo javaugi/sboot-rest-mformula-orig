@@ -9,19 +9,20 @@ package com.patterns.behavioral.command;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Stock {
 
-    private final String name = "ABC";
-    private final int quantity = 10;
+	private final String name = "ABC";
 
-    public void buy() {
-        System.out.println("Stock [ Name: " + name + " + Quantity: " + quantity + " ] bought");
-    }
+	private final int quantity = 10;
 
-    public void sell() {
-        System.out.println("Stock [ Name: " + name + " + Quantity: " + quantity + " ] sold");
-    }
+	public void buy() {
+		System.out.println("Stock [ Name: " + name + " + Quantity: " + quantity + " ] bought");
+	}
+
+	public void sell() {
+		System.out.println("Stock [ Name: " + name + " + Quantity: " + quantity + " ] sold");
+	}
+
 }

@@ -16,30 +16,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class TransactionService {
 
-    private final TransactionRepository transactionRepository;
-    private final TransactionMapper transactionMapper;
-    private final UserService userService;
+	private final TransactionRepository transactionRepository;
 
-    public TransactionService(
-            TransactionRepository transactionRepository,
-            TransactionMapper transactionMapper,
-            UserService userService) {
-        this.transactionRepository = transactionRepository;
-        this.transactionMapper = transactionMapper;
-        this.userService = userService;
-    }
+	private final TransactionMapper transactionMapper;
 
-    public Page<TransactionDto> getTransactions(
-            TransactionQueryCriteria criteria, Pageable pageable) {
-        log.info(
-                "Fetching transactions for user: {} with criteria: {}", criteria.getUserId(), criteria);
+	private final UserService userService;
 
-        // Validate user exists
-        userService.validateUserExists(Long.valueOf(criteria.getUserId()));
+	public TransactionService(TransactionRepository transactionRepository, TransactionMapper transactionMapper,
+			UserService userService) {
+		this.transactionRepository = transactionRepository;
+		this.transactionMapper = transactionMapper;
+		this.userService = userService;
+	}
 
-        // Convert to domain criteria and fetch
-        Page<Transaction> transactions = transactionRepository.findByCriteria(criteria, pageable);
+	public Page<TransactionDto> getTransactions(TransactionQueryCriteria criteria, Pageable pageable) {
+		log.info("Fetching transactions for user: {} with criteria: {}", criteria.getUserId(), criteria);
 
-        return transactions.map(transactionMapper::toDto);
-    }
+		// Validate user exists
+		userService.validateUserExists(Long.valueOf(criteria.getUserId()));
+
+		// Convert to domain criteria and fetch
+		Page<Transaction> transactions = transactionRepository.findByCriteria(criteria, pageable);
+
+		return transactions.map(transactionMapper::toDto);
+	}
+
 }

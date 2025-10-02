@@ -16,35 +16,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class CriticalHealthcareOperationService {
 
-    private static final String LOCK_KEY_PREFIX = "healthcare:lock:";
-    private static final long LOCK_EXPIRE_TIME_MS = 30000;
+	private static final String LOCK_KEY_PREFIX = "healthcare:lock:";
 
-    @Autowired
-    private @Qualifier(RedisConfig.REDIS_TPL_STR)
-    RedisTemplate<String, String> redisTemplate;
+	private static final long LOCK_EXPIRE_TIME_MS = 30000;
 
-    public boolean performCriticalOperation(String operationId, String patientId) {
-        String lockKey = LOCK_KEY_PREFIX + operationId + ":" + patientId;
-        String lockValue = UUID.randomUUID().toString();
+	@Autowired
+	private @Qualifier(RedisConfig.REDIS_TPL_STR) RedisTemplate<String, String> redisTemplate;
 
-        try {
-            // Attempt to acquire lock
-            Boolean locked
-                    = redisTemplate
-                            .opsForValue()
-                            .setIfAbsent(lockKey, lockValue, Duration.ofMillis(LOCK_EXPIRE_TIME_MS));
+	public boolean performCriticalOperation(String operationId, String patientId) {
+		String lockKey = LOCK_KEY_PREFIX + operationId + ":" + patientId;
+		String lockValue = UUID.randomUUID().toString();
 
-            if (Boolean.TRUE.equals(locked)) {
-                // Perform your critical operation
-                return true;
-            }
-            return false;
-        } finally {
-            // Release lock only if it's ours
-            String currentValue = redisTemplate.opsForValue().get(lockKey);
-            if (lockValue.equals(currentValue)) {
-                redisTemplate.delete(lockKey);
-            }
-        }
-    }
+		try {
+			// Attempt to acquire lock
+			Boolean locked = redisTemplate.opsForValue()
+				.setIfAbsent(lockKey, lockValue, Duration.ofMillis(LOCK_EXPIRE_TIME_MS));
+
+			if (Boolean.TRUE.equals(locked)) {
+				// Perform your critical operation
+				return true;
+			}
+			return false;
+		}
+		finally {
+			// Release lock only if it's ours
+			String currentValue = redisTemplate.opsForValue().get(lockKey);
+			if (lockValue.equals(currentValue)) {
+				redisTemplate.delete(lockKey);
+			}
+		}
+	}
+
 }

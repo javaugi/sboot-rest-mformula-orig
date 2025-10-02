@@ -9,7 +9,10 @@ package com.interview.common.utils;
  */
 public class RegexConstant {
 
-    public static final String REGEX_CSV = "\\s*,\\s*";
-    public static final String REGEX_CSV_2 = "[,\\s]+";
-    public static final String REGEX_CSV_FULL = "\\\\t*\\s*,(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
+	public static final String REGEX_CSV = "\\s*,\\s*";
+
+	public static final String REGEX_CSV_2 = "[,\\s]+";
+
+	public static final String REGEX_CSV_FULL = "\\\\t*\\s*,(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
+
 }

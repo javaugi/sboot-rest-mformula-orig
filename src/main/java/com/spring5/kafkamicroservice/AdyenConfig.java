@@ -15,18 +15,23 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class AdyenConfig {
 
-    private String apiKey;
-    private String merchantAccount;
-    private String environment;
-    private String endpoint;
+	private String apiKey;
 
-    @Bean
-    public AdyenClient adyenClient() {
-        this.environment
-                = "test".equals(this.environment) ? Environment.TEST.toString() : Environment.LIVE.toString();
-        AdyenClient client = new AdyenClient(apiKey, Environment.valueOf(environment.toUpperCase()));
-        // Client client = new Client(apiKey, Environment.valueOf(environment.toUpperCase()));
-        // client.setEnvironment(environment.equals("test") ?  Environment.TEST : Environment.LIVE);
-        return client;
-    }
+	private String merchantAccount;
+
+	private String environment;
+
+	private String endpoint;
+
+	@Bean
+	public AdyenClient adyenClient() {
+		this.environment = "test".equals(this.environment) ? Environment.TEST.toString() : Environment.LIVE.toString();
+		AdyenClient client = new AdyenClient(apiKey, Environment.valueOf(environment.toUpperCase()));
+		// Client client = new Client(apiKey,
+		// Environment.valueOf(environment.toUpperCase()));
+		// client.setEnvironment(environment.equals("test") ? Environment.TEST :
+		// Environment.LIVE);
+		return client;
+	}
+
 }

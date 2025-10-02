@@ -16,17 +16,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final AuditOrderRepository orderRepository;
-    private final TransactionalEventPublisher eventPublisher;
+	private final AuditOrderRepository orderRepository;
 
-    @Transactional
-    public void createOrder(AuditOrder order) {
-        orderRepository.save(order);
-        // Event will only publish if transaction succeeds
-        eventPublisher.publishAfterCommit(new OrderCreatedEvent("" + order.getId()));
-    }
+	private final TransactionalEventPublisher eventPublisher;
 
-    public AuditOrder processOrder(OrderRequest request) {
-        return AuditOrder.builder().build();
-    }
+	@Transactional
+	public void createOrder(AuditOrder order) {
+		orderRepository.save(order);
+		// Event will only publish if transaction succeeds
+		eventPublisher.publishAfterCommit(new OrderCreatedEvent("" + order.getId()));
+	}
+
+	public AuditOrder processOrder(OrderRequest request) {
+		return AuditOrder.builder().build();
+	}
+
 }

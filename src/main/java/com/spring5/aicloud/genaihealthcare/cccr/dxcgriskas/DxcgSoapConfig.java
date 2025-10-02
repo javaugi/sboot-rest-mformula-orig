@@ -14,21 +14,19 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 @Configuration
 public class DxcgSoapConfig {
 
-    @Bean
-    public Jaxb2Marshaller marshaller() {
-        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("com.verisk.dxcg.ws");
-        return marshaller;
-    }
+	@Bean
+	public Jaxb2Marshaller marshaller() {
+		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+		marshaller.setContextPath("com.verisk.dxcg.ws");
+		return marshaller;
+	}
 
-    /*
-  @Bean
-  public DxcgSoapClient dxcgSoapClient(Jaxb2Marshaller marshaller) {
-      DxcgSoapClient client = new DxcgSoapClient();
-      client.setDefaultUri("https://ws.verisk.com/DxcgService");
-      client.setMarshaller(marshaller);
-      client.setUnmarshaller(marshaller);
-      return client;
-  }
-  // */
+	/*
+	 * @Bean public DxcgSoapClient dxcgSoapClient(Jaxb2Marshaller marshaller) {
+	 * DxcgSoapClient client = new DxcgSoapClient();
+	 * client.setDefaultUri("https://ws.verisk.com/DxcgService");
+	 * client.setMarshaller(marshaller); client.setUnmarshaller(marshaller); return
+	 * client; } //
+	 */
+
 }

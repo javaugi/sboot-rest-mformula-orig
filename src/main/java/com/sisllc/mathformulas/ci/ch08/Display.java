@@ -2,47 +2,50 @@ package com.sisllc.mathformulas.ci.ch08;
 
 public class Display {
 
-    private Book activeBook;
-    private Q83User activeUser;
-    private int pageNumber = 0;
+	private Book activeBook;
 
-    public void displayUser(Q83User user) {
-        activeUser = user;
-        refreshUsername();
-    }
+	private Q83User activeUser;
 
-    public void displayBook(Book book) {
-        pageNumber = 0;
-        activeBook = book;
+	private int pageNumber = 0;
 
-        refreshTitle();
-        refreshDetails();
-        refreshPage();
-    }
+	public void displayUser(Q83User user) {
+		activeUser = user;
+		refreshUsername();
+	}
 
-    public void refreshUsername() {
-        /* updates username display */
-    }
+	public void displayBook(Book book) {
+		pageNumber = 0;
+		activeBook = book;
 
-    public void refreshTitle() {
-        /* updates title display */
-    }
+		refreshTitle();
+		refreshDetails();
+		refreshPage();
+	}
 
-    public void refreshDetails() {
-        /* updates details display */
-    }
+	public void refreshUsername() {
+		/* updates username display */
+	}
 
-    public void refreshPage() {
-        /* updated page display */
-    }
+	public void refreshTitle() {
+		/* updates title display */
+	}
 
-    public void turnPageForward() {
-        pageNumber++;
-        refreshPage();
-    }
+	public void refreshDetails() {
+		/* updates details display */
+	}
 
-    public void turnPageBackward() {
-        pageNumber--;
-        refreshPage();
-    }
+	public void refreshPage() {
+		/* updated page display */
+	}
+
+	public void turnPageForward() {
+		pageNumber++;
+		refreshPage();
+	}
+
+	public void turnPageBackward() {
+		pageNumber--;
+		refreshPage();
+	}
+
 }

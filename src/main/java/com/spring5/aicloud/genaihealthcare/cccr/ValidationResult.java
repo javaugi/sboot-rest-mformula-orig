@@ -13,19 +13,22 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class ValidationResult {
 
-    double estimatedSavings;
-    boolean valid;
+	double estimatedSavings;
 
-    @Builder.Default
-    List<ValidationIssue> issues = new ArrayList<>();
-    @Builder.Default
-    List<ReviewOpportunity> opprs = new ArrayList<>();
+	boolean valid;
 
-    public void addIssue(ValidationIssue issue) {
-        this.issues.add(issue);
-    }
+	@Builder.Default
+	List<ValidationIssue> issues = new ArrayList<>();
 
-    public void addOpportunity(ReviewOpportunity oppr) {
-        opprs.add(oppr);
-    }
+	@Builder.Default
+	List<ReviewOpportunity> opprs = new ArrayList<>();
+
+	public void addIssue(ValidationIssue issue) {
+		this.issues.add(issue);
+	}
+
+	public void addOpportunity(ReviewOpportunity oppr) {
+		opprs.add(oppr);
+	}
+
 }

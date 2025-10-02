@@ -23,4 +23,5 @@ readinessProbe:
   periodSeconds: 5
  */
 public class SelfAutoHealingViaKubernetesProbes {
+
 }

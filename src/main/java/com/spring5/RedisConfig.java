@@ -19,38 +19,42 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 // https://github.com/javaugi/spring-boot-redis-example
 public class RedisConfig extends RedisBaseConfig {
 
-    public static final String REDIS_TPL = "strObjRedisTemplate";
-    public static final String REDIS_TPL_STR = "strStrRedisTemplate";
-    public static final String REDIS_TPL_MFILE = "strMedFileRedisTemplate";
-    public static final String RATE_LIMIT_CACHE_MAN = "rateLimitCacheMan";
+	public static final String REDIS_TPL = "strObjRedisTemplate";
 
-    @Primary
-    @Bean(name = REDIS_TPL)
-    public RedisTemplate<String, Object> redisObjectTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        return template;
-    }
+	public static final String REDIS_TPL_STR = "strStrRedisTemplate";
 
-    @Bean(name = REDIS_TPL_STR)
-    public RedisTemplate<String, String> redisStrTemplate() {
-        RedisTemplate<String, String> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new StringRedisSerializer());
-        return template;
-    }
+	public static final String REDIS_TPL_MFILE = "strMedFileRedisTemplate";
 
-    @Bean(name = REDIS_TPL_MFILE)
-    public RedisTemplate<String, MedicalFileMetadata> redisMedFileTemplate() {
-        RedisTemplate<String, MedicalFileMetadata> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        return template;
-    }
+	public static final String RATE_LIMIT_CACHE_MAN = "rateLimitCacheMan";
+
+	@Primary
+	@Bean(name = REDIS_TPL)
+	public RedisTemplate<String, Object> redisObjectTemplate() {
+		RedisTemplate<String, Object> template = new RedisTemplate<>();
+		template.setConnectionFactory(redisConnectionFactory());
+		template.setKeySerializer(new StringRedisSerializer());
+		template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+		return template;
+	}
+
+	@Bean(name = REDIS_TPL_STR)
+	public RedisTemplate<String, String> redisStrTemplate() {
+		RedisTemplate<String, String> template = new RedisTemplate<>();
+		template.setConnectionFactory(redisConnectionFactory());
+		template.setKeySerializer(new StringRedisSerializer());
+		template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+		template.setHashKeySerializer(new StringRedisSerializer());
+		template.setHashValueSerializer(new StringRedisSerializer());
+		return template;
+	}
+
+	@Bean(name = REDIS_TPL_MFILE)
+	public RedisTemplate<String, MedicalFileMetadata> redisMedFileTemplate() {
+		RedisTemplate<String, MedicalFileMetadata> template = new RedisTemplate<>();
+		template.setConnectionFactory(redisConnectionFactory());
+		template.setKeySerializer(new StringRedisSerializer());
+		template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+		return template;
+	}
+
 }

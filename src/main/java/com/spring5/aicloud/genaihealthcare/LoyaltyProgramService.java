@@ -11,33 +11,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoyaltyProgramService {
 
-    @Autowired
-    private LoyaltyProgramRepository repository;
+	@Autowired
+	private LoyaltyProgramRepository repository;
 
-    public LoyaltyProgram enrollPatient(LoyaltyProgram program) {
-        return repository.save(program);
-    }
+	public LoyaltyProgram enrollPatient(LoyaltyProgram program) {
+		return repository.save(program);
+	}
 
-    public List<LoyaltyProgram> getPatientPrograms(String patientId) {
-        return repository.findByPatientId(patientId);
-    }
+	public List<LoyaltyProgram> getPatientPrograms(String patientId) {
+		return repository.findByPatientId(patientId);
+	}
 
-    public LoyaltyProgram updatePoints(String patientId, String programName, Integer points) {
-        LoyaltyProgram program
-                = repository.findByPatientId(patientId).stream()
-                        .filter(p -> p.getProgramName().equals(programName))
-                        .findFirst()
-                        .orElse(null);
+	public LoyaltyProgram updatePoints(String patientId, String programName, Integer points) {
+		LoyaltyProgram program = repository.findByPatientId(patientId)
+			.stream()
+			.filter(p -> p.getProgramName().equals(programName))
+			.findFirst()
+			.orElse(null);
 
-        if (program != null) {
-            program.setPointsBalance(program.getPointsBalance() + points);
-            return repository.save(program);
-        }
+		if (program != null) {
+			program.setPointsBalance(program.getPointsBalance() + points);
+			return repository.save(program);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public Long getProgramEnrollmentCount(String programName) {
-        return repository.countByProgramName(programName);
-    }
+	public Long getProgramEnrollmentCount(String programName) {
+		return repository.countByProgramName(programName);
+	}
+
 }

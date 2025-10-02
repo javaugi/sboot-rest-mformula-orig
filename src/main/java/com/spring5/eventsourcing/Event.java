@@ -9,19 +9,21 @@ import java.util.UUID;
 
 public abstract class Event {
 
-    private final UUID patientId;
-    private final Instant timestamp;
+	private final UUID patientId;
 
-    public Event(UUID patientId, Instant timestamp) {
-        this.patientId = patientId;
-        this.timestamp = timestamp;
-    }
+	private final Instant timestamp;
 
-    public UUID getPatientId() {
-        return patientId;
-    }
+	public Event(UUID patientId, Instant timestamp) {
+		this.patientId = patientId;
+		this.timestamp = timestamp;
+	}
 
-    public Instant getTimestamp() {
-        return timestamp;
-    }
+	public UUID getPatientId() {
+		return patientId;
+	}
+
+	public Instant getTimestamp() {
+		return timestamp;
+	}
+
 }

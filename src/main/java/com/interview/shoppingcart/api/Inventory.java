@@ -11,18 +11,18 @@ import java.util.List;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Inventory {
 
-    void addItem(Item item);
+	void addItem(Item item);
 
-    List<Item> getItems();
+	List<Item> getItems();
 
-    void clear();
+	void clear();
 
-    Item getItemByName(String name);
+	Item getItemByName(String name);
 
-    int size();
+	int size();
+
 }

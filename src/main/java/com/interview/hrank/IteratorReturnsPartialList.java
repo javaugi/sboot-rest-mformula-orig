@@ -14,47 +14,49 @@ import java.util.Scanner;
  */
 public class IteratorReturnsPartialList {
 
-    @SuppressWarnings({"unchecked"})
-    public static void main(String[] args) {
-        // scanner();
-        ArrayList<String> mylist = new ArrayList<>(List.of("42", "10", "###", "Hello", "Java"));
-        Iterator it = func(mylist);
-        while (it.hasNext()) {
-            Object element = it.next();
-            System.out.println((String) element);
-        }
-    }
+	@SuppressWarnings({ "unchecked" })
+	public static void main(String[] args) {
+		// scanner();
+		ArrayList<String> mylist = new ArrayList<>(List.of("42", "10", "###", "Hello", "Java"));
+		Iterator it = func(mylist);
+		while (it.hasNext()) {
+			Object element = it.next();
+			System.out.println((String) element);
+		}
+	}
 
-    private static void scanner() {
-        ArrayList mylist = new ArrayList();
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        for (int i = 0; i < n; i++) {
-            mylist.add(sc.nextInt());
-        }
+	private static void scanner() {
+		ArrayList mylist = new ArrayList();
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		for (int i = 0; i < n; i++) {
+			mylist.add(sc.nextInt());
+		}
 
-        mylist.add("###");
-        for (int i = 0; i < m; i++) {
-            mylist.add(sc.next());
-        }
+		mylist.add("###");
+		for (int i = 0; i < m; i++) {
+			mylist.add(sc.next());
+		}
 
-        Iterator it = func(mylist);
-        while (it.hasNext()) {
-            Object element = it.next();
-            System.out.println((String) element);
-        }
-    }
+		Iterator it = func(mylist);
+		while (it.hasNext()) {
+			Object element = it.next();
+			System.out.println((String) element);
+		}
+	}
 
-    static Iterator func(ArrayList mylist) {
-        Iterator it = mylist.iterator();
-        while (it.hasNext()) {
-            Object element = it.next();
-            if (element instanceof String && "###".equals(element)) // Hints: use instanceof operator
-            {
-                break;
-            }
-        }
-        return it;
-    }
+	static Iterator func(ArrayList mylist) {
+		Iterator it = mylist.iterator();
+		while (it.hasNext()) {
+			Object element = it.next();
+			if (element instanceof String && "###".equals(element)) // Hints: use
+																	// instanceof operator
+			{
+				break;
+			}
+		}
+		return it;
+	}
+
 }

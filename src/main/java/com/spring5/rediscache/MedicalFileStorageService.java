@@ -17,39 +17,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class MedicalFileStorageService {
 
-    private static final String FILE_METADATA_CACHE = "fileMetadata";
+	private static final String FILE_METADATA_CACHE = "fileMetadata";
 
-    @Autowired
-    private FileStorageRepository fileStorageRepository;
-    @Autowired
-    private FileMetadataRepository fileMetadataRepository;
+	@Autowired
+	private FileStorageRepository fileStorageRepository;
 
-    @Autowired
-    private @Qualifier(RedisConfig.REDIS_TPL_MFILE)
-    RedisTemplate<String, MedicalFileMetadata> redisTemplate;
+	@Autowired
+	private FileMetadataRepository fileMetadataRepository;
 
-    @Cacheable(value = FILE_METADATA_CACHE, key = "#fileId")
-    public MedicalFileMetadata getFileMetadata(String fileId) throws Exception {
-        return fileMetadataRepository
-                .findById(Long.valueOf(fileId))
-                .orElseThrow(() -> new FileNotFoundException(fileId));
-    }
+	@Autowired
+	private @Qualifier(RedisConfig.REDIS_TPL_MFILE) RedisTemplate<String, MedicalFileMetadata> redisTemplate;
 
-    public void storeFile(MedicalFile file) {
-        // Store actual file in your storage system (S3, filesystem, etc.)
-        fileStorageRepository.save(file);
+	@Cacheable(value = FILE_METADATA_CACHE, key = "#fileId")
+	public MedicalFileMetadata getFileMetadata(String fileId) throws Exception {
+		return fileMetadataRepository.findById(Long.valueOf(fileId))
+			.orElseThrow(() -> new FileNotFoundException(fileId));
+	}
 
-        // Cache the metadata
-        redisTemplate
-                .opsForValue()
-                .set(FILE_METADATA_CACHE + "::" + file.getId(), file.getMetadata(), Duration.ofHours(1));
-    }
+	public void storeFile(MedicalFile file) {
+		// Store actual file in your storage system (S3, filesystem, etc.)
+		fileStorageRepository.save(file);
 
-    // Pattern-based cache eviction for related files
-    public void invalidateRelatedFiles(String patientId) {
-        Set<String> keys = redisTemplate.keys(FILE_METADATA_CACHE + "*patient:" + patientId + "*");
-        if (keys != null && !keys.isEmpty()) {
-            redisTemplate.delete(keys);
-        }
-    }
+		// Cache the metadata
+		redisTemplate.opsForValue()
+			.set(FILE_METADATA_CACHE + "::" + file.getId(), file.getMetadata(), Duration.ofHours(1));
+	}
+
+	// Pattern-based cache eviction for related files
+	public void invalidateRelatedFiles(String patientId) {
+		Set<String> keys = redisTemplate.keys(FILE_METADATA_CACHE + "*patient:" + patientId + "*");
+		if (keys != null && !keys.isEmpty()) {
+			redisTemplate.delete(keys);
+		}
+	}
+
 }

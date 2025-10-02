@@ -9,14 +9,15 @@ package com.patterns.structural.bridge;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ProduceBridgeImplementor implements Workshop {
-    // Concrete implementation 1 for bridge pattern
 
-    @Override
-    public void work() {
-        System.out.print("Produced");
-    }
+	// Concrete implementation 1 for bridge pattern
+
+	@Override
+	public void work() {
+		System.out.print("Produced");
+	}
+
 }

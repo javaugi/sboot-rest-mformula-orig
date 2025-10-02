@@ -13,17 +13,19 @@ import jakarta.validation.ConstraintValidatorContext;
  */
 public class RoleValidator implements ConstraintValidator<ValidateRole, String> {
 
-    @Override
-    public boolean isValid(String role, ConstraintValidatorContext context) {
-        if (role == null) {
-            return false;
-        }
+	@Override
+	public boolean isValid(String role, ConstraintValidatorContext context) {
+		if (role == null) {
+			return false;
+		}
 
-        try {
-            RoleTypes.valueOf("ROLE_" + role.toUpperCase());
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
+		try {
+			RoleTypes.valueOf("ROLE_" + role.toUpperCase());
+			return true;
+		}
+		catch (IllegalArgumentException e) {
+			return false;
+		}
+	}
+
 }

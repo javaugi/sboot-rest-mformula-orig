@@ -9,27 +9,26 @@ package com.interview.shoppingcart.api;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Item {
 
-    public static enum Category {
-        Bagged,
-        Weight,
-        Discount,
-        BuyGetFree;
-    }
+	public static enum Category {
 
-    public String getName();
+		Bagged, Weight, Discount, BuyGetFree;
 
-    public void setName(String name);
+	}
 
-    public Category getCategory();
+	public String getName();
 
-    public void setCategory(Category category);
+	public void setName(String name);
 
-    public double getPrice();
+	public Category getCategory();
 
-    public void setPrice(double price);
+	public void setCategory(Category category);
+
+	public double getPrice();
+
+	public void setPrice(double price);
+
 }

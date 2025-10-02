@@ -10,54 +10,60 @@ import jakarta.persistence.Id;
 
 public class CustomerInfo {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Explicit and safe and recommended
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Explicit and safe and
+														// recommended
+	Long id;
 
-    private String fullName;
-    private String email;
-    private String address;
-    private String city;
-    private String zipCode;
+	private String fullName;
 
-    // Getters and Setters
-    public String getFullName() {
-        return fullName;
-    }
+	private String email;
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	private String address;
 
-    public String getEmail() {
-        return email;
-    }
+	private String city;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	private String zipCode;
 
-    public String getAddress() {
-        return address;
-    }
+	// Getters and Setters
+	public String getFullName() {
+		return fullName;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
-    public String getCity() {
-        return city;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getZipCode() {
-        return zipCode;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
 }

@@ -21,60 +21,55 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AuthService {
 
-    private final InternalUserRepository internalUserRepository;
-    private final ExternalUserRepository externalUserRepository;
-    private final ApiClientRepository apiClientRepository;
-    private final OAuth2Service oauth2Service;
-    private final PasswordEncoder passwordEncoder;
+	private final InternalUserRepository internalUserRepository;
 
-    public AuthService(
-            InternalUserRepository internalUserRepository,
-            ExternalUserRepository externalUserRepository,
-            ApiClientRepository apiClientRepository,
-            OAuth2Service oauth2Service,
-            PasswordEncoder passwordEncoder) {
-        this.internalUserRepository = internalUserRepository;
-        this.externalUserRepository = externalUserRepository;
-        this.apiClientRepository = apiClientRepository;
-        this.oauth2Service = oauth2Service;
-        this.passwordEncoder = passwordEncoder;
-    }
+	private final ExternalUserRepository externalUserRepository;
 
-    public InternalUser authenticateInternalUser(String username, String password) {
-        return internalUserRepository
-                .findByUsername(username)
-                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(new InternalUser());
-    }
+	private final ApiClientRepository apiClientRepository;
 
-    public ExternalUser authenticateExternalUser(String provider, String code) {
-        OAuth2UserInfo userInfo = oauth2Service.getUserInfo(provider, code);
+	private final OAuth2Service oauth2Service;
 
-        return externalUserRepository
-                .findByEmailAndProvider(userInfo.getEmail(), provider)
-                .orElseGet(() -> createExternalUser(userInfo, provider));
-    }
+	private final PasswordEncoder passwordEncoder;
 
-    public ApiClient authenticateApiClient(String apiKey) {
-        return apiClientRepository
-                .findByApiKey(apiKey)
-                .filter(ApiClient::isActive)
-                .orElse(ApiClient.builder().build());
-    }
+	public AuthService(InternalUserRepository internalUserRepository, ExternalUserRepository externalUserRepository,
+			ApiClientRepository apiClientRepository, OAuth2Service oauth2Service, PasswordEncoder passwordEncoder) {
+		this.internalUserRepository = internalUserRepository;
+		this.externalUserRepository = externalUserRepository;
+		this.apiClientRepository = apiClientRepository;
+		this.oauth2Service = oauth2Service;
+		this.passwordEncoder = passwordEncoder;
+	}
 
-    public String getOAuth2RedirectUrl(String provider) {
-        return oauth2Service.getAuthorizationUrl(provider);
-    }
+	public InternalUser authenticateInternalUser(String username, String password) {
+		return internalUserRepository.findByUsername(username)
+			.filter(user -> passwordEncoder.matches(password, user.getPassword()))
+			.orElse(new InternalUser());
+	}
 
-    private ExternalUser createExternalUser(OAuth2UserInfo userInfo, String provider) {
-        ExternalUser user
-                = ExternalUser.builder()
-                        .email(userInfo.getEmail())
-                        .name(userInfo.getName())
-                        .provider(provider)
-                        .providerId(userInfo.getId())
-                        .build();
+	public ExternalUser authenticateExternalUser(String provider, String code) {
+		OAuth2UserInfo userInfo = oauth2Service.getUserInfo(provider, code);
 
-        return externalUserRepository.save(user);
-    }
+		return externalUserRepository.findByEmailAndProvider(userInfo.getEmail(), provider)
+			.orElseGet(() -> createExternalUser(userInfo, provider));
+	}
+
+	public ApiClient authenticateApiClient(String apiKey) {
+		return apiClientRepository.findByApiKey(apiKey).filter(ApiClient::isActive).orElse(ApiClient.builder().build());
+	}
+
+	public String getOAuth2RedirectUrl(String provider) {
+		return oauth2Service.getAuthorizationUrl(provider);
+	}
+
+	private ExternalUser createExternalUser(OAuth2UserInfo userInfo, String provider) {
+		ExternalUser user = ExternalUser.builder()
+			.email(userInfo.getEmail())
+			.name(userInfo.getName())
+			.provider(provider)
+			.providerId(userInfo.getId())
+			.build();
+
+		return externalUserRepository.save(user);
+	}
+
 }

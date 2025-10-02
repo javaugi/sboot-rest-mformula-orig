@@ -24,27 +24,25 @@ import lombok.ToString;
 @AllArgsConstructor
 public class KafkaAuditEvent extends BaseEvent {
 
-    private String entityId;
-    private EntityType entityType; // TRADE, FILE, USER
-    private AuditAction action; // CREATE, UPDATE, DELETE
-    private String userId;
-    private Map<String, Object> metadata;
+	private String entityId;
 
-    public KafkaAuditEvent(
-            String id,
-            Instant timestamp,
-            String sourceSystem,
-            String entityId,
-            EntityType entityType,
-            AuditAction action,
-            String userId,
-            Map<String, Object> metadata) {
-        super(id, timestamp, sourceSystem);
+	private EntityType entityType; // TRADE, FILE, USER
 
-        this.entityId = entityId;
-        this.entityType = entityType;
-        this.action = action;
-        this.userId = userId;
-        this.metadata = metadata;
-    }
+	private AuditAction action; // CREATE, UPDATE, DELETE
+
+	private String userId;
+
+	private Map<String, Object> metadata;
+
+	public KafkaAuditEvent(String id, Instant timestamp, String sourceSystem, String entityId, EntityType entityType,
+			AuditAction action, String userId, Map<String, Object> metadata) {
+		super(id, timestamp, sourceSystem);
+
+		this.entityId = entityId;
+		this.entityType = entityType;
+		this.action = action;
+		this.userId = userId;
+		this.metadata = metadata;
+	}
+
 }

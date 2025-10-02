@@ -12,26 +12,22 @@ Detailed Description:
         This can be implemented with a deleted flag or timestamp.
  */
 public class SoftDeleteWithPostgreSQLJPA {
-    // see BaseEntity, Cusomter and CustomerRepository
+
+	// see BaseEntity, Cusomter and CustomerRepository
 
 }
 /*
-// For temporal soft delete with history
-CREATE TABLE customers_history AS TABLE customers WITH NO DATA;
-
-CREATE OR REPLACE FUNCTION archive_deleted_customer() RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.deleted = true AND OLD.deleted = false THEN
-        INSERT INTO customers_history SELECT * FROM customers WHERE id = OLD.id;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER customer_archive_trigger
-AFTER UPDATE OF deleted ON customers
-FOR EACH ROW EXECUTE FUNCTION archive_deleted_customer();
-
-These examples cover a wide range of topics that would be relevant for a Backend Spring Boot Developer with Database
-Experience interview, demonstrating both theoretical knowledge and practical implementation skills.
+ * // For temporal soft delete with history CREATE TABLE customers_history AS TABLE
+ * customers WITH NO DATA;
+ * 
+ * CREATE OR REPLACE FUNCTION archive_deleted_customer() RETURNS TRIGGER AS $$ BEGIN IF
+ * NEW.deleted = true AND OLD.deleted = false THEN INSERT INTO customers_history SELECT *
+ * FROM customers WHERE id = OLD.id; END IF; RETURN NEW; END; $$ LANGUAGE plpgsql;
+ * 
+ * CREATE TRIGGER customer_archive_trigger AFTER UPDATE OF deleted ON customers FOR EACH
+ * ROW EXECUTE FUNCTION archive_deleted_customer();
+ * 
+ * These examples cover a wide range of topics that would be relevant for a Backend Spring
+ * Boot Developer with Database Experience interview, demonstrating both theoretical
+ * knowledge and practical implementation skills.
  */

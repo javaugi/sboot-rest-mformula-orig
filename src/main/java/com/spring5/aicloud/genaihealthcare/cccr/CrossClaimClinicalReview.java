@@ -8,4 +8,5 @@ package com.spring5.aicloud.genaihealthcare.cccr;
  * @author javau
  */
 public class CrossClaimClinicalReview {
+
 }

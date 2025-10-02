@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WordCountController {
 
-    @Autowired
-    private WordCountService wordCountService;
+	@Autowired
+	private WordCountService wordCountService;
 
-    @GetMapping("/wordcount/{filePath}")
-    public Map<String, Long> getWordCount(@PathVariable String filePath) {
-        return wordCountService.countWords(filePath);
-    }
+	@GetMapping("/wordcount/{filePath}")
+	public Map<String, Long> getWordCount(@PathVariable String filePath) {
+		return wordCountService.countWords(filePath);
+	}
+
 }

@@ -26,188 +26,188 @@ Key Features:
 @Slf4j
 public class MaxOccurrenceFinder {
 
-    public static void main(String[] args) {
-        int[] numbers = {1, 2, 3, 2, 4, 2, 5, 1, 2, 3, 2};
-        MaxOccurrenceFinder m = new MaxOccurrenceFinder();
-        log.debug("usingHashMapMostEfficient ...");
-        m.usingHashMapMostEfficient(numbers);
-        log.debug("usingHashMapWithMultiMax ...");
-        m.usingHashMapWithMultiMax(numbers);
-        log.debug("usingArraySort ...");
-        m.usingArraySort(numbers);
-        log.debug("usingStreams ...");
-        m.usingStreams(numbers);
-        log.debug("usingStreams2 ...");
-        m.usingStreams2(numbers);
-        log.debug("Done");
-    }
+	public static void main(String[] args) {
+		int[] numbers = { 1, 2, 3, 2, 4, 2, 5, 1, 2, 3, 2 };
+		MaxOccurrenceFinder m = new MaxOccurrenceFinder();
+		log.debug("usingHashMapMostEfficient ...");
+		m.usingHashMapMostEfficient(numbers);
+		log.debug("usingHashMapWithMultiMax ...");
+		m.usingHashMapWithMultiMax(numbers);
+		log.debug("usingArraySort ...");
+		m.usingArraySort(numbers);
+		log.debug("usingStreams ...");
+		m.usingStreams(numbers);
+		log.debug("usingStreams2 ...");
+		m.usingStreams2(numbers);
+		log.debug("Done");
+	}
 
-    public static void misc() {
-        Integer[] numbers = {1, 2, 3, 2, 4, 2, 5, 1, 2, 3, 2};
-        List<Integer> list = List.of(numbers);
-        String str = "12324251232";
+	public static void misc() {
+		Integer[] numbers = { 1, 2, 3, 2, 4, 2, 5, 1, 2, 3, 2 };
+		List<Integer> list = List.of(numbers);
+		String str = "12324251232";
 
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
-        for (Integer num : numbers) {
-            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
-        }
+		Map<Integer, Integer> frequencyMap = new HashMap<>();
+		for (Integer num : numbers) {
+			frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+		}
 
-        frequencyMap.clear();
-        for (Integer num : list) {
-            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
-        }
+		frequencyMap.clear();
+		for (Integer num : list) {
+			frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+		}
 
-        frequencyMap.clear();
-        for (char num : str.toCharArray()) {
-            // frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
-        }
-    }
+		frequencyMap.clear();
+		for (char num : str.toCharArray()) {
+			// frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+		}
+	}
 
-    private void usingHashMapMostEfficient(int[] numbers) {
-        Map<Integer, Integer> result = findOccurrences(numbers);
-        int maxElement = findMaxOccurrence(numbers);
+	private void usingHashMapMostEfficient(int[] numbers) {
+		Map<Integer, Integer> result = findOccurrences(numbers);
+		int maxElement = findMaxOccurrence(numbers);
 
-        System.out.println("Occurrences: " + result);
-        System.out.println("Element with max occurrences: " + maxElement);
-    }
+		System.out.println("Occurrences: " + result);
+		System.out.println("Element with max occurrences: " + maxElement);
+	}
 
-    private void usingHashMapWithMultiMax(int[] numbers) {
-        Map<Integer, Integer> occurrences = countOccurrences(numbers);
-        List<Integer> maxElements = findMaxOccurrenceElements(numbers);
+	private void usingHashMapWithMultiMax(int[] numbers) {
+		Map<Integer, Integer> occurrences = countOccurrences(numbers);
+		List<Integer> maxElements = findMaxOccurrenceElements(numbers);
 
-        System.out.println("All occurrences: " + occurrences);
-        System.out.println("Elements with max occurrences: " + maxElements);
-        System.out.println(
-                "Max occurrence count: "
-                + (maxElements.isEmpty() ? 0 : occurrences.get(maxElements.get(0))));
-    }
+		System.out.println("All occurrences: " + occurrences);
+		System.out.println("Elements with max occurrences: " + maxElements);
+		System.out
+			.println("Max occurrence count: " + (maxElements.isEmpty() ? 0 : occurrences.get(maxElements.get(0))));
+	}
 
-    private void usingArraySort(int[] numbers) {
-        System.out.println("usingArraySort {}" + findMaxOccurrenceSorted(numbers));
-    }
+	private void usingArraySort(int[] numbers) {
+		System.out.println("usingArraySort {}" + findMaxOccurrenceSorted(numbers));
+	}
 
-    private void usingStreams2(int[] numbers) {
-        Optional<Map.Entry<Integer, Long>> maxEntry
-                = Arrays.stream(numbers)
-                        .boxed()
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                        .entrySet()
-                        .stream()
-                        .max(Map.Entry.comparingByValue());
+	private void usingStreams2(int[] numbers) {
+		Optional<Map.Entry<Integer, Long>> maxEntry = Arrays.stream(numbers)
+			.boxed()
+			.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+			.entrySet()
+			.stream()
+			.max(Map.Entry.comparingByValue());
 
-        if (maxEntry.isPresent()) {
-            System.out.println("Element with max occurrences: " + maxEntry.get().getKey());
-            System.out.println("Count: " + maxEntry.get().getValue());
-        } else {
-            System.out.println("No elements found");
-        }
-    }
+		if (maxEntry.isPresent()) {
+			System.out.println("Element with max occurrences: " + maxEntry.get().getKey());
+			System.out.println("Count: " + maxEntry.get().getValue());
+		}
+		else {
+			System.out.println("No elements found");
+		}
+	}
 
-    private void usingStreams(int[] numbers) {
-        // Using Java 8 streams to find occurrences
-        Map<Integer, Long> occurrences
-                = Arrays.stream(numbers)
-                        .boxed()
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+	private void usingStreams(int[] numbers) {
+		// Using Java 8 streams to find occurrences
+		Map<Integer, Long> occurrences = Arrays.stream(numbers)
+			.boxed()
+			.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        // Find element with max occurrences
-        Optional<Map.Entry<Integer, Long>> maxEntry
-                = occurrences.entrySet().stream().max(Map.Entry.comparingByValue());
+		// Find element with max occurrences
+		Optional<Map.Entry<Integer, Long>> maxEntry = occurrences.entrySet().stream().max(Map.Entry.comparingByValue());
 
-        System.out.println("Occurrences: " + occurrences);
+		System.out.println("Occurrences: " + occurrences);
 
-        if (maxEntry.isPresent()) {
-            System.out.println("Element with max occurrences: " + maxEntry.get().getKey());
-            System.out.println("Count: " + maxEntry.get().getValue());
-        } else {
-            System.out.println("No elements found");
-        }
-    }
+		if (maxEntry.isPresent()) {
+			System.out.println("Element with max occurrences: " + maxEntry.get().getKey());
+			System.out.println("Count: " + maxEntry.get().getValue());
+		}
+		else {
+			System.out.println("No elements found");
+		}
+	}
 
-    public static Map<Integer, Integer> findOccurrences(int[] arr) {
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
+	public static Map<Integer, Integer> findOccurrences(int[] arr) {
+		Map<Integer, Integer> frequencyMap = new HashMap<>();
 
-        for (int num : arr) {
-            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
-        }
+		for (int num : arr) {
+			frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+		}
 
-        return frequencyMap;
-    }
+		return frequencyMap;
+	}
 
-    public static Map<Integer, Integer> countOccurrences(int[] arr) {
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
+	public static Map<Integer, Integer> countOccurrences(int[] arr) {
+		Map<Integer, Integer> frequencyMap = new HashMap<>();
 
-        for (int num : arr) {
-            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
-        }
+		for (int num : arr) {
+			frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+		}
 
-        return frequencyMap;
-    }
+		return frequencyMap;
+	}
 
-    public static List<Integer> findMaxOccurrenceElements(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            return new ArrayList<>();
-        }
+	public static List<Integer> findMaxOccurrenceElements(int[] arr) {
+		if (arr == null || arr.length == 0) {
+			return new ArrayList<>();
+		}
 
-        Map<Integer, Integer> frequencyMap = countOccurrences(arr);
-        int maxCount = Collections.max(frequencyMap.values());
-        List<Integer> maxElements = new ArrayList<>();
+		Map<Integer, Integer> frequencyMap = countOccurrences(arr);
+		int maxCount = Collections.max(frequencyMap.values());
+		List<Integer> maxElements = new ArrayList<>();
 
-        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
-            if (entry.getValue() == maxCount) {
-                maxElements.add(entry.getKey());
-            }
-        }
+		for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
+			if (entry.getValue() == maxCount) {
+				maxElements.add(entry.getKey());
+			}
+		}
 
-        return maxElements;
-    }
+		return maxElements;
+	}
 
-    public static int findMaxOccurrence(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            throw new IllegalArgumentException("Array cannot be null or empty");
-        }
+	public static int findMaxOccurrence(int[] arr) {
+		if (arr == null || arr.length == 0) {
+			throw new IllegalArgumentException("Array cannot be null or empty");
+		}
 
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
-        int maxCount = 0;
-        int maxElement = arr[0];
+		Map<Integer, Integer> frequencyMap = new HashMap<>();
+		int maxCount = 0;
+		int maxElement = arr[0];
 
-        for (int num : arr) {
-            int count = frequencyMap.getOrDefault(num, 0) + 1;
-            frequencyMap.put(num, count);
+		for (int num : arr) {
+			int count = frequencyMap.getOrDefault(num, 0) + 1;
+			frequencyMap.put(num, count);
 
-            if (count > maxCount) {
-                maxCount = count;
-                maxElement = num;
-            }
-        }
+			if (count > maxCount) {
+				maxCount = count;
+				maxElement = num;
+			}
+		}
 
-        return maxElement;
-    }
+		return maxElement;
+	}
 
-    public static int findMaxOccurrenceSorted(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            throw new IllegalArgumentException("Array cannot be null or empty");
-        }
+	public static int findMaxOccurrenceSorted(int[] arr) {
+		if (arr == null || arr.length == 0) {
+			throw new IllegalArgumentException("Array cannot be null or empty");
+		}
 
-        Arrays.sort(arr);
+		Arrays.sort(arr);
 
-        int maxCount = 1;
-        int currentCount = 1;
-        int maxElement = arr[0];
+		int maxCount = 1;
+		int currentCount = 1;
+		int maxElement = arr[0];
 
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] == arr[i - 1]) {
-                currentCount++;
-            } else {
-                currentCount = 1;
-            }
+		for (int i = 1; i < arr.length; i++) {
+			if (arr[i] == arr[i - 1]) {
+				currentCount++;
+			}
+			else {
+				currentCount = 1;
+			}
 
-            if (currentCount > maxCount) {
-                maxCount = currentCount;
-                maxElement = arr[i];
-            }
-        }
+			if (currentCount > maxCount) {
+				maxCount = currentCount;
+				maxElement = arr[i];
+			}
+		}
 
-        return maxElement;
-    }
+		return maxElement;
+	}
+
 }

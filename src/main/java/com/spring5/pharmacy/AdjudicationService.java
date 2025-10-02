@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdjudicationService {
 
-    public void cancelAdjudication(String prescriptionId) {
-    }
+	public void cancelAdjudication(String prescriptionId) {
+	}
 
-    public AdjudicationResult adjudicate(String medication, String planId) {
-        return null;
-    }
+	public AdjudicationResult adjudicate(String medication, String planId) {
+		return null;
+	}
+
 }

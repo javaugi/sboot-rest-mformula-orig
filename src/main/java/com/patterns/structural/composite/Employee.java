@@ -9,20 +9,20 @@ package com.patterns.structural.composite;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Employee {
 
-    public void add(Employee employee);
+	public void add(Employee employee);
 
-    public void remove(Employee employee);
+	public void remove(Employee employee);
 
-    public Employee getChild(int i);
+	public Employee getChild(int i);
 
-    public String getName();
+	public String getName();
 
-    public double getSalary();
+	public double getSalary();
 
-    public void print();
+	public void print();
+
 }

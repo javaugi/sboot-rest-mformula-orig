@@ -16,48 +16,49 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 @Component
 public class RedisBackedIdempotencyFilter extends OncePerRequestFilter {
 
-    private static final String IDEMPOTENCY_KEY_HEADER = "Idempotency-Key";
-    private final RedisBackedIdempotencyService idempotencyService;
+	private static final String IDEMPOTENCY_KEY_HEADER = "Idempotency-Key";
 
-    public RedisBackedIdempotencyFilter(RedisBackedIdempotencyService idempotencyService) {
-        this.idempotencyService = idempotencyService;
-    }
+	private final RedisBackedIdempotencyService idempotencyService;
 
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+	public RedisBackedIdempotencyFilter(RedisBackedIdempotencyService idempotencyService) {
+		this.idempotencyService = idempotencyService;
+	}
 
-        if ("POST".equalsIgnoreCase(request.getMethod())
-                || "PUT".equalsIgnoreCase(request.getMethod())) {
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 
-            String idempotencyKey = request.getHeader(IDEMPOTENCY_KEY_HEADER);
+		if ("POST".equalsIgnoreCase(request.getMethod()) || "PUT".equalsIgnoreCase(request.getMethod())) {
 
-            if (idempotencyKey != null && !idempotencyKey.isEmpty()) {
-                if (idempotencyService.isDuplicate(idempotencyKey)) {
-                    Object cachedResponse = idempotencyService.getResponse(idempotencyKey);
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    response.getWriter().write(cachedResponse.toString());
-                    return;
-                }
+			String idempotencyKey = request.getHeader(IDEMPOTENCY_KEY_HEADER);
 
-                ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
-                try {
-                    filterChain.doFilter(request, responseWrapper);
+			if (idempotencyKey != null && !idempotencyKey.isEmpty()) {
+				if (idempotencyService.isDuplicate(idempotencyKey)) {
+					Object cachedResponse = idempotencyService.getResponse(idempotencyKey);
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().write(cachedResponse.toString());
+					return;
+				}
 
-                    if (responseWrapper.getStatus() >= 200 && responseWrapper.getStatus() < 300) {
-                        String responseBody = responseWrapper.toString();
-                        idempotencyService.storeResponse(idempotencyKey, responseBody);
-                    }
+				ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
+				try {
+					filterChain.doFilter(request, responseWrapper);
 
-                    responseWrapper.copyBodyToResponse();
-                } finally {
-                    responseWrapper.copyBodyToResponse();
-                }
-                return;
-            }
-        }
+					if (responseWrapper.getStatus() >= 200 && responseWrapper.getStatus() < 300) {
+						String responseBody = responseWrapper.toString();
+						idempotencyService.storeResponse(idempotencyKey, responseBody);
+					}
 
-        filterChain.doFilter(request, response);
-    }
+					responseWrapper.copyBodyToResponse();
+				}
+				finally {
+					responseWrapper.copyBodyToResponse();
+				}
+				return;
+			}
+		}
+
+		filterChain.doFilter(request, response);
+	}
+
 }

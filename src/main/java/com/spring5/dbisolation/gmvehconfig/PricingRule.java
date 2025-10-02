@@ -11,5 +11,6 @@ import java.math.BigDecimal;
  */
 public interface PricingRule {
 
-    BigDecimal apply(VehicleConfig config, BigDecimal basePrice);
+	BigDecimal apply(VehicleConfig config, BigDecimal basePrice);
+
 }

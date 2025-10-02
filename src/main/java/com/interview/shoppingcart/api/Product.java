@@ -6,51 +6,47 @@ package com.interview.shoppingcart.api;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Product {
 
-    static enum ProductCategory {
-        Bagged,
-        Counted,
-        Weighted;
-    }
+	static enum ProductCategory {
 
-    /*
-  private String id;
-  private String name;
-  private ProductCategory category;
-  private double unitPrice;
-  private double perUnit;
-  private double totalUnit;
-  private double price;
-  // */
-    String getId();
+		Bagged, Counted, Weighted;
 
-    void setId(String id);
+	}
 
-    String getName();
+	/*
+	 * private String id; private String name; private ProductCategory category; private
+	 * double unitPrice; private double perUnit; private double totalUnit; private double
+	 * price; //
+	 */
+	String getId();
 
-    void setName(String name);
+	void setId(String id);
 
-    ProductCategory getProductCategory();
+	String getName();
 
-    void setProductCategory(ProductCategory category);
+	void setName(String name);
 
-    double getUnitPrice();
+	ProductCategory getProductCategory();
 
-    void setUnitPrice(double unitPrice);
+	void setProductCategory(ProductCategory category);
 
-    double getPerUnit();
+	double getUnitPrice();
 
-    void setPerUnit(double perUnit);
+	void setUnitPrice(double unitPrice);
 
-    double getTotalUnit();
+	double getPerUnit();
 
-    void setTotalUnit(double totalUnit);
+	void setPerUnit(double perUnit);
 
-    double getPrice();
+	double getTotalUnit();
 
-    void setPrice(double price);
+	void setTotalUnit(double totalUnit);
+
+	double getPrice();
+
+	void setPrice(double price);
+
 }

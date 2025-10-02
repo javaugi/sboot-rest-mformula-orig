@@ -11,14 +11,15 @@ import java.time.LocalDateTime;
  */
 public interface FlightEssentialInfo {
 
-    String getFlightNumber();
+	String getFlightNumber();
 
-    LocalDateTime getDepartureTime();
+	LocalDateTime getDepartureTime();
 
-    String getDepartureAirport();
+	String getDepartureAirport();
 
-    // Virtual property (calculated)
-    default String getFlightInfo() {
-        return getFlightNumber() + " - " + getDepartureAirport() + " at " + getDepartureTime();
-    }
+	// Virtual property (calculated)
+	default String getFlightInfo() {
+		return getFlightNumber() + " - " + getDepartureAirport() + " at " + getDepartureTime();
+	}
+
 }

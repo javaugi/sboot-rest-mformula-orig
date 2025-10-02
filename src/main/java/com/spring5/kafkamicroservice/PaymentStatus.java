@@ -5,9 +5,7 @@
 package com.spring5.kafkamicroservice;
 
 public enum PaymentStatus {
-    CREATED,
-    PROCESSING,
-    COMPLETED,
-    FAILED,
-    REFUNDED
+
+	CREATED, PROCESSING, COMPLETED, FAILED, REFUNDED
+
 }

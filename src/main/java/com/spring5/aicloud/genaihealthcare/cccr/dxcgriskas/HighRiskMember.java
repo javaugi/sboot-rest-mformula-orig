@@ -10,8 +10,12 @@ import java.util.List;
 @lombok.Builder(toBuilder = true)
 public class HighRiskMember {
 
-    private String memberId;
-    private double riskScore;
-    private double predictedCost;
-    private List<String> topConditions;
+	private String memberId;
+
+	private double riskScore;
+
+	private double predictedCost;
+
+	private List<String> topConditions;
+
 }

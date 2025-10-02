@@ -16,17 +16,17 @@ import retrofit2.http.Header;
 @RequiredArgsConstructor
 public class PaymentEventDrivenSourcing {
 
-    private static final Logger log = LoggerFactory.getLogger(PaymentEventDrivenSourcing.class);
+	private static final Logger log = LoggerFactory.getLogger(PaymentEventDrivenSourcing.class);
 
-    private final PaymentRepository paymentRepository;
+	private final PaymentRepository paymentRepository;
 
-    @KafkaListener(topics = "payment-requests")
-    public void processPaymentRequest(
-            @Header(KafkaHeaders.RECEIVED_KEY) String key, PaymentRequestEvent event) {
-        if (paymentRepository.existsById(key)) {
-            log.info("Duplicate payment request {}", key);
-            return;
-        }
-        // Process payment
-    }
+	@KafkaListener(topics = "payment-requests")
+	public void processPaymentRequest(@Header(KafkaHeaders.RECEIVED_KEY) String key, PaymentRequestEvent event) {
+		if (paymentRepository.existsById(key)) {
+			log.info("Duplicate payment request {}", key);
+			return;
+		}
+		// Process payment
+	}
+
 }

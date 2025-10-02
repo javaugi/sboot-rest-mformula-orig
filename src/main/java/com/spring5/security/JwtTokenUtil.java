@@ -15,48 +15,50 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+	@Value("${jwt.secret}")
+	private String secret;
 
-    @Value("${jwt.expiration-in-ms}")
-    private long expirationInMs;
+	@Value("${jwt.expiration-in-ms}")
+	private long expirationInMs;
 
-    private Key key;
+	private Key key;
 
-    @PostConstruct
-    public void init() {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-    }
+	@PostConstruct
+	public void init() {
+		this.key = Keys.hmacShaKeyFor(secret.getBytes());
+	}
 
-    // Generate token (optional helper)
-    public String generateToken(String username) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expirationInMs);
+	// Generate token (optional helper)
+	public String generateToken(String username) {
+		Date now = new Date();
+		Date expiryDate = new Date(now.getTime() + expirationInMs);
 
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
+		return Jwts.builder()
+			.setSubject(username)
+			.setIssuedAt(now)
+			.setExpiration(expiryDate)
+			.signWith(key, SignatureAlgorithm.HS256)
+			.compact();
+	}
 
-    // Extract username
-    public String getUsername(String token) {
-        return parseClaims(token).getSubject();
-    }
+	// Extract username
+	public String getUsername(String token) {
+		return parseClaims(token).getSubject();
+	}
 
-    // Validate token
-    public boolean validate(String token) {
-        try {
-            parseClaims(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
+	// Validate token
+	public boolean validate(String token) {
+		try {
+			parseClaims(token);
+			return true;
+		}
+		catch (JwtException | IllegalArgumentException e) {
+			return false;
+		}
+	}
 
-    private Claims parseClaims(String token) {
-        return Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
-    }
+	private Claims parseClaims(String token) {
+		return Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
+	}
+
 }

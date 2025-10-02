@@ -9,22 +9,22 @@ package com.patterns.misc.nullobject;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class RealCustomer extends AbstractCustomer {
 
-    public RealCustomer(String name) {
-        this.name = name;
-    }
+	public RealCustomer(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public String getName() {
-        return name;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public boolean isNil() {
-        return false;
-    }
+	@Override
+	public boolean isNil() {
+		return false;
+	}
+
 }

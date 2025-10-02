@@ -31,9 +31,10 @@ import lombok.ToString;
 @Cacheable
 public class Question implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    String text;
+	String text;
+
 }

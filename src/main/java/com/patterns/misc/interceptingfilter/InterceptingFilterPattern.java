@@ -8,20 +8,20 @@
 package com.patterns.misc.interceptingfilter;
 
 /**
- * The intercepting filter design pattern is used when we want to do some
- * pre-processing / post-processing with request or response of the application.
- * Filters are defined and applied on the request before passing the request to
- * actual target application. Filters can do the authentication/ authorization/
- * logging or tracking of request and then pass the requests to corresponding
- * handlers. Following are the entities of this type of design pattern.
+ * The intercepting filter design pattern is used when we want to do some pre-processing /
+ * post-processing with request or response of the application. Filters are defined and
+ * applied on the request before passing the request to actual target application. Filters
+ * can do the authentication/ authorization/ logging or tracking of request and then pass
+ * the requests to corresponding handlers. Following are the entities of this type of
+ * design pattern.
  *
  * <p>
- * Filter - Filter which will performs certain task prior or after execution of
- * request by request handler.
+ * Filter - Filter which will performs certain task prior or after execution of request by
+ * request handler.
  *
  * <p>
- * Filter Chain - Filter Chain carries multiple filters and help to execute them
- * in defined order on target.
+ * Filter Chain - Filter Chain carries multiple filters and help to execute them in
+ * defined order on target.
  *
  * <p>
  * Target - Target object is the request handler
@@ -33,18 +33,18 @@ package com.patterns.misc.interceptingfilter;
  * Client - Client is the object who sends request to the Target object.
  *
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class InterceptingFilterPattern {
 
-    public static void main(String[] args) {
-        FilterManager filterManager = new FilterManager(new TargetHandler());
-        filterManager.setFilter(new AuthenticationFilter());
-        filterManager.setFilter(new DebugFilter());
+	public static void main(String[] args) {
+		FilterManager filterManager = new FilterManager(new TargetHandler());
+		filterManager.setFilter(new AuthenticationFilter());
+		filterManager.setFilter(new DebugFilter());
 
-        Client client = new Client();
-        client.setFilterManager(filterManager);
-        client.sendRequest("HOME");
-    }
+		Client client = new Client();
+		client.setFilterManager(filterManager);
+		client.sendRequest("HOME");
+	}
+
 }

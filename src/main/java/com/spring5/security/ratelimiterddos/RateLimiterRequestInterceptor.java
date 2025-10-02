@@ -24,72 +24,76 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Service
 @Slf4j
 public class RateLimiterRequestInterceptor implements HandlerInterceptor {
-    // see RateLimitFilter on how to register this class to the filter
 
-    private final RateLimiterRequestOnSize rateLimiter = new RateLimiterRequestOnSize();
+	// see RateLimitFilter on how to register this class to the filter
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws IOException {
+	private final RateLimiterRequestOnSize rateLimiter = new RateLimiterRequestOnSize();
 
-        String userId = getUserId(request);
-        if (userId == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User ID required");
-            return false;
-        }
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws IOException {
 
-        if (!rateLimiter.isAllowed(userId)) {
-            response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Rate limit exceeded");
-            return false;
-        }
+		String userId = getUserId(request);
+		if (userId == null) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User ID required");
+			return false;
+		}
 
-        return true;
-    }
+		if (!rateLimiter.isAllowed(userId)) {
+			response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Rate limit exceeded");
+			return false;
+		}
 
-    public boolean isAllowed(String userId) {
-        return rateLimiter.isAllowed(userId);
-    }
+		return true;
+	}
 
-    // different ways to get userId - see methods below
-    private String getUserId(HttpServletRequest request) {
-        String userId = null;
+	public boolean isAllowed(String userId) {
+		return rateLimiter.isAllowed(userId);
+	}
 
-        try {
-            // get from header
-            userId = request.getHeader("X-User-Id");
-            if (userId != null) {
-                return userId;
-            }
+	// different ways to get userId - see methods below
+	private String getUserId(HttpServletRequest request) {
+		String userId = null;
 
-            // or extract from token/session
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            userId = auth.getName();
-            if (userId != null) {
-                return userId;
-            }
+		try {
+			// get from header
+			userId = request.getHeader("X-User-Id");
+			if (userId != null) {
+				return userId;
+			}
 
-            // If using a custom UserDetails object:
-            UserDetails user = (UserDetails) auth.getPrincipal();
-            userId = user.getUsername(); // assuming you have getId()
+			// or extract from token/session
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			userId = auth.getName();
+			if (userId != null) {
+				return userId;
+			}
 
-        } catch (Exception e) {
+			// If using a custom UserDetails object:
+			UserDetails user = (UserDetails) auth.getPrincipal();
+			userId = user.getUsername(); // assuming you have getId()
 
-        }
+		}
+		catch (Exception e) {
 
-        return userId;
-    }
+		}
 
-    @RequestMapping("/api")
-    public ResponseEntity<String> handleRequest(@RequestHeader("X-User-Id") String userId) {
-        // Use the userId here
-        return ResponseEntity.ok("User ID: " + userId);
-    }
+		return userId;
+	}
 
-    // Spring Security 6+
-    @GetMapping("/me")
-    public ResponseEntity<String> getUserId(@AuthenticationPrincipal Jwt jwt) {
-        String userId = (String) jwt.getHeader().get("X-User-Id"); // or jwt.getClaim("user_id");
+	@RequestMapping("/api")
+	public ResponseEntity<String> handleRequest(@RequestHeader("X-User-Id") String userId) {
+		// Use the userId here
+		return ResponseEntity.ok("User ID: " + userId);
+	}
 
-        return ResponseEntity.ok("User ID: " + userId);
-    }
+	// Spring Security 6+
+	@GetMapping("/me")
+	public ResponseEntity<String> getUserId(@AuthenticationPrincipal Jwt jwt) {
+		String userId = (String) jwt.getHeader().get("X-User-Id"); // or
+																	// jwt.getClaim("user_id");
+
+		return ResponseEntity.ok("User ID: " + userId);
+	}
+
 }

@@ -16,15 +16,13 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 @EnableCaching
 public class VehicleCacheConfig extends RedisBaseConfig {
 
-    @Bean
-    public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
-        return builder
-                -> builder
-                        .withCacheConfiguration(
-                                "inventory",
-                                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)))
-                        .withCacheConfiguration(
-                                "configurations",
-                                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1L)));
-    }
+	@Bean
+	public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
+		return builder -> builder
+			.withCacheConfiguration("inventory",
+					RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)))
+			.withCacheConfiguration("configurations",
+					RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1L)));
+	}
+
 }

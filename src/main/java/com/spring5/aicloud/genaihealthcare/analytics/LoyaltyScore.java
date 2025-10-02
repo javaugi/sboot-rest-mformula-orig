@@ -11,9 +11,14 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class LoyaltyScore {
 
-    public String patientId;
-    public double score;
-    public String modelId;
-    public double confidence;
-    public String explanation;
+	public String patientId;
+
+	public double score;
+
+	public String modelId;
+
+	public double confidence;
+
+	public String explanation;
+
 }

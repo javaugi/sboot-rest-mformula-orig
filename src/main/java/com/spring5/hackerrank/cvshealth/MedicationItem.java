@@ -8,68 +8,62 @@ import java.util.Objects;
 
 public class MedicationItem {
 
-    private String drugCode; // e.g., NDC code
-    private int quantity;
-    private String dosageInstructions;
+	private String drugCode; // e.g., NDC code
 
-    // Constructor, getters, setters
-    public MedicationItem() {
-    }
+	private int quantity;
 
-    public String getDrugCode() {
-        return drugCode;
-    }
+	private String dosageInstructions;
 
-    public void setDrugCode(String drugCode) {
-        this.drugCode = drugCode;
-    }
+	// Constructor, getters, setters
+	public MedicationItem() {
+	}
 
-    public int getQuantity() {
-        return quantity;
-    }
+	public String getDrugCode() {
+		return drugCode;
+	}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+	public void setDrugCode(String drugCode) {
+		this.drugCode = drugCode;
+	}
 
-    public String getDosageInstructions() {
-        return dosageInstructions;
-    }
+	public int getQuantity() {
+		return quantity;
+	}
 
-    public void setDosageInstructions(String dosageInstructions) {
-        this.dosageInstructions = dosageInstructions;
-    }
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        MedicationItem that = (MedicationItem) o;
-        return quantity == that.quantity
-                && Objects.equals(drugCode, that.drugCode)
-                && Objects.equals(dosageInstructions, that.dosageInstructions);
-    }
+	public String getDosageInstructions() {
+		return dosageInstructions;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(drugCode, quantity, dosageInstructions);
-    }
+	public void setDosageInstructions(String dosageInstructions) {
+		this.dosageInstructions = dosageInstructions;
+	}
 
-    @Override
-    public String toString() {
-        return "MedicationItem{"
-                + "drugCode='"
-                + drugCode
-                + '\''
-                + ", quantity="
-                + quantity
-                + ", dosageInstructions='"
-                + dosageInstructions
-                + '\''
-                + '}';
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		MedicationItem that = (MedicationItem) o;
+		return quantity == that.quantity && Objects.equals(drugCode, that.drugCode)
+				&& Objects.equals(dosageInstructions, that.dosageInstructions);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(drugCode, quantity, dosageInstructions);
+	}
+
+	@Override
+	public String toString() {
+		return "MedicationItem{" + "drugCode='" + drugCode + '\'' + ", quantity=" + quantity + ", dosageInstructions='"
+				+ dosageInstructions + '\'' + '}';
+	}
+
 }

@@ -8,22 +8,22 @@
 package com.patterns.behavioral.memento;
 
 /**
- * Notice that caretaker object contains the saved state in the form of Object,
- * so it can’t alter its data and also it has no knowledge of it’s structure.
+ * Notice that caretaker object contains the saved state in the form of Object, so it
+ * can’t alter its data and also it has no knowledge of it’s structure.
  *
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class FileWriterMementoCaretaker {
 
-    private Object obj;
+	private Object obj;
 
-    public void save(FileWriterUtilMementoOriginator fileWriter) {
-        this.obj = fileWriter.save();
-    }
+	public void save(FileWriterUtilMementoOriginator fileWriter) {
+		this.obj = fileWriter.save();
+	}
 
-    public void undo(FileWriterUtilMementoOriginator fileWriter) {
-        fileWriter.undoToLastSave(obj);
-    }
+	public void undo(FileWriterUtilMementoOriginator fileWriter) {
+		fileWriter.undoToLastSave(obj);
+	}
+
 }

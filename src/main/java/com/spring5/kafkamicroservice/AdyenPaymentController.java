@@ -21,37 +21,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdyenPaymentController {
 
-    private final @Qualifier("paymentReqKafkaTemplate")
-    KafkaTemplate<String, AdyenPaymentRequest> kafkaTemplate;
-    private final AdyenPaymentConsumerService adyenPaymentService;
-    private final AdyenPaymentStatusService paymentStatusService;
+	private final @Qualifier("paymentReqKafkaTemplate") KafkaTemplate<String, AdyenPaymentRequest> kafkaTemplate;
 
-    @PostMapping("/initiate")
-    public ResponseEntity<AdyenPaymentResponse> initiatePayment(
-            @RequestBody AdyenPaymentRequest request) {
-        // Immediate validation
-        if (!request.validate()) {
-            return ResponseEntity.badRequest().build();
-        }
+	private final AdyenPaymentConsumerService adyenPaymentService;
 
-        // For immediate payment methods (like cards)
-        if (request.isSynchronous()) {
-            try {
-                AdyenPaymentResponse response = adyenPaymentService.makeAdyenPayment(request);
-                return ResponseEntity.ok(AdyenPaymentResponse.fromAdyenResponse(response));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-            }
-        } // For asynchronous methods (like PayPal)
-        else {
-            kafkaTemplate.send("payment.requests" + request.getPaymentId(), request);
-            return ResponseEntity.accepted().body(AdyenPaymentResponse.pending(request.getPaymentId()));
-        }
-    }
+	private final AdyenPaymentStatusService paymentStatusService;
 
-    @GetMapping("/status/{paymentId}")
-    public ResponseEntity<AdyenPaymentStatus> getPaymentStatus(@PathVariable String paymentId) {
-        // Query DB or Adyen API for status
-        return ResponseEntity.ok(paymentStatusService.getStatus(paymentId));
-    }
+	@PostMapping("/initiate")
+	public ResponseEntity<AdyenPaymentResponse> initiatePayment(@RequestBody AdyenPaymentRequest request) {
+		// Immediate validation
+		if (!request.validate()) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		// For immediate payment methods (like cards)
+		if (request.isSynchronous()) {
+			try {
+				AdyenPaymentResponse response = adyenPaymentService.makeAdyenPayment(request);
+				return ResponseEntity.ok(AdyenPaymentResponse.fromAdyenResponse(response));
+			}
+			catch (Exception e) {
+				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+			}
+		} // For asynchronous methods (like PayPal)
+		else {
+			kafkaTemplate.send("payment.requests" + request.getPaymentId(), request);
+			return ResponseEntity.accepted().body(AdyenPaymentResponse.pending(request.getPaymentId()));
+		}
+	}
+
+	@GetMapping("/status/{paymentId}")
+	public ResponseEntity<AdyenPaymentStatus> getPaymentStatus(@PathVariable String paymentId) {
+		// Query DB or Adyen API for status
+		return ResponseEntity.ok(paymentStatusService.getStatus(paymentId));
+	}
+
 }

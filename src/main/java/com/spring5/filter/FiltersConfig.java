@@ -16,12 +16,13 @@ Spring provides a filter that calculates ETag by buffering response. Useful for 
 @Configuration
 public class FiltersConfig {
 
-    @Bean
-    public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagFilter() {
-        FilterRegistrationBean<ShallowEtagHeaderFilter> fr
-                = new FilterRegistrationBean<>(new ShallowEtagHeaderFilter());
-        fr.addUrlPatterns("/api/*"); // limit to API paths that are safe to buffer
-        fr.setName("etagFilter");
-        return fr;
-    }
+	@Bean
+	public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagFilter() {
+		FilterRegistrationBean<ShallowEtagHeaderFilter> fr = new FilterRegistrationBean<>(
+				new ShallowEtagHeaderFilter());
+		fr.addUrlPatterns("/api/*"); // limit to API paths that are safe to buffer
+		fr.setName("etagFilter");
+		return fr;
+	}
+
 }

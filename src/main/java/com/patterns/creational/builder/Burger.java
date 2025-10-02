@@ -12,18 +12,18 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class Burger implements Item {
 
-    private static final Logger log = LoggerFactory.getLogger(Burger.class);
+	private static final Logger log = LoggerFactory.getLogger(Burger.class);
 
-    @Override
-    public Packing packing() {
-        return new Wrapper();
-    }
+	@Override
+	public Packing packing() {
+		return new Wrapper();
+	}
 
-    @Override
-    public abstract float price();
+	@Override
+	public abstract float price();
+
 }

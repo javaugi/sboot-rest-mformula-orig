@@ -19,13 +19,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserPreferences {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String theme;
-    private String language;
+	private String theme;
 
-    @OneToOne(mappedBy = "preferences")
-    private User user;
+	private String language;
+
+	@OneToOne(mappedBy = "preferences")
+	private User user;
+
 }

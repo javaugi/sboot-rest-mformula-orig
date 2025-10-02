@@ -8,29 +8,29 @@
 package com.patterns.behavioral.template;
 
 /**
- * In Template pattern, an abstract class exposes defined way(s)/template(s) to
- * execute its methods. Its subclasses can override the method implementation as
- * per need but the invocation is to be in the same way as defined by an
- * abstract class. This pattern comes under behavior pattern category.
+ * In Template pattern, an abstract class exposes defined way(s)/template(s) to execute
+ * its methods. Its subclasses can override the method implementation as per need but the
+ * invocation is to be in the same way as defined by an abstract class. This pattern comes
+ * under behavior pattern category.
  *
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Football extends Game {
 
-    @Override
-    void endPlay() {
-        System.out.println("Football Game Finished!");
-    }
+	@Override
+	void endPlay() {
+		System.out.println("Football Game Finished!");
+	}
 
-    @Override
-    void initialize() {
-        System.out.println("Football Game Initialized! Start playing.");
-    }
+	@Override
+	void initialize() {
+		System.out.println("Football Game Initialized! Start playing.");
+	}
 
-    @Override
-    void startPlay() {
-        System.out.println("Football Game Started. Enjoy the game!");
-    }
+	@Override
+	void startPlay() {
+		System.out.println("Football Game Started. Enjoy the game!");
+	}
+
 }

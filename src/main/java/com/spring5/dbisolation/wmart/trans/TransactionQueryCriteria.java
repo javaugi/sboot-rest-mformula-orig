@@ -20,14 +20,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 public class TransactionQueryCriteria {
 
-    @NotBlank
-    private String userId;
+	@NotBlank
+	private String userId;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate startDate;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	private LocalDate startDate;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate endDate;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	private LocalDate endDate;
 
-    private TransactionType type;
+	private TransactionType type;
+
 }

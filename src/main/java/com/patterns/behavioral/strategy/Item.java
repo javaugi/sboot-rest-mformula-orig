@@ -9,24 +9,25 @@ package com.patterns.behavioral.strategy;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Item {
 
-    private String upcCode;
-    private int price;
+	private String upcCode;
 
-    public Item(String upc, int cost) {
-        this.upcCode = upc;
-        this.price = cost;
-    }
+	private int price;
 
-    public String getUpcCode() {
-        return upcCode;
-    }
+	public Item(String upc, int cost) {
+		this.upcCode = upc;
+		this.price = cost;
+	}
 
-    public int getPrice() {
-        return price;
-    }
+	public String getUpcCode() {
+		return upcCode;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
 }

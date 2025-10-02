@@ -9,10 +9,10 @@ package com.interview.common.compositevisitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface SalaryCalculator {
 
-    double calculateSalary(Employee employee);
+	double calculateSalary(Employee employee);
+
 }

@@ -9,26 +9,29 @@ package com.spring5.aicloud.genaihealthcare;
  */
 class AiIndexMetric {
 
-    public String metricName;
-    public double score;
-    public String explanation;
+	public String metricName;
 
-    public AiIndexMetric(String metricName, double score, String explanation) {
-        this.metricName = metricName;
-        this.score = score;
-        this.explanation = explanation;
-    }
+	public double score;
 
-    // Getters
-    public String getMetricName() {
-        return metricName;
-    }
+	public String explanation;
 
-    public double getScore() {
-        return score;
-    }
+	public AiIndexMetric(String metricName, double score, String explanation) {
+		this.metricName = metricName;
+		this.score = score;
+		this.explanation = explanation;
+	}
 
-    public String getExplanation() {
-        return explanation;
-    }
+	// Getters
+	public String getMetricName() {
+		return metricName;
+	}
+
+	public double getScore() {
+		return score;
+	}
+
+	public String getExplanation() {
+		return explanation;
+	}
+
 }

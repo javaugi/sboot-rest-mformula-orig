@@ -12,7 +12,10 @@ import lombok.Getter;
 @AllArgsConstructor
 class ErrorResponse {
 
-    private String errorCode;
-    private String message;
-    private final Instant timestamp = Instant.now();
+	private String errorCode;
+
+	private String message;
+
+	private final Instant timestamp = Instant.now();
+
 }

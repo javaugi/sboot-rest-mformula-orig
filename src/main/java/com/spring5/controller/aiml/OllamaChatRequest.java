@@ -14,7 +14,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class OllamaChatRequest {
 
-    private String model;
-    private List<OllamaMessage> messages;
-    private Double temperature;
+	private String model;
+
+	private List<OllamaMessage> messages;
+
+	private Double temperature;
+
 }

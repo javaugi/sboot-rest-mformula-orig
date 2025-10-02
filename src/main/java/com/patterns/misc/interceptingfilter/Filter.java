@@ -9,10 +9,10 @@ package com.patterns.misc.interceptingfilter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Filter {
 
-    void execute(String request);
+	void execute(String request);
+
 }

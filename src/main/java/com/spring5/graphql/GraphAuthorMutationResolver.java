@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GraphAuthorMutationResolver implements GraphQLMutationResolver {
 
-    @Autowired
-    private GraphAuthorRepository repo;
+	@Autowired
+	private GraphAuthorRepository repo;
 
-    public GraphAuthor addPrescription(String id, String firstName, String lastName) {
-        return repo.save(new GraphAuthor(id, firstName, lastName));
-    }
+	public GraphAuthor addPrescription(String id, String firstName, String lastName) {
+		return repo.save(new GraphAuthor(id, firstName, lastName));
+	}
+
 }

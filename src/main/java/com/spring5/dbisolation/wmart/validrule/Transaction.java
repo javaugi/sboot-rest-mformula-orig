@@ -9,5 +9,6 @@ import lombok.Data;
 @Data
 public class Transaction {
 
-    Double amount;
+	Double amount;
+
 }

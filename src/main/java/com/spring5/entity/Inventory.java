@@ -16,14 +16,20 @@ import lombok.Data;
 @Entity
 public class Inventory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    Long itemId;
-    double quantity;
-    long productId;
-    String vin;
-    long version;
-    int availableQuantity;
+	Long itemId;
+
+	double quantity;
+
+	long productId;
+
+	String vin;
+
+	long version;
+
+	int availableQuantity;
+
 }

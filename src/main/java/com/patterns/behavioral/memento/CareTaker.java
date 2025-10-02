@@ -12,18 +12,18 @@ import java.util.List;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class CareTaker {
 
-    private List<Memento> mementoList = new ArrayList<Memento>();
+	private List<Memento> mementoList = new ArrayList<Memento>();
 
-    public void add(Memento state) {
-        mementoList.add(state);
-    }
+	public void add(Memento state) {
+		mementoList.add(state);
+	}
 
-    public Memento get(int index) {
-        return mementoList.get(index);
-    }
+	public Memento get(int index) {
+		return mementoList.get(index);
+	}
+
 }

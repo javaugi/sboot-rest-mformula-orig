@@ -9,10 +9,10 @@ package com.patterns.behavioral.visitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ItemElement {
 
-    public int accept(ShoppingCartVisitor visitor);
+	public int accept(ShoppingCartVisitor visitor);
+
 }

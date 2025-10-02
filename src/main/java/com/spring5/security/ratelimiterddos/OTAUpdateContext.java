@@ -22,4 +22,5 @@ Key Challenges:
     Update prioritization and scheduling
  */
 public class OTAUpdateContext {
+
 }

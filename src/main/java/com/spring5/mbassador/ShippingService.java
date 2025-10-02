@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShippingService {
 
-    @Handler
-    public void prepareShipping(OrderCreatedEvent event) {
-        System.out.println("Preparing shipment for order " + event.getOrderId());
-    }
+	@Handler
+	public void prepareShipping(OrderCreatedEvent event) {
+		System.out.println("Preparing shipment for order " + event.getOrderId());
+	}
+
 }

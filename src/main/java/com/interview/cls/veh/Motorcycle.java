@@ -6,12 +6,13 @@ package com.interview.cls.veh;
 
 public final class Motorcycle extends Vehicle {
 
-    public Motorcycle(String manufacturer) {
-        super(manufacturer);
-    }
+	public Motorcycle(String manufacturer) {
+		super(manufacturer);
+	}
 
-    @Override
-    public void startEngine() {
-        System.out.println("Motorcycle engine started");
-    }
+	@Override
+	public void startEngine() {
+		System.out.println("Motorcycle engine started");
+	}
+
 }

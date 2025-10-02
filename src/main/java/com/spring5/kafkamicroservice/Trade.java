@@ -32,19 +32,26 @@ import lombok.ToString;
 @Entity
 public class Trade {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    private String symbol;
-    private String instrumentId;
-    private BigDecimal quantity;
-    private BigDecimal price;
-    private String currency;
-    private TradeDirection direction;
-    private Instant executionTime;
+	private String symbol;
 
-    @ManyToOne
-    @JoinColumn(name = "user_account_id")
-    private UserAccount userAccount;
+	private String instrumentId;
+
+	private BigDecimal quantity;
+
+	private BigDecimal price;
+
+	private String currency;
+
+	private TradeDirection direction;
+
+	private Instant executionTime;
+
+	@ManyToOne
+	@JoinColumn(name = "user_account_id")
+	private UserAccount userAccount;
+
 }

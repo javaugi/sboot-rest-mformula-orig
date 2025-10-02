@@ -13,12 +13,12 @@ import com.spring5.validatorex.PayrollValidationException;
  */
 public class TaxComplianceValidator extends PayrollChainOfRespValidator {
 
-    @Override
-    public boolean validate(Employee employee, PayrollData data) throws Exception {
-        if (data.getTaxDeductions() == null || data.getTaxDeductions().isEmpty()) {
-            throw new PayrollValidationException(
-                    "Tax deductions missing for employee " + employee.getId());
-        }
-        return validateNext(employee, data);
-    }
+	@Override
+	public boolean validate(Employee employee, PayrollData data) throws Exception {
+		if (data.getTaxDeductions() == null || data.getTaxDeductions().isEmpty()) {
+			throw new PayrollValidationException("Tax deductions missing for employee " + employee.getId());
+		}
+		return validateNext(employee, data);
+	}
+
 }

@@ -18,33 +18,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class OllamaOpenApiService extends OpenAiService {
 
-    @Autowired
-    OllamaService ollamaService;
+	@Autowired
+	OllamaService ollamaService;
 
-    public OllamaOpenApiService(String token) {
-        super(token);
-    }
+	public OllamaOpenApiService(String token) {
+		super(token);
+	}
 
-    /*
-  public OllamaOpenApiService(String token, Duration timeout) {
-      super(token, timeout);
-  }
+	/*
+	 * public OllamaOpenApiService(String token, Duration timeout) { super(token,
+	 * timeout); }
+	 * 
+	 * public OllamaOpenApiService(OpenAiApi api) { super(api); }
+	 * 
+	 * public OllamaOpenApiService(OpenAiApi api, ExecutorService executorService) {
+	 * super(api, executorService); } //
+	 */
+	@Override
+	public EmbeddingResult createEmbeddings(EmbeddingRequest request) {
+		return ollamaService.createEmbeddings(request).block(Duration.ofSeconds(10));
+	}
 
-  public OllamaOpenApiService(OpenAiApi api) {
-      super(api);
-  }
+	@Override
+	public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
+		return ollamaService.createChatCompletion(request).block(Duration.ofSeconds(10));
+	}
 
-  public OllamaOpenApiService(OpenAiApi api, ExecutorService executorService) {
-      super(api, executorService);
-  }
-  // */
-    @Override
-    public EmbeddingResult createEmbeddings(EmbeddingRequest request) {
-        return ollamaService.createEmbeddings(request).block(Duration.ofSeconds(10));
-    }
-
-    @Override
-    public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
-        return ollamaService.createChatCompletion(request).block(Duration.ofSeconds(10));
-    }
 }

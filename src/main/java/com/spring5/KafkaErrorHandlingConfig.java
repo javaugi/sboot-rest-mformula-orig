@@ -15,25 +15,25 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 @Configuration
 public class KafkaErrorHandlingConfig {
 
-    @Bean
-    public DeadLetterPublishingRecoverer dlqRecoverer(KafkaTemplate<?, ?> kafkaTemplate) {
-        return new DeadLetterPublishingRecoverer(
-                kafkaTemplate,
-                (record, ex)
-                -> new TopicPartition(record.topic() + ".DLT", record.partition()) // Use same partition
-        );
-    }
+	@Bean
+	public DeadLetterPublishingRecoverer dlqRecoverer(KafkaTemplate<?, ?> kafkaTemplate) {
+		return new DeadLetterPublishingRecoverer(kafkaTemplate,
+				(record, ex) -> new TopicPartition(record.topic() + ".DLT", record.partition()) // Use
+																								// same
+																								// partition
+		);
+	}
 
-    @Bean
-    public DefaultErrorHandler errorHandler(DeadLetterPublishingRecoverer dlqRecoverer) {
-        var handler = new DefaultErrorHandler(dlqRecoverer);
+	@Bean
+	public DefaultErrorHandler errorHandler(DeadLetterPublishingRecoverer dlqRecoverer) {
+		var handler = new DefaultErrorHandler(dlqRecoverer);
 
-        // Retry 3 times before sending to DLT
-        handler.setRetryListeners(
-                (record, ex, deliveryAttempt)
-                -> LoggerFactory.getLogger(KafkaErrorHandlingConfig.class)
-                        .warn("Failed record {}, attempt {}", record, deliveryAttempt));
+		// Retry 3 times before sending to DLT
+		handler
+			.setRetryListeners((record, ex, deliveryAttempt) -> LoggerFactory.getLogger(KafkaErrorHandlingConfig.class)
+				.warn("Failed record {}, attempt {}", record, deliveryAttempt));
 
-        return handler;
-    }
+		return handler;
+	}
+
 }

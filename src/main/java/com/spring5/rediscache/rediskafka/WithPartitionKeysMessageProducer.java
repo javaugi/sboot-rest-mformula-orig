@@ -14,13 +14,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class WithPartitionKeysMessageProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendOrderEvent(KafkaOrderEvent event) {
-        // Use orderId as key to ensure same order always goes to same partition
-        kafkaTemplate.send("orders", event.getOrderId(), event.toString());
+	public void sendOrderEvent(KafkaOrderEvent event) {
+		// Use orderId as key to ensure same order always goes to same partition
+		kafkaTemplate.send("orders", event.getOrderId(), event.toString());
 
-        // Or explicitly specify partition
-        // kafkaTemplate.send("orders", 0, event.getOrderId(), event.toString());
-    }
+		// Or explicitly specify partition
+		// kafkaTemplate.send("orders", 0, event.getOrderId(), event.toString());
+	}
+
 }

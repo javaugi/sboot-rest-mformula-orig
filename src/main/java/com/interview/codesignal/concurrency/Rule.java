@@ -11,7 +11,8 @@ import java.util.Set;
  */
 public interface Rule {
 
-    boolean evaluate(Set<Fact> facts);
+	boolean evaluate(Set<Fact> facts);
 
-    String getConclusion();
+	String getConclusion();
+
 }

@@ -11,5 +11,6 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class FinancialData {
 
-    Claim claim;
+	Claim claim;
+
 }

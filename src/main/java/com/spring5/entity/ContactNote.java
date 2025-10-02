@@ -21,49 +21,50 @@ import lombok.ToString;
 @Table(name = "CONTACT_NOTE")
 public class ContactNote {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String message;
+	private String message;
 
-    @ManyToOne
-    @JoinColumn(name = "CONTACT_ID")
-    private Contact contact;
+	@ManyToOne
+	@JoinColumn(name = "CONTACT_ID")
+	private Contact contact;
 
-    // *
-    public ContactNote() {
-        super();
-    }
+	// *
+	public ContactNote() {
+		super();
+	}
 
-    public ContactNote(Long id, Contact contact, String message) {
-        this.id = id;
-        this.contact = contact;
-        this.message = message;
-    }
+	public ContactNote(Long id, Contact contact, String message) {
+		this.id = id;
+		this.contact = contact;
+		this.message = message;
+	}
 
-    // */
-    public Long getId() {
-        return id;
-    }
+	// */
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Contact getContact() {
-        return contact;
-    }
+	public Contact getContact() {
+		return contact;
+	}
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 }

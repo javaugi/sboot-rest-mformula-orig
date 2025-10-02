@@ -9,26 +9,26 @@ package com.patterns.behavioral.mediator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ChatRoomUser {
 
-    private String name;
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public ChatRoomUser(String name) {
-        this.name = name;
-    }
+	public ChatRoomUser(String name) {
+		this.name = name;
+	}
 
-    public void sendMessage(String message) {
-        ChatRoom.showMessage(this, message);
-    }
+	public void sendMessage(String message) {
+		ChatRoom.showMessage(this, message);
+	}
+
 }

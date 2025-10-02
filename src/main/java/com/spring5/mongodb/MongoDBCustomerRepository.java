@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface MongoDBCustomerRepository extends MongoRepository<Customer, String> {
 
-    public Customer findByFirstName(@Param("firstname") String firstName);
+	public Customer findByFirstName(@Param("firstname") String firstName);
 
-    public List<Customer> findByLastName(@Param("lastName") String lastName);
+	public List<Customer> findByLastName(@Param("lastName") String lastName);
+
 }

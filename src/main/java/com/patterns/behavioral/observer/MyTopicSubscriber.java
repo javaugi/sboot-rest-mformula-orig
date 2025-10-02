@@ -9,30 +9,32 @@ package com.patterns.behavioral.observer;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class MyTopicSubscriber implements Observer2 {
 
-    private String name;
-    private Subject2 topic;
+	private String name;
 
-    public MyTopicSubscriber(String nm) {
-        this.name = nm;
-    }
+	private Subject2 topic;
 
-    @Override
-    public void update() {
-        String msg = (String) topic.getUpdate(this);
-        if (msg == null) {
-            System.out.println(name + ":: No new message");
-        } else {
-            System.out.println(name + ":: Consuming message::" + msg);
-        }
-    }
+	public MyTopicSubscriber(String nm) {
+		this.name = nm;
+	}
 
-    @Override
-    public void setSubject(Subject2 sub) {
-        this.topic = sub;
-    }
+	@Override
+	public void update() {
+		String msg = (String) topic.getUpdate(this);
+		if (msg == null) {
+			System.out.println(name + ":: No new message");
+		}
+		else {
+			System.out.println(name + ":: Consuming message::" + msg);
+		}
+	}
+
+	@Override
+	public void setSubject(Subject2 sub) {
+		this.topic = sub;
+	}
+
 }

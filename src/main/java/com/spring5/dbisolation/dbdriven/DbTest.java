@@ -15,4 +15,5 @@ Testing Spring Boot applications involves:
     Testing at different layers (repository, service, controller)
  */
 public class DbTest {
+
 }

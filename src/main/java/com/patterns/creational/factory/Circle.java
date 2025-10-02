@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Circle implements Shape {
 
-    private static final Logger log = LoggerFactory.getLogger(Circle.class);
+	private static final Logger log = LoggerFactory.getLogger(Circle.class);
 
-    @Override
-    public void draw() {
-        System.out.println("Inside Circle::draw() method.");
-    }
+	@Override
+	public void draw() {
+		System.out.println("Inside Circle::draw() method.");
+	}
+
 }

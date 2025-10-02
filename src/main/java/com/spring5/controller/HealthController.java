@@ -13,23 +13,20 @@ import reactor.core.publisher.Mono;
 @RequestMapping(path = "/api/health")
 public class HealthController {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @GetMapping
-    public Mono<String> index() {
-        long userCount = 0;
-        try {
-            userCount = userRepository.count();
-        } catch (Exception ex) {
+	@GetMapping
+	public Mono<String> index() {
+		long userCount = 0;
+		try {
+			userCount = userRepository.count();
+		}
+		catch (Exception ex) {
 
-        }
-        return Mono.just(
-                "App Running - Spring Boot "
-                + SpringBootVersion.getVersion()
-                + " at the server and now it is "
-                + new Date()
-                + ". User count ="
-                + userCount);
-    }
+		}
+		return Mono.just("App Running - Spring Boot " + SpringBootVersion.getVersion() + " at the server and now it is "
+				+ new Date() + ". User count =" + userCount);
+	}
+
 }

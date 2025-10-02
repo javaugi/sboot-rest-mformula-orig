@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class Square implements Shape {
 
-    private static final Logger log = LoggerFactory.getLogger(Square.class);
+	private static final Logger log = LoggerFactory.getLogger(Square.class);
 
-    @Override
-    public void draw() {
-        System.out.println("Inside Square::draw() method.");
-    }
+	@Override
+	public void draw() {
+		System.out.println("Inside Square::draw() method.");
+	}
+
 }

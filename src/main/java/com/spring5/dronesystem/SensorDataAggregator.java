@@ -19,7 +19,7 @@ Defense-Specific Knowledge
     Authentication/authorization mechanisms
  */
 
- /*
+/*
 
 3. Behavioral Preparation
 
@@ -27,98 +27,104 @@ STAR Method Responses
 Prepare examples demonstrating:
 
 Complex Problem Solving:
-    "Describe a time you debugged a complex multithreading issue"
-    Highlight your systematic approach and tools used (jstack, VisualVM)
+   "Describe a time you debugged a complex multithreading issue"
+   Highlight your systematic approach and tools used (jstack, VisualVM)
 
 Team Collaboration:
-    "Give an example of working with geographically dispersed teams"
-    Mention tools (Slack, Zoom, Jira) and strategies (timezone management)
+   "Give an example of working with geographically dispersed teams"
+   Mention tools (Slack, Zoom, Jira) and strategies (timezone management)
 
 Defense-Specific Scenarios:
-    "Describe how you've handled sensitive data or systems"
-    Emphasize security protocols and compliance
+   "Describe how you've handled sensitive data or systems"
+   Emphasize security protocols and compliance
 
 Sample Response Structure:
-    Situation:  Working on a sensor data processing system with strict latency requirements
-    Task:       Needed to reduce processing time by 50% to meet military spec
-    Action:     Profiled application, identified bottleneck in serialization, implemented custom binary protocol
-    Result:     Achieved 60% reduction, system met all operational requirements
+   Situation:  Working on a sensor data processing system with strict latency requirements
+   Task:       Needed to reduce processing time by 50% to meet military spec
+   Action:     Profiled application, identified bottleneck in serialization, implemented custom binary protocol
+   Result:     Achieved 60% reduction, system met all operational requirements
 
- */
+*/
 public class SensorDataAggregator {
 
-    private final ConcurrentMap<String, SensorData> latestData = new ConcurrentHashMap<>();
-    private final BlockingQueue<SensorData> dataQueue = new LinkedBlockingQueue<>();
-    private final AtomicLong processedCount = new AtomicLong(0);
-    private final ExecutorService processingPool;
-    private volatile boolean running = true;
+	private final ConcurrentMap<String, SensorData> latestData = new ConcurrentHashMap<>();
 
-    private final Map<String, AtomicDouble> sensorReadings = new ConcurrentHashMap<>();
+	private final BlockingQueue<SensorData> dataQueue = new LinkedBlockingQueue<>();
 
-    public void updateReading(String sensorId, double value) {
-        sensorReadings.computeIfAbsent(sensorId, k -> new AtomicDouble()).set(value);
-    }
+	private final AtomicLong processedCount = new AtomicLong(0);
 
-    public double getAverageReading() {
-        return sensorReadings.values().stream().mapToDouble(AtomicDouble::get).average().orElse(0.0);
-    }
+	private final ExecutorService processingPool;
 
-    public SensorDataAggregator(int poolSize) {
-        this.processingPool = Executors.newFixedThreadPool(poolSize);
-        startProcessing();
-    }
+	private volatile boolean running = true;
 
-    public void addData(SensorData data) {
-        dataQueue.offer(data);
-    }
+	private final Map<String, AtomicDouble> sensorReadings = new ConcurrentHashMap<>();
 
-    private void startProcessing() {
-        for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
-            processingPool.submit(
-                    () -> {
-                        while (running) {
-                            try {
-                                SensorData data = dataQueue.poll(100, TimeUnit.MILLISECONDS);
-                                if (data != null) {
-                                    processData(data);
-                                }
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                                break;
-                            }
-                        }
-                    });
-        }
-    }
+	public void updateReading(String sensorId, double value) {
+		sensorReadings.computeIfAbsent(sensorId, k -> new AtomicDouble()).set(value);
+	}
 
-    private void processData(SensorData data) {
-        latestData.put(data.getDroneId(), data);
-        processedCount.incrementAndGet();
-        // Additional processing logic here
-    }
+	public double getAverageReading() {
+		return sensorReadings.values().stream().mapToDouble(AtomicDouble::get).average().orElse(0.0);
+	}
 
-    public SensorData getLatestData(String droneId) {
-        return latestData.get(droneId);
-    }
+	public SensorDataAggregator(int poolSize) {
+		this.processingPool = Executors.newFixedThreadPool(poolSize);
+		startProcessing();
+	}
 
-    public Map<String, SensorData> getAllLatestData() {
-        return new HashMap<>(latestData);
-    }
+	public void addData(SensorData data) {
+		dataQueue.offer(data);
+	}
 
-    public long getProcessedCount() {
-        return processedCount.get();
-    }
+	private void startProcessing() {
+		for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
+			processingPool.submit(() -> {
+				while (running) {
+					try {
+						SensorData data = dataQueue.poll(100, TimeUnit.MILLISECONDS);
+						if (data != null) {
+							processData(data);
+						}
+					}
+					catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+						break;
+					}
+				}
+			});
+		}
+	}
 
-    public void shutdown() {
-        running = false;
-        processingPool.shutdown();
-        try {
-            if (!processingPool.awaitTermination(5, TimeUnit.SECONDS)) {
-                processingPool.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            processingPool.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
-    }
+	private void processData(SensorData data) {
+		latestData.put(data.getDroneId(), data);
+		processedCount.incrementAndGet();
+		// Additional processing logic here
+	}
+
+	public SensorData getLatestData(String droneId) {
+		return latestData.get(droneId);
+	}
+
+	public Map<String, SensorData> getAllLatestData() {
+		return new HashMap<>(latestData);
+	}
+
+	public long getProcessedCount() {
+		return processedCount.get();
+	}
+
+	public void shutdown() {
+		running = false;
+		processingPool.shutdown();
+		try {
+			if (!processingPool.awaitTermination(5, TimeUnit.SECONDS)) {
+				processingPool.shutdownNow();
+			}
+		}
+		catch (InterruptedException e) {
+			processingPool.shutdownNow();
+			Thread.currentThread().interrupt();
+		}
+	}
+
 }

@@ -12,8 +12,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class ExternalApiProperties {
 
-    private String baseUrl;
-    private int timeout = 5000;
-    private int maxConnections = 100;
-    private int maxPerRoute = 20;
+	private String baseUrl;
+
+	private int timeout = 5000;
+
+	private int maxConnections = 100;
+
+	private int maxPerRoute = 20;
+
 }

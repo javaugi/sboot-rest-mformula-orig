@@ -19,12 +19,13 @@ import lombok.NoArgsConstructor;
 @Entity
 public class MedicalFile {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
+	private String name;
 
-    @OneToOne(mappedBy = "medicalFile")
-    private MedicalFileMetadata metadata;
+	@OneToOne(mappedBy = "medicalFile")
+	private MedicalFileMetadata metadata;
+
 }

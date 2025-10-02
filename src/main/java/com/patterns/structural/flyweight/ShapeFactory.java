@@ -13,21 +13,21 @@ import java.util.Map;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class ShapeFactory {
 
-    private static final Map circleMap = Collections.synchronizedMap(new HashMap());
+	private static final Map circleMap = Collections.synchronizedMap(new HashMap());
 
-    public static Shape getCircle(String color) {
-        Circle circle = (Circle) circleMap.get(color);
+	public static Shape getCircle(String color) {
+		Circle circle = (Circle) circleMap.get(color);
 
-        if (circle == null) {
-            circle = new Circle(color);
-            circleMap.put(color, circle);
-            System.out.println("Creating circle of color : " + color);
-        }
-        return circle;
-    }
+		if (circle == null) {
+			circle = new Circle(color);
+			circleMap.put(color, circle);
+			System.out.println("Creating circle of color : " + color);
+		}
+		return circle;
+	}
+
 }

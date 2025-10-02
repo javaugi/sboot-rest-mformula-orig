@@ -9,12 +9,12 @@ package com.patterns.behavioral.visitor;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface ShoppingCartVisitor {
 
-    int visit(Book book);
+	int visit(Book book);
 
-    int visit(Fruit fruit);
+	int visit(Fruit fruit);
+
 }

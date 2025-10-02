@@ -15,42 +15,45 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RateLimiterRequestOnSize {
 
-    private static final int MAX_TOKENS = 100;
-    private static final long WINDOW_SIZE_MILLIS = 60 * 1000;
-    private final ConcurrentHashMap<String, Deque<Long>> userLimit = new ConcurrentHashMap<>();
+	private static final int MAX_TOKENS = 100;
 
-    public static void main(String[] args) throws InterruptedException {
-        RateLimiterRequestOnSize limiter = new RateLimiterRequestOnSize();
-        String userId = "user123";
+	private static final long WINDOW_SIZE_MILLIS = 60 * 1000;
 
-        for (int i = 0; i < 105; i++) {
-            boolean allowed = limiter.isAllowed(userId);
-            System.out.println("Request " + (i + 1) + ": " + (allowed ? "✅ Allowed" : "❌ Rate Limited"));
-            Thread.sleep(500); // simulate delay
-        }
-    }
+	private final ConcurrentHashMap<String, Deque<Long>> userLimit = new ConcurrentHashMap<>();
 
-    public boolean isAllowed(String userId) {
-        return isAllowed(userId, MAX_TOKENS, WINDOW_SIZE_MILLIS);
-    }
+	public static void main(String[] args) throws InterruptedException {
+		RateLimiterRequestOnSize limiter = new RateLimiterRequestOnSize();
+		String userId = "user123";
 
-    public boolean isAllowed(String userId, int tokenLimit, long windowSize) {
-        long now = Instant.now().toEpochMilli();
-        Deque<Long> timestamps = userLimit.computeIfAbsent(userId, k -> new ArrayDeque<Long>());
+		for (int i = 0; i < 105; i++) {
+			boolean allowed = limiter.isAllowed(userId);
+			System.out.println("Request " + (i + 1) + ": " + (allowed ? "✅ Allowed" : "❌ Rate Limited"));
+			Thread.sleep(500); // simulate delay
+		}
+	}
 
-        synchronized (timestamps) {
-            // remove all those have exceeded the limit
-            while (!timestamps.isEmpty() && (now - timestamps.peekFirst()) > windowSize) {
-                timestamps.pollFirst();
-            }
+	public boolean isAllowed(String userId) {
+		return isAllowed(userId, MAX_TOKENS, WINDOW_SIZE_MILLIS);
+	}
 
-            if (timestamps.size() < tokenLimit) {
-                timestamps.addLast(now);
-                userLimit.put(userId, timestamps);
-                return true;
-            }
-        }
+	public boolean isAllowed(String userId, int tokenLimit, long windowSize) {
+		long now = Instant.now().toEpochMilli();
+		Deque<Long> timestamps = userLimit.computeIfAbsent(userId, k -> new ArrayDeque<Long>());
 
-        return false;
-    }
+		synchronized (timestamps) {
+			// remove all those have exceeded the limit
+			while (!timestamps.isEmpty() && (now - timestamps.peekFirst()) > windowSize) {
+				timestamps.pollFirst();
+			}
+
+			if (timestamps.size() < tokenLimit) {
+				timestamps.addLast(now);
+				userLimit.put(userId, timestamps);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

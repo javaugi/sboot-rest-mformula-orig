@@ -13,32 +13,30 @@ import org.springframework.scheduling.annotation.Scheduled;
  */
 public class W3LockAvoidanceMViewManager {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    @Scheduled(cron = "0 0 2 * * ?") // Daily at 2 AM
-    public void refreshMaterializedViews() {
-        refreshMv("claims_daily_mv", "COMPLETE");
-        refreshMv("claims_monthly_mv", "FAST");
-    }
+	@Scheduled(cron = "0 0 2 * * ?") // Daily at 2 AM
+	public void refreshMaterializedViews() {
+		refreshMv("claims_daily_mv", "COMPLETE");
+		refreshMv("claims_monthly_mv", "FAST");
+	}
 
-    private void refreshMv(String mvName, String refreshType) {
-        String sql = String.format("BEGIN DBMS_MVIEW.REFRESH('%s', '%s'); END;", mvName, refreshType);
+	private void refreshMv(String mvName, String refreshType) {
+		String sql = String.format("BEGIN DBMS_MVIEW.REFRESH('%s', '%s'); END;", mvName, refreshType);
 
-        jdbcTemplate.execute(sql);
-    }
+		jdbcTemplate.execute(sql);
+	}
 
-    public void createIncrementalMView(String mvName, String query) {
-        String sql
-                = String.format(
-                        """
-            CREATE MATERIALIZED VIEW %s
-            BUILD IMMEDIATE
-            REFRESH FAST ON COMMIT
-            AS %s
-            """,
-                        mvName, query);
+	public void createIncrementalMView(String mvName, String query) {
+		String sql = String.format("""
+				CREATE MATERIALIZED VIEW %s
+				BUILD IMMEDIATE
+				REFRESH FAST ON COMMIT
+				AS %s
+				""", mvName, query);
 
-        jdbcTemplate.execute(sql);
-    }
+		jdbcTemplate.execute(sql);
+	}
+
 }

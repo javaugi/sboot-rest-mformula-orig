@@ -29,38 +29,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/apisec/patients")
 public class PatientApiSecController {
 
-    @Autowired
-    private PatientRepository patientRepository;
+	@Autowired
+	private PatientRepository patientRepository;
 
-    @Autowired
-    private MedicalHistoryRepository medicalHistoryRepository;
+	@Autowired
+	private MedicalHistoryRepository medicalHistoryRepository;
 
-    @GetMapping("/{id}/medical-history")
-    @PreAuthorize("hasRole('PHYSICIAN') or hasRole('NURSE')")
-    public ResponseEntity<MedicalHistory> getMedicalHistory(@PathVariable Long id) {
-        return ResponseEntity.ok(medicalHistoryRepository.findById(id).orElse(null));
-    }
+	@GetMapping("/{id}/medical-history")
+	@PreAuthorize("hasRole('PHYSICIAN') or hasRole('NURSE')")
+	public ResponseEntity<MedicalHistory> getMedicalHistory(@PathVariable Long id) {
+		return ResponseEntity.ok(medicalHistoryRepository.findById(id).orElse(null));
+	}
 
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('NURSE')")
-    public ResponseEntity<PatientResource> createPatient(@RequestBody Patient patient) {
-        patient = patientRepository.save(patient);
-        return ResponseEntity.ok(new PatientResource(patient));
-    }
+	@PostMapping
+	@PreAuthorize("hasRole('ADMIN') or hasRole('NURSE')")
+	public ResponseEntity<PatientResource> createPatient(@RequestBody Patient patient) {
+		patient = patientRepository.save(patient);
+		return ResponseEntity.ok(new PatientResource(patient));
+	}
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
-        Optional<Patient> patientOpt = patientRepository.findById(id);
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
+		Optional<Patient> patientOpt = patientRepository.findById(id);
 
-        if (patientOpt.isPresent()) {
-            patientRepository.deleteById(id); // Use deleteById for deleting by ID
-            ResponseEntity.noContent().build();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content for successful deletion
-        } else {
-            ResponseEntity.notFound().build();
-            return new ResponseEntity<>(
-                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
-        }
-    }
+		if (patientOpt.isPresent()) {
+			patientRepository.deleteById(id); // Use deleteById for deleting by ID
+			ResponseEntity.noContent().build();
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content for
+																// successful deletion
+		}
+		else {
+			ResponseEntity.notFound().build();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the
+																// product doesn't exist
+		}
+	}
+
 }

@@ -9,20 +9,21 @@ package com.patterns.behavioral.mediator;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public abstract class User {
 
-    protected ChatMediator mediator;
-    protected String name;
+	protected ChatMediator mediator;
 
-    public User(ChatMediator med, String name) {
-        this.mediator = med;
-        this.name = name;
-    }
+	protected String name;
 
-    public abstract void send(String msg);
+	public User(ChatMediator med, String name) {
+		this.mediator = med;
+		this.name = name;
+	}
 
-    public abstract void receive(String msg);
+	public abstract void send(String msg);
+
+	public abstract void receive(String msg);
+
 }

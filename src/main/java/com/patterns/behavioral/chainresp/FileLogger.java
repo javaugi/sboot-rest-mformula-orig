@@ -9,17 +9,17 @@ package com.patterns.behavioral.chainresp;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class FileLogger extends AbstractLogger {
 
-    public FileLogger(int level) {
-        this.level = level;
-    }
+	public FileLogger(int level) {
+		this.level = level;
+	}
 
-    @Override
-    protected void write(String message) {
-        System.out.println("File::Logger: " + message);
-    }
+	@Override
+	protected void write(String message) {
+		System.out.println("File::Logger: " + message);
+	}
+
 }

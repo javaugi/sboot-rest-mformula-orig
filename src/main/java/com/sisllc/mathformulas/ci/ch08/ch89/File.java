@@ -2,23 +2,25 @@ package com.sisllc.mathformulas.ci.ch08.ch89;
 
 public class File extends Entry {
 
-    private String content;
-    private int size;
+	private String content;
 
-    public File(String n, Directory p, int sz) {
-        super(n, p);
-        size = sz;
-    }
+	private int size;
 
-    public int size() {
-        return size;
-    }
+	public File(String n, Directory p, int sz) {
+		super(n, p);
+		size = sz;
+	}
 
-    public String getContents() {
-        return content;
-    }
+	public int size() {
+		return size;
+	}
 
-    public void setContents(String c) {
-        content = c;
-    }
+	public String getContents() {
+		return content;
+	}
+
+	public void setContents(String c) {
+		content = c;
+	}
+
 }

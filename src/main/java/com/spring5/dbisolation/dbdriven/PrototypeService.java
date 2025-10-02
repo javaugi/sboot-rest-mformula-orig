@@ -21,4 +21,5 @@ Spring provides several scopes for beans:
 @Service
 @Scope("prototype")
 public class PrototypeService {
+
 }

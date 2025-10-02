@@ -6,58 +6,52 @@ package com.interview.shoppingcart.api;
 
 /**
  * @author javaugi
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public interface Coupon {
 
-    static final int LIMIT_AMOUNT = 1000;
+	static final int LIMIT_AMOUNT = 1000;
 
-    static enum CouponCategory {
-        Discount,
-        DiscountByUnits,
-        DiscountPercentage,
-        BuyGetFree;
-    }
+	static enum CouponCategory {
 
-    /*
-  int getAmount;
-  int freeAmout;
-  int limitAmout;
-  double discountUnit;
-  double discountAmount;
-  double discountPercentage;
-  double discount;
-  // */
-    CouponCategory getCouponCategory();
+		Discount, DiscountByUnits, DiscountPercentage, BuyGetFree;
 
-    void setCouponCategory(CouponCategory category);
+	}
 
-    int getGetAmount();
+	/*
+	 * int getAmount; int freeAmout; int limitAmout; double discountUnit; double
+	 * discountAmount; double discountPercentage; double discount; //
+	 */
+	CouponCategory getCouponCategory();
 
-    void setGetAmount(int getAmount);
+	void setCouponCategory(CouponCategory category);
 
-    int getFreeAmout();
+	int getGetAmount();
 
-    void setFreeAmout(int freeAmout);
+	void setGetAmount(int getAmount);
 
-    int getLimitAmout();
+	int getFreeAmout();
 
-    void setLimitAmout(int limitAmout);
+	void setFreeAmout(int freeAmout);
 
-    double getDiscountUnit();
+	int getLimitAmout();
 
-    void setDiscountUnit(double discountUnit);
+	void setLimitAmout(int limitAmout);
 
-    double getDiscountAmount();
+	double getDiscountUnit();
 
-    void setDiscountAmount(double discountAmount);
+	void setDiscountUnit(double discountUnit);
 
-    double getDiscountPercentage();
+	double getDiscountAmount();
 
-    void setDiscountPercentage(double discountPercentage);
+	void setDiscountAmount(double discountAmount);
 
-    double getDiscount();
+	double getDiscountPercentage();
 
-    void setDiscount(double discount);
+	void setDiscountPercentage(double discountPercentage);
+
+	double getDiscount();
+
+	void setDiscount(double discount);
+
 }

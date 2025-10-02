@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClickEvent {
 
-    public String userId;
-    public long timestamp; // epoch millis
+	public String userId;
+
+	public long timestamp; // epoch millis
+
 }

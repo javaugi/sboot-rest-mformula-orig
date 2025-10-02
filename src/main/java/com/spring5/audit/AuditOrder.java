@@ -26,15 +26,17 @@ import lombok.ToString;
 @Table(name = "audit_order")
 public class AuditOrder implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 
-    double quantity;
-    String status;
+	double quantity;
 
-    public AuditOrder(OrderRequest request) {
-        this.id = request.itemId;
-        this.quantity = request.quantity;
-    }
+	String status;
+
+	public AuditOrder(OrderRequest request) {
+		this.id = request.itemId;
+		this.quantity = request.quantity;
+	}
+
 }

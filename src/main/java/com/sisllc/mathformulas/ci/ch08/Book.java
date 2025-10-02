@@ -2,30 +2,32 @@ package com.sisllc.mathformulas.ci.ch08;
 
 public class Book {
 
-    private int bookId;
-    private String details;
+	private int bookId;
 
-    public Book(int id, String det) {
-        bookId = id;
-        details = det;
-    }
+	private String details;
 
-    public void update() {
-    }
+	public Book(int id, String det) {
+		bookId = id;
+		details = det;
+	}
 
-    public int getID() {
-        return bookId;
-    }
+	public void update() {
+	}
 
-    public void setID(int id) {
-        bookId = id;
-    }
+	public int getID() {
+		return bookId;
+	}
 
-    public String getDetails() {
-        return details;
-    }
+	public void setID(int id) {
+		bookId = id;
+	}
 
-    public void setDetails(String details) {
-        this.details = details;
-    }
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
 }

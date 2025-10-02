@@ -7,13 +7,14 @@ package com.spring5.hackerrank;
 @FunctionalInterface
 interface Transformer<T> {
 
-    T transform(T input); // Single abstract method
+	T transform(T input); // Single abstract method
 
-    default Transformer<T> andThen(Transformer<T> other) {
-        return input -> other.transform(this.transform(input));
-    }
+	default Transformer<T> andThen(Transformer<T> other) {
+		return input -> other.transform(this.transform(input));
+	}
 
-    static <T> Transformer<T> identity() {
-        return input -> input;
-    }
+	static <T> Transformer<T> identity() {
+		return input -> input;
+	}
+
 }

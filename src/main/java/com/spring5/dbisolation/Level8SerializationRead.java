@@ -15,13 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class Level8SerializationRead {
 
-    private final InventoryRepository inventoryRepository;
+	private final InventoryRepository inventoryRepository;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void updateInventory(Long productId, int quantity) {
-        // This transaction will be completely isolated from others
-        Inventory inventory = inventoryRepository.findByProductId(productId);
-        inventory.setQuantity(inventory.getQuantity() - quantity);
-        inventoryRepository.save(inventory);
-    }
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public void updateInventory(Long productId, int quantity) {
+		// This transaction will be completely isolated from others
+		Inventory inventory = inventoryRepository.findByProductId(productId);
+		inventory.setQuantity(inventory.getQuantity() - quantity);
+		inventoryRepository.save(inventory);
+	}
+
 }

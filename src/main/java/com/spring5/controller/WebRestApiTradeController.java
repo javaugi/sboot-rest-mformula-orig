@@ -97,566 +97,522 @@ For partial updates, use:
 @RequestMapping("/web/apirest")
 public class WebRestApiTradeController {
 
-    private final AlgoTradeR2dbcService algoTradeR2dbcService;
-    private final AlgoTradeService algoTradeService;
-    private final RestTemplate restTemplate;
+	private final AlgoTradeR2dbcService algoTradeR2dbcService;
 
-    private static final String ETAG_MODIFIED_MISMATCH
-            = "{\"error\": \"ETag mismatch. Resource was modified by another request.\"}";
+	private final AlgoTradeService algoTradeService;
 
-    /*
-  Type 1: API Implementation
-  Example Question: "Design an endpoint that returns a user's recent transactions with filtering capabilities."
-     */
- /*
-  @GetMapping("/users/{userId}/transactions")
-  public Page<AlgoTrade> getTransactions(
-      @PathVariable String userId,
-      @RequestParam(required = false) LocalDate startDate,
-      @RequestParam(required = false) LocalDate endDate,
-      @RequestParam(required = false) TransactionType type,
-      @PageableDefault Pageable pageable) {
+	private final RestTemplate restTemplate;
 
-      // Discussion points:
-      // - Pagination implementation
-      // - Filter validation
-      // - Performance considerations (indexing)
-      // - Error handling
-  }
-  // */
- /*
-  3. Summary Table
-      Header              Usage                                       Example Value
-      Cache-Control       Cache policy (e.g., max-age, no-cache)      max-age=600, public
-      Expires             When resource becomes stale                 Wed, 21 Oct 2025 07:28:00 GMT
-      ETag                Version identifier for resource             "v1.0"
-      Last-Modified       Last time resource changed                  Wed, 21 Oct 2025 07:28:00 GMT
+	private static final String ETAG_MODIFIED_MISMATCH = "{\"error\": \"ETag mismatch. Resource was modified by another request.\"}";
 
+	/*
+	 * Type 1: API Implementation Example Question:
+	 * "Design an endpoint that returns a user's recent transactions with filtering capabilities."
+	 */
+	/*
+	 * @GetMapping("/users/{userId}/transactions") public Page<AlgoTrade> getTransactions(
+	 * 
+	 * @PathVariable String userId,
+	 * 
+	 * @RequestParam(required = false) LocalDate startDate,
+	 * 
+	 * @RequestParam(required = false) LocalDate endDate,
+	 * 
+	 * @RequestParam(required = false) TransactionType type,
+	 * 
+	 * @PageableDefault Pageable pageable) {
+	 * 
+	 * // Discussion points: // - Pagination implementation // - Filter validation // -
+	 * Performance considerations (indexing) // - Error handling } //
+	 */
+	/*
+	 * 3. Summary Table Header Usage Example Value Cache-Control Cache policy (e.g.,
+	 * max-age, no-cache) max-age=600, public Expires When resource becomes stale Wed, 21
+	 * Oct 2025 07:28:00 GMT ETag Version identifier for resource "v1.0" Last-Modified
+	 * Last time resource changed Wed, 21 Oct 2025 07:28:00 GMT
+	 * 
+	 * 
+	 * ✅ Key Differences Table Feature ETag / Last-Modified Idempotency Key Purpose Cache
+	 * validation, optimistic concurrency Prevent duplicate side-effects Scope
+	 * Per-resource state Per request/operation Client supplies? Not required (server
+	 * sends ETag, client echoes) Yes, client must send unique key Used with GET (304),
+	 * PUT/DELETE (412) POST/PUT/DELETE (safe retries) Server logic Compare
+	 * version/timestamp with current state Store key+response, reuse if retried Failure
+	 * status 304 Not Modified, 412 Precondition Failed 409 Conflict or same 200 result on
+	 * retry Typical lifetime Until resource changes TTL window (e.g., 24h)
+	 * 
+	 * 1) Simple GET with ETag (computed from DB version) + Last-Modified 2) Conditional
+	 * Update (PUT) using If-Match for optimistic locking
+	 */
+	/*
+	 * 1. Query Parameters ($\texttt{?key=value&key2=value2}$)
+	 * 
+	 * @RequestParam String username, String ifMatch = request.getParameter("username");
+	 * curl http://localhost:8088//web/apirest/cache?username=MyUsername 2. Request
+	 * Headers
+	 * 
+	 * @GetMapping public ResponseEntity<List<AlgoTrade>>
+	 * getAllWithCacheControl(@PathVariable String username,
+	 * 
+	 * @RequestParam String username, @RequestHeader("Authorization") String authToken) {
+	 * }
+	 * 
+	 * @RequestHeader("Authorization") String authToken,
+	 * request.getHeader("Authorization"); 3. Request Body (Payload) for requests like
+	 * POST or PUT, the primary data is sent in the body of the HTTP request, which is not
+	 * part of the URL path.
+	 * 
+	 * @RequestBody User newUser
+	 * 
+	 * @PutMapping("/{username}") public ResponseEntity<AlgoTrade> update(@RequestBody
+	 * AlgoTrade newTrade) { } 4. Path Variables
+	 * 
+	 * @GetMapping("/{username}") public ResponseEntity<List<AlgoTrade>>
+	 * getAllWithCacheControl(@PathVariable String username) { } curl
+	 * http://localhost:8088//web/apirest/cache/MyUsername 5. Cookies
+	 * 
+	 * @GetMapping public ResponseEntity<List<AlgoTrade>>
+	 * getAllWithCacheControl(@CookieValue("username") String username) { }
+	 * 
+	 * @CookieValue("sessionId") String username 6. Matrix Variables: These allow passing
+	 * parameters as part of the URI path, separated by a semicolon (;)
+	 * 
+	 * @GetMapping("/resources/{id;version}") public ResponseEntity<List<AlgoTrade>>
+	 * getAllWithCacheControl(@MatrixVariable String id, @MatrixVariable String version) {
+	 * }
+	 * 
+	 */
+	@GetMapping("/cache")
+	public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(@PathVariable String usernameParam,
+			@RequestParam String username, @RequestHeader("Authorization") String authToken,
+			@CookieValue("username") String usernameCookie, HttpServletRequest request) {
+		// jakarta.servlet.http.HttpServletRequest;
+		// org.springframework.web.bind.annotation.PathVariable
+		// org.springframework.web.bind.annotation.RequestParam;
+		// org.springframework.web.bind.annotation.RequestHeader
+		// org.springframework.web.bind.annotation.CookieValue
+		String ifMatch = request.getParameter("If-Match");
+		String idempotencyKey = request.getHeader("Idempotency-Key");
 
-  ✅ Key Differences Table
-      Feature             ETag / Last-Modified                                Idempotency Key
-      Purpose             Cache validation, optimistic concurrency            Prevent duplicate side-effects
-      Scope               Per-resource state                                  Per request/operation
-      Client supplies?	Not required (server sends ETag, client echoes)     Yes, client must send unique key
-      Used with           GET (304), PUT/DELETE                               (412)	POST/PUT/DELETE (safe retries)
-      Server logic        Compare version/timestamp with current state        Store key+response, reuse if retried
-      Failure status      304 Not Modified, 412 Precondition Failed           409 Conflict or same 200 result on retry
-      Typical lifetime	Until resource changes                              TTL window (e.g., 24h)
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
+			// .expires(Instant.now().plusSeconds(600).toEpochMilli())
+			.body(algoTradeService.findAll());
+		/*
+		 * Cache-Control: public, max-age=600 Expires: <600 seconds from now>
+		 */
+	}
 
-  1) Simple GET with ETag (computed from DB version) + Last-Modified
-  2) Conditional Update (PUT) using If-Match for optimistic locking
-     */
- /*
-     1. Query Parameters ($\texttt{?key=value&key2=value2}$)
-         @RequestParam String username, String ifMatch = request.getParameter("username");
-         curl http://localhost:8088//web/apirest/cache?username=MyUsername
-     2. Request Headers
-         @GetMapping
-         public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(@PathVariable String username,
-             @RequestParam String username, @RequestHeader("Authorization") String authToken) {
-         }
-         @RequestHeader("Authorization") String authToken, request.getHeader("Authorization");
-     3. Request Body (Payload) for requests like POST or PUT, the primary data is sent in the body of the HTTP request, which is not part of the URL path.
-         @RequestBody User newUser
-         @PutMapping("/{username}")
-         public ResponseEntity<AlgoTrade> update(@RequestBody AlgoTrade newTrade) {
-         }
-     4. Path Variables
-         @GetMapping("/{username}")
-         public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(@PathVariable String username) {
-         }
-         curl http://localhost:8088//web/apirest/cache/MyUsername
-     5. Cookies
-         @GetMapping
-         public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(@CookieValue("username") String username) {
-         }
-         @CookieValue("sessionId") String username
-     6. Matrix Variables: These allow passing parameters as part of the URI path, separated by a semicolon (;)
-         @GetMapping("/resources/{id;version}")
-         public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(@MatrixVariable String id, @MatrixVariable String version) {
-         }
+	// 1) Simple GET with ETag (computed from DB version) + Last-Modified
+	@GetMapping("/etag/{id}")
+	public ResponseEntity<AlgoTrade> getAlgoTradeById(@PathVariable Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+		AlgoTrade trade = algoTradeService.findById(id);
+		if (trade.getId() == null) {
+			return ResponseEntity.notFound().build();
+		}
 
-     */
-    @GetMapping("/cache")
-    public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(
-            @PathVariable String usernameParam,
-            @RequestParam String username,
-            @RequestHeader("Authorization") String authToken,
-            @CookieValue("username") String usernameCookie,
-            HttpServletRequest request) {
-        //  jakarta.servlet.http.HttpServletRequest;
-        //  org.springframework.web.bind.annotation.PathVariable
-        //  org.springframework.web.bind.annotation.RequestParam;
-        //  org.springframework.web.bind.annotation.RequestHeader
-        //  org.springframework.web.bind.annotation.CookieValue
-        String ifMatch = request.getParameter("If-Match");
-        String idempotencyKey = request.getHeader("Idempotency-Key");
+		// 1) Build a cheap ETag from DB version
+		String eTag = calculateETag(trade);
+		// 2) Last-Modified from updatedAt
+		long lastModified = trade.getUpdateDate().toEpochMilli();
+		// 3) Let Spring helper check If-None-Match / If-Modified-Since
+		ServletWebRequest webRequest = new ServletWebRequest(request, response);
+		// org.springframework.web.context.request.ServletWebRequest;
+		// checkNotModified returns true if the request is conditional and NOT modified
+		if (webRequest.checkNotModified(eTag, lastModified)) {
+			// ServletWebRequest already set response status to 304
+			// ServletWebRequest.checkNotModified(eTag, lastModified) inspects
+			// If-None-Match and
+			// If-Modified-Since and returns true if not modified.
+			return ResponseEntity.status(304).eTag(eTag).lastModified(lastModified).build();
+		}
 
-        return ResponseEntity.ok()
-                .cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
-                // .expires(Instant.now().plusSeconds(600).toEpochMilli())
-                .body(algoTradeService.findAll());
-        /*
-    Cache-Control: public, max-age=600
-    Expires: <600 seconds from now>
-         */
-    }
+		String ifMatch = request.getHeader("If-Match");
+		String ifNoneMatch = request.getHeader("If-None-Match");
+		long ifModifiedSince = request.getDateHeader("If-Modified-Since");
+		if (eTag.equals(ifMatch) && !eTag.equals(ifNoneMatch) && (ifModifiedSince < lastModified)) {
+			return ResponseEntity.status(304).eTag(eTag).lastModified(lastModified).build();
+		}
 
-    // 1) Simple GET with ETag (computed from DB version) + Last-Modified
-    @GetMapping("/etag/{id}")
-    public ResponseEntity<AlgoTrade> getAlgoTradeById(
-            @PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
-        AlgoTrade trade = algoTradeService.findById(id);
-        if (trade.getId() == null) {
-            return ResponseEntity.notFound().build();
-        }
+		// 4) Return full resource with caching headers
+		return ResponseEntity.ok()
+			.eTag(eTag)
+			.lastModified(lastModified)
+			.cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
+			.body(trade);
+	}
 
-        // 1) Build a cheap ETag from DB version
-        String eTag = calculateETag(trade);
-        // 2) Last-Modified from updatedAt
-        long lastModified = trade.getUpdateDate().toEpochMilli();
-        // 3) Let Spring helper check If-None-Match / If-Modified-Since
-        ServletWebRequest webRequest = new ServletWebRequest(request, response);
-        // org.springframework.web.context.request.ServletWebRequest;
-        // checkNotModified returns true if the request is conditional and NOT modified
-        if (webRequest.checkNotModified(eTag, lastModified)) {
-            // ServletWebRequest already set response status to 304
-            // ServletWebRequest.checkNotModified(eTag, lastModified) inspects If-None-Match and
-            // If-Modified-Since and returns true if not modified.
-            return ResponseEntity.status(304).eTag(eTag).lastModified(lastModified).build();
-        }
+	// 2) Conditional Update (PUT) using If-Match for optimistic locking
+	// 3) Create-if-not-exists with If-None-Match: "*"
+	@PutMapping("/etag/{id}")
+	public ResponseEntity<?> updateAlgoTradeById(@PathVariable Long id, HttpServletRequest request,
+			HttpServletResponse response, @RequestBody AlgoTrade updatedTrade) {
 
-        String ifMatch = request.getHeader("If-Match");
-        String ifNoneMatch = request.getHeader("If-None-Match");
-        long ifModifiedSince = request.getDateHeader("If-Modified-Since");
-        if (eTag.equals(ifMatch) && !eTag.equals(ifNoneMatch) && (ifModifiedSince < lastModified)) {
-            return ResponseEntity.status(304).eTag(eTag).lastModified(lastModified).build();
-        }
+		String ifMatch = request.getHeader("If-Match");
+		String ifNoneMatch = request.getHeader("If-None-Match");
+		AlgoTrade existingTrade = algoTradeService.findById(id);
 
-        // 4) Return full resource with caching headers
-        return ResponseEntity.ok()
-                .eTag(eTag)
-                .lastModified(lastModified)
-                .cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
-                .body(trade);
-    }
+		if (existingTrade.getId() == null) {
+			// 3) Create-if-not-exists with If-None-Match: "*"
+			if (ifNoneMatch != null && ifNoneMatch.equals("*")) {
+				AlgoTrade savedTrage = algoTradeService.save(updatedTrade);
+				String newETag = calculateETag(savedTrage);
+				return ResponseEntity.status(201)
+					.eTag(newETag)
+					.lastModified(savedTrage.getUpdateDate().toEpochMilli())
+					.cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
+					.body(savedTrage);
+			}
+		}
 
-    // 2) Conditional Update (PUT) using If-Match for optimistic locking
-    // 3) Create-if-not-exists with If-None-Match: "*"
-    @PutMapping("/etag/{id}")
-    public ResponseEntity<?> updateAlgoTradeById(
-            @PathVariable Long id,
-            HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestBody AlgoTrade updatedTrade) {
+		// 1) Build a cheap ETag from DB version
+		String eTag = calculateETag(existingTrade);
+		// 2) Last-Modified from updatedAt
+		long lastModified = existingTrade.getUpdateDate().toEpochMilli();
 
-        String ifMatch = request.getHeader("If-Match");
-        String ifNoneMatch = request.getHeader("If-None-Match");
-        AlgoTrade existingTrade = algoTradeService.findById(id);
+		if (ifMatch == null) {
+			// You may reject non-conditional updates with 428 or proceed depending on
+			// policy
+			// return ResponseEntity.status(428).body("Precondition required (send
+			// If-Match)");
+		}
+		// If-Match can be a list of ETags. Simple compare:
+		if (ifMatch != null && !ifMatch.equals(eTag) && !ifMatch.equals("*")) {
+			// Precondition failed — resource changed since client last saw it
+			return ResponseEntity.status(412).build(); // 412 Precondition Failed
+		}
 
-        if (existingTrade.getId() == null) {
-            // 3) Create-if-not-exists with If-None-Match: "*"
-            if (ifNoneMatch != null && ifNoneMatch.equals("*")) {
-                AlgoTrade savedTrage = algoTradeService.save(updatedTrade);
-                String newETag = calculateETag(savedTrage);
-                return ResponseEntity.status(201)
-                        .eTag(newETag)
-                        .lastModified(savedTrage.getUpdateDate().toEpochMilli())
-                        .cacheControl(
-                                CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
-                        .body(savedTrage);
-            }
-        }
+		ServletWebRequest webRequest = new ServletWebRequest(request, response);
+		// checkNotModified returns true if the request is conditional and NOT modified
+		if (!webRequest.checkNotModified(eTag, lastModified)) {
+			// ServletWebRequest already set response status to 304
+			// ServletWebRequest.checkNotModified(eTag, lastModified) inspects
+			// If-None-Match and
+			// If-Modified-Since and returns true if not modified.
+			return ResponseEntity.status(412).eTag(eTag).lastModified(lastModified).build();
+		}
 
-        // 1) Build a cheap ETag from DB version
-        String eTag = calculateETag(existingTrade);
-        // 2) Last-Modified from updatedAt
-        long lastModified = existingTrade.getUpdateDate().toEpochMilli();
+		existingTrade.setPrice(updatedTrade.getPrice());
+		if (updatedTrade.getVersion() != null && updatedTrade.getVersion() > existingTrade.getVersion()) {
+			existingTrade.setVersion(updatedTrade.getVersion());
+		}
+		AlgoTrade savedTrage = algoTradeService.save(existingTrade);
+		String newETag = calculateETag(savedTrage);
 
-        if (ifMatch == null) {
-            // You may reject non-conditional updates with 428 or proceed depending on policy
-            // return ResponseEntity.status(428).body("Precondition required (send If-Match)");
-        }
-        // If-Match can be a list of ETags. Simple compare:
-        if (ifMatch != null && !ifMatch.equals(eTag) && !ifMatch.equals("*")) {
-            // Precondition failed — resource changed since client last saw it
-            return ResponseEntity.status(412).build(); // 412 Precondition Failed
-        }
+		return ResponseEntity.ok()
+			.eTag(newETag)
+			.lastModified(lastModified)
+			.cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
+			.body(savedTrage);
+	}
 
-        ServletWebRequest webRequest = new ServletWebRequest(request, response);
-        // checkNotModified returns true if the request is conditional and NOT modified
-        if (!webRequest.checkNotModified(eTag, lastModified)) {
-            // ServletWebRequest already set response status to 304
-            // ServletWebRequest.checkNotModified(eTag, lastModified) inspects If-None-Match and
-            // If-Modified-Since and returns true if not modified.
-            return ResponseEntity.status(412).eTag(eTag).lastModified(lastModified).build();
-        }
+	private String calculateETag(AlgoTrade trade) {
+		// Create a hash of the important fields that determine consistency
+		String input = trade.getId() + ":" + trade.getVersion() + ":" + trade.getUpdateDate();
+		return "\"" + DigestUtils.md5DigestAsHex(input.getBytes()) + "\"";
+	}
 
-        existingTrade.setPrice(updatedTrade.getPrice());
-        if (updatedTrade.getVersion() != null
-                && updatedTrade.getVersion() > existingTrade.getVersion()) {
-            existingTrade.setVersion(updatedTrade.getVersion());
-        }
-        AlgoTrade savedTrage = algoTradeService.save(existingTrade);
-        String newETag = calculateETag(savedTrage);
+	public static String computeETag(String body) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digest = md.digest(body.getBytes(StandardCharsets.UTF_8));
+			String base64 = Base64.getEncoder().encodeToString(digest);
+			return "\"" + base64 + "\""; // quotes required
+		}
+		catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-        return ResponseEntity.ok()
-                .eTag(newETag)
-                .lastModified(lastModified)
-                .cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
-                .body(savedTrage);
-    }
+	// 2) ETag on GET + Idempotency on POST - this works like PUT
+	@PostMapping("/etag/create")
+	public ResponseEntity<AlgoTrade> addTrade(@RequestBody AlgoTrade trade,
+			@RequestHeader("Idempotency-Key") String key) {
+		AlgoTrade existingTrade = null;
+		if (trade.getId() != null) {
+			existingTrade = algoTradeService.findById(trade.getId());
+		}
 
-    private String calculateETag(AlgoTrade trade) {
-        // Create a hash of the important fields that determine consistency
-        String input = trade.getId() + ":" + trade.getVersion() + ":" + trade.getUpdateDate();
-        return "\"" + DigestUtils.md5DigestAsHex(input.getBytes()) + "\"";
-    }
+		if (existingTrade != null && existingTrade.getId() != null) {
+			return ResponseEntity.status(HttpStatus.FOUND).eTag(calculateETag(existingTrade)).body(existingTrade);
+		}
 
-    public static String computeETag(String body) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] digest = md.digest(body.getBytes(StandardCharsets.UTF_8));
-            String base64 = Base64.getEncoder().encodeToString(digest);
-            return "\"" + base64 + "\""; // quotes required
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
+		AlgoTrade createdTrade = algoTradeService.save(trade);
+		return ResponseEntity.status(201)
+			.eTag(calculateETag(existingTrade))
+			.lastModified(createdTrade.getUpdateDate().toEpochMilli())
+			.cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
+			.body(createdTrade);
+	}
 
-    // 2) ETag on GET + Idempotency on POST - this works like PUT
-    @PostMapping("/etag/create")
-    public ResponseEntity<AlgoTrade> addTrade(
-            @RequestBody AlgoTrade trade, @RequestHeader("Idempotency-Key") String key) {
-        AlgoTrade existingTrade = null;
-        if (trade.getId() != null) {
-            existingTrade = algoTradeService.findById(trade.getId());
-        }
+	/*
+	 * The classic performance bottleneck when a service processes hundreds (or thousands)
+	 * of IDs sequentially and calls a slow external API one When each call is
+	 * synchronous, you suffer because: 1. Network I/O waits dominate time. 2. No
+	 * parallelism → total time = sum of all calls. 3. External API latency magnifies the
+	 * delay. Recommended Solution 1. If immediate response is needed → Use Java's
+	 * CompletableFuture, or Spring’s @Async, Stream Paralell or WebFlux or WebClient with
+	 * concurrency control - Limit concurrency to avoid flooding the external service
+	 * (e.g., 10–20 parallel calls). 2. If delayed processing is acceptable → Use Kafka
+	 * for async processing with proper Resilience4j rate limiting, retries, backoff, and
+	 * circuit breaker to avoid overwhelming the external service.. 3. Add caching,
+	 * batching (if possible), and circuit breaker for resilience. Cache results for
+	 * frequently requested IDs. Use @Cacheable("trades") in Spring Boot to avoid
+	 * duplicate API calls.
+	 */
+	/*
+	 * Here are several strategies to handle the performance issues when making individual
+	 * external API calls for hundreds of trade IDs: 1. Batch Processing with Parallel
+	 * Execution A. Using CompletableFuture for Parallel Calls
+	 */
+	public List<AlgoTrade> getTradeBatchCompletableFuture(List<Long> tradeIds) {
+		return this.algoTradeService.getTradeBatchCompletableFuture(tradeIds);
+	}
 
-        if (existingTrade != null && existingTrade.getId() != null) {
-            return ResponseEntity.status(HttpStatus.FOUND)
-                    .eTag(calculateETag(existingTrade))
-                    .body(existingTrade);
-        }
+	// B. Using Spring's @Async for Asynchronous Processing
+	public List<AlgoTrade> getTradesParallelBySpringAsync(List<Long> ids) {
+		return this.algoTradeService.getTradesParallelBySpringAsync(ids);
+	}
 
-        AlgoTrade createdTrade = algoTradeService.save(trade);
-        return ResponseEntity.status(201)
-                .eTag(calculateETag(existingTrade))
-                .lastModified(createdTrade.getUpdateDate().toEpochMilli())
-                .cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
-                .body(createdTrade);
-    }
+	/*
+	 * 2. Implement Bulk API Endpoint (Recommended) if external service permits A.
+	 * Advocate for Bulk API from External Service
+	 */
+	public List<AlgoTrade> getTradesBulkIfExteralApiPermits(List<Long> tradeIds) {
+		return this.algoTradeService.getTradesBulkIfExteralApiPermits(tradeIds);
+	}
 
-    /*
-  The classic performance bottleneck when a service processes hundreds (or thousands) of IDs sequentially and calls a slow external API one
-  When each call is synchronous, you suffer because:
-      1. Network I/O waits dominate time.
-      2. No parallelism → total time = sum of all calls.
-      3. External API latency magnifies the delay.
-  Recommended Solution
-      1. If immediate response is needed → Use Java's CompletableFuture, or Spring’s @Async, Stream Paralell
-              or WebFlux or WebClient with concurrency control - Limit concurrency to avoid flooding the external service (e.g., 10–20 parallel calls).
-      2. If delayed processing is acceptable → Use Kafka for async processing with proper Resilience4j rate limiting, retries, backoff,
-              and circuit breaker to avoid overwhelming the external service..
-      3. Add caching, batching (if possible), and circuit breaker for resilience. Cache results for frequently requested IDs.
-              Use @Cacheable("trades") in Spring Boot to avoid duplicate API calls.
-     */
- /*
-  Here are several strategies to handle the performance issues when making individual external API calls for hundreds of trade IDs:
-  1. Batch Processing with Parallel Execution
-  A. Using CompletableFuture for Parallel Calls
-     */
-    public List<AlgoTrade> getTradeBatchCompletableFuture(List<Long> tradeIds) {
-        return this.algoTradeService.getTradeBatchCompletableFuture(tradeIds);
-    }
+	/*
+	 * 3. Caching Strategy A. Implement Redis Cache
+	 */
+	public List<AlgoTrade> getTradesWithRedisCache(List<Long> tradeIds) {
+		return this.algoTradeService.getTradesWithRedisCache(tradeIds);
+	}
 
-    //    B. Using Spring's @Async for Asynchronous Processing
-    public List<AlgoTrade> getTradesParallelBySpringAsync(List<Long> ids) {
-        return this.algoTradeService.getTradesParallelBySpringAsync(ids);
-    }
+	/*
+	 * 4. Rate Limiting and Circuit Breaker A. Using Resilience4j for Fault Tolerance
+	 */
+	public List<AlgoTrade> getTradesBatchResilient(List<Long> tradeIds) {
+		return this.algoTradeService.getTradesBatchResilient(tradeIds);
+	}
 
-    /*
-  2. Implement Bulk API Endpoint (Recommended) if external service permits
-  A. Advocate for Bulk API from External Service
-     */
-    public List<AlgoTrade> getTradesBulkIfExteralApiPermits(List<Long> tradeIds) {
-        return this.algoTradeService.getTradesBulkIfExteralApiPermits(tradeIds);
-    }
+	/*
+	 * 5. Hybrid Approach with Queuing A. Using Message Queue for Background Processing
+	 */
+	public List<AlgoTrade> processTradesKafkaAsync(List<Long> tradeIds) {
+		this.algoTradeService.processTradesKafkaAsync(tradeIds);
+		return this.algoTradeService.findByIds(tradeIds);
+	}
 
-    /*
-  3. Caching Strategy
-  A. Implement Redis Cache
-     */
-    public List<AlgoTrade> getTradesWithRedisCache(List<Long> tradeIds) {
-        return this.algoTradeService.getTradesWithRedisCache(tradeIds);
-    }
+	// 6. Complete Optimized Solution
+	public List<AlgoTrade> getTradesOptimized(List<Long> tradeIds) {
+		return this.algoTradeService.getTradesOptimized(tradeIds);
+	}
 
-    /*
-  4. Rate Limiting and Circuit Breaker
-  A. Using Resilience4j for Fault Tolerance
-     */
-    public List<AlgoTrade> getTradesBatchResilient(List<Long> tradeIds) {
-        return this.algoTradeService.getTradesBatchResilient(tradeIds);
-    }
+	// Optimized Version 2
+	public List<AlgoTrade> getTradesOptimizedV2(List<Long> tradeIds) {
+		return this.algoTradeService.getTradesOptimizedV2(tradeIds);
+	}
 
-    /*
-  5. Hybrid Approach with Queuing
-  A. Using Message Queue for Background Processing
-     */
-    public List<AlgoTrade> processTradesKafkaAsync(List<Long> tradeIds) {
-        this.algoTradeService.processTradesKafkaAsync(tradeIds);
-        return this.algoTradeService.findByIds(tradeIds);
-    }
+	/*
+	 * Performance Comparison Approach 100 Trades 1000 Trades Pros Cons Sequential ~100s
+	 * ~1000s Simple Very slow Parallel (20 threads) ~5s ~50s Fast External API load Bulk
+	 * API ~2s ~4s Very fast Requires API change Cached + Parallel ~1s ~2s Fastest Stale
+	 * data possible
+	 * 
+	 * Recommendation Priority: Try to get a bulk API endpoint (most efficient) Implement
+	 * caching + parallel execution Add rate limiting and circuit breakers Use async
+	 * processing with proper thread pooling
+	 */
+	// the above are the strategies to handle the performance issues when making
+	// individual external
+	// API calls for hundreds of trade IDs:
+	public Flux<AlgoTrade> getTradesByReactive(List<Long> tradeIds) {
+		return Flux.fromIterable(tradeIds)
+			// flatMap performs the concurrent, non-blocking API calls
+			.flatMap(algoTradeR2dbcService::findById);
+	}
 
-    // 6. Complete Optimized Solution
-    public List<AlgoTrade> getTradesOptimized(List<Long> tradeIds) {
-        return this.algoTradeService.getTradesOptimized(tradeIds);
-    }
+	@CircuitBreaker(name = "externalApiCB", fallbackMethod = "fallbackTrade")
+	public String callExternalApi(Long tradeId) {
+		return restTemplate.getForObject("https://external-api/trades/" + tradeId, String.class);
+	}
 
-    // Optimized Version 2
-    public List<AlgoTrade> getTradesOptimizedV2(List<Long> tradeIds) {
-        return this.algoTradeService.getTradesOptimizedV2(tradeIds);
-    }
+	public String fallbackTrade(Long tradeId, Throwable t) {
+		return "Fallback for " + tradeId;
+	}
 
-    /*
-     Performance Comparison
-     Approach                100 Trades      1000 Trades     Pros        Cons
-     Sequential              ~100s           ~1000s          Simple      Very slow
-     Parallel (20 threads)	~5s             ~50s            Fast        External API load
-     Bulk API                ~2s             ~4s             Very fast	Requires API change
-     Cached + Parallel       ~1s             ~2s             Fastest     Stale data possible
+	@GetMapping
+	public ResponseEntity<List<AlgoTrade>> getAll() {
+		return ResponseEntity.ok(algoTradeService.findAll());
+	}
 
-     Recommendation Priority:
-         Try to get a bulk API endpoint (most efficient)
-         Implement caching + parallel execution
-         Add rate limiting and circuit breakers
-         Use async processing with proper thread pooling
-     */
-    // the above are the strategies to handle the performance issues when making individual external
-    // API calls for hundreds of trade IDs:
-    public Flux<AlgoTrade> getTradesByReactive(List<Long> tradeIds) {
-        return Flux.fromIterable(tradeIds)
-                // flatMap performs the concurrent, non-blocking API calls
-                .flatMap(algoTradeR2dbcService::findById);
-    }
+	@GetMapping("/react")
+	public Flux<ResponseEntity<AlgoTrade>> getAllReact() {
+		return algoTradeR2dbcService.findAll()
+			.map(ResponseEntity::ok)
+			.defaultIfEmpty(ResponseEntity.notFound().build())
+			.onErrorResume(Exception.class, ex -> {
+				return Flux.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+			});
+	}
 
-    @CircuitBreaker(name = "externalApiCB", fallbackMethod = "fallbackTrade")
-    public String callExternalApi(Long tradeId) {
-        return restTemplate.getForObject("https://external-api/trades/" + tradeId, String.class);
-    }
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AlgoTrade> getById(@PathVariable("id") Long id) {
+		log.info("getUserById id {}", id);
+		AlgoTrade existingTrade = algoTradeService.findById(id);
+		if (existingTrade.getId() == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(existingTrade);
+	}
 
-    public String fallbackTrade(Long tradeId, Throwable t) {
-        return "Fallback for " + tradeId;
-    }
+	@GetMapping(value = "/react/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Mono<ResponseEntity<AlgoTrade>> getByIdReact(@PathVariable("id") Long id) {
+		log.info("getUserById id {}", id);
+		return algoTradeR2dbcService.findById(id)
+			.map(ResponseEntity::ok)
+			.defaultIfEmpty(ResponseEntity.notFound().build())
+			.onErrorResume(Exception.class, ex -> {
+				return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+			});
+	}
 
-    @GetMapping
-    public ResponseEntity<List<AlgoTrade>> getAll() {
-        return ResponseEntity.ok(algoTradeService.findAll());
-    }
+	@GetMapping("/{email}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<AlgoTrade>> getByUserEmail(@PathVariable String userEmail) {
+		List<AlgoTrade> trades = algoTradeService.getByUserEmail(userEmail);
+		if (trades == null || trades.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(trades);
+	}
 
-    @GetMapping("/react")
-    public Flux<ResponseEntity<AlgoTrade>> getAllReact() {
-        return algoTradeR2dbcService
-                .findAll()
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build())
-                .onErrorResume(
-                        Exception.class,
-                        ex -> {
-                            return Flux.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-                        });
-    }
+	@GetMapping(value = "/react/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Flux<ResponseEntity<AlgoTrade>> getByUserEmailReact(@PathVariable("userEmail") String userEmail) {
+		return algoTradeR2dbcService.getByUserEmail(userEmail)
+			.map(ResponseEntity::ok)
+			.defaultIfEmpty(ResponseEntity.notFound().build())
+			.onErrorResume(Exception.class, ex -> {
+				return Flux.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+			});
+	}
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AlgoTrade> getById(@PathVariable("id") Long id) {
-        log.info("getUserById id {}", id);
-        AlgoTrade existingTrade = algoTradeService.findById(id);
-        if (existingTrade.getId() == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(existingTrade);
-    }
+	@PostMapping("/create")
+	public ResponseEntity<AlgoTrade> createTrade(@RequestBody AlgoTrade trade) {
+		AlgoTrade createdTrade = algoTradeService.save(trade);
+		return new ResponseEntity<>(createdTrade, HttpStatus.CREATED);
+	}
 
-    @GetMapping(value = "/react/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<AlgoTrade>> getByIdReact(@PathVariable("id") Long id) {
-        log.info("getUserById id {}", id);
-        return algoTradeR2dbcService
-                .findById(id)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build())
-                .onErrorResume(
-                        Exception.class,
-                        ex -> {
-                            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-                        });
-    }
+	@PostMapping(value = "/react/create", consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public Mono<ResponseEntity<AlgoTrade>> createReact(@RequestBody AlgoTrade trade) {
+		return algoTradeR2dbcService.save(trade)
+			.map(savedUser -> ResponseEntity.status(HttpStatus.CREATED).body(savedUser))
+			.switchIfEmpty(Mono.just(AlgoTrade.builder().build())
+				.doOnNext(dummy -> log.info("Error create dummy {}", dummy))
+				.then(Mono.empty()))
+			.onErrorResume(e -> {
+				log.error("Error create: " + e.getMessage());
+				return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null));
+			});
+	}
 
-    @GetMapping("/{email}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<AlgoTrade>> getByUserEmail(@PathVariable String userEmail) {
-        List<AlgoTrade> trades = algoTradeService.getByUserEmail(userEmail);
-        if (trades == null || trades.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(trades);
-    }
+	@PutMapping("/update-trade")
+	public ResponseEntity<AlgoTrade> update(RequestEntity<AlgoTrade> request) {
+		AlgoTrade trade = algoTradeService.update(request.getBody());
+		if (trade != null) {
+			return ResponseEntity.ok(trade);
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    @GetMapping(value = "/react/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<ResponseEntity<AlgoTrade>> getByUserEmailReact(
-            @PathVariable("userEmail") String userEmail) {
-        return algoTradeR2dbcService
-                .getByUserEmail(userEmail)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build())
-                .onErrorResume(
-                        Exception.class,
-                        ex -> {
-                            return Flux.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-                        });
-    }
+	@PutMapping("/react/{id}")
+	public Mono<ResponseEntity<AlgoTrade>> updateReact(@PathVariable Long id, @Valid @RequestBody AlgoTrade trade,
+			@RequestHeader(value = "Authorization", required = false) String authHeader) {
+		log.info("Received PUT request for id: {} with data: {}, Authorization header: {}", id, trade, authHeader);
 
-    @PostMapping("/create")
-    public ResponseEntity<AlgoTrade> createTrade(@RequestBody AlgoTrade trade) {
-        AlgoTrade createdTrade = algoTradeService.save(trade);
-        return new ResponseEntity<>(createdTrade, HttpStatus.CREATED);
-    }
+		return algoTradeR2dbcService.findById(id).flatMap(existing -> {
+			return algoTradeR2dbcService.save(existing);
+		}).map(updatedUser -> {
+			log.info("Successfully updateUser: {}", updatedUser);
+			return ResponseEntity.ok(updatedUser);
+		})
+			.switchIfEmpty(Mono.just(AlgoTrade.builder().build())
+				.doOnNext(dummy -> log.info("Error update dummy {}", dummy))
+				.then(Mono.empty()))
+			.doOnError(e -> log.error("Error update {}", e.getMessage()));
+	}
 
-    @PostMapping(
-            value = "/react/create",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<AlgoTrade>> createReact(@RequestBody AlgoTrade trade) {
-        return algoTradeR2dbcService
-                .save(trade)
-                .map(savedUser -> ResponseEntity.status(HttpStatus.CREATED).body(savedUser))
-                .switchIfEmpty(
-                        Mono.just(AlgoTrade.builder().build())
-                                .doOnNext(dummy -> log.info("Error create dummy {}", dummy))
-                                .then(Mono.empty()))
-                .onErrorResume(
-                        e -> {
-                            log.error("Error create: " + e.getMessage());
-                            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null));
-                        });
-    }
+	@DeleteMapping("/trade/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteByTradeId(@PathVariable Long id) {
+		AlgoTrade trade = algoTradeService.findById(id);
+		// Check if the trade was found
+		if (trade.getId() == null) {
+			// If not found, throw a ResponseStatusException with NOT_FOUND status
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trade not found with ID: " + id);
+		}
 
-    @PutMapping("/update-trade")
-    public ResponseEntity<AlgoTrade> update(RequestEntity<AlgoTrade> request) {
-        AlgoTrade trade = algoTradeService.update(request.getBody());
-        if (trade != null) {
-            return ResponseEntity.ok(trade);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+		// If the trade is found, proceed with deletion
+		boolean deleted = algoTradeService.deleteById(id);
+		if (!deleted) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trade delete failed with ID: " + id);
+		}
+	}
 
-    @PutMapping("/react/{id}")
-    public Mono<ResponseEntity<AlgoTrade>> updateReact(
-            @PathVariable Long id,
-            @Valid @RequestBody AlgoTrade trade,
-            @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        log.info(
-                "Received PUT request for id: {} with data: {}, Authorization header: {}",
-                id,
-                trade,
-                authHeader);
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+		AlgoTrade trade = algoTradeService.findById(id);
 
-        return algoTradeR2dbcService
-                .findById(id)
-                .flatMap(
-                        existing -> {
-                            return algoTradeR2dbcService.save(existing);
-                        })
-                .map(
-                        updatedUser -> {
-                            log.info("Successfully updateUser: {}", updatedUser);
-                            return ResponseEntity.ok(updatedUser);
-                        })
-                .switchIfEmpty(
-                        Mono.just(AlgoTrade.builder().build())
-                                .doOnNext(dummy -> log.info("Error update dummy {}", dummy))
-                                .then(Mono.empty()))
-                .doOnError(e -> log.error("Error update {}", e.getMessage()));
-    }
+		if (trade.getId() != null) {
+			algoTradeService.deleteById(id); // Use deleteById for deleting by ID
+			ResponseEntity.noContent().build();
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content for
+																// successful deletion
+		}
+		else {
+			ResponseEntity.notFound().build();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found if the
+																// product doesn't exist
+		}
+	}
 
-    @DeleteMapping("/trade/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByTradeId(@PathVariable Long id) {
-        AlgoTrade trade = algoTradeService.findById(id);
-        // Check if the trade was found
-        if (trade.getId() == null) {
-            // If not found, throw a ResponseStatusException with NOT_FOUND status
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trade not found with ID: " + id);
-        }
+	@DeleteMapping("/react/{id}")
+	public Mono<ResponseEntity<Void>> deleteByIdReact(@PathVariable("id") Long id) {
+		return algoTradeR2dbcService.deleteById(id)
+			.then(Mono.just(ResponseEntity.noContent().build()))
+			.onErrorResume(e -> {
+				log.error("Error create: " + e.getMessage());
+				return Mono
+					.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AlgoTrade.builder().build()));
+			})
+			.then(Mono.empty());
+	}
 
-        // If the trade is found, proceed with deletion
-        boolean deleted = algoTradeService.deleteById(id);
-        if (!deleted) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Trade delete failed with ID: " + id);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        AlgoTrade trade = algoTradeService.findById(id);
-
-        if (trade.getId() != null) {
-            algoTradeService.deleteById(id); // Use deleteById for deleting by ID
-            ResponseEntity.noContent().build();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content for successful deletion
-        } else {
-            ResponseEntity.notFound().build();
-            return new ResponseEntity<>(
-                    HttpStatus.NOT_FOUND); // 404 Not Found if the product doesn't exist
-        }
-    }
-
-    @DeleteMapping("/react/{id}")
-    public Mono<ResponseEntity<Void>> deleteByIdReact(@PathVariable("id") Long id) {
-        return algoTradeR2dbcService
-                .deleteById(id)
-                .then(Mono.just(ResponseEntity.noContent().build()))
-                .onErrorResume(
-                        e -> {
-                            log.error("Error create: " + e.getMessage());
-                            return Mono.just(
-                                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                            .body(AlgoTrade.builder().build()));
-                        })
-                .then(Mono.empty());
-    }
 }
 
 /*
-/*
-Key Features
-
-RESTful API with HATEOAS:
-    Resources include links to related resources
-    Follows REST principles
-    Self-descriptive messages
-
-Web Interface with Spring MVC:
-    Traditional server-side rendering
-    Thymeleaf templates for HTML generation
-    Simple CRUD operations through web forms
-
-Data Model:
-    JPA entities with proper relationships
-    Repository pattern for data access
-
-Separation of Concerns:
-    API endpoints separate from web interface
-    Clear distinction between data model and resource representation
-
-This implementation provides a solid foundation that can be extended with additional features like:
-
-    Authentication and authorization
-    Validation
-    Advanced search capabilities
-    Pagination
-    Caching
-    API documentation with Swagger
+ * /* Key Features
+ * 
+ * RESTful API with HATEOAS: Resources include links to related resources Follows REST
+ * principles Self-descriptive messages
+ * 
+ * Web Interface with Spring MVC: Traditional server-side rendering Thymeleaf templates
+ * for HTML generation Simple CRUD operations through web forms
+ * 
+ * Data Model: JPA entities with proper relationships Repository pattern for data access
+ * 
+ * Separation of Concerns: API endpoints separate from web interface Clear distinction
+ * between data model and resource representation
+ * 
+ * This implementation provides a solid foundation that can be extended with additional
+ * features like:
+ * 
+ * Authentication and authorization Validation Advanced search capabilities Pagination
+ * Caching API documentation with Swagger
  */

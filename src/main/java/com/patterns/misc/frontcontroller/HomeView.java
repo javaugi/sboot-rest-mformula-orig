@@ -9,12 +9,12 @@ package com.patterns.misc.frontcontroller;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class HomeView {
 
-    public void show() {
-        System.out.println("Displaying Home Page");
-    }
+	public void show() {
+		System.out.println("Displaying Home Page");
+	}
+
 }

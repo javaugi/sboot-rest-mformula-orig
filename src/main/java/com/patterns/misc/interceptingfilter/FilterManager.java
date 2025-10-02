@@ -9,23 +9,23 @@ package com.patterns.misc.interceptingfilter;
 
 /**
  * @author david
- * @version $LastChangedRevision $LastChangedDate Last Modified Author:
- * $LastChangedBy
+ * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 public class FilterManager {
 
-    FilterChain filterChain;
+	FilterChain filterChain;
 
-    public FilterManager(TargetHandler target) {
-        filterChain = new FilterChain();
-        filterChain.setTarget(target);
-    }
+	public FilterManager(TargetHandler target) {
+		filterChain = new FilterChain();
+		filterChain.setTarget(target);
+	}
 
-    public void setFilter(Filter filter) {
-        filterChain.addFilter(filter);
-    }
+	public void setFilter(Filter filter) {
+		filterChain.addFilter(filter);
+	}
 
-    public void filterRequest(String request) {
-        filterChain.execute(request);
-    }
+	public void filterRequest(String request) {
+		filterChain.execute(request);
+	}
+
 }

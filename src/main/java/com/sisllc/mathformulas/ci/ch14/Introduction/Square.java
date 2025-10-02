@@ -2,13 +2,14 @@ package com.sisllc.mathformulas.ci.ch14.Introduction;
 
 public class Square extends Shape {
 
-    private double len = 5;
+	private double len = 5;
 
-    public void printMe() {
-        System.out.println("I am a square.");
-    }
+	public void printMe() {
+		System.out.println("I am a square.");
+	}
 
-    public double computeArea() {
-        return len * len;
-    }
+	public double computeArea() {
+		return len * len;
+	}
+
 }

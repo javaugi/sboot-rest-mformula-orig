@@ -12,10 +12,14 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class BatchRiskResponse {
 
-    private String batchId;
-    private String status;
-    private String message;
+	private String batchId;
 
-    private List<RiskScoreResponse> results;
-    private List<ProcessingError> errors;
+	private String status;
+
+	private String message;
+
+	private List<RiskScoreResponse> results;
+
+	private List<ProcessingError> errors;
+
 }

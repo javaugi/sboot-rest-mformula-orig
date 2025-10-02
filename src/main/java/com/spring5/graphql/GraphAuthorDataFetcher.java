@@ -14,13 +14,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class GraphAuthorDataFetcher implements DataFetcher<List<GraphAuthor>> {
 
-    @Autowired
-    private GraphAuthorRepository repo;
+	@Autowired
+	private GraphAuthorRepository repo;
 
-    @Override
-    public List<GraphAuthor> get(DataFetchingEnvironment env) {
-        GraphAuthor author = env.getSource();
-        author = repo.findById(author.id()).orElseThrow();
-        return new ArrayList<>(List.of(author));
-    }
+	@Override
+	public List<GraphAuthor> get(DataFetchingEnvironment env) {
+		GraphAuthor author = env.getSource();
+		author = repo.findById(author.id()).orElseThrow();
+		return new ArrayList<>(List.of(author));
+	}
+
 }

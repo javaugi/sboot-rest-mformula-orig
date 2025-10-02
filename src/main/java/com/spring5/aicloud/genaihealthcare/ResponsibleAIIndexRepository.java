@@ -12,10 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ResponsibleAIIndexRepository extends JpaRepository<ResponsibleAIIndex, Long> {
 
-    List<ResponsibleAIIndex> findByComplianceStatus(String complianceStatus);
+	List<ResponsibleAIIndex> findByComplianceStatus(String complianceStatus);
 
-    @Query("SELECT r FROM ResponsibleAIIndex r WHERE r.overallScore >= :minScore")
-    List<ResponsibleAIIndex> findByMinOverallScore(Double minScore);
+	@Query("SELECT r FROM ResponsibleAIIndex r WHERE r.overallScore >= :minScore")
+	List<ResponsibleAIIndex> findByMinOverallScore(Double minScore);
 
-    ResponsibleAIIndex findByModelName(String modelName);
+	ResponsibleAIIndex findByModelName(String modelName);
+
 }

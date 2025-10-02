@@ -11,8 +11,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class BillingAgreementResponse {
 
-    private String agreementId;
-    private String status;
-    private String approvalUrl;
-    private String errorMessage;
+	private String agreementId;
+
+	private String status;
+
+	private String approvalUrl;
+
+	private String errorMessage;
+
 }

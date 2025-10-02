@@ -15,23 +15,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PatientInquiryRequest {
 
-    private String patientId;
-    private String query;
+	private String patientId;
 
-    // Getters and Setters
-    public String getPatientId() {
-        return patientId;
-    }
+	private String query;
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
+	// Getters and Setters
+	public String getPatientId() {
+		return patientId;
+	}
 
-    public String getQuery() {
-        return query;
-    }
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
 
-    public void setQuery(String query) {
-        this.query = query;
-    }
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
 }

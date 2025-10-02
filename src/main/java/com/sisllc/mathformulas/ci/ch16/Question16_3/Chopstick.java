@@ -5,17 +5,18 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Chopstick {
 
-    private Lock lock;
+	private Lock lock;
 
-    public Chopstick() {
-        lock = new ReentrantLock();
-    }
+	public Chopstick() {
+		lock = new ReentrantLock();
+	}
 
-    public boolean pickUp() {
-        return lock.tryLock();
-    }
+	public boolean pickUp() {
+		return lock.tryLock();
+	}
 
-    public void putDown() {
-        lock.unlock();
-    }
+	public void putDown() {
+		lock.unlock();
+	}
+
 }

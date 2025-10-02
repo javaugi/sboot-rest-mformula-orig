@@ -8,7 +8,7 @@ package com.spring5.kafkamicroservice;
  * @author javaugi
  */
 public enum EntityType {
-    TRADE,
-    FILE,
-    USER;
+
+	TRADE, FILE, USER;
+
 }
