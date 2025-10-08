@@ -4,10 +4,27 @@
  */
 package com.interview.hrank.palindrom;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author javau
  */
+@Slf4j
 public class CorrectPalindromeCounter {
+
+    public static void main(String[] args) {
+        String s = null;
+        log.debug("String s " + s + " is a Palindrome " + isPalindrome(s));
+    }
+
+    public static boolean isPalindrome(String s) {
+        /*
+        if (s == null || s.length() < 1) {
+            return true;
+        }
+        // */
+        return new StringBuilder("" + s).reverse().toString().equals(s);
+    }
 
 	/**
 	 * Most straightforward correct solution

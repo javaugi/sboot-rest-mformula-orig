@@ -48,7 +48,7 @@ public class ReactiveClaimValidationService {
 
 	private Mono<Boolean> validateClaim(ReactiveClaimEvent event) {
 		return Mono.fromCallable(() -> claimRepository.existsById(event.getId())).flatMap(optionalClaim -> {
-			if (optionalClaim.isPresent()) {
+			if (optionalClaim) {
 				// Claim already exists
 				return Mono.just(false);
 			}
@@ -61,12 +61,12 @@ public class ReactiveClaimValidationService {
 
 	private Mono<Boolean> validateClaimOpt2(ReactiveClaimEvent event) {
 		return Mono.just(claimRepository.existsById(event.getId()))
-			.flatMap(optionalClaim -> optionalClaim.map(claim -> Mono.just(false)) // If
-																					// present,
-																					// return
-																					// false
-				.orElseGet(() -> validateClinicalData(event)) // If empty, validate
-			);
+			.flatMap(optionalClaim -> {
+				if (optionalClaim) {
+					return Mono.just(false);
+				}																	
+				return validateClinicalData(event); 
+	});
 	}
 
 	private Mono<Boolean> validateClaimOpt3(ReactiveClaimEvent event) {

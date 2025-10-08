@@ -13,17 +13,17 @@ public class CaesarCipher {
 	public static void main(String[] args) {
 		String text = "Hello, World!";
 		int shift = 3;
-		System.out.println("1 Starting CaesarCipher Original text: " + text);
+		log.debug("1 Starting CaesarCipher Original text: " + text);
 		run1(text, shift);
 
-		System.out.println("2 Starting CaesarCipher Original text: " + text);
+		log.debug("2 Starting CaesarCipher Original text: " + text);
 		runX(text, shift);
-		// scanner();
-		System.out.println("3 Starting CaesarCipher Original text: " + text);
+
+		log.debug("3 Starting CaesarCipher Original text: " + text);
 		runX2(text, shift);
 		cipher(text, shift);
 
-		System.out.println("4 Starting CaesarCipher Original text: " + text);
+		log.debug("4 Starting CaesarCipher Original text: " + text);
 		cipher(text, 13);
 		SimpleROT13Impl(text);
 	}
@@ -79,37 +79,37 @@ public class CaesarCipher {
 			}
 			return c;
 		}).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-		System.out.println("SimpleROT13Impl:" + rot13); // uryyb
+		log.debug("SimpleROT13Impl:" + rot13); // uryyb
 	}
 
 	private static void run1(String text, int shift) {
-		System.out.println("Original text: " + text);
+		log.debug("Original text: " + text);
 
 		String encrypted = encrypt(text, shift);
-		System.out.println("Encrypted text: " + encrypted);
+		log.debug("Encrypted text: " + encrypted);
 
 		String decrypted = decrypt(encrypted, shift);
-		System.out.println("Decrypted text: " + decrypted);
+		log.debug("Decrypted text: " + decrypted);
 	}
 
 	private static void runX(String text, int shift) {
-		System.out.println("Original text: " + text);
+		log.debug("Original text: " + text);
 
 		String encrypted = encryptX(text, shift);
-		System.out.println("Encrypted text: " + encrypted);
+		log.debug("Encrypted text: " + encrypted);
 
 		String decrypted = decryptX(encrypted, shift);
-		System.out.println("Decrypted text: " + decrypted);
+		log.debug("Decrypted text: " + decrypted);
 	}
 
 	private static void runX2(String text, int shift) {
-		System.out.println("Original text: " + text);
+		log.debug("Original text: " + text);
 
 		String encrypted = encryptX2(text, shift);
-		System.out.println("Encrypted text: " + encrypted);
+		log.debug("Encrypted text: " + encrypted);
 
 		String decrypted = decrypt(encrypted, shift);
-		System.out.println("Decrypted text: " + decrypted);
+		log.debug("Decrypted text: " + decrypted);
 	}
 
 	public static String encryptX2(String text, int shift) {
@@ -129,7 +129,7 @@ public class CaesarCipher {
 
 		char shiftBaseChar = findShiftBaseChar(c);
 		char rtnC = (char) (((c - shiftBaseChar + shift) % 26) + shiftBaseChar);
-		// System.out.println("original c=" + c + "-shiftBaseChar=" + shiftBaseChar +
+		// log.debug("original c=" + c + "-shiftBaseChar=" + shiftBaseChar +
 		// "-rtnC=" + rtnC);
 		return rtnC;
 	}
@@ -197,10 +197,10 @@ public class CaesarCipher {
 	public static void scanner() {
 		Scanner scanner = new Scanner(System.in);
 
-		System.out.println("Caesar Cipher Program");
-		System.out.println("1. Encrypt text");
-		System.out.println("2. Decrypt text");
-		System.out.println("3. Brute force attack");
+		log.debug("Caesar Cipher Program");
+		log.debug("1. Encrypt text");
+		log.debug("2. Decrypt text");
+		log.debug("3. Brute force attack");
 		System.out.print("Choose an option: ");
 
 		int option = scanner.nextInt();
@@ -215,11 +215,11 @@ public class CaesarCipher {
 
 			if (option == 1) {
 				String encrypted = encrypt(text, shift);
-				System.out.println("Encrypted text: " + encrypted);
+				log.debug("Encrypted text: " + encrypted);
 			}
 			else {
 				String decrypted = decrypt(text, shift);
-				System.out.println("Decrypted text: " + decrypted);
+				log.debug("Decrypted text: " + decrypted);
 			}
 		}
 		else if (option == 3) {
@@ -228,7 +228,7 @@ public class CaesarCipher {
 			bruteForceAttack(encryptedText);
 		}
 		else {
-			System.out.println("Invalid option!");
+			log.debug("Invalid option!");
 		}
 
 		scanner.close();
@@ -256,10 +256,10 @@ public class CaesarCipher {
 	}
 
 	public static void bruteForceAttack(String encryptedText) {
-		System.out.println("Brute force attack results:");
+		log.debug("Brute force attack results:");
 		for (int shift = 0; shift < 26; shift++) {
 			String decrypted = decryptX(encryptedText, shift);
-			System.out.println("Shift " + shift + ": " + decrypted);
+			log.debug("Shift " + shift + ": " + decrypted);
 		}
 	}
 

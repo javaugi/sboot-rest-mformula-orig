@@ -29,8 +29,19 @@ public class PrimeChecker {
 
 			// always skip the 4th one
 			doCheckPrime(n1, n2, n3, n4, n5);
-		}
-	}
+        }
+
+        int n = 15;
+        printPrime(n);
+    }
+
+    static void printPrime(int n) {
+        for (int i = 2; i <= n; i++) {
+            if (Prime.isPrime(i)) {
+                System.out.print(i + " ");
+            }
+        }
+    }
 
 	private static void bufferedReaderLine() {
 		try {

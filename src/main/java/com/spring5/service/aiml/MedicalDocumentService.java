@@ -39,7 +39,7 @@ public class MedicalDocumentService {
 		return repository.findAll();
 	}
 
-	public Mono<MedicalDocument> findById(String id) {
+	public Mono<MedicalDocument> findById(Long id) {
 		return repository.findById(id);
 	}
 
@@ -55,7 +55,7 @@ public class MedicalDocumentService {
 	// When you save an entity, if the version has changed, it will throw an
 	// OptimisticLockingFailureException:
 	@Transactional
-	public Mono<MedicalDocument> updateDocument(String id, String newContent) {
+	public Mono<MedicalDocument> updateDocument(Long id, String newContent) {
 		return repository.findById(id).flatMap(doc -> {
 			doc.setTextContent(newContent);
 			return repository.save(doc);
@@ -100,7 +100,7 @@ public class MedicalDocumentService {
 	 * retry logic for conflicts
 	 */
 	@Transactional
-	public Mono<MedicalDocument> optimisticUpdate(String id, String content) {
+	public Mono<MedicalDocument> optimisticUpdate(Long id, String content) {
 		return repository.findById(id).flatMap(doc -> {
 			doc.setTextContent(content);
 			return repository.save(doc);

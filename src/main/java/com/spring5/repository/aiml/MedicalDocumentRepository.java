@@ -11,7 +11,7 @@ import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface MedicalDocumentRepository extends R2dbcRepository<MedicalDocument, String> {
+public interface MedicalDocumentRepository extends R2dbcRepository<MedicalDocument, Long> {
 
 	@Query("""
 			SELECT id, title, text_content, specialty, document_type, publication_date,

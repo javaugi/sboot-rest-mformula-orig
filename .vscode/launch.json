@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PrimeChecker",
+            "request": "launch",
+            "mainClass": "com.interview.hrank.PrimeChecker",
+            "projectName": "sboot-rest-mformula-o"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

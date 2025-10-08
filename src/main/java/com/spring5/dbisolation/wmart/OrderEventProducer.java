@@ -24,7 +24,7 @@ public class OrderEventProducer {
 			String payload) {
 		ProducerRecord<String, String> record = new ProducerRecord<>("order-events", storeId, payload);
 		record.headers().add("messageId", messageId.getBytes(StandardCharsets.UTF_8));
-		return kafkaTemplate.send(record); // .completable();
+        return kafkaTemplate.send(record); // .completable();
 	}
 
 }

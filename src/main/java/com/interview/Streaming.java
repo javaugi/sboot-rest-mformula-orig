@@ -4,23 +4,23 @@
  */
 package com.interview;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import static java.util.Comparator.comparingInt;
 import static java.util.Comparator.reverseOrder;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.StringJoiner;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author javaugi
@@ -41,23 +41,22 @@ import org.slf4j.LoggerFactory;
  * Stream operations do the iterations internally over the source elements provided, in
  * contrast to Collections where explicit iteration is required.
  */
+@Slf4j
 public class Streaming {
 
-	private static final Logger log = LoggerFactory.getLogger(Streaming.class);
-
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		Streaming m = new Streaming();
 		int[] points = { 10, 5, 20, 15, 30, 25 }; // Example customer points
 		m.processPoints(points);
 
 		Arrays.sort(points);
-		System.out.println("Second largest=" + points[points.length - 2]);
+		log.debug("Second largest=" + points[points.length - 2]);
 		List<Integer> list = Arrays.stream(points).boxed().sorted().collect(Collectors.toList());
-		System.out.println("Second largest=" + list.get(points.length - 2));
+		log.debug("Second largest=" + list.get(points.length - 2));
 
 		List<String> inputs = Arrays.asList("{}()", "({()})", "{}(", "[])");
 		log.info("isBalancedParentheses ...");
-		inputs.stream().forEach(s -> System.out.println((isBalancedParentheses(s) ? "true" : "false")));
+		inputs.stream().forEach(s -> log.debug((isBalancedParentheses(s) ? "true" : "false")));
 		log.info("isBalancedParentheses Done");
 
 		List<String> myList = Arrays.asList("a1", "a2", "b1", "c2", "c1");
@@ -68,16 +67,16 @@ public class Streaming {
 
 		log.info("EX2 ");
 		Stream.of("d2", "a2", "b1", "b3", "c").filter(s -> {
-			System.out.println("filter: " + s);
+			log.debug("filter: " + s);
 			return true;
-		}).forEach(s -> System.out.println("forEach: " + s));
+		}).forEach(s -> log.debug("forEach: " + s));
 
 		log.info("Ex3 ");
 		Stream.of("d2", "a2", "b1", "b3", "c").map(s -> {
-			System.out.println("map: " + s);
+			log.debug("map: " + s);
 			return s.toUpperCase();
 		}).anyMatch(s -> {
-			System.out.println("anyMatch: " + s);
+			log.debug("anyMatch: " + s);
 			return s.startsWith("A");
 		});
 		log.info("Parallel ");
@@ -88,12 +87,12 @@ public class Streaming {
 			System.out.printf("sort: %s; %s\n", s1, s2);
 			return s1.compareTo(s2);
 		}).filter(s -> {
-			System.out.println("filter: " + s);
+			log.debug("filter: " + s);
 			return s.startsWith("a");
 		}).map(s -> {
-			System.out.println("map: " + s);
+			log.debug("map: " + s);
 			return s.toUpperCase();
-		}).forEach(s -> System.out.println("forEach: " + s));
+		}).forEach(s -> log.debug("forEach: " + s));
 
 		log.info("persons \n ");
 		persons();
@@ -103,7 +102,7 @@ public class Streaming {
 	}
 
 	public static boolean isBalancedParentheses(String s) {
-		Stack<Character> stack = new Stack<>();
+		Deque<Character> stack = new ArrayDeque<>();
 
 		for (char c : s.toCharArray()) {
 			if (c == '{' || c == '[' || c == '(') {
@@ -236,7 +235,7 @@ public class Streaming {
 	private static void persons() {
 		List<Person> filtered = persons.stream().filter(p -> p.name.startsWith("P")).collect(Collectors.toList());
 
-		System.out.println(filtered); // [Peter, Pamela]
+		log.debug("" + filtered); // [Peter, Pamela]
 
 		Map<Integer, List<Person>> personsByAge = persons.stream().collect(Collectors.groupingBy(p -> p.age));
 
@@ -252,12 +251,12 @@ public class Streaming {
 
 		String names = persons.stream().collect(personNameCollector);
 
-		System.out.println(names); // MAX | PETER | PAMELA | DAVID
+		log.debug(names); // MAX | PETER | PAMELA | DAVID
 	}
 
 	private static void parallelStreams() {
 		ForkJoinPool commonPool = ForkJoinPool.commonPool();
-		System.out.println(commonPool.getParallelism()); // 3
+		log.debug("" + commonPool.getParallelism()); // 3
 
 		Arrays.asList("a1", "a2", "b1", "c2", "c1").parallelStream().filter(s -> {
 			System.out.format("filter: %s [%s]\n", s, Thread.currentThread().getName());

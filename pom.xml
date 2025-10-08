@@ -2087,13 +2087,22 @@
                 <version>4.9.6</version>
                 <optional>true</optional>
             </dependency>
-                                                                                                                                                                                                                                                                                                      
+                                   
+            <dependency>
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>4.3.0</version>
+                <scope>test</scope>
+            </dependency>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         </dependencies>
     </dependencyManagement>
 
     <build>
-        <!--        <defaultGoal>install</defaultGoal>-->
-        <defaultGoal>spring-boot:run</defaultGoal>
+        <!--
+        <defaultGoal>install</defaultGoal>
+        <defaultGoal>spring-boot:run</defaultGoal> 
+        -->
         <finalName>carloaner</finalName>
         <!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
         <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
@@ -2178,6 +2187,7 @@
                     </requiresUnpack>        
                     -->                
                 </configuration>
+                <!--
                 <executions>
                     <execution>
                         <goals>
@@ -2185,6 +2195,7 @@
                         </goals>
                     </execution>
                 </executions> 
+                -->
             </plugin>
             <!--
             <plugin>

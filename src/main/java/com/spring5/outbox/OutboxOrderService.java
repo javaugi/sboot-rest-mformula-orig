@@ -20,6 +20,11 @@ public class OutboxOrderService {
 	@Autowired
 	private OutboxEventPublisher publisher;
 
+    /*
+    This ensure transaction atomic - the Order and Outbox should be co-locate in the same database schema
+    Q: How do you handle database consistency across microservices?
+    A: Use Saga or Outbox pattern; avoid distributed transactions; ensure eventual consistency through events.
+     */
 	@Transactional
 	public void createOrder(OutboxOrder order) {
 		orderRepository.save(order);
