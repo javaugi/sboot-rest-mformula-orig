@@ -32,7 +32,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     depends_on:
       - zookeeper
-
+---
   schema-registry:
     image: confluentinc/cp-schema-registry:7.6.1
     hostname: schema-registry
@@ -45,7 +45,15 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
     depends_on:
       - broker
-      
+---
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"  # UI
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true      
 # How to Run
 #     Start Docker Compose: Navigate to the directory containing docker-compose.yml and run docker-compose up -d. This will start Kafka and Schema Registry.
 # Compile and Package (Maven):

@@ -5,7 +5,7 @@
 package com.spring5.entity;
 
 import com.spring5.aicloud.genaihealthcare.cccr.Claim;
-import com.spring5.utils.converters.EncryptedStringConverter;
+import com.spring5.secfilterconverter.EncryptedStringConverter;
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;

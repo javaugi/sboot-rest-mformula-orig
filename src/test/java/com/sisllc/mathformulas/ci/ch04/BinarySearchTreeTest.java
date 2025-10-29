@@ -4,17 +4,20 @@
  */
 package com.sisllc.mathformulas.ci.ch04;
 
+import com.spring5.MyApplicationConfig;
 import com.spring5.ProjectTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author javaugi
  * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
+@ContextConfiguration(classes = MyApplicationConfig.class)
 public class BinarySearchTreeTest extends ProjectTest {
 
 	private static final Logger log = LoggerFactory.getLogger(BinarySearchTreeTest.class);

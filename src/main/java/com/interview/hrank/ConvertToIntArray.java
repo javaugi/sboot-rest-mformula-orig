@@ -39,7 +39,8 @@ public class ConvertToIntArray {
 		return intArr;
 	}
 
-	public static String[] stringListToStringArray(List<String> list) {
+    public static String[] stringListToStringArray(List<String> list) {
+        list.toArray(String[]::new);
 		String[] strArr = list.toArray(new String[list.size()]);
 		return strArr;
 	}

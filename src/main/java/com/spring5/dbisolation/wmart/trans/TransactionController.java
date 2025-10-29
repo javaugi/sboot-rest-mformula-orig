@@ -4,7 +4,7 @@
  */
 package com.spring5.dbisolation.wmart.trans;
 
-import com.stripe.param.PaymentIntentConfirmParams.PaymentMethodOptions.AcssDebit.MandateOptions.TransactionType;
+//import com.stripe.param.PaymentIntentConfirmParams.PaymentMethodOptions.AcssDebit.MandateOptions.TransactionType;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;
@@ -60,10 +60,10 @@ public class TransactionController {
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
 			@RequestParam(required = false) TransactionType type,
-			@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(page = 1, size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-		// Validate input parameters
-		transactionValidator.validateTransactionQuery(userId, startDate, endDate);
+        // Validate input parameters
+        transactionValidator.validateTransactionQuery(userId, startDate, endDate);
 
 		// Build query criteria
 		TransactionQueryCriteria criteria = TransactionQueryCriteria.builder()

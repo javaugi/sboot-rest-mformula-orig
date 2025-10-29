@@ -9,6 +9,7 @@ import com.spring5.utils.pact.ApiResponse;
 import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -59,8 +60,8 @@ public class GlobalExceptionHandler {
 	public ProblemDetail handleGenericException(Exception ex) {
 		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
 				"An unexpected error occurred.");
-		problemDetail.setTitle("Internal Server Error");
-		// Log the exception details
+        problemDetail.setTitle("Internal Server Error");
+        // Log the exception details
 		return problemDetail;
 	}
 
@@ -78,11 +79,10 @@ public class GlobalExceptionHandler {
 		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
 		problemDetail.setTitle("Invalid Input");
 		// Optionally add field errors
-		// problemDetail.setProperty("errors",
-		// ex.getBindingResult().getFieldErrors().stream()
-		// .map(fieldError -> fieldError.getField() + ": " +
-		// fieldError.getDefaultMessage())
-		// .collect(Collectors.toList()));
+		problemDetail.setProperty("errors",
+                ex.getBindingResult().getFieldErrors().stream()
+                        .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                        .collect(Collectors.toList()));
 		return problemDetail;
 	}
 

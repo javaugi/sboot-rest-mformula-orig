@@ -4,10 +4,16 @@
  */
 package com.spring5.controller;
 
+//import static com.mongodb.client.model.Filters.where;
 import com.spring5.entity.AlgoTrade;
+import com.spring5.mongodb.Customer;
+import com.spring5.mongodb.dto.PagedCustomers;
 import com.spring5.service.AlgoTradeR2dbcService;
 import com.spring5.service.AlgoTradeService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -19,6 +25,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import static org.springframework.data.relational.core.query.Criteria.where;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -87,9 +100,11 @@ For partial updates, use:
     with JSON Merge Patch or JSON Patch.
 
 6. Quick Cheat Sheet
-    POST = Create
-    PUT = Create or Replace (idempotent)
+    GET  = Retrieval                        200 OK or 404 Not Found
+    POST = Create                           201 Created or 400 Bad Request
+    PUT = Create or Replace (idempotent)    201 Created or 400 Bad Request
     PATCH = Partial Update
+    Delete = Delete the resource            204 No Content or 400 Bad Request
  */
 @Slf4j
 @AllArgsConstructor
@@ -103,89 +118,96 @@ public class WebRestApiTradeController {
 
 	private final RestTemplate restTemplate;
 
-	private static final String ETAG_MODIFIED_MISMATCH = "{\"error\": \"ETag mismatch. Resource was modified by another request.\"}";
+    private final R2dbcEntityTemplate r2dbcEntityTemplate;
+    //private final ReactiveMongoTemplate template;
+    private final MeterRegistry meterRegistry;
+
+    private static final String ETAG_MODIFIED_MISMATCH = "{\"error\": \"ETag mismatch. Resource was modified by another request.\"}";
 
 	/*
 	 * Type 1: API Implementation Example Question:
 	 * "Design an endpoint that returns a user's recent transactions with filtering capabilities."
 	 */
 	/*
-	 * @GetMapping("/users/{userId}/transactions") public Page<AlgoTrade> getTransactions(
-	 * 
-	 * @PathVariable String userId,
-	 * 
-	 * @RequestParam(required = false) LocalDate startDate,
-	 * 
-	 * @RequestParam(required = false) LocalDate endDate,
-	 * 
-	 * @RequestParam(required = false) TransactionType type,
-	 * 
-	 * @PageableDefault Pageable pageable) {
-	 * 
-	 * // Discussion points: // - Pagination implementation // - Filter validation // -
-	 * Performance considerations (indexing) // - Error handling } //
-	 */
+	  @GetMapping("/users/{userId}/transactions") public Page<AlgoTrade> getTransactions(	  
+	  @PathVariable String userId,	                       // {} used for userid
+	  @RequestParam(required = false) String transactions,	  no {} for transactions
+	  @RequestParam(required = false) LocalDate startDate,	  
+	  @RequestParam(required = false) LocalDate endDate,	  
+	  @RequestParam(required = false) TransactionType type,	  
+	  @PageableDefault Pageable pageable) {
+	  
+	  // Discussion points: // - Pagination implementation // - Filter validation // -
+	  Performance considerations (indexing) // - Error handling } //
+   	 */
 	/*
 	 * 3. Summary Table Header Usage Example Value Cache-Control Cache policy (e.g.,
-	 * max-age, no-cache) max-age=600, public Expires When resource becomes stale Wed, 21
-	 * Oct 2025 07:28:00 GMT ETag Version identifier for resource "v1.0" Last-Modified
-	 * Last time resource changed Wed, 21 Oct 2025 07:28:00 GMT
-	 * 
-	 * 
-	 * ✅ Key Differences Table Feature ETag / Last-Modified Idempotency Key Purpose Cache
-	 * validation, optimistic concurrency Prevent duplicate side-effects Scope
-	 * Per-resource state Per request/operation Client supplies? Not required (server
-	 * sends ETag, client echoes) Yes, client must send unique key Used with GET (304),
-	 * PUT/DELETE (412) POST/PUT/DELETE (safe retries) Server logic Compare
-	 * version/timestamp with current state Store key+response, reuse if retried Failure
-	 * status 304 Not Modified, 412 Precondition Failed 409 Conflict or same 200 result on
-	 * retry Typical lifetime Until resource changes TTL window (e.g., 24h)
-	 * 
-	 * 1) Simple GET with ETag (computed from DB version) + Last-Modified 2) Conditional
-	 * Update (PUT) using If-Match for optimistic locking
-	 */
+	  max-age, no-cache) max-age=600, public Expires When resource becomes stale Wed, 21
+	  Oct 2025 07:28:00 GMT ETag Version identifier for resource "v1.0" Last-Modified
+	  Last time resource changed Wed, 21 Oct 2025 07:28:00 GMT
+	  
+	  
+	  ✅ Key Differences 
+      Table Feature         ETag / Last-Modified   Idempotency Key     Purpose 
+        Cache validation, optimistic concurrency Prevent duplicate side-effects Scope
+	  Per-resource state Per request/operation Client supplies? Not required (server
+	  sends ETag, client echoes) Yes, client must send unique key Used with GET (304),
+	  PUT/DELETE (412) POST/PUT/DELETE (safe retries) Server logic Compare
+	  version/timestamp with current state Store key+response, reuse if retried Failure
+	  status 304 Not Modified, 412 Precondition Failed 409 Conflict or same 200 result on
+	  retry Typical lifetime Until resource changes TTL window (e.g., 24h)
+	  
+	  1) Simple GET with ETag (computed from DB version) + Last-Modified 2) Conditional
+	  Update (PUT) using If-Match for optimistic locking
+   	 */
 	/*
-	 * 1. Query Parameters ($\texttt{?key=value&key2=value2}$)
-	 * 
-	 * @RequestParam String username, String ifMatch = request.getParameter("username");
-	 * curl http://localhost:8088//web/apirest/cache?username=MyUsername 2. Request
-	 * Headers
-	 * 
-	 * @GetMapping public ResponseEntity<List<AlgoTrade>>
-	 * getAllWithCacheControl(@PathVariable String username,
-	 * 
-	 * @RequestParam String username, @RequestHeader("Authorization") String authToken) {
-	 * }
-	 * 
-	 * @RequestHeader("Authorization") String authToken,
-	 * request.getHeader("Authorization"); 3. Request Body (Payload) for requests like
-	 * POST or PUT, the primary data is sent in the body of the HTTP request, which is not
-	 * part of the URL path.
-	 * 
-	 * @RequestBody User newUser
-	 * 
-	 * @PutMapping("/{username}") public ResponseEntity<AlgoTrade> update(@RequestBody
-	 * AlgoTrade newTrade) { } 4. Path Variables
-	 * 
-	 * @GetMapping("/{username}") public ResponseEntity<List<AlgoTrade>>
-	 * getAllWithCacheControl(@PathVariable String username) { } curl
-	 * http://localhost:8088//web/apirest/cache/MyUsername 5. Cookies
-	 * 
-	 * @GetMapping public ResponseEntity<List<AlgoTrade>>
-	 * getAllWithCacheControl(@CookieValue("username") String username) { }
-	 * 
-	 * @CookieValue("sessionId") String username 6. Matrix Variables: These allow passing
-	 * parameters as part of the URI path, separated by a semicolon (;)
-	 * 
-	 * @GetMapping("/resources/{id;version}") public ResponseEntity<List<AlgoTrade>>
-	 * getAllWithCacheControl(@MatrixVariable String id, @MatrixVariable String version) {
-	 * }
-	 * 
-	 */
-	@GetMapping("/cache")
-	public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(@PathVariable String usernameParam,
-			@RequestParam String username, @RequestHeader("Authorization") String authToken,
-			@CookieValue("username") String usernameCookie, HttpServletRequest request) {
+	  1. Query Parameters ($\texttt{?key=value&key2=value2}$)
+	  
+	  @RequestParam String username, String ifMatch = request.getParameter("username");
+	  curl http://localhost:8088/web/apirest/cache?username=MyUsername 
+    2. Request
+	  Headers
+	  
+	  @GetMapping public ResponseEntity<List<AlgoTrade>>
+	  getAllWithCacheControl(@PathVariable String username,
+	  
+	  @RequestParam String username, @RequestHeader("Authorization") String authToken) {
+	  }
+	  
+	  @RequestHeader("Authorization") String authToken,
+	  request.getHeader("Authorization"); 3. Request Body (Payload) for requests like
+	  POST or PUT, the primary data is sent in the body of the HTTP request, which is not
+	  part of the URL path.
+	  
+	  @RequestBody User newUser
+	  
+	  @PutMapping("/{username}") public ResponseEntity<AlgoTrade> update(@RequestBody
+	  AlgoTrade newTrade) { } 4. Path Variables
+	  
+	  @GetMapping("/{username}") public ResponseEntity<List<AlgoTrade>>
+	  getAllWithCacheControl(@PathVariable String username) { } curl
+	  http://localhost:8088//web/apirest/cache/MyUsername 5. Cookies
+	  
+	  @GetMapping public ResponseEntity<List<AlgoTrade>>
+	  getAllWithCacheControl(@CookieValue("username") String username) { }
+	  
+	  @CookieValue("sessionId") String username 6. Matrix Variables: These allow passing
+	  parameters as part of the URI path, separated by a semicolon (;)
+	  
+	  @GetMapping("/resources/{id;version}") public ResponseEntity<List<AlgoTrade>>
+	  getAllWithCacheControl(@MatrixVariable String id, @MatrixVariable String version) {
+	  }
+	  
+   	 */
+    @Cacheable(value = "trades", key = "#page + '-' + #size")
+    public Page<AlgoTrade> getAllTrades(int page, int size) {
+        return algoTradeService.findAll(PageRequest.of(page, size));
+    }
+
+    @GetMapping("/cache/{pathusername}")
+    public ResponseEntity<List<AlgoTrade>> getAllWithCacheControl(@PathVariable("pathusername") String pathusername,
+            @RequestParam("username") String username, @RequestHeader("Authorization") String authToken,
+            @CookieValue("usernameCookie") String usernameCookie, HttpServletRequest request) {
 		// jakarta.servlet.http.HttpServletRequest;
 		// org.springframework.web.bind.annotation.PathVariable
 		// org.springframework.web.bind.annotation.RequestParam;
@@ -415,7 +437,12 @@ public class WebRestApiTradeController {
 		return this.algoTradeService.getTradesOptimizedV2(tradeIds);
 	}
 
-	/*
+    // Optimized Version 2
+    public List<AlgoTrade> getTradesOptimizedV3(List<Long> tradeIds) {
+        return this.algoTradeService.getTradesOptimizedV2(tradeIds);
+    }
+
+    /*
 	 * Performance Comparison Approach 100 Trades 1000 Trades Pros Cons Sequential ~100s
 	 * ~1000s Simple Very slow Parallel (20 threads) ~5s ~50s Fast External API load Bulk
 	 * API ~2s ~4s Very fast Requires API change Cached + Parallel ~1s ~2s Fastest Stale
@@ -434,7 +461,7 @@ public class WebRestApiTradeController {
 			.flatMap(algoTradeR2dbcService::findById);
 	}
 
-	@CircuitBreaker(name = "externalApiCB", fallbackMethod = "fallbackTrade")
+    @CircuitBreaker(name = "externalApiCB", fallbackMethod = "fallbackTrade")
 	public String callExternalApi(Long tradeId) {
 		return restTemplate.getForObject("https://external-api/trades/" + tradeId, String.class);
 	}
@@ -450,9 +477,9 @@ public class WebRestApiTradeController {
 
 	@GetMapping("/react")
 	public Flux<ResponseEntity<AlgoTrade>> getAllReact() {
-		return algoTradeR2dbcService.findAll()
-			.map(ResponseEntity::ok)
-			.defaultIfEmpty(ResponseEntity.notFound().build())
+        return algoTradeR2dbcService.findAll()
+                .map(ResponseEntity::ok)
+             			.defaultIfEmpty(ResponseEntity.notFound().build())
 			.onErrorResume(Exception.class, ex -> {
 				return Flux.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
 			});
@@ -481,8 +508,8 @@ public class WebRestApiTradeController {
 
 	@GetMapping("/{email}")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<AlgoTrade>> getByUserEmail(@PathVariable String userEmail) {
-		List<AlgoTrade> trades = algoTradeService.getByUserEmail(userEmail);
+    public ResponseEntity<List<AlgoTrade>> getByUserEmail(@PathVariable String email) {
+        List<AlgoTrade> trades = algoTradeService.getByUserEmail(email);
 		if (trades == null || trades.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -490,9 +517,9 @@ public class WebRestApiTradeController {
 	}
 
 	@GetMapping(value = "/react/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Flux<ResponseEntity<AlgoTrade>> getByUserEmailReact(@PathVariable("userEmail") String userEmail) {
-		return algoTradeR2dbcService.getByUserEmail(userEmail)
-			.map(ResponseEntity::ok)
+    public Flux<ResponseEntity<AlgoTrade>> getByUserEmailReact(@PathVariable("email") String email) {
+        return algoTradeR2dbcService.getByUserEmail(email)
+             			.map(ResponseEntity::ok)
 			.defaultIfEmpty(ResponseEntity.notFound().build())
 			.onErrorResume(Exception.class, ex -> {
 				return Flux.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -592,7 +619,73 @@ public class WebRestApiTradeController {
 					.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AlgoTrade.builder().build()));
 			})
 			.then(Mono.empty());
-	}
+    }
+
+    /*
+    6. Why “Keyset” Pagination?
+        Keyset pagination is preferred over OFFSET/LIMIT because:
+            It’s faster for large datasets.
+            It avoids skipping over many rows.
+            It ensures stable ordering even as rows are added/removed.    
+    
+    Term                Meaning
+    template            Reactive DB access helper (like R2dbcEntityTemplate or ReactiveMongoTemplate)
+    query               A Spring Data Query defining filter (where), sort, and limit
+    getTradesKeyset()	Returns a paged result (like “next page after lastId”) in a non-blocking, reactive fashion    
+     */
+    @Timed(value = "customer.get.trades.keyset", description = "Time taken to get paginated customers using keyset")
+    public Mono<PagedCustomers> getUsersPageKeyset(Long lastId, int size) {
+        Query query = Query.query(where("id").greaterThan(lastId == null ? 0 : lastId))
+                .limit(size)
+                .sort(Sort.by("id"));
+
+        Mono<List<Customer>> trades = r2dbcEntityTemplate.select(query, Customer.class).collectList();
+        Mono<Long> total = r2dbcEntityTemplate.select(Customer.class).count();
+        return Mono.zip(trades, total)
+                .map(t -> new PagedCustomers(t.getT1(), t.getT2()));
+    }
+
+    @Timed(value = "customer.get.users.page", description = "Time taken to get paginated customers")
+    public Mono<PagedCustomers> getUsersPage(int page, int size) {
+        int pageIndex = Math.max(0, page - 1);
+        Query query = Query.empty()
+                .limit(size)
+                .offset((long) pageIndex * size)
+                .sort(Sort.by("id"));
+
+        Mono<List<Customer>> customersMono = r2dbcEntityTemplate.select(query, Customer.class).collectList();
+        Mono<Long> totalMono = r2dbcEntityTemplate.select(Customer.class).count(); // total number of users
+        return Mono.zip(customersMono, totalMono)
+                .map(tuple -> new PagedCustomers(tuple.getT1(), tuple.getT2()));
+    }
+
+    public Mono<PagedCustomers> getUsersPageTimed(int page, int size) {
+        Timer.Sample sample = Timer.start(meterRegistry);
+
+        int pageIndex = Math.max(0, page - 1);
+        Query query = Query.empty()
+                .limit(size)
+                .offset((long) pageIndex * size)
+                .sort(Sort.by("id"));
+
+        Mono<List<Customer>> customersMono = r2dbcEntityTemplate.select(query, Customer.class).collectList();
+        Mono<Long> totalMono = r2dbcEntityTemplate.select(Customer.class).count();
+
+        return Mono.zip(customersMono, totalMono)
+                .map(tuple -> new PagedCustomers(tuple.getT1(), tuple.getT2()))
+                .doOnSuccess(result -> {
+                    sample.stop(meterRegistry.timer("customer.get.users.page",
+                            "status", "success",
+                            "page", String.valueOf(page),
+                            "size", String.valueOf(size)));
+                })
+                .doOnError(error -> {
+                    sample.stop(meterRegistry.timer("customer.get.users.page",
+                            "status", "error",
+                            "page", String.valueOf(page),
+                            "size", String.valueOf(size)));
+                });
+    }
 
 }
 

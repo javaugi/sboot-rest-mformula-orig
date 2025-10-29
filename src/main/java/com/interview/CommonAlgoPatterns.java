@@ -29,8 +29,12 @@ public class CommonAlgoPatterns {
 		String word = "This is the Test to Check How many Capital Chars are";
 
 		System.out.println("1 Non-repeatable cahr=" + findFirstNonRepeatedCharInString(word) + "  of " + word);
-		System.out.println("2 Non-repeatable cahr=" + findFirstNonRepeatedCharInString2(word) + "  of " + word);
-	}
+        System.out.println("2 Non-repeatable cahr=" + findFirstNonRepeatedCharInString2(word) + "  of " + word);
+
+        word = "This is the test string";
+        System.out.println("2-1 Non-repeatable cahr=" + findFirstNonRepeatedCharInString(word) + "  of " + word);
+        System.out.println("2-2 Non-repeatable cahr=" + findFirstNonRepeatedCharInString2(word) + "  of " + word);
+    }
 
 	public static char findFirstNonRepeatedCharInString(String s) {
 		return s.chars()
@@ -47,8 +51,8 @@ public class CommonAlgoPatterns {
 	public static char findFirstNonRepeatedCharInString2(String s) {
 		return s.chars()
 			.mapToObj(c -> (char) c)
-			.collect(Collectors.groupingBy(c -> c, Collectors.counting()))
-			.entrySet()
+                .collect(Collectors.groupingBy(c -> c, LinkedHashMap::new, Collectors.counting()))
+             			.entrySet()
 			.stream()
 			.filter(e -> e.getValue() == 1)
 			.map(Map.Entry::getKey)

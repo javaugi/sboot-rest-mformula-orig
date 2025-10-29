@@ -8,6 +8,27 @@ server:
 ##    username: sa
 ##    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE
 ---
+app:
+  encryption:
+    enabled: true
+    algorithm: AES
+  logging:
+    mask-phi: true
+    excluded-patterns: "/health,/metrics"
+---
+# Jasypt configuration
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:defaultSecretKey}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+#Key Considerations:
+#   Key Management: Store encryption keys securely (HSM, cloud KMS, or environment variables)
+#   Performance: Be mindful of encryption/decryption overhead
+#   Compliance: Ensure your solution meets HIPAA, GDPR, or other regulatory requirements
+#   Testing: Always test that masked data doesn't appear in logs
+#   Selective Masking: Only mask what's necessary to maintain useful logs    
+---
 keycloak:
   server:
     contextPath: /auth
@@ -127,6 +148,20 @@ management:
   endpoints:
     web:
       base-path: /actuator
+      exposure:
+        include: health,metrics,prometheus
+        endpoint:
+          health:
+            show-details: ALWAYS
+          prometheus:
+            enabled: true
+        metrics:
+          export:
+            prometheus:
+              enabled: true
+          tags:
+            application: trade-service
+            environment: production      
 ## 
 ---
 logging:
@@ -145,6 +180,18 @@ resilience4j.circuitbreaker:
       waitDurationInOpenState: 5s # Stay open for 5 seconds
       permittedNumberOfCallsInHalfOpenState: 3 # Allow 3 calls in half-open state
       eventConsumerBufferSize: 10    
+ratelimiter:
+  instances:
+    externalService:  # Same configuration name
+      limit-for-period: 5
+      limit-refresh-period: 1s
+      timeout-duration: 0
+
+retry:
+  instances:
+    externalService:  # Same configuration name
+      max-attempts: 3
+      wait-duration: 500ms      
 #
 #
 #TODO: figure out why I need this here and in bootstrap.yml
@@ -262,3 +309,14 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+---
+opentelemetry:
+  service-name: ${spring.application.name}
+  exporter:
+    otlp:
+      endpoint: http://localhost:4317  # Jaeger or other OTLP collector
+  sdk:
+    disabled: false
+logging:
+  level:
+    io.opentelemetry: DEBUG

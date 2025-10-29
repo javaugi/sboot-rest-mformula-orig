@@ -16,9 +16,11 @@ import java.io.IOException;
 public class CommandExecutorImpl implements CommandExecutor {
 
 	@Override
-	public void runCommand(String cmd) throws IOException {
-		// some heavy implementation
-		Runtime.getRuntime().exec(cmd);
+    public void runCommand(String cmd) throws Exception {
+        // some heavy implementation
+        String[] cmds = new String[1];
+        cmds[0] = cmd;
+        Runtime.getRuntime().exec(cmds);
 		System.out.println("'" + cmd + "' command executed.");
 	}
 

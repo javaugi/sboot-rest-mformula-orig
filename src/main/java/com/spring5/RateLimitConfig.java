@@ -57,7 +57,8 @@ public class RateLimitConfig {
 	 * @return
 	 */
 	@Bean
-	public Bandwidth bandwidth() {
+    public Bandwidth bandwidth() {
+        Bandwidth.builder().capacity(100).refillIntervally(100, Duration.ofMinutes(1)).build();
 		return Bandwidth.classic(100, Refill.intervally(100, Duration.ofMinutes(1)));
 	}
 
@@ -71,7 +72,8 @@ public class RateLimitConfig {
 	// spring cloud api gateway
 	@Bean
 	public ProxyManager<String> proxyManager(Bandwidth bandwidth,
-			@Qualifier(RATE_LIMIT_CACHE_MAN) CacheManager cacheManager) {
+            @Qualifier(RATE_LIMIT_CACHE_MAN) CacheManager cacheManager) {
+        cacheManager.getCache("rate-limit-buckets");
 		return new JCacheProxyManager<>(cacheManager.getCache("rate-limit-buckets"));
 	}
 

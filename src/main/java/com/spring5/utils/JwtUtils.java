@@ -25,4 +25,5 @@ public interface JwtUtils {
 
 	String extractUsername(String token);
 
+    String getUsername(String token);
 }

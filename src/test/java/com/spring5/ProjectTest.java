@@ -11,9 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = MyApplicationConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 // @SpringBootTest
 @TestPropertySource(locations = { "classpath:application.properties", "classpath:applicationtest.properties" })

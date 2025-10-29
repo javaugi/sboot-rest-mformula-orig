@@ -40,8 +40,10 @@ public class SeriesCalculator {
 	public static void runArray() {
 		int[][] intArr = { { 0, 2, 10 }, { 5, 3, 5 } };
 
-		for (int[] row : intArr) {
+        for (int[] row : intArr) {
+            System.out.println("a=" + row[0] + ", -b=" + row[1] + ", -n=" + row[2]);
 			printSeries(row[0], row[1], row[2]);
+            printSeriesMy(row[0], row[1], row[2]);
 		}
 	}
 
@@ -56,6 +58,14 @@ public class SeriesCalculator {
 		System.out.println(); // Move to next line after each series
 	}
 
+    private static void printSeriesMy(int a, int b, int n) {
+        int current = 0;
+        for (int i = 0; i < n; i++) {
+            current += a + Math.pow(2, i) * b;
+            System.out.print(current + " ");
+        }
+        System.out.println();
+    }
 }
 
 /*

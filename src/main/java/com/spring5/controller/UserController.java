@@ -74,9 +74,9 @@ public class UserController {
 		modelMap.put("pagedListHolder", pagedListHolder);
 		// model.addAttribute("users", userService.listUsers());
 		return "listUsers";
-	}
+    }
 
-	private List<User> createUsers() {
+    private List<User> createUsers() {
 
 		List<User> returnValue = new ArrayList();
 		User user = null;
@@ -91,9 +91,9 @@ public class UserController {
 			returnValue.add(user);
 		}
 
-		// userPagingRepositary.saveAll(returnValue);
-		// userCrudRepo.saveAll(returnValue);
-		return returnValue;
+        // userPagingRepositary.saveAll(returnValue);
+        // userCrudRepo.saveAll(returnValue);
+        return returnValue;
 	}
 
 	static String getAlphaNumericString(int n) {

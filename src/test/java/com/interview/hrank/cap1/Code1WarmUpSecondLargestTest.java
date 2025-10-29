@@ -6,13 +6,11 @@ package com.interview.hrank.cap1;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author javaugi
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 public class Code1WarmUpSecondLargestTest {
 
 	Code1WarmUpArrayManipulation main = new Code1WarmUpArrayManipulation();

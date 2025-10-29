@@ -117,7 +117,7 @@ public class BatchFetchingEntityGraph {
 		 * @NamedAttributeNode("teamMembers") } ) } ) }) public class Employee { // ...
 		 * fields ... }
 		 */
-	}
+    }
 
 	private void dynamicEntityGraph() {
 		// Create entity graph dynamically

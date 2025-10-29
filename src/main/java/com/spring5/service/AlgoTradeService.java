@@ -5,12 +5,17 @@
 package com.spring5.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.spring5.entity.AlgoTrade;
 import com.spring5.repository.AlgoTradeRepository;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.decorators.Decorators;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.retry.Retry;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -28,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,28 +67,62 @@ import org.springframework.web.client.RestTemplate;
 public class AlgoTradeService {
 
 	private final AlgoTradeRepository algoTradeRepository;
+    private final RestTemplate restTemplate;
+    private final RedisTemplate<String, AlgoTrade> redisTemplate;
+    private final KafkaTemplate kafkaTemplate;
+    private final @Qualifier("tradeServiceCircuitBreaker")
+    CircuitBreaker circuitBreaker;
+    private final @Qualifier("tradeServiceRateLimiter")
+    RateLimiter rateLimiter;
 
-	private final RestTemplate restTemplate;
-
-	private final ExecutorService executorService = Executors.newFixedThreadPool(20);
-
-	private final RedisTemplate<String, AlgoTrade> redisTemplate;
-
-	private final KafkaTemplate kafkaTemplate;
-
-	private final @Qualifier("tradeServiceCircuitBreaker") CircuitBreaker circuitBreaker;
-
-	private final @Qualifier("tradeServiceRateLimiter") RateLimiter rateLimiter;
-
-	/*
+    /*
 	 * private final @Qualifier("tradeServiceRetry") Retry retry; //
-	 */
+     */
+    private static final String TRADE_CACHE_PREFIX = "trade:";
+    private static final Duration CACHE_TTL = Duration.ofHours(1);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(20);
 
-	private static final String TRADE_CACHE_PREFIX = "trade:";
+    private final Counter tradeCounter;
+    private final Timer tradeTimer;
+    private final Gauge tradeAmountGauge;
 
-	private static final Duration CACHE_TTL = Duration.ofHours(1);
+    AtomicDouble amount = new AtomicDouble(0);
 
-	public AlgoTrade findById(Long id) {
+    public AlgoTradeService(AlgoTradeRepository algoTradeRepository, RestTemplate restTemplate,
+            RedisTemplate<String, AlgoTrade> redisTemplate, KafkaTemplate kafkaTemplate,
+            @Qualifier("tradeServiceCircuitBreaker") CircuitBreaker circuitBreaker,
+            @Qualifier("tradeServiceRateLimiter") RateLimiter rateLimiter, MeterRegistry registry) {
+        this.algoTradeRepository = algoTradeRepository;
+        this.restTemplate = restTemplate;
+        this.redisTemplate = redisTemplate;
+        this.kafkaTemplate = kafkaTemplate;
+        this.circuitBreaker = circuitBreaker;
+        this.rateLimiter = rateLimiter;
+
+        this.tradeCounter = Counter.builder("trades.total")
+                .description("Total number of trades")
+                .tag("service", "trade")
+                .register(registry);
+
+        this.tradeTimer = Timer.builder("trades.duration")
+                .description("Trade processing time")
+                .register(registry);
+
+        this.tradeAmountGauge = Gauge.builder("trades.amount", amount, AtomicDouble::get)
+                .description("Current trade amount")
+                .register(registry);
+    }
+
+    public void processTrade(AlgoTrade trade) {
+        double amount = trade.getQuantity() * trade.getPrice();
+        tradeTimer.record(() -> {
+            // Business logic
+            tradeCounter.increment();
+            //tradeAmountGauge.set(amount);
+        });
+    }
+
+    public AlgoTrade findById(Long id) {
 		return algoTradeRepository.findById(id).orElse(new AlgoTrade());
 	}
 
@@ -161,13 +202,16 @@ public class AlgoTradeService {
 	 */
 	public List<AlgoTrade> getTradeBatchCompletableFuture(List<Long> tradeIds) {
 		List<CompletableFuture<AlgoTrade>> futures = tradeIds.stream()
-			.map(tradeId -> CompletableFuture.supplyAsync(() -> getTradeExternal(tradeId), executorService))
-			.collect(Collectors.toList());
+                .map(tradeId -> CompletableFuture.supplyAsync(() -> getTradeExternal(tradeId), executorService))
+                .collect(Collectors.toList());
 
-		return futures.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toList());
+        return futures.stream()
+                .map(CompletableFuture::join)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 	}
 
-	public AlgoTrade getTradeExternal(Long id) {
+    public AlgoTrade getTradeExternal(Long id) {
 		try {
 			/*
 			 * String url = "https://api.external.com/trades/" + tradeId;
@@ -194,7 +238,10 @@ public class AlgoTradeService {
 			.map(this::getTradeAsync)
 			.collect(Collectors.toList());
 
-		return futures.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toList());
+        return futures.stream()
+                .map(CompletableFuture::join)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 	}
 
 	@Configuration
@@ -359,13 +406,13 @@ public class AlgoTradeService {
 				log.error("Error in future: {}", e.getMessage());
 				return null;
 			}
-		}).filter(Objects::nonNull).collect(Collectors.toList());
+        }).filter(Objects::nonNull)
+                .collect(Collectors.toList());
 	}
 
-	@io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker(name = "tradeService",
-			fallbackMethod = "getTradeFallback")
-	@io.github.resilience4j.ratelimiter.annotation.RateLimiter(name = "tradeService")
-	@io.github.resilience4j.retry.annotation.Retry(name = "tradeService")
+    @io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker(name = "externalService", fallbackMethod = "getTradeFallback")
+    @io.github.resilience4j.ratelimiter.annotation.RateLimiter(name = "externalService")
+    @io.github.resilience4j.retry.annotation.Retry(name = "externalService")
 	public AlgoTrade getTrade(Long tradeId) {
 		return rateLimiter.executeSupplier(() -> circuitBreaker.executeSupplier(() -> getTradeExternal(tradeId)));
 	}
@@ -512,5 +559,117 @@ public class AlgoTradeService {
 	 * parallel execution Add rate limiting and circuit breakers Use async processing with
 	 * proper thread pooling
 	 */
+    public List<AlgoTrade> getTradesOptimizedV3(List<Long> tradeIds) {
+        // Step 1: Try to get from cache
+        Map<Long, AlgoTrade> cachedTrades = getCachedTradesV3(tradeIds);
+        List<Long> missingIds = getMissingTradeIdsV3(tradeIds, cachedTrades);
+
+        if (missingIds.isEmpty()) {
+            return new ArrayList<>(cachedTrades.values());
+        }
+
+        List<AlgoTrade> remainings = getRemainingTrades(missingIds);
+
+        List<AlgoTrade> mergedList = Stream
+                .concat(remainings.stream(), cachedTrades.values().stream())
+                .collect(Collectors.toList());
+
+        return mergedList;
+    }
+
+    private List<AlgoTrade> getRemainingTrades(List<Long> missingIds) {
+        List<CompletableFuture<AlgoTrade>> futures = missingIds.stream()
+                .map(this::proecssTradeById)
+                .collect(Collectors.toList());
+
+        /*
+        CompletableFuture<Void> allDone = CompletableFuture.allOf(
+                futures.toArray(new CompletableFuture[0])
+        );
+        CompletableFuture<List<AlgoTrade>> allResults = allDone.thenApply(v -> {
+            return futures.stream().map(CompletableFuture::join)
+                    .filter(Objects::nonNull).collect(Collectors.toList());
+
+        });
+        List<AlgoTrade> remainings = getFinalResults(allResults);
+        // */
+
+        List<AlgoTrade> remainings = futures.stream()
+                .map(CompletableFuture::join)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return remainings;
+    }
+
+    private List<AlgoTrade> getFinalResults(CompletableFuture<List<AlgoTrade>> allResults) {
+        try {
+            return allResults.get();
+        } catch (InterruptedException | ExecutionException ex) {
+
+        }
+        return Collections.emptyList();
+        //return Collections.EMPTY_LIST;  // this is untyped list predating java 1.5
+    }
+
+    @io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker(name = "externalService",
+            fallbackMethod = "getTradeFallbackAudit")
+    @io.github.resilience4j.ratelimiter.annotation.RateLimiter(name = "externalService")
+    @io.github.resilience4j.retry.annotation.Retry(name = "externalService")
+    public AlgoTrade getTradeResilientById(Long id) {
+        try {
+            /*
+			 * String url = "https://api.external.com/trades/" + tradeId;
+			 * ResponseEntity<AlgoTrade> response = restTemplate.getForEntity(url,
+			 * AlgoTrade.class); return response.getBody(); //
+             */
+            return this.findById(id);
+        } catch (RestClientException e) {
+            log.error("Error fetching id {}: {}", id, e.getMessage());
+            return null;
+        }
+    }
+
+    private final CopyOnWriteArrayList<Long> REMAININGS = new CopyOnWriteArrayList();
+    public AlgoTrade getTradeFallbackAudit(Long tradeId, Exception e) {
+        log.warn("Fallback for trade {}: {}", tradeId, e.getMessage());
+        // Return cached version or default value
+        // add logging
+        REMAININGS.add(tradeId);
+        return getCachedTrade(tradeId);
+    }
+
+
+    private CompletableFuture<AlgoTrade> proecssTradeById(Long id) {
+        return CompletableFuture.supplyAsync(() -> {
+            return getTradeResilientById(id);
+        }, executorService);
+    }
+
+
+    private List<Long> getMissingTradeIdsV3(List<Long> tradeIds, Map<Long, AlgoTrade> cachedTrades) {
+        List<Long> missingIds = new ArrayList<>();
+
+        tradeIds.stream().forEach(id -> {
+            if (!cachedTrades.keySet().contains(id)) {
+                missingIds.add(id);
+            }
+        });
+        return missingIds;
+    }
+
+    private Map<Long, AlgoTrade> getCachedTradesV3(List<Long> tradeIds) {
+        List<String> cacheKeys = tradeIds.stream().map(id -> TRADE_CACHE_PREFIX + id).collect(Collectors.toList());
+
+        List<AlgoTrade> cached = redisTemplate.opsForValue().multiGet(cacheKeys);
+
+        Map<Long, AlgoTrade> result = new HashMap<>();
+        for (int i = 0; i < tradeIds.size(); i++) {
+            if (cached.get(i) != null) {
+                result.put(tradeIds.get(i), cached.get(i));
+            }
+        }
+        return result;
+    }
 
 }

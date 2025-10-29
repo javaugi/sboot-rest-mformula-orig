@@ -61,11 +61,10 @@ public class AlgoTradeR2dbcService {
 		}
 	}
 
-	public Mono<Boolean> addMoney(Long userAccountId, BigDecimal amount) {
-		try {
-			algoTradeRepository.addMoney(userAccountId, amount);
-		}
-		catch (Exception ex) {
+    public Mono<Boolean> addMoney(Long userAccountId, BigDecimal amount) {
+        try {
+            algoTradeRepository.addMoney(userAccountId, amount);
+        }		catch (Exception ex) {
 			return Mono.just(Boolean.FALSE);
 		}
 

@@ -32,10 +32,11 @@ public class KafkaOutboxController {
 	public String sendToOutboxTopic(@RequestBody OutboxOrder order) {
 		outboxOrderService.createOrder(order);
 		/*
-		 * outboxOrderService.createOrder(request); outboxService.createOutboxEvent(
-		 * request.getAggregateType(), request.getAggregateId(), request.getEventType(),
-		 * request.getPayload() ); //
-		 */
+		 outboxOrderService.createOrder(request); 
+         outboxService.createOutboxEvent(
+            request.getAggregateType(), request.getAggregateId(), request.getEventType(), request.getPayload() 
+          );
+      		 */
 		return "Outbox event created and sent to outbox topic";
 	}
 

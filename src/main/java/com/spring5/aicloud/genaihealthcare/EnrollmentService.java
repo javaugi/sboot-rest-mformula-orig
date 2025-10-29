@@ -4,6 +4,8 @@
  */
 package com.spring5.aicloud.genaihealthcare;
 
+import com.spring5.secfilterconverter.HcareAuditService;
+import com.spring5.secfilterconverter.PIIUtils;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Service;

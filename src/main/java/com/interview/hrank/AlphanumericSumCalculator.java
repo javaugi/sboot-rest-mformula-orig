@@ -93,14 +93,14 @@ public class AlphanumericSumCalculator {
 
 	public static int calculateAlphanumericSumImproved(String input) {
 		int sum = 0;
-		input = input.toLowerCase();
+        input = input.toUpperCase();
 
 		for (char c : input.toCharArray()) {
 			if (Character.isDigit(c)) {
 				sum += Character.getNumericValue(c);
 			}
 			else if (Character.isLetter(c)) {
-				sum += (c - 'a' + 1);
+                sum += (c - 'A' + 1);
 			}
 		}
 

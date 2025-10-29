@@ -7,13 +7,11 @@ package com.interview.hrank.cap1;
 import com.interview.hrank.cap1.Code3HardGraphTreeTraversal.TreeNode;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author javaugi
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 public class Code3HardMaxPathSumTest {
 
 	Code3HardGraphTreeTraversal main = new Code3HardGraphTreeTraversal();

@@ -35,7 +35,7 @@ public class VehicleGroupSort {
 				.thenComparing(Vehicle::getModel))
 			.collect(Collectors.groupingBy(Vehicle::getMake));
 		List<String> keys = grouped.keySet().stream().sorted(Comparator.reverseOrder()).toList();
-		keys = grouped.keySet().stream().sorted().toList();
+        keys = grouped.keySet().stream().sorted().toList();
 		for (String key : keys) {
 			System.out.println("Make=" + key);
 			for (Vehicle v : grouped.get(key)) {

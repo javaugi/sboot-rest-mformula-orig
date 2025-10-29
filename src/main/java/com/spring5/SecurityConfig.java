@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -83,15 +84,14 @@ public class SecurityConfig {
 			// .ignoringRequestMatchers("/api/**")
 			.formLogin(form -> form.loginPage("/login") // custom login page
 				.permitAll())
-			.logout(logout -> logout.logoutSuccessUrl("/login?logout") // redirect after
-																		// logout
+                .logout(logout -> logout.logoutSuccessUrl("/login?logout") // redirect after logout
 				.permitAll())
 			.cors(cors -> cors // Corss Origin Resource Sharing
 				.configurationSource(corsConfigurationSource()))
-			// .oauth2ResourceServer(oauth2 -> oauth2
-			// .jwt(Customizer.withDefaults())
-			// )
-			.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
+                // .oauth2ResourceServer(oauth2 -> oauth2
+                // .jwt(Customizer.withDefaults())
+                // )
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 
 		// return http.addFilterBefore(jwtTokenFilter(),
 		// UsernamePasswordAuthenticationFilter.class).build();

@@ -6,6 +6,7 @@ package com.spring5.graphql;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -25,25 +26,35 @@ The @SchemaMapping annotation maps a handler method to a field in the GraphQL sc
     source/parent object injected into the method. In this example, the field defaults to author and the type defaults to Book.
     The type and field can be specified in the annotation.
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class GraphBookController {
 
 	private final GraphUserService userService;
 
-	private final GraphBookService bookService;
+    private final GraphBookService bookService;
+    private final GraphAuthorService authorService;
 
-	@SchemaMapping
-	public GraphAuthor author(@Argument GraphBook book) {
-		return GraphAuthor.getById(book.authorId());
-	}
+    // Maps to 'author' field in GraphBook type
+    @SchemaMapping
+    public GraphBook book(@Argument GraphAuthor author) {
+        log.debug("book: {}", author);
+        return GraphBook.getById(author.id());
+    }
 
-	// Maps to 'bookById(id: ID!)' field in Query type
-	// Maps to 'bookById(id: ID!)' field in Query type
+    // Maps to 'bookById(id: ID!)' field in Query type
+    @QueryMapping
+    public GraphBook bookById(@Argument String id) {
+        log.debug("bookById: {}", id);
+        return bookService.findBookById(id);
+    }
+
+    // Maps to 'bookById(id: ID!)' field in Query type
 	@QueryMapping
-	public GraphBook bookById(@Argument String id) {
-		System.out.println("Fetching book by ID: " + id);
-		return bookService.findBookById(id);
+    public GraphAuthor authorById(@Argument String id) {
+        log.debug("authorById: {}", id);
+        return authorService.findAuthorById(id);
 	}
 
 	/*
@@ -54,15 +65,15 @@ public class GraphBookController {
 	// Maps to 'allUsers' field in Query type
 	@QueryMapping
 	public List<GraphUser> allUsers() {
-		System.out.println("Fetching all users...");
-		return userService.findAllUsers();
+        log.debug("allUsers ");
+        return userService.findAllUsers();
 	}
 
 	// Maps to 'userById(id: ID!)' field in Query type
 	@QueryMapping
 	public GraphUser userById(@Argument String id) {
-		System.out.println("Fetching user by ID: " + id);
-		return userService.findUserById(id);
+        log.debug("userById: {}", id);
+        return userService.findUserById(id);
 	}
 
 }

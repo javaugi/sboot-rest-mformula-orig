@@ -5,7 +5,7 @@
 package com.spring5.dbisolation.wmart.trans;
 
 // Request DTO for query criteria
-import com.stripe.param.PaymentIntentConfirmParams.PaymentMethodOptions.AcssDebit.MandateOptions.TransactionType;
+//import com.stripe.param.PaymentIntentConfirmParams.PaymentMethodOptions.AcssDebit.MandateOptions.TransactionType;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;

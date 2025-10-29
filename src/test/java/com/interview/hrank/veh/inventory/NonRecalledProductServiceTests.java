@@ -2,7 +2,7 @@ package com.interview.hrank.veh.inventory;
 
 import com.spring5.entity.Product;
 import com.spring5.entity.RecalledProduct;
-import com.spring5.filter.ProductFilter;
+import com.spring5.secfilterconverter.ProductFilter;
 import com.spring5.service.ProductService;
 import com.spring5.service.RecalledProductService;
 import java.util.ArrayList;

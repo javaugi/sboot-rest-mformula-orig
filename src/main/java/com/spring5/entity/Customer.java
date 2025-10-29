@@ -35,6 +35,8 @@ public class Customer extends BaseEntity {
 
 	private String email;
 
+    private String status;
+
 	// other fields
 	@OneToOne(fetch = FetchType.LAZY) // Recommended default
 	@JoinColumn(name = "loyalty_account_id")
