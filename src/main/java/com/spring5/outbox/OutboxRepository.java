@@ -12,4 +12,5 @@ public interface OutboxRepository extends JpaRepository<Outbox, Long> {
 
 	List<Outbox> findByProcessed(@Param("processed") Boolean processed);
 
+    public Integer tryClaim(Long id);
 }
