@@ -200,7 +200,8 @@ public class WebRestApiTradeController {
 	  
    	 */
     @Cacheable(value = "trades", key = "#page + '-' + #size")
-    public Page<AlgoTrade> getAllTrades(int page, int size) {
+    public Page<AlgoTrade> getAllTrades(@RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "20") Integer size) {
         return algoTradeService.findAll(PageRequest.of(page, size));
     }
 
@@ -437,9 +438,14 @@ public class WebRestApiTradeController {
 		return this.algoTradeService.getTradesOptimizedV2(tradeIds);
 	}
 
-    // Optimized Version 2
+    // Optimized Version 3
     public List<AlgoTrade> getTradesOptimizedV3(List<Long> tradeIds) {
-        return this.algoTradeService.getTradesOptimizedV2(tradeIds);
+        return this.algoTradeService.getTradesOptimizedV3(tradeIds);
+    }
+
+    // Optimized Version 4
+    public List<AlgoTrade> getTradesOptimizedV4Flux(List<Long> tradeIds) {
+        return this.algoTradeService.getTradesOptimizedV3(tradeIds);
     }
 
     /*
@@ -485,7 +491,7 @@ public class WebRestApiTradeController {
 			});
 	}
 
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AlgoTrade> getById(@PathVariable("id") Long id) {
 		log.info("getUserById id {}", id);
 		AlgoTrade existingTrade = algoTradeService.findById(id);
@@ -551,8 +557,7 @@ public class WebRestApiTradeController {
 		AlgoTrade trade = algoTradeService.update(request.getBody());
 		if (trade != null) {
 			return ResponseEntity.ok(trade);
-		}
-		else {
+        } else {
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -576,6 +581,7 @@ public class WebRestApiTradeController {
 
 	@DeleteMapping("/trade/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('TRADER')")
 	public void deleteByTradeId(@PathVariable Long id) {
 		AlgoTrade trade = algoTradeService.findById(id);
 		// Check if the trade was found
@@ -592,7 +598,7 @@ public class WebRestApiTradeController {
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TRADER')")
 	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
 		AlgoTrade trade = algoTradeService.findById(id);
 

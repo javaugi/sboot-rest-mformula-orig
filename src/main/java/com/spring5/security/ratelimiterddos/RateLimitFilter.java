@@ -30,7 +30,7 @@ public class RateLimitFilter implements Filter {
 	private Bandwidth bandwidth;
 
 	@Autowired
-	private RateLimiterRequestInterceptor ReqInterceptor;
+	private RateLimiterRequestInterceptor reqInterceptor;
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -45,7 +45,7 @@ public class RateLimitFilter implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 
 		String userId = req.getHeader("X-User-Id");
-		if (userId == null || !ReqInterceptor.isAllowed(userId)) {
+		if (userId == null || !reqInterceptor.isAllowed(userId)) {
 			res.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Rate limit exceeded");
 			return;
 		}

@@ -5,15 +5,14 @@
 package com.spring5;
 
 import com.spring5.config.ExternalApiProperties;
-import com.spring5.graphql.Neo4jPersonRepository;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration;
 import org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -61,24 +60,23 @@ public class MyApplication {
 	// https://github.com/javaugi/react-and-spring-sm
 	/// https://github.com/javaugi/fullstack-nextjs-app-template
 	public static void main(String[] args) {
-		SpringApplication.run(MyApplication.class, args);
+        log.debug("MyApplication main Spring Boot {} args {}", SpringBootVersion.getVersion(), Arrays.toString(args));
+        SpringApplication app = new SpringApplication(MyApplication.class);
+        app.addInitializers(new CustomContextInitializer()); // Register your initializer
+        app.run(args);
 	}
 
-	/*
-	 * Run sequence 1. commandLineRunnerMain below 2. overriding method public void
-	 * run(String... args) below 3. Neo4jConnectionChecker public void run(String... args)
-	 */
-	@Autowired
-	private ApplicationContext context;
-
-	@Bean
-	public CommandLineRunner commandLineRunnerMain(Neo4jPersonRepository personRepository) {
-		return args -> {
-			// This part runs first and then the run method below: public void
-			// run(String... args)
-			log.info("MyApplication CommandLineRunner.commandLineRunnerMain args {}", Arrays.toString(args));
-		};
-	}
+    @Bean
+    public ApplicationRunner printBeans(ApplicationContext ctx) {
+        return args -> {
+            String[] beans = ctx.getBeanDefinitionNames();
+            log.debug("Beans provided by Spring Boot {} count {}", SpringBootVersion.getVersion(), beans.length);
+            Arrays.sort(beans);
+            for (String bean : beans) {
+                System.out.println(bean);
+            }
+        };
+    }
 
 }
 /*

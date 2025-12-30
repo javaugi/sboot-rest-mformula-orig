@@ -2,7 +2,7 @@ package com.spring5.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 

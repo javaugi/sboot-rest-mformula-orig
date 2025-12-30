@@ -21,10 +21,11 @@ public class OrderService {
 	private final TransactionalEventPublisher eventPublisher;
 
 	@Transactional
-	public void createOrder(AuditOrder order) {
+    public Long createOrder(AuditOrder order) {
 		orderRepository.save(order);
 		// Event will only publish if transaction succeeds
 		eventPublisher.publishAfterCommit(new OrderCreatedEvent("" + order.getId()));
+        return order.getId();
 	}
 
 	public AuditOrder processOrder(OrderRequest request) {

@@ -11,6 +11,7 @@ import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Subgraph;
+import jakarta.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.List;
 import org.hibernate.jpa.QueryHints;
@@ -72,10 +73,13 @@ public class BatchFetchingEntityGraph {
 		// EntityGraph<Employee> graph =
 		// entityManager.createEntityGraph("employee.withDepartmentAndProfile");
 
+        EntityGraph<Employee> graph0 = (EntityGraph<Employee>) entityManager.createEntityGraph("employee.withDepartmentAndProfile");
+        TypedQuery<Employee> tq = entityManager.createNamedQuery("Employee.findByDepartment", Employee.class);
+        List<Employee> list = tq.getResultList();
 		EntityGraph<Employee> graph = entityManager.createEntityGraph(Employee.class);
 		// Now you can add attributes to this graph
 		graph.addSubgraph("department");
-		graph.addSubgraph("profile");
+        graph.addSubgraph("profile");
 
 		List<Employee> employees = entityManager
 			.createQuery("SELECT e FROM Employee e WHERE e.salary > :minSalary", Employee.class)

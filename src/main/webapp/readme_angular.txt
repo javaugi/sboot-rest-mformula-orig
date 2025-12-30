@@ -25,3 +25,4 @@ npm -v
 
 4. cd to any app created and find all elated packages and their versions
 npm fund
+npm fund fix --force

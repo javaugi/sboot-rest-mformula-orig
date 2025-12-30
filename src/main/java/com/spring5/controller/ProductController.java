@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version $LastChangedRevision $LastChangedDate Last Modified Author: $LastChangedBy
  */
 @Controller
-@RequestMapping("api/products")
+@RequestMapping("/api/products")
 @CrossOrigin(origins = "*")
 public class ProductController {
 

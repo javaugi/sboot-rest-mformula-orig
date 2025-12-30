@@ -189,6 +189,15 @@ public class ProductServiceImpl implements ProductService {
 			.description(description)
 			.status(status)
 			.build();
-	}
+    }
 
+    @Override
+    public void delete(Product product) {
+        this.productRepository.delete(product);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        this.productRepository.deleteById(id);
+    }
 }

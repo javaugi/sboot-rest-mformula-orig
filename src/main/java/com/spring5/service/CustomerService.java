@@ -6,6 +6,7 @@ package com.spring5.service;
 
 import com.spring5.entity.Customer;
 import com.spring5.repository.CustomerRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,4 +25,7 @@ public class CustomerService {
 		return customerRepository.save(Customer.builder().name(name).email(email).build());
 	}
 
+    public List<Customer> findAll() {
+        return this.customerRepository.findAll();
+    }
 }

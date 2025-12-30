@@ -4,7 +4,6 @@
  */
 package com.spring5;
 
-import static com.spring5.RedisConfig.RATE_LIMIT_CACHE_MAN;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Refill;
 import io.github.bucket4j.distributed.proxy.ProxyManager;
@@ -26,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 // import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 @Configuration
 public class RateLimitConfig {
+    public static final String RATE_LIMIT_CACHE_MAN = "rateLimitCacheMan";
 
 	@Bean
 	public FilterRegistrationBean<RateLimitFilter> rateLimitFilter() {

@@ -4,6 +4,7 @@
  */
 package com.spring5.empbilpayroll;
 
+import com.spring5.MyApplication;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class EmployeeMain {
 	}
 
 	private void run() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyApplication.class);
 
 		log.debug("EmployeeMain starts ...");
 		log.debug("Contains employee  {}", context.containsBeanDefinition("employee"));

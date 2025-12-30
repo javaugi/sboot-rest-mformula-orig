@@ -74,7 +74,8 @@ public class GlobalExceptionHandler {
 	 * errors.put(fieldName, errorMessage); }); return
 	 * ResponseEntity.badRequest().body(errors); } //
 	 */
-	@ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ProblemDetail handleMethodValidationExceptions(MethodArgumentNotValidException ex) {
 		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
 		problemDetail.setTitle("Invalid Input");
@@ -113,7 +114,8 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(errors);
 	}
 
-	@ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
 	public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException ex) {
 		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
 		problemDetail.setTitle("Resource Not Found");

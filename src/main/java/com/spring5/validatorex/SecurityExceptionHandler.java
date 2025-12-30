@@ -38,8 +38,8 @@ public class SecurityExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
 	}
 
-	@ExceptionHandler(value = { AuthenticationException.class })
-	public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
+    @ExceptionHandler(value = {AuthenticationException.class})
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
 		// ErrorResponse errorResponse = new ErrorResponse("Authentication Failed",
 		// ex.getMessage(),
 		// HttpStatus.UNAUTHORIZED.value());

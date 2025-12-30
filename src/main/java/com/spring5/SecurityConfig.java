@@ -4,6 +4,7 @@
  */
 package com.spring5;
 
+import com.spring5.secfilterconverter.JwtAuthenticationFilter;
 import com.spring5.rediscache.proactivecachepopu.RegionFilter;
 import com.spring5.security.JwtTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;

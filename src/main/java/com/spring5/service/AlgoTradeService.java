@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.spring5.entity.AlgoTrade;
 import com.spring5.repository.AlgoTradeRepository;
+import com.spring5.validatorex.NoRollbackException;
+import com.spring5.validatorex.RollbackException;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.decorators.Decorators;
 import io.github.resilience4j.ratelimiter.RateLimiter;
@@ -48,6 +50,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -123,7 +127,7 @@ public class AlgoTradeService {
     }
 
     public AlgoTrade findById(Long id) {
-		return algoTradeRepository.findById(id).orElse(new AlgoTrade());
+        return algoTradeRepository.findById(id).orElse(new AlgoTrade());
 	}
 
 	public List<AlgoTrade> findByIds(List<Long> ids) {
@@ -157,7 +161,34 @@ public class AlgoTradeService {
 		return algoTradeRepository.saveAll(trades);
 	}
 
-	@Transactional
+    @Transactional(rollbackFor = RollbackException.class)
+    public List<AlgoTrade> saveAllRollbackOnFailure(List<AlgoTrade> trades) {
+        try {
+            return algoTradeRepository.saveAll(trades);
+        } catch (Exception ex) {
+            throw new RollbackException("failed but not rollback", ex.getCause(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional(noRollbackFor = NoRollbackException.class)
+    public List<AlgoTrade> saveAllNoRollbackOnFailure(List<AlgoTrade> trades) {
+        try {
+            return algoTradeRepository.saveAll(trades);
+        } catch (Exception ex) {
+            throw new NoRollbackException("failed but not rollback", ex.getCause(), HttpStatus.CONTINUE);
+        }
+    }
+
+    @Transactional(rollbackFor = RollbackException.class, noRollbackFor = NoRollbackException.class)
+    public List<AlgoTrade> saveAllHandleAll(List<AlgoTrade> trades) {
+        try {
+            return algoTradeRepository.saveAll(trades);
+        } catch (Exception ex) {
+            throw new NoRollbackException("failed but not rollback", ex.getCause(), HttpStatus.CONTINUE);
+        }
+    }
+
+    @Transactional
 	public AlgoTrade update(AlgoTrade trade) {
 		return algoTradeRepository.save(trade);
 	}
@@ -577,7 +608,8 @@ public class AlgoTradeService {
         return mergedList;
     }
 
-    private List<AlgoTrade> getRemainingTrades(List<Long> missingIds) {
+    @Async
+    public List<AlgoTrade> getRemainingTrades(List<Long> missingIds) {
         List<CompletableFuture<AlgoTrade>> futures = missingIds.stream()
                 .map(this::proecssTradeById)
                 .collect(Collectors.toList());
@@ -636,11 +668,11 @@ public class AlgoTradeService {
         // Return cached version or default value
         // add logging
         REMAININGS.add(tradeId);
-        return getCachedTrade(tradeId);
+        return getTradeResilientById(tradeId);
     }
 
-
-    private CompletableFuture<AlgoTrade> proecssTradeById(Long id) {
+    @Async
+    public CompletableFuture<AlgoTrade> proecssTradeById(Long id) {
         return CompletableFuture.supplyAsync(() -> {
             return getTradeResilientById(id);
         }, executorService);

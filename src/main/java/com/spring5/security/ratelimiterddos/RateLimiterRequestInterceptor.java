@@ -15,13 +15,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-@Service
+@Component
 @Slf4j
 public class RateLimiterRequestInterceptor implements HandlerInterceptor {
 
@@ -39,7 +39,7 @@ public class RateLimiterRequestInterceptor implements HandlerInterceptor {
 			return false;
 		}
 
-		if (!rateLimiter.isAllowed(userId)) {
+        if (!isAllowed(userId)) {
 			response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Rate limit exceeded");
 			return false;
 		}

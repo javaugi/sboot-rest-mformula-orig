@@ -15,6 +15,8 @@ app:
   logging:
     mask-phi: true
     excluded-patterns: "/health,/metrics"
+sports:
+  provider: GRAPHITE   # change to SIERRA to use legacy provider    
 ---
 # Jasypt configuration
 jasypt:
@@ -170,16 +172,31 @@ logging:
     org.springframework.web.client.RestTemplate: DEBUG
     org.springframework.ai: DEBUG    
 ---
-resilience4j.circuitbreaker:
-  instances:
-    externalService:
-      registerHealthIndicator: true
-      slidingWindowType: COUNT_BASED
-      slidingWindowSize: 10
-      failureRateThreshold: 50 # Open the circuit if 50% of calls fail
-      waitDurationInOpenState: 5s # Stay open for 5 seconds
-      permittedNumberOfCallsInHalfOpenState: 3 # Allow 3 calls in half-open state
-      eventConsumerBufferSize: 10    
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s    
+    instances:
+      externalService:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        failureRateThreshold: 50 # Open the circuit if 50% of calls fail
+        waitDurationInOpenState: 5s # Stay open for 5 seconds
+        permittedNumberOfCallsInHalfOpenState: 3 # Allow 3 calls in half-open state
+        eventConsumerBufferSize: 10   
+      graphite:
+        # uses defaults unless overridden here
+        slidingWindowSize: 20
+        failureRateThreshold: 40
+        waitDurationInOpenState: 30s        
 ratelimiter:
   instances:
     externalService:  # Same configuration name
@@ -320,3 +337,72 @@ opentelemetry:
 logging:
   level:
     io.opentelemetry: DEBUG
+---
+smart-on-fhir:
+  # Example Epic Sandbox configuration
+  fhir-server-url: https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4
+  authorization-server-url: https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize
+  token-server-url: https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token
+  
+  client:
+    id: your-client-id
+    secret: your-client-secret
+    redirect-uri: http://localhost:8080/login/oauth2/code/epic
+    
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          epic:
+            client-id: ${smart-on-fhir.client.id}
+            client-secret: ${smart-on-fhir.client.secret}
+            redirect-uri: ${smart-on-fhir.client.redirect-uri}
+            authorization-grant-type: authorization_code
+            scope: openid, fhirUser, launch, patient/Observation.read, patient/Patient.read
+          # Example for Auth0
+          auth0:
+            client-id: ${AUTH0_CLIENT_ID}
+            client-secret: ${AUTH0_CLIENT_SECRET}
+            scope: openid,profile,email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_basic
+            
+          # Example for Keycloak
+          keycloak:
+            client-id: ${KEYCLOAK_CLIENT_ID}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
+            scope: openid,profile,email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_basic            
+          # Example for SMART on FHIR
+          epic-fhir:
+            client-id: ${EPIC_CLIENT_ID}
+            client-secret: ${EPIC_CLIENT_SECRET}
+            scope: openid,fhirUser,launch/patient,patient/*.read
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_basic
+            # PKCE is automatically handled by Spring Security 5.3+            
+        provider:
+          auth0:
+            issuer-uri: https://${AUTH0_DOMAIN}/
+            authorization-uri: https://${AUTH0_DOMAIN}/authorize
+            token-uri: https://${AUTH0_DOMAIN}/oauth/token
+            user-info-uri: https://${AUTH0_DOMAIN}/userinfo
+            jwk-set-uri: https://${AUTH0_DOMAIN}/.well-known/jwks.json
+            user-name-attribute: sub            
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI}
+            authorization-uri: ${KEYCLOAK_ISSUER_URI}/protocol/openid-connect/auth
+            token-uri: ${KEYCLOAK_ISSUER_URI}/protocol/openid-connect/token
+            user-info-uri: ${KEYCLOAK_ISSUER_URI}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${KEYCLOAK_ISSUER_URI}/protocol/openid-connect/certs
+            user-name-attribute: preferred_username            
+          epic-fhir:
+            authorization-uri: https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize
+            token-uri: https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token
+            user-info-uri: https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/metadata
+            user-name-attribute: iss            

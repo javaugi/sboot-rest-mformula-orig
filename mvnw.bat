@@ -33,6 +33,8 @@
 @REM MAVEN_SKIP_RC - flag to disable loading of mavenrc files
 @REM ----------------------------------------------------------------------------
 
+set JMETER_HOME=C:/Users/javau/dev/utils/apache/apache-jmeter-5.6.3
+
 @REM Begin all REM lines with '@' in case MAVEN_BATCH_ECHO is 'on'
 @echo off
 @REM enable echoing my setting MAVEN_BATCH_ECHO to 'on'

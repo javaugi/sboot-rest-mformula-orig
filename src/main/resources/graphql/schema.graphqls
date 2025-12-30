@@ -4,6 +4,9 @@ type Query {
     
     bookById(id: ID!): GraphBook
     authorById(id: ID!): GraphAuthor
+
+    getSportsGame(id: ID!): SportsGame
+    liveGames: [SportsGame]
 }
 
 type Mutation {
@@ -27,4 +30,22 @@ type GraphAuthor {
     id: ID!
     firstName: String!
     lastName: String!
+}
+
+type SportsGame {
+    id: ID!
+    homeTeam: String!
+    awayTeam: String!
+    status: String!
+    sportsScore: SportsScore
+}
+
+type SportsScore {
+    id: ID!
+    home: Int
+    away: Int
+    quarter: String
+    team: String
+    score: Int
+    league: String
 }

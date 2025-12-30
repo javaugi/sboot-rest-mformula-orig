@@ -4,13 +4,15 @@
  */
 package com.spring5;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author javau
  */
-@Configuration
+//@Configuration
+//@ComponentScan(basePackages = {"com.spring5", "com.sisllc"})
 public class MyApplicationConfig {
 
 }

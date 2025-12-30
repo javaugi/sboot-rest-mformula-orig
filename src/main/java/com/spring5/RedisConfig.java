@@ -4,6 +4,7 @@
  */
 package com.spring5;
 
+import com.spring5.graphql.yhsports.SportsGame;
 import com.spring5.rediscache.MedicalFileMetadata;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +21,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig extends RedisBaseConfig {
 
 	public static final String REDIS_TPL = "strObjRedisTemplate";
+    public static final String REDIS_TPL_STR = "strStrRedisTemplate";
+    public static final String REDIS_TPL_MFILE = "strMedFileRedisTemplate";
+    public static final String REDIS_TPL_GAME = "redisGameTemplate";
 
-	public static final String REDIS_TPL_STR = "strStrRedisTemplate";
-
-	public static final String REDIS_TPL_MFILE = "strMedFileRedisTemplate";
-
-	public static final String RATE_LIMIT_CACHE_MAN = "rateLimitCacheMan";
-
-	@Primary
+    @Primary
 	@Bean(name = REDIS_TPL)
 	public RedisTemplate<String, Object> redisObjectTemplate() {
 		RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -57,4 +55,12 @@ public class RedisConfig extends RedisBaseConfig {
 		return template;
 	}
 
+    @Bean(name = REDIS_TPL_GAME)
+    public RedisTemplate<String, SportsGame> redisGameTemplate() {
+        RedisTemplate<String, SportsGame> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory());
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return template;
+    }
 }

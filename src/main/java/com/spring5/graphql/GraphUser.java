@@ -33,8 +33,8 @@ public class GraphUser implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 
-	private String username;
+	private String name;
 
-	private String userEmail;
+	private String email;
 
 }

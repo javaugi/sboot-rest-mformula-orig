@@ -19,6 +19,7 @@
     </parent>
 
     <properties>
+        <app.main.class>com.spring5.MyApplication</app.main.class>
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -35,7 +36,8 @@
         <confluent.version>7.9.1</confluent.version> 
         <azure.spring.version>5.22.0</azure.spring.version> 
                 
-        <org.springframework.boot.version>3.5.5</org.springframework.boot.version>
+        <org.springframework.boot.version>3.5.6</org.springframework.boot.version>
+        <spring-security-bom.version>6.5.7</spring-security-bom.version>
         <org.springdoc.version>2.8.9</org.springdoc.version>
         <io.awspring.cloud.version>3.4.0</io.awspring.cloud.version>
         <!--spring-cloud-gcp.version>7.1.0</spring-cloud-gcp.version-->        
@@ -50,10 +52,10 @@
         <node.version>v24.6.0</node.version>
         <npm.version>11.5.2</npm.version>
         
-        <io.jsonwebtoken.version>0.12.6</io.jsonwebtoken.version>
+        <io.jsonwebtoken.version>0.13.0</io.jsonwebtoken.version>
         <jackson.version>2.19.2</jackson.version>     
-        <hapi.fhir.version>8.4.0</hapi.fhir.version>    
-        <hapi.fhir.core.version>6.6.7</hapi.fhir.core.version>    
+        <hapi.fhir.version>8.6.0</hapi.fhir.version>    
+        <hapi.fhir.core.version>6.7.8</hapi.fhir.core.version>    
         
         <hibernate-search-parent.version>5.11.12.Final</hibernate-search-parent.version>
         <hibernate-validator-parent.version>5.4.3.Final</hibernate-validator-parent.version>
@@ -83,14 +85,32 @@
         
         <groovy.version>5.0.1</groovy.version>
         <gmavenplus.version>4.2.1</gmavenplus.version>
+        <jmeter.version>5.6.3</jmeter.version>
+        <graalvm.version>25.0.1</graalvm.version>
+        
+        <jasypt.version>3.0.5</jasypt.version>
+        <spring-dotenv.version>4.0.0</spring-dotenv.version>
+        <jmh.version>1.37</jmh.version>
+        <bouncycastle.jdk15on.version>1.70</bouncycastle.jdk15on.version>
     </properties>
 
     <dependencies>    
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>3.0.5</version>
-        </dependency>        
+            <version>${jasypt.version}</version>
+        </dependency>       
+        <dependency>
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+            <version>${spring-dotenv.version}</version>
+        </dependency>     
+                
+        <dependency>
+            <groupId>org.graalvm.polyglot</groupId>
+            <artifactId>polyglot</artifactId>
+            <version>${graalvm.version}</version>
+        </dependency>
         <!-- Groovy dependency -->
         <dependency>
             <groupId>org.apache.groovy</groupId>
@@ -269,7 +289,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId> <!-- Implicitly includes Logback -->
         </dependency>
-        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>        
         <!-- Analyze your Dependency Tree: This is crucial to find which dependency is including slf4j-nop 
             (and any other unwanted SLF4J bindings). Use your build tool's command:
             Maven: mvn dependency:tree | grep 'slf4j'
@@ -816,7 +839,14 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
-        </dependency>    
+        </dependency>   
+        <!-- Optional: Spring Cloud (for runtime refresh of config) -->
+        <dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!--
+        -->         
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -841,42 +871,30 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.12.6</version>
+            <version>${io.jsonwebtoken.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
-            <version>0.12.6</version>
+            <version>${io.jsonwebtoken.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
-            <version>0.12.6</version>
-            <scope>runtime</scope>
+            <version>${io.jsonwebtoken.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
-            <version>0.12.6</version>
+            <version>${io.jsonwebtoken.version}</version>
             <scope>runtime</scope>
         </dependency>
-
-        <!--
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency> 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>        
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>2.5.2.RELEASE</version>
-        </dependency>        
-        -->
-        
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>${bouncycastle.jdk15on.version}</version>
+        </dependency>
+                
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -1066,10 +1084,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
@@ -1166,14 +1180,46 @@
     
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security-bom.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security-bom.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
+            <version>${spring-security-bom.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-core</artifactId>
+            <version>${spring-security-bom.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
+            <version>${spring-security-bom.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+            <version>${spring-security-bom.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        
 
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${spring-security-bom.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!-- JSTL Dependency -->
         <!--
         <dependency>
@@ -1322,7 +1368,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
-            <version>1.14.0</version>
+            <version>1.14.1</version>
         </dependency>
         <!--
         <dependency>
@@ -1643,6 +1689,7 @@
             <artifactId>langchain4j-azure-open-ai</artifactId>
             <version>0.36.2</version>
         </dependency> 
+        
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>applicationinsights-spring-boot-starter</artifactId>
@@ -2040,7 +2087,12 @@
             <artifactId>hapi-fhir-structures-r4</artifactId>
             <version>${hapi.fhir.version}</version>
         </dependency>
-            
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-client</artifactId>
+            <version>${hapi.fhir.version}</version>
+        </dependency>
+                
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -2078,7 +2130,51 @@
             <groupId>org.apache.beam</groupId>
             <artifactId>beam-sdks-java-io-google-cloud-platform</artifactId>
             <version>${beam.version}</version>
-        </dependency>                                                    
+        </dependency>         
+        
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter</artifactId>
+            <version>${jmeter.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_core</artifactId>
+            <version>${jmeter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_http</artifactId>
+            <version>${jmeter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_components</artifactId>
+            <version>${jmeter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_java</artifactId>
+            <version>${jmeter.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_junit</artifactId>
+            <version>${jmeter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_functions</artifactId>
+            <version>${jmeter.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>com.lazerycode.jmeter</groupId>
+            <artifactId>jmeter-analysis-maven-plugin</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+                                                                                                  
     </dependencies>
 
     <dependencyManagement>
@@ -2089,7 +2185,18 @@
                 <version>8.14.0</version>
                 <type>pom</type>
             </dependency>                        
-            
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-parent</artifactId>
+                <version>${jmh.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-bom</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
+                <type>pom</type>
+            </dependency>            
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>spring-cloud-gcp-dependencies</artifactId>
@@ -2184,7 +2291,21 @@
                 <artifactId>org.hl7.fhir.core</artifactId>
                 <version>${hapi.fhir.core.version}</version>
                 <type>pom</type>
-            </dependency>        
+            </dependency>       
+            
+            <dependency>
+                <groupId>org.graalvm.polyglot</groupId>
+                <artifactId>js</artifactId>
+                <version>${graalvm.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.graalvm.polyglot</groupId>
+                <artifactId>python</artifactId>
+                <version>${graalvm.version}</version>
+                <type>pom</type>
+                <scope>runtime</scope>
+            </dependency>              
                                   
             <!-- Additional static analysis -->
             <dependency>
@@ -2200,7 +2321,32 @@
                 <version>4.3.0</version>
                 <scope>test</scope>
             </dependency>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                         
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core-benchmarks</artifactId>
+                <version>${jmh.version}</version>
+                <scope>test</scope>
+            </dependency>
+                       
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>${spring-security-bom.version}</version>
+                <type>pom</type>
+            </dependency>                                               
         </dependencies>
     </dependencyManagement>
 
@@ -2213,11 +2359,10 @@
         <!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
         <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
         <plugins>
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.9.0</version>
             </plugin> 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -2225,11 +2370,11 @@
             </plugin>                   
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.5.0</version>
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version> 
+                <version>3.12.0</version> 
             </plugin>                
             <plugin>
                 <artifactId>maven-install-plugin</artifactId>
@@ -2238,8 +2383,7 @@
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.1.4</version>
-            </plugin>
-            -->
+            </plugin>     
             <!-- Groovy Compiler Plugin -->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
@@ -2276,7 +2420,7 @@
                         
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.14.0</version>
+                <version>3.14.1</version>
                 <configuration> 
                     <annotationProcessorPaths>
                         <path>
@@ -2287,7 +2431,12 @@
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>1.6.3</version>
-                        </path>                        
+                        </path>         
+                        <path>
+                            <groupId>org.openjdk.jmh</groupId>
+                            <artifactId>jmh-generator-annprocess</artifactId>
+                            <version>${jmh.version}</version>
+                        </path>               
                     </annotationProcessorPaths>                    
                     <compilerArgs>
                         <arg>-Xlint:-unchecked</arg>
@@ -2304,6 +2453,7 @@
                     -->                        
                 </configuration>
             </plugin>
+              
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -2315,7 +2465,7 @@
                         </exclude>
                     </excludes>
                     <executable>true</executable>
-                    <mainClass>com.spring5.MyApplication</mainClass> 
+                    <mainClass>${app.main.class}</mainClass> 
                     <!--
                     <wait>500</wait>
                     <maxAttempts>240</maxAttempts>
@@ -2337,7 +2487,6 @@
                 </executions> 
                 -->
             </plugin>
-            <!--
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-jar-plugin</artifactId>
@@ -2351,11 +2500,45 @@
                 </archive>
               </configuration>
             </plugin>                
+            <!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <id>jmh-benchmark</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>benchmarks</finalName>
+                            <transformers>
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.openjdk.jmh.Main</mainClass>
+                                </transformer>
+                            </transformers>
+
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>com/spring5/actuator/prometheus/jmh/**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             -->
+            
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.6.2</version>
                 <configuration>
                     <classpathScope>runtime</classpathScope>
                     <longClasspath>true</longClasspath>
@@ -2364,7 +2547,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.5.4</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
@@ -2440,7 +2623,7 @@
             <plugin>
                 <groupId>au.com.dius.pact.provider</groupId>
                 <artifactId>maven</artifactId>
-                <version>4.6.8</version>
+                <version>4.6.17</version>
                 <configuration>
                     <!--
                     <pactBrokerUrl>${pact.broker.url}</pactBrokerUrl>
@@ -2467,7 +2650,43 @@
                 </configuration>
             </plugin>
             -->
-            <!-- mvn spotless:apply -->
+            
+            <!--
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <version>3.8.0</version>
+                <executions>
+                    <execution>
+                        <id>configuration</id>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jmeter-tests</id>
+                        <goals>
+                            <goal>jmeter</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jmeter-check-results</id>
+                        <goals>
+                            <goal>results</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <testFilesDirectory>${project.basedir}/src/test/jmeter</testFilesDirectory>
+                    <resultsDirectory>${project.basedir}/target/jmeter/results</resultsDirectory>
+                    <propertiesUser>
+                        <threads>10</threads>
+                        <rampup>5</rampup>
+                        <duration>60</duration>
+                    </propertiesUser>
+                </configuration>
+            </plugin>       
+            -->     
                                                              
         </plugins>  
     </build>

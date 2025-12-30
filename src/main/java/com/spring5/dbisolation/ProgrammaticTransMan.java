@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -44,7 +45,7 @@ public class ProgrammaticTransMan {
 			productRepository.save(product);
 			transactionManager.commit(status);
 		}
-		catch (Exception e) {
+ catch (TransactionException e) {
 			transactionManager.rollback(status);
 			throw e;
 		}

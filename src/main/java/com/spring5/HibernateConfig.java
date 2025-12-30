@@ -9,12 +9,15 @@ import jakarta.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -47,7 +50,14 @@ public class HibernateConfig {
 	}
 
 	@Bean
-	public DataSource dataSourcePostgreSQL() {
+    public DataSource dataSourcePostgreSQL() {
+        // Example with DriverManagerDataSource, consider connection pooling for production
+        // DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        // dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        // dataSource.setUrl("jdbc:mysql://localhost:3306/your_database");
+        // dataSource.setUsername("your_username");
+        // dataSource.setPassword("your_password");
+        // return dataSource;        
 		return DataSourceBuilder.create()
 			.driverClassName("org.postgresql.Driver")
 			.url("jdbc:postgresql://localhost:5433/algotdb")
@@ -94,21 +104,12 @@ public class HibernateConfig {
 		bean.setPackagesToScan(com.spring5.MyApplication.PACKAGES_TO_SCAN);
 
 		Map<String, Object> properties = new HashMap<>();
-		properties.put("javax.persistence.attribute-converters", mapToJsonConverter());
+        properties.put("jakarta.persistence.attribute-converters", mapToJsonConverter());
 		bean.setJpaPropertyMap(properties);
 		return bean;
 	}
 
-	/*
-	 * A component required a single bean, but 2 were found: - transactionManager: defined
-	 * by method 'transactionManager' in class path resource
-	 * [com/spring5/HibernateConfig.class] - connectionFactoryTransactionManager: defined
-	 * by method 'connectionFactoryTransactionManager' in class path resource
-	 * [org/springframework/boot/autoconfigure/r2dbc/
-	 * R2dbcTransactionManagerAutoConfiguration.class]
-	 */
-	//
-	@Primary
+    @Primary
 	@Bean
 	public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
@@ -117,7 +118,26 @@ public class HibernateConfig {
 	@Bean
 	public PlatformTransactionManager platformTransactionManager(EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
-	}
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource);
+        sessionFactory.setPackagesToScan("com.spring5"); // Package containing your entities
+        // You can also set Hibernate properties here or through hibernate.cfg.xml
+        // Properties hibernateProperties = new Properties();
+        // hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+        // sessionFactory.setHibernateProperties(hibernateProperties);
+        return sessionFactory;
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory);
+        return transactionManager;
+    }
 
 }
 /*
